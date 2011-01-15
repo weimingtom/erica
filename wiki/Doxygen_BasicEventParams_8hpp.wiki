@@ -1,0 +1,13 @@
+#summary Documentation for the BasicEventParams.hpp file
+
+= BasicEventParams.hpp =
+
+
+
+== Detailed Description ==
+
+
+
+
+---
+|| [Doxygen Main Page] || [Doxygen_files Files] ||

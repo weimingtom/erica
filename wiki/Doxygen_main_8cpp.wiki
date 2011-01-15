@@ -1,0 +1,30 @@
+#summary Documentation for the main.cpp file
+
+= main.cpp =
+
+
+
+== Functions ==
+
+const char * GAME_INIT_FILE()
+  **
+
+== Detailed Description ==
+
+
+
+
+== Function Documentation ==
+
+{{{
+#const char * GAME_INIT_FILE   (
+  )
+}}}
+  
+  
+
+*Returns*:
+  And a return value!
+
+---
+|| [Doxygen Main Page] || [Doxygen_files Files] ||
