@@ -4,16 +4,21 @@
 namespace erica {
 
 /**
- *
+ * 基本的なTPS(サード・パーソン・シューティング)のデータ管理を行うロジッククラス.
  */
 class BasicTPSData
 {
 public:
+    /**
+     * コンストラクタ.
+     */
     BasicTPSData ();
+
+    /**
+     * デストラクタ.
+     */
     ~BasicTPSData ();
 
-
-private:
 
 };
 

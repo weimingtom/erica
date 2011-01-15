@@ -11,3 +11,7 @@ Controller:: Controller (EventQueue* queue)
 Controller:: ~Controller ()
 {
 }
+
+void Controller:: attach_actor (int id)
+{
+}

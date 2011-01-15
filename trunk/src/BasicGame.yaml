@@ -1,0 +1,55 @@
+#-----------------------------------------------------------------
+#BasciTPSのタメの初期化ファイル
+#最初の３つ(GameView,GameLogic,Event)は使用するクラス（型）の定義.
+#最後の１つ(Instance)はインスタンス化するクラスの指定.
+#-----------------------------------------------------------------
+
+- GameView:
+  - GameView:
+   - name : "BasicPlayerView"
+   - class: "BasicPlayerView"
+  - GameView:
+   - name : "BasicAiView"
+   - class: "BasicAiView"
+
+- GameLogic:
+  - GameLogic:
+    - name          : "BasicTPS"
+    - class         : "BasicTPS"
+  - Actor:
+    - name          : "MyCharacter"
+    - class         : "BasicActor"
+    - view          : "BasicPlayerView"
+    - controller    : "BasicController"
+    - representation: ""
+  - Actor: 
+    - name          : "Enemy"
+    - class         : "BasicActor"
+    - view          : "BasicAiView"
+    - controller    : "BasicController"
+    - representation: ""
+  - Actor: 
+    - name          : "Floor"
+    - class         : "BasicActor"
+    - representation: ""
+  - Actor: 
+    - name          : "Bullet"
+    - class         : "BasicActor"
+    - representation: ""
+
+- Event:
+  - {id: 100, name: "KeyPressed"}
+  - {id: 101, name: "ActorWalk"}
+  - {id: 102, name: "ActorSpawn"}
+  - {id: 103, name: "ActorDie"}
+  - {id: 104, name: "ActorShoot"}
+  - {id: 105, name: "ActorHit"}
+  - {id: 106, name: "SceneNodeCreate"}
+  - {id: 107, name: "SceneNodeDelete"}
+  - {id: 108, name: "SceneNodeMove"}
+
+
+- Instance:
+  - "BasicTPS"
+  - "MyCharacter"
+  - "Floor"

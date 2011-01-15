@@ -10,7 +10,7 @@ int main (int argc, char** argv)
     GameLogic* game   = new BasicTPS ();
     game->load_game (GAME_INIT_FILE);
 
-    GameView* player = game->get_view (0);
+    GameView* player = game->get_game_view (0);
     player = 0;
 
     int msec = 0;

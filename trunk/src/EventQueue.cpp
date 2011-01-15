@@ -21,7 +21,7 @@ void EventQueue:: enqueue (const Event* event)
 {
 }
 
-void EventQueue:: add_listener (int event_id, IEventListener* listner)
+void EventQueue:: add_listener (IEventListener* listener, const char* event_name)
 {
 }
 

@@ -10,15 +10,27 @@ namespace erica {
     class EventQueue;
 
 /**
- *
+ * 基本的なキー入力を処理するコントローラークラス.
  */
 class BasicController : public Controller, public IEventListener
 {
 public:
+    /**
+     * コンストラクタ.
+     * @param[in] out  このコントローラーから出るイベントの出力先キュー.
+     */
     BasicController (EventQueue* out);
+
+    /**
+     * デストラクタ.
+     */
     virtual ~BasicController ();
 
-protected:
+private:
+
+    /**
+     * IEventListener::handle()の再実装.
+     */
     virtual bool handle (const Event* event);
 
 };

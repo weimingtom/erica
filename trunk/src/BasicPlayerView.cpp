@@ -3,7 +3,7 @@
 using namespace erica;
 using namespace std;
 
-BasicPlayerView:: BasicPlayerView () : GameView()
+BasicPlayerView:: BasicPlayerView (GameLogic* logic) : GameView(logic)
 {
 }
 

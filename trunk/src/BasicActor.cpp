@@ -13,13 +13,13 @@ BasicActor:: ~BasicActor()
 {
 }
 
-void BasicActor:: update (int msec)
-{
-
-}
-
 bool BasicActor:: handle (const Event* event)
 {
     return false;
 }
 
+
+void BasicActor:: update (int msec)
+{
+
+}

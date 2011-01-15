@@ -31,7 +31,7 @@ void GameLogic:: tick (int msec)
 
 }
 
-GameView* GameLogic:: get_view (int id) const
+GameView* GameLogic:: get_game_view (int id) const
 {
     return 0;
 }

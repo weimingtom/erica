@@ -5,7 +5,7 @@ using namespace erica;
 using namespace std;
 
 
-GameView:: GameView ()
+GameView:: GameView (GameLogic* logic) : logic(0)
 {
 }
 
@@ -21,9 +21,6 @@ void GameView:: tick (int msec)
     update (msec);
 }
 
-void GameView:: add_game_logic (GameLogic* logic)
-{
-}
 
 void GameView:: enqueue (const Event* event)
 {
