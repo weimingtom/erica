@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Ericaゲームエンジン: クラス GameView</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- 作成： Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'検索');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li class="current"><a href="annotated.html"><span>クラス</span></a></li>
+      <li><a href="files.html"><span>ファイル</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="検索" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>構成</span></a></li>
+      <li><a href="classes.html"><span>構成索引</span></a></li>
+      <li><a href="hierarchy.html"><span>クラス階層</span></a></li>
+      <li><a href="functions.html"><span>構成メンバ</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath">
+    <ul>
+      <li><b>erica</b>      </li>
+      <li><a class="el" href="classerica_1_1GameView.html">GameView</a>      </li>
+    </ul>
+  </div>
+</div>
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a> &#124;
+<a href="#pri-methods">Private メソッド</a>  </div>
+  <div class="headertitle">
+<h1>クラス GameView</h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="erica::GameView" -->
+<p><code>#include &lt;<a class="el" href="GameView_8hpp_source.html">GameView.hpp</a>&gt;</code></p>
+<div class="dynheader">
+GameViewに対する継承グラフ</div>
+<div class="dyncontent">
+<div class="center"><img src="classerica_1_1GameView__inherit__graph.png" border="0" usemap="#GameView_inherit__map" alt="Inheritance graph"/></div>
+<map name="GameView_inherit__map" id="GameView_inherit__map">
+<area shape="rect" id="node3" href="classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="5,83,101,112"/><area shape="rect" id="node5" href="classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="125,83,248,112"/></map>
+<center><span class="legend">[<a href="graph_legend.html">凡例</a>]</span></center></div>
+
+<p><a href="classerica_1_1GameView-members.html">すべてのメンバ一覧</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public メソッド</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a88ab556b969cfdfdf3eca073bd1eabcd">GameView</a> (<a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *<a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a92bd5a5bae0e25126054b5a45ec3cfe9">~GameView</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (int msec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected 変数</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::map&lt; int, <a class="el" href="classerica_1_1Controller.html">Controller</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">ctrls</a></td></tr>
+<tr><td colspan="2"><h2><a name="pri-methods"></a>
+Private メソッド</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (int msec)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a059899416ea4b28c806bc41e6fe20ad9">render</a> () const =0</td></tr>
+</table>
+<hr/><a name="_details"></a><h2>説明</h2>
+<p>表示とコントロールを行う「ゲームビュー」クラス. </p>
+<hr/><h2>コンストラクタとデストラクタ</h2>
+<a class="anchor" id="a88ab556b969cfdfdf3eca073bd1eabcd"></a><!-- doxytag: member="erica::GameView::GameView" ref="a88ab556b969cfdfdf3eca073bd1eabcd" args="(GameLogic *logic)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1GameView.html">GameView</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *&nbsp;</td>
+          <td class="paramname"> <em>logic</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>コンストラクタ。１つのビューにつき１つのロジックが必ず関連付けられる. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>logic</em>&nbsp;</td><td>関連付けるゲームロジック. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a92bd5a5bae0e25126054b5a45ec3cfe9"></a><!-- doxytag: member="erica::GameView::~GameView" ref="a92bd5a5bae0e25126054b5a45ec3cfe9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">~<a class="el" href="classerica_1_1GameView.html">GameView</a> </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>デストラクタ. </p>
+
+</div>
+</div>
+<hr/><h2>関数</h2>
+<a class="anchor" id="abcccf247ade15c0b6e39ff8ce57d6c3c"></a><!-- doxytag: member="erica::GameView::enqueue" ref="abcccf247ade15c0b6e39ff8ce57d6c3c" args="(const Event *event)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void enqueue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classerica_1_1Event.html">Event</a> *&nbsp;</td>
+          <td class="paramname"> <em>event</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューのイベントキュー(in)にイベントを入れる. イベントは次のtick()が呼ばれたタイミングで処理される。 </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event</em>&nbsp;</td><td>イベント </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a059899416ea4b28c806bc41e6fe20ad9"></a><!-- doxytag: member="erica::GameView::render" ref="a059899416ea4b28c806bc41e6fe20ad9" args="() const =0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void render </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [private, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューを描画する。ビューの派生クラスはこの関数を再実装しなければならない. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7fa6e8f01eb4b6bf73edf137758b60dc"></a><!-- doxytag: member="erica::GameView::tick" ref="a7fa6e8f01eb4b6bf73edf137758b60dc" args="(int msec)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tick </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>msec</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューにクロックを供給する. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af90cef4119eb72908ce2a3849fc30ceb"></a><!-- doxytag: member="erica::GameView::update" ref="af90cef4119eb72908ce2a3849fc30ceb" args="(int msec)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void update </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>msec</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [private, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューを更新する。ビューの派生クラスはこの関数を再実装しなければならない. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>変数</h2>
+<a class="anchor" id="ab9cf03ff2dd7baa31f4e5d13fa97589f"></a><!-- doxytag: member="erica::GameView::ctrls" ref="ab9cf03ff2dd7baa31f4e5d13fa97589f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;int, <a class="el" href="classerica_1_1Controller.html">Controller</a>*&gt; <a class="el" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">ctrls</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューが保持しているコントローラー. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0c3c47b4d1b0526b264c512bb29bfcf8"></a><!-- doxytag: member="erica::GameView::in" ref="a0c3c47b4d1b0526b264c512bb29bfcf8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューがイベントを受け取るときのキュー. </p>
+
+</div>
+</div>
+<a class="anchor" id="af39b51ca0ab5d72c9426c9a6118803b8"></a><!-- doxytag: member="erica::GameView::logic" ref="af39b51ca0ab5d72c9426c9a6118803b8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a>* <a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューが関連付けられているロジック. </p>
+
+</div>
+</div>
+<a class="anchor" id="af608a37f7b3cea1741409b4bfe11e3c3"></a><!-- doxytag: member="erica::GameView::out" ref="af608a37f7b3cea1741409b4bfe11e3c3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューがイベントを出力するときのキュー. </p>
+
+</div>
+</div>
+<hr/>このクラスの説明は次のファイルから生成されました:<ul>
+<li>/work/workspace.erica/src/<a class="el" href="GameView_8hpp_source.html">GameView.hpp</a></li>
+<li>/work/workspace.erica/src/GameView.cpp</li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>全て</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>クラス</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>関数</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>変数</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:03:07に生成されました。&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>

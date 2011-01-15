@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="5,83,96,112"/>
+<area shape="rect" id="node5" href="$classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="120,83,216,112"/>
+<area shape="rect" id="node7" href="$classerica_1_1BasicController.html" title="BasicController" alt="" coords="240,83,357,112"/>
+<area shape="rect" id="node9" href="$classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="381,83,504,112"/>
+<area shape="rect" id="node11" href="$classerica_1_1BasicTPS.html" title="BasicTPS" alt="" coords="528,83,608,112"/>
+</map>

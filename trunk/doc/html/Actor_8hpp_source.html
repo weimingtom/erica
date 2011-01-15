@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Ericaゲームエンジン: /work/workspace.erica/src/Actor.hpp ソースファイル</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- 作成： Doxygen 1.7.1 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'検索');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>メインページ</span></a></li>
+      <li><a href="annotated.html"><span>クラス</span></a></li>
+      <li class="current"><a href="files.html"><span>ファイル</span></a></li>
+      <li id="searchli">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="検索" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>ファイル一覧</span></a></li>
+    </ul>
+  </div>
+<div class="header">
+  <div class="headertitle">
+<h1>/work/workspace.erica/src/Actor.hpp</h1>  </div>
+</div>
+<div class="contents">
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __ERICA_ACTOR_HPP__</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __ERICA_ACTOR_HPP__</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
+<a name="l00004"></a>00004 <span class="keyword">namespace </span>erica {
+<a name="l00005"></a>00005 
+<a name="l00006"></a>00006 <span class="keyword">class </span>EventQueue;
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 
+<a name="l00012"></a><a class="code" href="classerica_1_1Actor.html">00012</a> <span class="keyword">class </span><a class="code" href="classerica_1_1Actor.html">Actor</a>
+<a name="l00013"></a>00013 {
+<a name="l00014"></a>00014 <span class="keyword">public</span>:
+<a name="l00019"></a>00019     <a class="code" href="classerica_1_1Actor.html#a0979a846ab01923b85910183950d6979">Actor</a> (<a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>);
+<a name="l00020"></a>00020 
+<a name="l00024"></a>00024     <span class="keyword">virtual</span> <a class="code" href="classerica_1_1Actor.html#a95b99266473e7cdfc39b12e2d7f593ca">~Actor</a> ();
+<a name="l00025"></a>00025 
+<a name="l00031"></a>00031     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (<span class="keywordtype">int</span> msec);
+<a name="l00032"></a>00032 
+<a name="l00037"></a>00037     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a> () <span class="keyword">const</span>;
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039 <span class="keyword">private</span>:
+<a name="l00044"></a>00044     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (<span class="keywordtype">int</span> msec) = 0;
+<a name="l00045"></a>00045 
+<a name="l00049"></a>00049     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#aa287f53e792ad916c59bc38039835e74">get_unique_id</a> ();
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051 <span class="keyword">protected</span>:
+<a name="l00055"></a><a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">00055</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* out;
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     
+<a name="l00061"></a><a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">00061</a>     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a>;
+<a name="l00062"></a>00062 
+<a name="l00066"></a><a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">00066</a>     <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">name</a>;
+<a name="l00067"></a>00067 };
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 } <span class="comment">// namespace erica {</span>
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 <span class="preprocessor">#endif</span>
+</pre></div></div>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>全て</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>クラス</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>関数</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>変数</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:03:07に生成されました。&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
+</body>
+</html>
