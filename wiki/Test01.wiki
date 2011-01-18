@@ -1,3 +1,0 @@
-Doxygenで自動生成されたドキュメント。
-
-http://erica.googlecode.com/svn/trunk/doc/html/index.html
