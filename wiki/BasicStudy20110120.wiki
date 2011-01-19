@@ -1,5 +1,5 @@
  * 「移動」シーケンスの検討
-   * http://erica.googlecode.com/svn/trunk/doc/internal/images/BasicStudy-move.png
-
- * 「移動」シーケンスの検討
-   * http://erica.googlecode.com/svn/trunk/doc/internal/images/BasicStudy-Shot.png
+  * http://erica.googlecode.com/svn/trunk/doc/internal/images/BasicStudy-move.png
+ 
+ * 「弾を打つ」シーケンスの検討
+  * http://erica.googlecode.com/svn/trunk/doc/internal/images/BasicStudy-Shot.png
