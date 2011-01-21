@@ -14,9 +14,10 @@ class Actor
 public:
     /**
      * コンストラクタ.
-     * @param[in] out  このアクターから出力されるイベントの出力先キュー.
+     * @param[in] in   このアクターから出力されるイベントの入力キュー.
+     * @param[in] out  このアクターから出力されるイベントの出力キュー.
      */
-    Actor (EventQueue* out);
+    Actor (EventQueue* in, EventQueue* out);
 
     /**
      * デストラクタ.

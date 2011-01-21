@@ -3,7 +3,7 @@
 using namespace std;
 using namespace erica;
 
-Actor::Actor (EventQueue* queue) : out(0)
+Actor::Actor (EventQueue* in, EventQueue* out) : out(0)
 {
 }
 

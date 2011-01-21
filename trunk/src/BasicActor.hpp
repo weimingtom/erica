@@ -16,9 +16,10 @@ class BasicActor : public Actor, public IEventListener
 public:
     /**
      * コンストラクタ.
-     * @param[in] out  このアクターから出力されるイベントの出力先キュー.
+     * @param[in] in   このアクターから出力されるイベントの入力キュー.
+     * @param[in] out  このアクターから出力されるイベントの出力キュー.
      */
-    BasicActor (EventQueue* out);
+    BasicActor (EventQueue* in, EventQueue* out);
 
     /**
      * デストラクタ.

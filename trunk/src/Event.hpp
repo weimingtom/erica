@@ -27,7 +27,7 @@ public:
      * @param[in] size   イベントパラメーターのサイズ.
      * @see regist()
      */
-    Event (const char* name, const void* params, int size);
+    Event (const char* name, const void* params, int size, int actor_id);
 
     /**
      * デストラクタ.
