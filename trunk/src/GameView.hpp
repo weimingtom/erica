@@ -28,43 +28,47 @@ public:
      */
     virtual ~GameView ();
 
-    /**
-     * このビューにクロックを供給する.
-     * @param[in] msec 秒数をmsecで指定する.
-     */
-    void tick (int msec);
-
-    /**
+     /**
      * このビューのイベントキュー(in)にイベントを入れる.
-     * イベントは次のtick()が呼ばれたタイミングで処理される。
+     * イベントは次のupdate()が呼ばれたタイミングで処理される。
      * @param[in] event イベント
      */
     void enqueue (const Event* event);
 
-
-
-private:
-
     /**
-     * このビューを更新する。ビューの派生クラスはこの関数を再実装しなければならない.
+     * このビューを更新する。
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update (int msec) = 0;
+    void update (int msec);
 
     /**
-     * このビューを描画する。ビューの派生クラスはこの関数を再実装しなければならない.
+     * このビューを描画する。
      */
-    virtual void render () const = 0;
+    void render () const;
+
 
 protected:
 
     /**
-     * このビューがイベントを受け取るときのキュー.
+     * update()関数の実装。ビューの派生クラスはこの関数を再実装しなければならない.
+     * @param[in]  msec  秒数をmsecで指定する.
+     */
+    virtual void update_impl (int msec) = 0;
+
+    /**
+     * render()関数の実装。ビューの派生クラスはこの関数を再実装しなければならない.
+     */
+    virtual void render_impl () const = 0;
+
+protected:
+
+    /**
+     * このビューがイベントを受け取るときのキュー(in).
      */
     EventQueue* in;
 
     /**
-     * このビューがイベントを出力するときのキュー.
+     * このビューがイベントを出力するときのキュー(out).
      */
     EventQueue* out;
 

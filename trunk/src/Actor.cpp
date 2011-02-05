@@ -3,7 +3,7 @@
 using namespace std;
 using namespace erica;
 
-Actor::Actor (EventQueue* in, EventQueue* out) : out(0)
+Actor::Actor (EventQueue* in, EventQueue* out) : in(NULL), out(NULL)
 {
 }
 
@@ -15,3 +15,11 @@ void Actor:: tick (int msec)
 {
 }
 
+void Actor:: update (int msec)
+{
+}
+
+int Actor:: get_actor_id () const
+{
+    return 0;
+}

@@ -11,16 +11,16 @@ BasicAiView:: ~BasicAiView ()
 {
 }
 
-void BasicAiView:: update (int msec)
+void BasicAiView:: update_impl (int msec)
 {
 }
 
-bool BasicAiView:: handle (const Event* event)
+bool BasicAiView:: handle_impl (const Event* event)
 {
     return false;
 }
 
-void BasicAiView:: render () const
+void BasicAiView:: render_impl () const
 {
 }
 

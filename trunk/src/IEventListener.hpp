@@ -23,20 +23,22 @@ public:
     virtual ~IEventListener ();
 
     /**
-     * イベントの受け取り（処理）.
+     * イベントを処理する。
      * @param[in] event イベント
      * @return 処理したらtrue,処理しなかったらfalseを返す.
      */
-    bool accept (const Event* event);
+    bool handle (const Event* event);
 
-private:
+protected:
 
     /**
-     * イベントを処理する。リスナーの派生クラスはこの関数を再実装しなければならない.
+     * handle()関数の再実装。リスナーの派生クラスはこの関数を再実装しなければならない.
      * @param[in] event イベント
      * @return 処理したらtrue,処理しなかったらfalseを返す.
      */
-    virtual bool handle (const Event* event) = 0;
+    virtual bool handle_impl (const Event* event) = 0;
+
+
 };
 
 

@@ -13,10 +13,10 @@ GameView:: ~GameView ()
 {
 }
 
-void GameView:: tick (int msec)
+void GameView:: update (int msec)
 {
-    in->tick (msec);
-    out->tick (msec);
+    in->update (msec);
+    out->update (msec);
 
     update (msec);
 }

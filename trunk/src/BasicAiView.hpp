@@ -25,21 +25,23 @@ public:
      */
     virtual ~BasicAiView ();
 
-private:
+
+protected:
+
     /**
      * GameViewクラスのupdate()の再実装.
      */
-    virtual void update (int msec);
+    virtual void update_impl (int msec);
 
     /**
      * IEventListenerクラスのhandle()の再実装.
      */
-    virtual bool handle (const Event* event);
+    virtual bool handle_impl (const Event* event);
 
     /**
      * GameViewクラスのrender()の再実装.
      */
-    virtual void render () const;
+    virtual void render_impl () const;
 };
 
 } // namespace erica {

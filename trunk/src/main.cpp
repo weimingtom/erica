@@ -15,7 +15,7 @@ int main (int argc, char** argv)
 
     int msec = 0;
     while (1) {
-        game->tick (msec);
+        game->update (msec);
         msec += 16;
     }
 

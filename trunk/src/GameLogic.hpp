@@ -26,6 +26,13 @@ public:
     virtual ~GameLogic ();
 
     /**
+     * このロジックの持つビューを取得する.
+     * @param[in] id  ビュー番号。通常は0がプレイヤービュー.
+     */
+    GameView* get_game_view (int id) const;
+
+
+    /**
      * ゲームのロード.
      * この関数の呼び出しは必須。
      * @param[in] ini_file ロードする初期化ファイルを指定する.
@@ -33,37 +40,34 @@ public:
     void load_game (const char* ini_file);
 
     /**
-     * このロジックにクロックを供給する.
+     * このロジックを更新する.
      * @param[in] msec 秒数をmsecで指定する.
      */
-    void tick (int msec);
+    void update (int msec);
 
-    /**
-     * このロジックの持つビューを取得する.
-     * @param[in] id  ビュー番号。通常は0がプレイヤービュー.
-     */
-    GameView* get_game_view (int id) const;
 
     /**
      * このロジックのイベントキュー(in)にイベントを入れる.
-     * イベントは次のtick()が呼ばれたタイミングで処理される。
+     * イベントは次のupdate()が呼ばれたタイミングで処理される。
      * @param[in] event イベント
      */
     void enqueue (const Event* event);
 
-private:
+
+protected:
+
     /**
-     * このロジックを更新する。ロジックの派生クラスはこの関数を再実装しなければならない.
+     * update()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update (int msec) = 0;
+    virtual void update_impl (int msec) = 0;
     
     /**
-     * このロジックを構築する。ロジックの派生クラスはこの関数を再実装しなければならない.
+     * create_game()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  ini_file 初期化ファイル.
      * @see load_game()
      */
-    virtual void create_game (const char* ini_file) = 0;
+    virtual void load_game_impl (const char* ini_file) = 0;
 
 protected:
     /**

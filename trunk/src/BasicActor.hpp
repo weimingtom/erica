@@ -26,17 +26,17 @@ public:
      */
     virtual ~BasicActor();
 
-private:
+protected:
 
     /**
-     * IEventListener::handle()の再実装.
+     * 
      */
-    virtual bool handle (const Event* event);
+    virtual bool handle_impl (const Event* event);
     
     /**
-     * Actor::update()の再実装.
+     * 
      */
-    virtual void update (int msec);
+    virtual void update_impl (int msec);
 
 };
 

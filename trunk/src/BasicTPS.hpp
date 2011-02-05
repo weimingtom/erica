@@ -29,23 +29,24 @@ public:
     virtual ~BasicTPS ();
 
     
-private:
+protected:
 
     /**
-     * GameView::create_game()の再実装.
+     * 
      */
-    virtual void create_game (const char* ini_file);
+    virtual void load_game_impl (const char* ini_file);
 
     /**
-     * GameView::update()の再実装.
+     * 
      */
-    virtual void update (int msec);
+    virtual void update_impl (int msec);
 
     /**
-     * IEventListener::handle()の再実装.
+     * 
      */
-    virtual bool handle (const Event* event);    
+    virtual bool handle_impl (const Event* event);    
    
+private:
     /**
      * 敵キャラクターの作成.
      */

@@ -30,21 +30,23 @@ public:
      */
     virtual ~BasicPlayerView ();
 
-private:
+
+protected:
+
     /**
      * GameView::update()の再実装.
      */
-    virtual void update (int msec);
+    virtual void update_impl (int msec);
 
     /**
      * IEventListener::handle()の再実装.
      */
-    virtual bool handle (const Event* event);
+    virtual bool handle_impl (const Event* event);
 
     /**
      * GameView::render()の再実装.
      */
-    virtual void render () const;
+    virtual void render_impl () const;
 
 
 private:

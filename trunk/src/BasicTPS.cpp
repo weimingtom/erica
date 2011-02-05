@@ -15,16 +15,16 @@ BasicTPS:: ~BasicTPS ()
 }
 
 
-void BasicTPS:: create_game (const char* init_file)
+void BasicTPS:: load_game_impl (const char* init_file)
 {
 }
 
-void BasicTPS:: update (int msec)
+void BasicTPS:: update_impl (int msec)
 {
     // 終了処理とか
 }
 
-bool BasicTPS:: handle (const Event* event)
+bool BasicTPS:: handle_impl (const Event* event)
 {
     // Event "Spawn"
     // Event "Quit"

@@ -18,15 +18,15 @@ void GameLogic:: load_game (const char* ini_file)
 {
 }
 
-void GameLogic:: tick (int msec)
+void GameLogic:: update (int msec)
 {
-    in->tick (msec);
-    out->tick (msec);
+    in->update (msec);
+    out->update (msec);
 
     update (msec);
 
     for (int i = 0; i < (int)views.size(); i++) {
-        views[i]->tick (msec);
+        views[i]->update (msec);
     }
 
 }

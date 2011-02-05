@@ -26,10 +26,10 @@ public:
     ~EventQueue ();
 
     /**
-     * このイベントキューにクロックを供給する.
+     * このイベントキューを更新する.
      * @param[in] msec 秒数をmsecで指定する.
      */
-    void tick (int msec);
+    void update (int msec);
 
     /**
      * このイベントキューにイベントを追加する.
@@ -53,7 +53,14 @@ public:
     void remove_listener (const IEventListener* listner);
 
 private:
+    /**
+     * 未処理のイベントのリスト.
+     */
     std::list<const Event*>  events;
+
+    /**
+     * イベントのリスナー.
+     */
     std::multimap<int, IEventListener*> listners;
 };
 

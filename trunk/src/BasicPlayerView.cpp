@@ -11,16 +11,16 @@ BasicPlayerView:: ~BasicPlayerView ()
 {
 }
 
-void BasicPlayerView:: update (int msec)
+void BasicPlayerView:: update_impl (int msec)
 {
 }
 
-bool BasicPlayerView:: handle (const Event* event)
+bool BasicPlayerView:: handle_impl (const Event* event)
 {
     return false;
 }
 
-void BasicPlayerView:: render () const
+void BasicPlayerView:: render_impl () const
 {
 }
 

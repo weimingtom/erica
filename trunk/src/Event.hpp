@@ -60,11 +60,16 @@ public:
 
     /**
      * イベントを登録する。有効なイベントはあらかじめこの関数を使って登録されていなければならない.
+     * @param[in] name  イベント名.
+     * @param[in] id    一意なID.
      * @return 一意なID.
      */
     static void regist (const char* name, int id);
 
 private:
+    /**
+     * イベントデータ.
+     */
     Entity e;
 
     /**

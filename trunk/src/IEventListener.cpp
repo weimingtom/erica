@@ -12,7 +12,8 @@ IEventListener:: ~IEventListener ()
 {
 }
 
-bool IEventListener:: accept (const Event* event)
+
+bool IEventListener:: handle (const Event* event)
 {
     return false;
 }

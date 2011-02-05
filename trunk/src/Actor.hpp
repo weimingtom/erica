@@ -25,35 +25,43 @@ public:
     virtual ~Actor ();
 
     /**
-     * このアクターにクロックを供給する.
-     * @param[in] msec  秒数をmsecで指定する.
-     * @see update()
-     */
-    void tick (int msec);
-
-    /**
      * アクターIDの取得。アクターIDはユニークIDが自動で発番される.
      * @return アクターID.
      */
     int get_actor_id () const;
 
-private:
     /**
      * このアクターを更新する。アクターの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update (int msec) = 0;
+    void update (int msec);
+
+private:
+
+    /**
+     * update()の実装関数。アクターの派生クラスはこの関数を再実装しなければならない.
+     * @param[in]  msec  秒数をmsecで指定する.
+     */
+    virtual void update_impl (int msec) = 0;
 
     /**
      * 一意なIDを取得する.
      */
     static int get_unique_id ();
 
+
 protected:
+
     /**
-     * このアクターからイベントを出力するときの出力先.
+     * このアクターからイベントを出力するときの出力先(in).
+     */
+    EventQueue* in;
+
+    /**
+     * このアクターからイベントを出力するときの出力先(out).
      */
     EventQueue* out;
+
 
     
     /**

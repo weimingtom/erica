@@ -13,7 +13,7 @@ EventQueue:: ~EventQueue ()
 {
 }
 
-void EventQueue:: tick (int msec)
+void EventQueue:: update (int msec)
 {
 }
 
