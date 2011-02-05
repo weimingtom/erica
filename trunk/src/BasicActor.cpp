@@ -12,13 +12,13 @@ BasicActor:: ~BasicActor()
 {
 }
 
-bool BasicActor:: handle (const Event* event)
+bool BasicActor:: handle_impl (const Event* event)
 {
     return false;
 }
 
 
-void BasicActor:: update (int msec)
+void BasicActor:: update_impl (int msec)
 {
 
 }

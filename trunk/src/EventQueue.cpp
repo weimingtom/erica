@@ -17,6 +17,7 @@ void EventQueue:: update (int msec)
 {
 }
 
+
 void EventQueue:: enqueue (const Event* event)
 {
 }
@@ -30,3 +31,11 @@ void EventQueue:: remove_listener (const IEventListener* listner)
 }
 
 
+void EventQueue:: clear ()
+{
+}
+
+int EventQueue:: size () const
+{
+    return 0;
+}

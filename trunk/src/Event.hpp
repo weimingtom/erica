@@ -19,7 +19,8 @@ class Event
 public:
     /**
      * コンストラクタ.
-     * イベントパラメーターは内部でコピーされて保存される。
+     * 1. イベント名はコピーされない。
+     * 2. イベントパラメーターはコピーされる。
      * 従ってパラメーターはmemcpy()でコピー可能なPODでなければならない。
      * イベント名は大文字小文字を区別しない。また予め登録されたものでなければならない。
      * @param[in] name   このイベントの名前. 
@@ -59,12 +60,24 @@ public:
     int id () const;
 
     /**
+     * このイベントを発行したアクターIDを取得する.
+     * @return アクターID.
+     */
+    int get_actor_id () const;
+
+    /**
      * イベントを登録する。有効なイベントはあらかじめこの関数を使って登録されていなければならない.
      * @param[in] name  イベント名.
      * @param[in] id    一意なID.
      * @return 一意なID.
      */
-    static void regist (const char* name, int id);
+    static void regist (int id, const char* name);
+
+    /**
+     * 登録されているイベントのリストを取得する。
+     * @return イベントリスト
+     */
+    static std::map<int, const char*> get_registered_events ();
 
 private:
     /**

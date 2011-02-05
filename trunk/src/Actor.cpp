@@ -11,9 +11,6 @@ Actor:: ~Actor ()
 {
 }
 
-void Actor:: tick (int msec)
-{
-}
 
 void Actor:: update (int msec)
 {

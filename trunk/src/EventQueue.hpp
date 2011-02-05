@@ -52,6 +52,18 @@ public:
      */
     void remove_listener (const IEventListener* listner);
 
+    /**
+     * キューに入っているイベントをすべて削除する.
+     */
+    void clear ();
+
+    /**
+     * キューに入っているイベントの数を取得する.
+     * @return イベント数.
+     */
+    int size () const;
+
+
 private:
     /**
      * 未処理のイベントのリスト.

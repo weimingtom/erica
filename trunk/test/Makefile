@@ -1,13 +1,11 @@
 SRCS = $(wildcard *.cpp)
 OBJS = $(SRCS:.cpp=.o)
 CXX  = g++
-CXXFLAGS = -Wall -g \
-           -fPIC
+CXXFLAGS = -Wall -g -I../src
 LD      = g++
-LDFLAGS = \
-           -shared
-LIBS    =   
-TARGET  = liberica.so
+LDFLAGS = -L../src  
+LIBS    = -lerica -lUnitTest++
+TARGET  = a.out
 
 
 all:  $(TARGET)
