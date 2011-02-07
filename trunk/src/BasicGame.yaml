@@ -1,55 +1,42 @@
 #-----------------------------------------------------------------
 #BasciTPSのタメの初期化ファイル
 #最初の３つ(GameView,GameLogic,Event)は使用するクラス（型）の定義.
-#最後の１つ(Instance)はインスタンス化するクラスの指定.
 #-----------------------------------------------------------------
 
-- GameView:
-  - GameView:
-   - name : "BasicPlayerView"
-   - class: "BasicPlayerView"
-  - GameView:
-   - name : "BasicAiView"
-   - class: "BasicAiView"
+- category: "GameView"
+  - instance : "BasicPlayerView"
+  - instance : "BasicAiView"
 
-- GameLogic:
-  - GameLogic:
-    - name          : "BasicTPS"
-    - class         : "BasicTPS"
-  - Actor:
-    - name          : "MyCharacter"
-    - class         : "BasicActor"
-    - view          : "BasicPlayerView"
-    - controller    : "BasicController"
-    - representation: ""
-  - Actor: 
-    - name          : "Enemy"
-    - class         : "BasicActor"
-    - view          : "BasicAiView"
-    - controller    : "BasicController"
-    - representation: ""
-  - Actor: 
-    - name          : "Floor"
-    - class         : "BasicActor"
-    - representation: ""
-  - Actor: 
-    - name          : "Bullet"
-    - class         : "BasicActor"
-    - representation: ""
+- category: "GameLogic"
+  - instance : "BasicTPS"
 
-- Event:
-  - {id: 100, name: "KeyPressed"}
-  - {id: 101, name: "ActorWalk"}
-  - {id: 102, name: "ActorSpawn"}
-  - {id: 103, name: "ActorDie"}
-  - {id: 104, name: "ActorShoot"}
-  - {id: 105, name: "ActorHit"}
-  - {id: 106, name: "SceneNodeCreate"}
-  - {id: 107, name: "SceneNodeDelete"}
-  - {id: 108, name: "SceneNodeMove"}
+- category: "Controller"
+  - instance : "BasicController"
+    name     : "MyController"
 
+- category: "Actor"
+  - instance      : "BasicActor"
+    name          : "MyCharacter"
+    view          : "BasicPlayerView"
+    controller    : "BasicController"
+    representation: ""
+  - instance      : "BasicActor"
+    name          : "Enemy"
+    view          : "BasicAiView"
+    controller    : "BasicController"
+    representation: ""
+  - instance      : "BasicActor"
+    name          : "Floor"
+    representation: ""
 
-- Instance:
-  - "BasicTPS"
-  - "MyCharacter"
-  - "Floor"
+- category: "Event"
+  - instance : {id: 100, name: "KeyPressed"}
+  - instance : {id: 101, name: "ActorWalk"}
+  - instance : {id: 102, name: "ActorSpawn"}
+  - instance : {id: 103, name: "ActorDie"}
+  - instance : {id: 104, name: "ActorShoot"}
+  - instance : {id: 105, name: "ActorHit"}
+  - instance : {id: 106, name: "SceneNodeCreate"}
+  - instance : {id: 107, name: "SceneNodeDelete"}
+  - instance : {id: 108, name: "SceneNodeMove"}
+
