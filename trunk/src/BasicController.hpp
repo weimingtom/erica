@@ -19,19 +19,25 @@ public:
      * コンストラクタ.
      * @param[in] out  このコントローラーから出るイベントの出力先キュー.
      */
-    BasicController (EventQueue* out);
+    BasicController ();
 
     /**
      * デストラクタ.
      */
     virtual ~BasicController ();
 
+
 private:
 
     /**
-     * IEventListener::handle()の再実装.
+     *
      */
-    virtual bool handle (const Event* event);
+    virtual void set_event_queue_impl (EventQueue* in, EventQueue* out);
+
+    /**
+     * IEventListener::handle()の実装.
+     */
+    virtual bool handle_impl (const Event* event);
 
 };
 

@@ -4,7 +4,7 @@ using namespace erica;
 using namespace std;
 
 
-BasicActor:: BasicActor (EventQueue* in, EventQueue* out) : Actor(in, out)
+BasicActor:: BasicActor () : Actor()
 {
 }
 
@@ -19,6 +19,11 @@ bool BasicActor:: handle_impl (const Event* event)
 
 
 void BasicActor:: update_impl (int msec)
+{
+
+}
+
+void BasicActor:: set_event_queue_impl (EventQueue* in, EventQueue* out)
 {
 
 }

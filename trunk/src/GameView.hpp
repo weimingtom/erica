@@ -36,16 +36,28 @@ public:
     void enqueue (const Event* event);
 
     /**
-     * このビューを更新する。
+     * このビューを更新する.
      * @param[in]  msec  秒数をmsecで指定する.
      */
     void update (int msec);
 
     /**
-     * このビューを描画する。
+     * このビューを描画する.
      */
     void render () const;
 
+    /**
+     * コントローラを追加する.
+     * @param[in] ctrl  コントローラー.
+     */
+    void add_controller (Controller* ctrl);
+
+    /**
+     * コントローラを削除する.
+     * @param[in] ctrl  コントローラー.
+     */
+    void remove_controller (const Controller* ctrl);
+    
 
 protected:
 

@@ -13,28 +13,60 @@ class Controller
 public:
     /**
      * コンストラクタ.
-     * @param[in] out  このコントローラーから出るイベントの出力先キュー.
      */
-    Controller (EventQueue* out);
+    Controller ();
 
     /**
      * デストラクタ.
      */
     virtual ~Controller ();
 
-protected:
+    /**
+     * このコントローラーにイベントキュー(in,out)を関連付ける.
+     * @param[in] in   関連付けるイベントキュー(in).
+     * @param[in] out  関連付けるイベントキュー(out).
+     */
+    void set_event_queue (EventQueue* in, EventQueue* out);
+
+    /**
+     * このコントローラーに関連付けられているイベントキューを取得する.
+     * @param[in] dir  このイベントキューの方向.
+     * @return アクターID.
+     */
+    EventQueue* get_evnet_queue (int dir) const;
+
+    /**
+     * このコントローラーに関連付けられているアクターIDを取得する.
+     * @return アクターID.
+     */
+    int get_actor_id () const;
 
     /**
      * このコントローラーにアクターを関連付ける.
      * @param[in] id 関連付けるアクターID.
      */
-    void attach_actor (int id);
+    void set_actor_id (int id);
+
+
+
+protected:
 
     /**
-     * このコントローラーからイベントを出力するときの出力先.
+     * set_event_queue()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.
      */
-    EventQueue* queue;
+    virtual void set_event_queue_impl (EventQueue* in, EventQueue* out) = 0;
 
+    /**
+     * このコントローラーが監視するイベントキュー(in).
+     */
+    EventQueue* in;
+
+    /**
+     * このコントローラーが出力するイベントキュー(out).
+     */
+    EventQueue* out;
+
+private:
     /**
      * このコントローラーが関連付けられているアクターID.
      */

@@ -20,10 +20,14 @@ void GameLogic:: load_game (const char* ini_file)
 
 void GameLogic:: update (int msec)
 {
-    in->update (msec);
-    out->update (msec);
+    if (in) {
+        in->update (msec);
+    }
+    if (out) {
+        out->update (msec);
+    }
 
-    update (msec);
+    update_impl (msec);
 
     for (int i = 0; i < (int)views.size(); i++) {
         views[i]->update (msec);
@@ -37,6 +41,14 @@ GameView* GameLogic:: get_game_view (int id) const
 }
 
 void GameLogic:: enqueue (const Event* event)
+{
+}
+
+void GameLogic:: add_actor (Actor* actr)
+{
+}
+
+void GameLogic:: remove_actor (const Actor* actr)
 {
 }
 

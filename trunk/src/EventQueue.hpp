@@ -15,6 +15,16 @@ class EventQueue
 {
 public:
     /**
+     * IN方向のキューを表す定数値.
+     */
+    static const int IN  = 1;
+
+    /**
+     * OUT方向のキューを表す定数値.
+     */
+    static const int OUT = 2;
+
+    /**
      * コンストラクタ.
      */
 

@@ -17,7 +17,7 @@ public:
     TestEventListener ();
     virtual ~TestEventListener ();
 
-    const erica::Event* get_event ();
+    const erica::Event* get_event () const;
 
 protected:
     virtual bool handle_impl (const erica::Event* event);

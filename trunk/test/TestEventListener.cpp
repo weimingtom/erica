@@ -12,7 +12,7 @@ TestEventListener:: ~TestEventListener ()
 {
 }
 
-const Event* TestEventListener:: get_event ()
+const Event* TestEventListener:: get_event () const
 {
     return event;
 }

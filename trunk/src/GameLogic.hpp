@@ -6,8 +6,8 @@ namespace erica {
 
 class GameView;
 class EventQueue;
-    class Event;
-
+class Event;
+    class Actor;
 
 /**
  * ゲーム本体の進行管理を行う「ゲームロジック」クラス.
@@ -53,6 +53,18 @@ public:
      */
     void enqueue (const Event* event);
 
+    /**
+     * コントローラを追加する.
+     * @param[in] actr  アクター.
+     */
+    void add_actor (Actor* actr);
+
+    /**
+     * コントローラを削除する.
+     * @param[in] ctrl  アクター.
+     */
+    void remove_actor (const Actor* actr);
+
 
 protected:
 
@@ -71,12 +83,12 @@ protected:
 
 protected:
     /**
-     * このビューがイベントを受け取るときのキュー.
+     * このビューがイベントを受け取るときのキュー(in).
      */
     EventQueue* in;
 
     /**
-     * このビューがイベントを出力するときのキュー.
+     * このビューがイベントを出力するときのキュー(out).
      */
     EventQueue* out;
 
