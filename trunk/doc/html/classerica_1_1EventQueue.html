@@ -54,7 +54,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public メソッド</a>  </div>
+<a href="#pub-methods">Public メソッド</a> &#124;
+<a href="#pub-static-attribs">Static Public 変数</a> &#124;
+<a href="#pri-attribs">Private 変数</a>  </div>
   <div class="headertitle">
 <h1>クラス EventQueue</h1>  </div>
 </div>
@@ -68,10 +70,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 Public メソッド</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a297eb8d6eeb7f90f3213c5781029f1e0">EventQueue</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a4c36db20a2779c5a46e872847892d51b">~EventQueue</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (int msec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#ab0554cb7241c0b72d34402f0bb419462">trigger</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1Event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a11c1577b25f10f64d97749fd16101d1c">dequeue</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a36e66051bfbf04deda219c3611841eb7">add_listener</a> (<a class="el" href="classerica_1_1IEventListener.html">IEventListener</a> *listner, const char *event_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a6c3fbad30cc5c8da437272715222b7a7">remove_listener</a> (const <a class="el" href="classerica_1_1IEventListener.html">IEventListener</a> *listner)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#ab8e4e3e2a7bf18888b71bdf9dda0770b">size</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Static Public 変数</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#afa42d960ad015515b6a28f1e22c7f4d0">IN</a> = 1</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a27b46d717fa0fe6d27ef7ea2df771a46">OUT</a> = 2</td></tr>
+<tr><td colspan="2"><h2><a name="pri-attribs"></a>
+Private 変数</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::list&lt; const <a class="el" href="classerica_1_1Event.html">Event</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#ac39ffddc7a91e81a621979567a08a07d">events</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::multimap&lt; int, <br class="typebreak"/>
+<a class="el" href="classerica_1_1IEventListener.html">IEventListener</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1EventQueue.html#a31430185b7e536e8661c498303227f7e">listners</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>イベントキューを表すクラス. </p>
@@ -141,10 +155,47 @@ Public メソッド</h2></td></tr>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listener</em>&nbsp;</td><td>追加したいリスナー. </td></tr>
-    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>listener</em>&nbsp;</td><td>監視するイベントの名前. </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event_name</em>&nbsp;</td><td>監視するイベントの名前. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="ac8bb3912a3ce86b15842e79d0b421204"></a><!-- doxytag: member="erica::EventQueue::clear" ref="ac8bb3912a3ce86b15842e79d0b421204" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void clear </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>キューに入っているイベントをすべて削除する. </p>
+
+</div>
+</div>
+<a class="anchor" id="a11c1577b25f10f64d97749fd16101d1c"></a><!-- doxytag: member="erica::EventQueue::dequeue" ref="a11c1577b25f10f64d97749fd16101d1c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1Event.html">Event</a> * dequeue </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このイベントキューの先頭からイベントを1つ取得して削除する. </p>
+<dl class="return"><dt><b>戻り値:</b></dt><dd>イベント. </dd></dl>
 
 </div>
 </div>
@@ -163,7 +214,7 @@ Public メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このイベントキューにイベントを追加する. 挿入されたイベントは処理された後、内部で削除される。 </p>
+<p>このイベントキューの末尾にイベントを追加する. 挿入されたイベントはtrigger()関数が呼ばれたタイミングで処理された後、内部で削除される。 </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event</em>&nbsp;</td><td>イベント. </td></tr>
@@ -198,28 +249,97 @@ Public メソッド</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7fa6e8f01eb4b6bf73edf137758b60dc"></a><!-- doxytag: member="erica::EventQueue::tick" ref="a7fa6e8f01eb4b6bf73edf137758b60dc" args="(int msec)" -->
+<a class="anchor" id="ab8e4e3e2a7bf18888b71bdf9dda0770b"></a><!-- doxytag: member="erica::EventQueue::size" ref="ab8e4e3e2a7bf18888b71bdf9dda0770b" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tick </td>
+          <td class="memname">int size </td>
           <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>msec</em></td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>キューに入っているイベントの数を取得する. </p>
+<dl class="return"><dt><b>戻り値:</b></dt><dd>イベント数. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab0554cb7241c0b72d34402f0bb419462"></a><!-- doxytag: member="erica::EventQueue::trigger" ref="ab0554cb7241c0b72d34402f0bb419462" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void trigger </td>
+          <td>(</td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このイベントキューにクロックを供給する. </p>
-<dl><dt><b>引数:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>このイベントキューに入っているイベントを処理する. </p>
+
+</div>
+</div>
+<hr/><h2>変数</h2>
+<a class="anchor" id="ac39ffddc7a91e81a621979567a08a07d"></a><!-- doxytag: member="erica::EventQueue::events" ref="ac39ffddc7a91e81a621979567a08a07d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;const <a class="el" href="classerica_1_1Event.html">Event</a>*&gt; <a class="el" href="classerica_1_1EventQueue.html#ac39ffddc7a91e81a621979567a08a07d">events</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>未処理のイベントのリスト. </p>
+
+</div>
+</div>
+<a class="anchor" id="afa42d960ad015515b6a28f1e22c7f4d0"></a><!-- doxytag: member="erica::EventQueue::IN" ref="afa42d960ad015515b6a28f1e22c7f4d0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int <a class="el" href="classerica_1_1EventQueue.html#afa42d960ad015515b6a28f1e22c7f4d0">IN</a> = 1<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>IN方向のキューを表す定数値. </p>
+
+</div>
+</div>
+<a class="anchor" id="a31430185b7e536e8661c498303227f7e"></a><!-- doxytag: member="erica::EventQueue::listners" ref="a31430185b7e536e8661c498303227f7e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::multimap&lt;int, <a class="el" href="classerica_1_1IEventListener.html">IEventListener</a>*&gt; <a class="el" href="classerica_1_1EventQueue.html#a31430185b7e536e8661c498303227f7e">listners</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>イベントのリスナー. </p>
+
+</div>
+</div>
+<a class="anchor" id="a27b46d717fa0fe6d27ef7ea2df771a46"></a><!-- doxytag: member="erica::EventQueue::OUT" ref="a27b46d717fa0fe6d27ef7ea2df771a46" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int <a class="el" href="classerica_1_1EventQueue.html#a27b46d717fa0fe6d27ef7ea2df771a46">OUT</a> = 2<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>OUT方向のキューを表す定数値. </p>
 
 </div>
 </div>
@@ -242,7 +362,7 @@ Public メソッド</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

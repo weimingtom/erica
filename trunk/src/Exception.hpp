@@ -13,8 +13,8 @@ class Exception : public std::exception
 public:
     /**
      * コンストラクタ.
-     * @param[in] file  ファイル名を指定する.
-     * @param[in] func  関数名を指定する.
+     * @param[in] file  ファイル名を指定する. 通常は__FILE__.
+     * @param[in] func  関数名を指定する.通常は__func__.
      */
     Exception (const char* file, const char* func);
 
@@ -25,6 +25,7 @@ public:
     
     /**
      * エラーメッセージの表示.
+     * @return エラーメッセージ.
      */
     virtual const char* what () throw();
 };

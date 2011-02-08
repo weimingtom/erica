@@ -56,8 +56,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
 <a href="#pro-attribs">Protected 変数</a> &#124;
-<a href="#pri-methods">Private メソッド</a> &#124;
-<a href="#pri-static-methods">Static Private メソッド</a>  </div>
+<a href="#pri-methods">Private メソッド</a>  </div>
   <div class="headertitle">
 <h1>クラス Actor</h1>  </div>
 </div>
@@ -76,34 +75,35 @@ Actorに対する継承グラフ</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a0979a846ab01923b85910183950d6979">Actor</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#acda25284baf53e827c329653e51a67f9">Actor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a95b99266473e7cdfc39b12e2d7f593ca">~Actor</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (int msec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>, <a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#adaa63be5899b31dd3bfbcbc6582a14c7">get_event_queue</a> (int dir) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#aaa4e6827cc32e526518e0451d11b8a9c">set_actor_id</a> (int id)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (int msec)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected 変数</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">name</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (int msec)=0</td></tr>
-<tr><td colspan="2"><h2><a name="pri-static-methods"></a>
-Static Private メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#aa287f53e792ad916c59bc38039835e74">get_unique_id</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a34bbab80c05969082e8f2639e30a60bd">update_impl</a> (int msec)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Actor.html#a817d87c66be91803788217d47e2671d9">set_event_queue_impl</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>, <a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>)=0</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>ゲームの構成要素を表現するアクタークラス. </p>
 <hr/><h2>コンストラクタとデストラクタ</h2>
-<a class="anchor" id="a0979a846ab01923b85910183950d6979"></a><!-- doxytag: member="erica::Actor::Actor" ref="a0979a846ab01923b85910183950d6979" args="(EventQueue *out)" -->
+<a class="anchor" id="acda25284baf53e827c329653e51a67f9"></a><!-- doxytag: member="erica::Actor::Actor" ref="acda25284baf53e827c329653e51a67f9" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classerica_1_1Actor.html">Actor</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
-          <td class="paramname"> <em>out</em></td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -111,12 +111,6 @@ Static Private メソッド</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>コンストラクタ. </p>
-<dl><dt><b>引数:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>このアクターから出力されるイベントの出力先キュー. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -158,30 +152,133 @@ Static Private メソッド</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa287f53e792ad916c59bc38039835e74"></a><!-- doxytag: member="erica::Actor::get_unique_id" ref="aa287f53e792ad916c59bc38039835e74" args="()" -->
+<a class="anchor" id="adaa63be5899b31dd3bfbcbc6582a14c7"></a><!-- doxytag: member="erica::Actor::get_event_queue" ref="adaa63be5899b31dd3bfbcbc6582a14c7" args="(int dir) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static int get_unique_id </td>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> * get_event_queue </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dir</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [static, private]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>一意なIDを取得する. </p>
+<p>このアクターに関連付けられているイベントキューの取得. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dir</em>&nbsp;</td><td>このイベントキューの方向. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>戻り値:</b></dt><dd>イベントキュー(out) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a7fa6e8f01eb4b6bf73edf137758b60dc"></a><!-- doxytag: member="erica::Actor::tick" ref="a7fa6e8f01eb4b6bf73edf137758b60dc" args="(int msec)" -->
+<a class="anchor" id="aaa4e6827cc32e526518e0451d11b8a9c"></a><!-- doxytag: member="erica::Actor::set_actor_id" ref="aaa4e6827cc32e526518e0451d11b8a9c" args="(int id)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tick </td>
+          <td class="memname">void set_actor_id </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>id</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>アクターIDを設定する。IDを自動発番でなくユーザーがセットする場合に使用する. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>id</em>&nbsp;</td><td>アクターID. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6b7cd5fc8ab7176b91cc61015a8d7df0"></a><!-- doxytag: member="erica::Actor::set_event_queue" ref="a6b7cd5fc8ab7176b91cc61015a8d7df0" args="(EventQueue *in, EventQueue *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_event_queue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このアクターにイベントキューを関連付ける. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>in</em>&nbsp;</td><td>このアクターから出力されるイベントの入力キュー(in). </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>このアクターから出力されるイベントの入力キュー(out). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a817d87c66be91803788217d47e2671d9"></a><!-- doxytag: member="erica::Actor::set_event_queue_impl" ref="a817d87c66be91803788217d47e2671d9" args="(EventQueue *in, EventQueue *out)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void set_event_queue_impl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [private, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p><a class="el" href="classerica_1_1Actor.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue()</a>の実装関数。アクターの派生クラスはこの関数を再実装しなければならない. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>in</em>&nbsp;</td><td>このアクターが監視するイベントキュー(in). </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>このアクターが監視するイベントキュー(out). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aef7c2d3f032c12fcdac10011ac0ae182"></a><!-- doxytag: member="erica::Actor::update" ref="aef7c2d3f032c12fcdac10011ac0ae182" args="(int msec)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void update </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>msec</em></td>
@@ -191,23 +288,22 @@ Static Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このアクターにクロックを供給する. </p>
+<p>このアクターを更新する. </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="see"><dt><b>参照:</b></dt><dd><a class="el" href="classerica_1_1Actor.html#af90cef4119eb72908ce2a3849fc30ceb">update()</a> </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="af90cef4119eb72908ce2a3849fc30ceb"></a><!-- doxytag: member="erica::Actor::update" ref="af90cef4119eb72908ce2a3849fc30ceb" args="(int msec)=0" -->
+<a class="anchor" id="a34bbab80c05969082e8f2639e30a60bd"></a><!-- doxytag: member="erica::Actor::update_impl" ref="a34bbab80c05969082e8f2639e30a60bd" args="(int msec)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void update </td>
+          <td class="memname">virtual void update_impl </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>msec</em></td>
@@ -217,7 +313,7 @@ Static Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このアクターを更新する。アクターの派生クラスはこの関数を再実装しなければならない. </p>
+<p><a class="el" href="classerica_1_1Actor.html#aef7c2d3f032c12fcdac10011ac0ae182">update()</a>の実装関数。アクターの派生クラスはこの関数を再実装しなければならない. </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
@@ -239,6 +335,20 @@ Static Private メソッド</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>このアクターの一意な識別子. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0c3c47b4d1b0526b264c512bb29bfcf8"></a><!-- doxytag: member="erica::Actor::in" ref="a0c3c47b4d1b0526b264c512bb29bfcf8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このアクターからイベントを出力するときの出力先(int). </p>
 
 </div>
 </div>
@@ -266,7 +376,7 @@ Static Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このアクターからイベントを出力するときの出力先. </p>
+<p>このアクターからイベントを出力するときの出力先(out). </p>
 
 </div>
 </div>
@@ -289,7 +399,7 @@ Static Private メソッド</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

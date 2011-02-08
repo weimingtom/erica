@@ -3,7 +3,7 @@
 using namespace std;
 using namespace erica;
 
-Actor::Actor () : out(NULL)
+Actor::Actor () : in(NULL), out(NULL)
 {
 }
 

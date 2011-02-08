@@ -57,47 +57,51 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <a name="l00008"></a>00008 };
 <a name="l00009"></a>00009 
 <a name="l00010"></a>00010 <span class="keyword">struct </span>ActorWalkParams {
-<a name="l00011"></a>00011     <span class="keywordtype">int</span>           actor_id;
-<a name="l00012"></a>00012     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> dir;    
-<a name="l00013"></a>00013 };
-<a name="l00014"></a>00014 
-<a name="l00015"></a>00015 <span class="keyword">struct </span>ActorSpawnParams {
-<a name="l00016"></a>00016     <span class="keyword">const</span> <span class="keywordtype">char</span>* name;        <span class="comment">// インスタンス名</span>
-<a name="l00017"></a>00017     <span class="keyword">const</span> <span class="keywordtype">char</span>* class_name;  <span class="comment">// クラス名</span>
-<a name="l00018"></a>00018 };
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="keyword">struct </span>ActorDieParams {
-<a name="l00021"></a>00021     <span class="keywordtype">int</span> actor_id;
+<a name="l00011"></a>00011     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> LEFT    = 4;
+<a name="l00012"></a>00012     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> RIGHT   = 6;
+<a name="l00013"></a>00013     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> FORWARD = 8;
+<a name="l00014"></a>00014     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> BACK    = 2;
+<a name="l00015"></a>00015     <span class="keywordtype">int</span>           actor_id;
+<a name="l00016"></a>00016     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> dir;    
+<a name="l00017"></a>00017 };
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 <span class="keyword">struct </span>ActorSpawnParams {
+<a name="l00020"></a>00020     <span class="keyword">const</span> <span class="keywordtype">char</span>* name;        <span class="comment">// インスタンス名</span>
+<a name="l00021"></a>00021     <span class="keyword">const</span> <span class="keywordtype">char</span>* class_name;  <span class="comment">// クラス名</span>
 <a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024 <span class="keyword">struct </span>ActorShootParams {
+<a name="l00024"></a>00024 <span class="keyword">struct </span>ActorDieParams {
 <a name="l00025"></a>00025     <span class="keywordtype">int</span> actor_id;
 <a name="l00026"></a>00026 };
 <a name="l00027"></a>00027 
-<a name="l00028"></a>00028 <span class="keyword">struct </span>SceneNodeCreateParams {
-<a name="l00029"></a>00029     <span class="keywordtype">int</span>         actor_id;
-<a name="l00030"></a>00030     <span class="keyword">const</span> <span class="keywordtype">char</span>* controller;        <span class="comment">// コントローラークラスの名前</span>
-<a name="l00031"></a>00031     <span class="keyword">const</span> <span class="keywordtype">char</span>* representation;    <span class="comment">// 描画に使うファイルの名前</span>
-<a name="l00032"></a>00032 };
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 <span class="keyword">struct </span>SceneNodeDeleteParams {
-<a name="l00035"></a>00035     <span class="keywordtype">int</span> actor_id;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 };
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039 <span class="keyword">struct </span>SceneNodeMoveParams {
-<a name="l00040"></a>00040     <span class="keywordtype">int</span>   actor_id;
-<a name="l00041"></a>00041     <span class="keywordtype">float</span> x;         <span class="comment">// ワールド座標、絶対値</span>
-<a name="l00042"></a>00042     <span class="keywordtype">float</span> y;         <span class="comment">// ワールド座標、絶対値</span>
-<a name="l00043"></a>00043     <span class="keywordtype">float</span> z;         <span class="comment">// ワールド座標、絶対値</span>
-<a name="l00044"></a>00044 };
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 } <span class="comment">// namespace erica {</span>
+<a name="l00028"></a>00028 <span class="keyword">struct </span>ActorShootParams {
+<a name="l00029"></a>00029     <span class="keywordtype">int</span> actor_id;
+<a name="l00030"></a>00030 };
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032 <span class="keyword">struct </span>SceneNodeCreateParams {
+<a name="l00033"></a>00033     <span class="keywordtype">int</span>         actor_id;
+<a name="l00034"></a>00034     <span class="keyword">const</span> <span class="keywordtype">char</span>* controller;        <span class="comment">// コントローラークラスの名前</span>
+<a name="l00035"></a>00035     <span class="keyword">const</span> <span class="keywordtype">char</span>* representation;    <span class="comment">// 描画に使うファイルの名前</span>
+<a name="l00036"></a>00036 };
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 <span class="keyword">struct </span>SceneNodeDeleteParams {
+<a name="l00039"></a>00039     <span class="keywordtype">int</span> actor_id;
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 };
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043 <span class="keyword">struct </span>SceneNodeMoveParams {
+<a name="l00044"></a>00044     <span class="keywordtype">int</span>   actor_id;
+<a name="l00045"></a>00045     <span class="keywordtype">float</span> x;         <span class="comment">// ワールド座標、絶対値</span>
+<a name="l00046"></a>00046     <span class="keywordtype">float</span> y;         <span class="comment">// ワールド座標、絶対値</span>
+<a name="l00047"></a>00047     <span class="keywordtype">float</span> z;         <span class="comment">// ワールド座標、絶対値</span>
+<a name="l00048"></a>00048 };
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#endif</span>
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 } <span class="comment">// namespace erica {</span>
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -114,7 +118,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

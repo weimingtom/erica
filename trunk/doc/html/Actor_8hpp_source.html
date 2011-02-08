@@ -58,32 +58,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <a name="l00012"></a><a class="code" href="classerica_1_1Actor.html">00012</a> <span class="keyword">class </span><a class="code" href="classerica_1_1Actor.html">Actor</a>
 <a name="l00013"></a>00013 {
 <a name="l00014"></a>00014 <span class="keyword">public</span>:
-<a name="l00019"></a>00019     <a class="code" href="classerica_1_1Actor.html#a0979a846ab01923b85910183950d6979">Actor</a> (<a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>);
-<a name="l00020"></a>00020 
-<a name="l00024"></a>00024     <span class="keyword">virtual</span> <a class="code" href="classerica_1_1Actor.html#a95b99266473e7cdfc39b12e2d7f593ca">~Actor</a> ();
-<a name="l00025"></a>00025 
-<a name="l00031"></a>00031     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (<span class="keywordtype">int</span> msec);
-<a name="l00032"></a>00032 
-<a name="l00037"></a>00037     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a> () <span class="keyword">const</span>;
+<a name="l00018"></a>00018     <a class="code" href="classerica_1_1Actor.html#acda25284baf53e827c329653e51a67f9">Actor</a> ();
+<a name="l00019"></a>00019 
+<a name="l00023"></a>00023     <span class="keyword">virtual</span> <a class="code" href="classerica_1_1Actor.html#a95b99266473e7cdfc39b12e2d7f593ca">~Actor</a> ();
+<a name="l00024"></a>00024 
+<a name="l00030"></a>00030     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue</a> (<a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>, <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>);
+<a name="l00031"></a>00031 
+<a name="l00037"></a>00037     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1Actor.html#adaa63be5899b31dd3bfbcbc6582a14c7">get_event_queue</a> (<span class="keywordtype">int</span> dir) <span class="keyword">const</span>;
 <a name="l00038"></a>00038 
-<a name="l00039"></a>00039 <span class="keyword">private</span>:
-<a name="l00044"></a>00044     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (<span class="keywordtype">int</span> msec) = 0;
-<a name="l00045"></a>00045 
-<a name="l00049"></a>00049     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#aa287f53e792ad916c59bc38039835e74">get_unique_id</a> ();
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="keyword">protected</span>:
-<a name="l00055"></a><a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">00055</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* out;
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057     
-<a name="l00061"></a><a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">00061</a>     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a>;
-<a name="l00062"></a>00062 
-<a name="l00066"></a><a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">00066</a>     <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">name</a>;
-<a name="l00067"></a>00067 };
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 } <span class="comment">// namespace erica {</span>
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 <span class="preprocessor">#endif</span>
+<a name="l00043"></a>00043     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a> () <span class="keyword">const</span>;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045     
+<a name="l00050"></a>00050     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#aaa4e6827cc32e526518e0451d11b8a9c">set_actor_id</a> (<span class="keywordtype">int</span> <span class="keywordtype">id</span>);
+<a name="l00051"></a>00051 
+<a name="l00057"></a>00057     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (<span class="keywordtype">int</span> msec);
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="keyword">private</span>:
+<a name="l00060"></a>00060 
+<a name="l00065"></a>00065     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#a34bbab80c05969082e8f2639e30a60bd">update_impl</a> (<span class="keywordtype">int</span> msec) = 0;
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 
+<a name="l00073"></a>00073     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1Actor.html#a817d87c66be91803788217d47e2671d9">set_event_queue_impl</a> (<a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* in, <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* out) = 0;
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 <span class="keyword">protected</span>:
+<a name="l00077"></a>00077 
+<a name="l00081"></a><a class="code" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">00081</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* in;
+<a name="l00082"></a>00082 
+<a name="l00086"></a><a class="code" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">00086</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* out;
+<a name="l00087"></a>00087     
+<a name="l00091"></a><a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">00091</a>     <span class="keywordtype">int</span> <a class="code" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a>;
+<a name="l00092"></a>00092 
+<a name="l00096"></a><a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">00096</a>     <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">name</a>;
+<a name="l00097"></a>00097 };
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100 } <span class="comment">// namespace erica {</span>
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -100,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

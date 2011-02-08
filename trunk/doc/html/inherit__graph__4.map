@@ -1,12 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classerica_1_1Actor.html" title="Actor" alt="" coords="33,5,89,35"/>
-<area shape="rect" id="node3" href="$classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="183,5,273,35"/>
-<area shape="rect" id="node4" href="$classerica_1_1Controller.html" title="Controller" alt="" coords="20,59,103,88"/>
-<area shape="rect" id="node6" href="$classerica_1_1BasicController.html" title="BasicController" alt="" coords="169,59,287,88"/>
-<area shape="rect" id="node7" href="$classerica_1_1GameLogic.html" title="GameLogic" alt="" coords="15,112,108,141"/>
-<area shape="rect" id="node9" href="$classerica_1_1BasicTPS.html" title="BasicTPS" alt="" coords="188,112,268,141"/>
-<area shape="rect" id="node10" href="$classerica_1_1GameView.html" title="GameView" alt="" coords="16,219,107,248"/>
-<area shape="rect" id="node12" href="$classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="180,219,276,248"/>
-<area shape="rect" id="node14" href="$classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="167,165,289,195"/>
-<area shape="rect" id="node15" href="$classerica_1_1IEventListener.html" title="IEventListener" alt="" coords="5,165,117,195"/>
+<area shape="rect" id="node1" href="$classerica_1_1Exception.html" title="Exception" alt="" coords="7,5,89,35"/>
 </map>

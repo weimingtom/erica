@@ -55,8 +55,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
-<a href="#pro-attribs">Protected 変数</a> &#124;
-<a href="#pri-methods">Private メソッド</a>  </div>
+<a href="#pro-methods">Protected メソッド</a> &#124;
+<a href="#pro-attribs">Protected 変数</a>  </div>
   <div class="headertitle">
 <h1>クラス GameView</h1>  </div>
 </div>
@@ -68,7 +68,7 @@ GameViewに対する継承グラフ</div>
 <div class="dyncontent">
 <div class="center"><img src="classerica_1_1GameView__inherit__graph.png" border="0" usemap="#GameView_inherit__map" alt="Inheritance graph"/></div>
 <map name="GameView_inherit__map" id="GameView_inherit__map">
-<area shape="rect" id="node3" href="classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="5,83,101,112"/><area shape="rect" id="node5" href="classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="125,83,248,112"/></map>
+<area shape="rect" id="node3" href="classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="5,83,101,112"/><area shape="rect" id="node5" href="classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="125,83,248,112"/><area shape="rect" id="node7" href="classerica_1_1BasicTextPlayerView.html" title="BasicTextPlayerView" alt="" coords="272,83,421,112"/></map>
 <center><span class="legend">[<a href="graph_legend.html">凡例</a>]</span></center></div>
 
 <p><a href="classerica_1_1GameView-members.html">すべてのメンバ一覧</a></p>
@@ -77,18 +77,21 @@ GameViewに対する継承グラフ</div>
 Public メソッド</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a88ab556b969cfdfdf3eca073bd1eabcd">GameView</a> (<a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *<a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a92bd5a5bae0e25126054b5a45ec3cfe9">~GameView</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (int msec)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (int msec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a17a103a0acb45b9634d04db5b40ee0af">render</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a0bf3d145d31cea5d9ad2c9102eb7d621">add_controller</a> (<a class="el" href="classerica_1_1Controller.html">Controller</a> *ctrl)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a97dce7e668ec10a987c24cb23253c017">remove_controller</a> (const <a class="el" href="classerica_1_1Controller.html">Controller</a> *ctrl)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a34bbab80c05969082e8f2639e30a60bd">update_impl</a> (int msec)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a3927298a48bfb75831828cfb86ca9378">render_impl</a> () const =0</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected 変数</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::map&lt; int, <a class="el" href="classerica_1_1Controller.html">Controller</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">ctrls</a></td></tr>
-<tr><td colspan="2"><h2><a name="pri-methods"></a>
-Private メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (int msec)=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1GameView.html#a059899416ea4b28c806bc41e6fe20ad9">render</a> () const =0</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>表示とコントロールを行う「ゲームビュー」クラス. </p>
@@ -137,6 +140,31 @@ Private メソッド</h2></td></tr>
 </div>
 </div>
 <hr/><h2>関数</h2>
+<a class="anchor" id="a0bf3d145d31cea5d9ad2c9102eb7d621"></a><!-- doxytag: member="erica::GameView::add_controller" ref="a0bf3d145d31cea5d9ad2c9102eb7d621" args="(Controller *ctrl)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void add_controller </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1Controller.html">Controller</a> *&nbsp;</td>
+          <td class="paramname"> <em>ctrl</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>コントローラを追加する. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ctrl</em>&nbsp;</td><td>コントローラー. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="abcccf247ade15c0b6e39ff8ce57d6c3c"></a><!-- doxytag: member="erica::GameView::enqueue" ref="abcccf247ade15c0b6e39ff8ce57d6c3c" args="(const Event *event)" -->
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +180,7 @@ Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューのイベントキュー(in)にイベントを入れる. イベントは次のtick()が呼ばれたタイミングで処理される。 </p>
+<p>このビューのイベントキュー(in)にイベントを入れる. イベントは次のupdate()が呼ばれたタイミングで処理される。 </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event</em>&nbsp;</td><td>イベント </td></tr>
@@ -162,30 +190,73 @@ Private メソッド</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a059899416ea4b28c806bc41e6fe20ad9"></a><!-- doxytag: member="erica::GameView::render" ref="a059899416ea4b28c806bc41e6fe20ad9" args="() const =0" -->
+<a class="anchor" id="a97dce7e668ec10a987c24cb23253c017"></a><!-- doxytag: member="erica::GameView::remove_controller" ref="a97dce7e668ec10a987c24cb23253c017" args="(const Controller *ctrl)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void render </td>
+          <td class="memname">void remove_controller </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype">const <a class="el" href="classerica_1_1Controller.html">Controller</a> *&nbsp;</td>
+          <td class="paramname"> <em>ctrl</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [private, pure virtual]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューを描画する。ビューの派生クラスはこの関数を再実装しなければならない. </p>
+<p>コントローラを削除する. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>ctrl</em>&nbsp;</td><td>コントローラー. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a7fa6e8f01eb4b6bf73edf137758b60dc"></a><!-- doxytag: member="erica::GameView::tick" ref="a7fa6e8f01eb4b6bf73edf137758b60dc" args="(int msec)" -->
+<a class="anchor" id="a17a103a0acb45b9634d04db5b40ee0af"></a><!-- doxytag: member="erica::GameView::render" ref="a17a103a0acb45b9634d04db5b40ee0af" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void tick </td>
+          <td class="memname">void render </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このビューを描画する. </p>
+
+</div>
+</div>
+<a class="anchor" id="a3927298a48bfb75831828cfb86ca9378"></a><!-- doxytag: member="erica::GameView::render_impl" ref="a3927298a48bfb75831828cfb86ca9378" args="() const =0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void render_impl </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p><a class="el" href="classerica_1_1GameView.html#a17a103a0acb45b9634d04db5b40ee0af">render()</a>関数の実装。ビューの派生クラスはこの関数を再実装しなければならない. </p>
+
+</div>
+</div>
+<a class="anchor" id="aef7c2d3f032c12fcdac10011ac0ae182"></a><!-- doxytag: member="erica::GameView::update" ref="aef7c2d3f032c12fcdac10011ac0ae182" args="(int msec)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void update </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>msec</em></td>
@@ -195,32 +266,33 @@ Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューにクロックを供給する. </p>
+<p>このビューを更新する. </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する.</td></tr>
   </table>
   </dd>
 </dl>
+<p>これ以下はNVI化した関数を呼び出す関数. </p>
 
 </div>
 </div>
-<a class="anchor" id="af90cef4119eb72908ce2a3849fc30ceb"></a><!-- doxytag: member="erica::GameView::update" ref="af90cef4119eb72908ce2a3849fc30ceb" args="(int msec)=0" -->
+<a class="anchor" id="a34bbab80c05969082e8f2639e30a60bd"></a><!-- doxytag: member="erica::GameView::update_impl" ref="a34bbab80c05969082e8f2639e30a60bd" args="(int msec)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void update </td>
+          <td class="memname">virtual void update_impl </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>msec</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [private, pure virtual]</code></td>
+          <td><code> [protected, pure virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューを更新する。ビューの派生クラスはこの関数を再実装しなければならない. </p>
+<p><a class="el" href="classerica_1_1GameView.html#aef7c2d3f032c12fcdac10011ac0ae182">update()</a>関数の実装。ビューの派生クラスはこの関数を再実装しなければならない. </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>msec</em>&nbsp;</td><td>秒数をmsecで指定する. </td></tr>
@@ -255,7 +327,7 @@ Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューがイベントを受け取るときのキュー. </p>
+<p>このビューがイベントを受け取るときのキュー(in). </p>
 
 </div>
 </div>
@@ -283,7 +355,7 @@ Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このビューがイベントを出力するときのキュー. </p>
+<p>このビューがイベントを出力するときのキュー(out). </p>
 
 </div>
 </div>
@@ -306,7 +378,7 @@ Private メソッド</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

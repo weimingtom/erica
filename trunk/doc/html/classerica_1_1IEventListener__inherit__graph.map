@@ -1,7 +1,8 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="5,83,96,112"/>
-<area shape="rect" id="node5" href="$classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="120,83,216,112"/>
-<area shape="rect" id="node7" href="$classerica_1_1BasicController.html" title="BasicController" alt="" coords="240,83,357,112"/>
-<area shape="rect" id="node9" href="$classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="381,83,504,112"/>
-<area shape="rect" id="node11" href="$classerica_1_1BasicTPS.html" title="BasicTPS" alt="" coords="528,83,608,112"/>
+<area shape="rect" id="node3" href="$classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="195,5,285,35"/>
+<area shape="rect" id="node5" href="$classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="192,59,288,88"/>
+<area shape="rect" id="node7" href="$classerica_1_1BasicController.html" title="BasicController" alt="" coords="181,112,299,141"/>
+<area shape="rect" id="node9" href="$classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="179,165,301,195"/>
+<area shape="rect" id="node11" href="$classerica_1_1BasicTextPlayerView.html" title="BasicTextPlayerView" alt="" coords="165,219,315,248"/>
+<area shape="rect" id="node13" href="$classerica_1_1BasicTPSLogic.html" title="BasicTPSLogic" alt="" coords="184,272,296,301"/>
 </map>

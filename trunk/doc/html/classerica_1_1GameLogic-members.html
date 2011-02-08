@@ -52,15 +52,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </div>
 <div class="contents">
 これは全メンバの一覧です。<a class="el" href="classerica_1_1GameLogic.html">GameLogic</a>継承メンバも含んでいます。<table>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a9edfaa6c03c7ab083dc394eed0e45c90">create_game</a>(const char *ini_file)=0</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [private, pure virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a83316b6d90fdd745b694ce3400580753">add_actor</a>(Actor *actr)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a050ac3a22603f43d627e8169f7e758c0">end_of_game</a>() const </td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#afcc600a4ee6981c6e0de3a66edfd1774">end_of_game_impl</a>() const =0</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected, pure virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a>(const Event *event)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#aed463b64dd5f7381f4024ff5b0dcad10">GameLogic</a>()</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a5ab66560e5b799e1ffd056d9a4b8f9c8">get_game_view</a>(int id) const </td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a53305377545bf3c3e632f3839771af0f">load_game</a>(const char *ini_file)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#ab749eeef11c33dbd1b892f0d94cae422">load_game_impl</a>(const char *ini_file)=0</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected, pure virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a>(int msec)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#af90cef4119eb72908ce2a3849fc30ceb">update</a>(int msec)=0</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [private, pure virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a11dad4cce472039b6f46b6bc79ad441f">remove_actor</a>(const Actor *actr)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a>(int msec)</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a34bbab80c05969082e8f2639e30a60bd">update_impl</a>(int msec)=0</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected, pure virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#abbc5a9a589b348fd4f5aefe848f8045f">views</a></td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [protected]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1GameLogic.html#a9f0e2e6dc67888c26fa28f10b9bcd359">~GameLogic</a>()</td><td><a class="el" href="classerica_1_1GameLogic.html">GameLogic</a></td><td><code> [virtual]</code></td></tr>
 </table></div>
@@ -78,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

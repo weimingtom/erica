@@ -72,14 +72,13 @@ private:
      */
     virtual void set_event_queue_impl (EventQueue* in, EventQueue* out) = 0;
 
-    /**
-     * 一意なIDを取得する.
-     * あとで消す。.cppの方へ移動.
-     */
-    static int get_unique_id ();
-
 
 protected:
+
+    /**
+     * このアクターからイベントを出力するときの出力先(int).
+     */
+    EventQueue* in;
 
     /**
      * このアクターからイベントを出力するときの出力先(out).

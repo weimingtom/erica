@@ -67,40 +67,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <a name="l00025"></a>00025 
 <a name="l00029"></a>00029     <span class="keyword">virtual</span> <a class="code" href="classerica_1_1GameView.html#a92bd5a5bae0e25126054b5a45ec3cfe9">~GameView</a> ();
 <a name="l00030"></a>00030 
-<a name="l00035"></a>00035     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a> (<span class="keywordtype">int</span> msec);
-<a name="l00036"></a>00036 
-<a name="l00042"></a>00042     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a> (<span class="keyword">const</span> <a class="code" href="classerica_1_1Event.html">Event</a>* event);
+<a name="l00036"></a>00036     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#abcccf247ade15c0b6e39ff8ce57d6c3c">enqueue</a> (<span class="keyword">const</span> <a class="code" href="classerica_1_1Event.html">Event</a>* event);
+<a name="l00037"></a>00037 
+<a name="l00042"></a>00042     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (<span class="keywordtype">int</span> msec);
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keyword">private</span>:
-<a name="l00047"></a>00047 
-<a name="l00052"></a>00052     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#af90cef4119eb72908ce2a3849fc30ceb">update</a> (<span class="keywordtype">int</span> msec) = 0;
-<a name="l00053"></a>00053 
-<a name="l00057"></a>00057     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a059899416ea4b28c806bc41e6fe20ad9">render</a> () <span class="keyword">const</span> = 0;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="keyword">protected</span>:
-<a name="l00060"></a>00060 
-<a name="l00064"></a><a class="code" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">00064</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>;
-<a name="l00065"></a>00065 
-<a name="l00069"></a><a class="code" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">00069</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>;
-<a name="l00070"></a>00070 
-<a name="l00074"></a><a class="code" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">00074</a>     <a class="code" href="classerica_1_1GameLogic.html">GameLogic</a>*  logic;
-<a name="l00075"></a>00075 
+<a name="l00047"></a>00047     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a17a103a0acb45b9634d04db5b40ee0af">render</a> () <span class="keyword">const</span>;
+<a name="l00048"></a>00048 
+<a name="l00053"></a>00053     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a0bf3d145d31cea5d9ad2c9102eb7d621">add_controller</a> (<a class="code" href="classerica_1_1Controller.html">Controller</a>* ctrl);
+<a name="l00054"></a>00054 
+<a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a97dce7e668ec10a987c24cb23253c017">remove_controller</a> (<span class="keyword">const</span> <a class="code" href="classerica_1_1Controller.html">Controller</a>* ctrl);
+<a name="l00060"></a>00060     
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062 <span class="keyword">protected</span>:
+<a name="l00063"></a>00063 
+<a name="l00068"></a>00068     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a34bbab80c05969082e8f2639e30a60bd">update_impl</a> (<span class="keywordtype">int</span> msec) = 0;
+<a name="l00069"></a>00069 
+<a name="l00073"></a>00073     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1GameView.html#a3927298a48bfb75831828cfb86ca9378">render_impl</a> () <span class="keyword">const</span> = 0;
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="keyword">protected</span>:
 <a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="keyword">protected</span>:
-<a name="l00078"></a>00078 
-<a name="l00082"></a><a class="code" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">00082</a>     std::map&lt;int, Controller*&gt; <a class="code" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">ctrls</a>;
-<a name="l00083"></a>00083 };
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086 } <span class="comment">// namespace erica {</span>
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 <span class="preprocessor">#endif</span>
-<a name="l00089"></a>00089 <span class="preprocessor"></span>
-<a name="l00090"></a>00090 
+<a name="l00080"></a><a class="code" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">00080</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1GameView.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>;
+<a name="l00081"></a>00081 
+<a name="l00085"></a><a class="code" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">00085</a>     <a class="code" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="code" href="classerica_1_1GameView.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>;
+<a name="l00086"></a>00086 
+<a name="l00090"></a><a class="code" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">00090</a>     <a class="code" href="classerica_1_1GameLogic.html">GameLogic</a>*  logic;
 <a name="l00091"></a>00091 
 <a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="keyword">protected</span>:
+<a name="l00094"></a>00094 
+<a name="l00098"></a><a class="code" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">00098</a>     std::map&lt;int, Controller*&gt; <a class="code" href="classerica_1_1GameView.html#ab9cf03ff2dd7baa31f4e5d13fa97589f">ctrls</a>;
+<a name="l00099"></a>00099 };
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 } <span class="comment">// namespace erica {</span>
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104 <span class="preprocessor">#endif</span>
+<a name="l00105"></a>00105 <span class="preprocessor"></span>
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108 
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -117,7 +122,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

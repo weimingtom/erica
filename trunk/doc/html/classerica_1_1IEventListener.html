@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
-<a href="#pri-methods">Private メソッド</a>  </div>
+<a href="#pro-methods">Protected メソッド</a>  </div>
   <div class="headertitle">
 <h1>クラス IEventListener</h1>  </div>
 </div>
@@ -67,7 +67,7 @@ IEventListenerに対する継承グラフ</div>
 <div class="dyncontent">
 <div class="center"><img src="classerica_1_1IEventListener__inherit__graph.png" border="0" usemap="#IEventListener_inherit__map" alt="Inheritance graph"/></div>
 <map name="IEventListener_inherit__map" id="IEventListener_inherit__map">
-<area shape="rect" id="node3" href="classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="5,83,96,112"/><area shape="rect" id="node5" href="classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="120,83,216,112"/><area shape="rect" id="node7" href="classerica_1_1BasicController.html" title="BasicController" alt="" coords="240,83,357,112"/><area shape="rect" id="node9" href="classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="381,83,504,112"/><area shape="rect" id="node11" href="classerica_1_1BasicTPS.html" title="BasicTPS" alt="" coords="528,83,608,112"/></map>
+<area shape="rect" id="node3" href="classerica_1_1BasicActor.html" title="BasicActor" alt="" coords="195,5,285,35"/><area shape="rect" id="node5" href="classerica_1_1BasicAiView.html" title="BasicAiView" alt="" coords="192,59,288,88"/><area shape="rect" id="node7" href="classerica_1_1BasicController.html" title="BasicController" alt="" coords="181,112,299,141"/><area shape="rect" id="node9" href="classerica_1_1BasicPlayerView.html" title="BasicPlayerView" alt="" coords="179,165,301,195"/><area shape="rect" id="node11" href="classerica_1_1BasicTextPlayerView.html" title="BasicTextPlayerView" alt="" coords="165,219,315,248"/><area shape="rect" id="node13" href="classerica_1_1BasicTPSLogic.html" title="BasicTPSLogic" alt="" coords="184,272,296,301"/></map>
 <center><span class="legend">[<a href="graph_legend.html">凡例</a>]</span></center></div>
 
 <p><a href="classerica_1_1IEventListener-members.html">すべてのメンバ一覧</a></p>
@@ -76,10 +76,10 @@ IEventListenerに対する継承グラフ</div>
 Public メソッド</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#a1886ebfc47375aac47ec0502a8626f29">IEventListener</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#aa1f738db95688a1d4a36c1f8514dde10">~IEventListener</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#ab46736d8af1931489c42d2493f7bff58">accept</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
-<tr><td colspan="2"><h2><a name="pri-methods"></a>
-Private メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#a11c9553e7a7c51228c99427742bc3e9f">handle</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#aeb7558c079be5f354c5ab039dd43e051">handle</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1IEventListener.html#acbe1833a1b110cd1ac3377308ac9d536">handle_impl</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)=0</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>イベントを受け取るリスナーための純粋インターフェース・クラス。 すべてのイベントリスナーはこのインターフェースを継承する. </p>
@@ -121,12 +121,12 @@ Private メソッド</h2></td></tr>
 </div>
 </div>
 <hr/><h2>関数</h2>
-<a class="anchor" id="ab46736d8af1931489c42d2493f7bff58"></a><!-- doxytag: member="erica::IEventListener::accept" ref="ab46736d8af1931489c42d2493f7bff58" args="(const Event *event)" -->
+<a class="anchor" id="aeb7558c079be5f354c5ab039dd43e051"></a><!-- doxytag: member="erica::IEventListener::handle" ref="aeb7558c079be5f354c5ab039dd43e051" args="(const Event *event)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool accept </td>
+          <td class="memname">bool handle </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classerica_1_1Event.html">Event</a> *&nbsp;</td>
           <td class="paramname"> <em>event</em></td>
@@ -136,7 +136,7 @@ Private メソッド</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>イベントの受け取り（処理）. </p>
+<p>イベントを処理するコールバック関数. ユーザーはこの関数を実装することでイベントに応じた処理が可能になる。 </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event</em>&nbsp;</td><td>イベント </td></tr>
@@ -147,22 +147,22 @@ Private メソッド</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a11c9553e7a7c51228c99427742bc3e9f"></a><!-- doxytag: member="erica::IEventListener::handle" ref="a11c9553e7a7c51228c99427742bc3e9f" args="(const Event *event)=0" -->
+<a class="anchor" id="acbe1833a1b110cd1ac3377308ac9d536"></a><!-- doxytag: member="erica::IEventListener::handle_impl" ref="acbe1833a1b110cd1ac3377308ac9d536" args="(const Event *event)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool handle </td>
+          <td class="memname">virtual bool handle_impl </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classerica_1_1Event.html">Event</a> *&nbsp;</td>
           <td class="paramname"> <em>event</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [private, pure virtual]</code></td>
+          <td><code> [protected, pure virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>イベントを処理する。リスナーの派生クラスはこの関数を再実装しなければならない. </p>
+<p><a class="el" href="classerica_1_1IEventListener.html#aeb7558c079be5f354c5ab039dd43e051">handle()</a>関数の実装。リスナーの派生クラスはこの関数を再実装しなければならない. </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>event</em>&nbsp;</td><td>イベント </td></tr>
@@ -171,7 +171,7 @@ Private メソッド</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>戻り値:</b></dt><dd>処理したらtrue,処理しなかったらfalseを返す. </dd></dl>
 
-<p><a class="el" href="classerica_1_1BasicActor.html#aeb7558c079be5f354c5ab039dd43e051">BasicActor</a>, <a class="el" href="classerica_1_1BasicAiView.html#aeb7558c079be5f354c5ab039dd43e051">BasicAiView</a>, <a class="el" href="classerica_1_1BasicController.html#aeb7558c079be5f354c5ab039dd43e051">BasicController</a>, <a class="el" href="classerica_1_1BasicPlayerView.html#aeb7558c079be5f354c5ab039dd43e051">BasicPlayerView</a>, と <a class="el" href="classerica_1_1BasicTPS.html#aeb7558c079be5f354c5ab039dd43e051">BasicTPS</a>で実装されています。</p>
+<p><a class="el" href="classerica_1_1BasicActor.html#a4956e62991d6b98fc4b08db2d629139e">BasicActor</a>, <a class="el" href="classerica_1_1BasicAiView.html#a4956e62991d6b98fc4b08db2d629139e">BasicAiView</a>, <a class="el" href="classerica_1_1BasicController.html#a4956e62991d6b98fc4b08db2d629139e">BasicController</a>, <a class="el" href="classerica_1_1BasicPlayerView.html#a4956e62991d6b98fc4b08db2d629139e">BasicPlayerView</a>, <a class="el" href="classerica_1_1BasicTextPlayerView.html#a4956e62991d6b98fc4b08db2d629139e">BasicTextPlayerView</a>, と <a class="el" href="classerica_1_1BasicTPSLogic.html#a4956e62991d6b98fc4b08db2d629139e">BasicTPSLogic</a>で実装されています。</p>
 
 </div>
 </div>
@@ -194,7 +194,7 @@ Private メソッド</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

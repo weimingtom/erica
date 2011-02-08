@@ -55,8 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
-<a href="#pub-static-methods">Static Public メソッド</a> &#124;
-<a href="#pri-static-attribs">Static Private 変数</a>  </div>
+<a href="#pri-attribs">Private 変数</a>  </div>
   <div class="headertitle">
 <h1>クラス Event</h1>  </div>
 </div>
@@ -70,17 +69,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 Public メソッド</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a1b9ae489377d929574f2d7bf5a02a844">Event</a> (const char *name, const void *params, int size)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a8defee230046f8d0dd78e4a66adbe3d5">~Event</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a862958aa3c2b9bf36903f1f0f2e81c54">name</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#aa12a3b4b9364879486ed359b766c47ea">params</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a25844783e4bef74ca9a17519c239a27e">name</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a95e52800c40d83de26347a3c923ed5bc">params</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#ab8e4e3e2a7bf18888b71bdf9dda0770b">size</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#ae0c063cfb2479f614be43b9d2f92ba63">id</a> () const </td></tr>
-<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
-Static Public メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a9e629f05bef484ab29c4331457d372e7">regist</a> (const char *name, int id)</td></tr>
-<tr><td colspan="2"><h2><a name="pri-static-attribs"></a>
-Static Private 変数</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static std::map&lt; int, const <br class="typebreak"/>
-char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a2c50ad1fdc0f9cfaebf6d1b0d14a9ca0">registered</a></td></tr>
+<tr><td colspan="2"><h2><a name="pri-attribs"></a>
+Private 変数</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Entity&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Event.html#a09b6290ad4cfba83fd1aec038d614c43">e</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>イベントを表現するクラス. </p>
@@ -115,7 +110,10 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
       </table>
 </div>
 <div class="memdoc">
-<p>コンストラクタ. イベントパラメーターは内部でコピーされて保存される。 従ってパラメーターはmemcpy()でコピー可能なPODでなければならない。 イベント名は大文字小文字を区別しない。また予め登録されたものでなければならない。 </p>
+<p>コンストラクタ.<br/>
+ 1. イベント名はコピーされない。<br/>
+ 2. イベントパラメーターはコピーされる。<br/>
+ 従ってパラメーターはmemcpy()でコピー可能なPODでなければならない。 イベント名は大文字小文字を区別しない。またイベント名は予め登録されたものでなければならない。 </p>
 <dl><dt><b>引数:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>name</em>&nbsp;</td><td>このイベントの名前. </td></tr>
@@ -124,7 +122,7 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </table>
   </dd>
 </dl>
-<dl class="see"><dt><b>参照:</b></dt><dd><a class="el" href="classerica_1_1Event.html#a9e629f05bef484ab29c4331457d372e7">regist()</a> </dd></dl>
+<dl class="see"><dt><b>参照:</b></dt><dd>regist() </dd></dl>
 
 </div>
 </div>
@@ -166,12 +164,12 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a class="anchor" id="a862958aa3c2b9bf36903f1f0f2e81c54"></a><!-- doxytag: member="erica::Event::name" ref="a862958aa3c2b9bf36903f1f0f2e81c54" args="() const " -->
+<a class="anchor" id="a25844783e4bef74ca9a17519c239a27e"></a><!-- doxytag: member="erica::Event::name" ref="a25844783e4bef74ca9a17519c239a27e" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* name </td>
+          <td class="memname">const char * name </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -185,12 +183,12 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a class="anchor" id="aa12a3b4b9364879486ed359b766c47ea"></a><!-- doxytag: member="erica::Event::params" ref="aa12a3b4b9364879486ed359b766c47ea" args="() const " -->
+<a class="anchor" id="a95e52800c40d83de26347a3c923ed5bc"></a><!-- doxytag: member="erica::Event::params" ref="a95e52800c40d83de26347a3c923ed5bc" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const void* params </td>
+          <td class="memname">const void * params </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -201,35 +199,6 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div class="memdoc">
 <p>このイベントのパラメーターを取得する. </p>
 <dl class="return"><dt><b>戻り値:</b></dt><dd>パラメーター. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a9e629f05bef484ab29c4331457d372e7"></a><!-- doxytag: member="erica::Event::regist" ref="a9e629f05bef484ab29c4331457d372e7" args="(const char *name, int id)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void regist </td>
-          <td>(</td>
-          <td class="paramtype">const char *&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>id</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>イベントを登録する。有効なイベントはあらかじめこの関数を使って登録されていなければならない. </p>
-<dl class="return"><dt><b>戻り値:</b></dt><dd>一意なID. </dd></dl>
 
 </div>
 </div>
@@ -253,17 +222,17 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div>
 </div>
 <hr/><h2>変数</h2>
-<a class="anchor" id="a2c50ad1fdc0f9cfaebf6d1b0d14a9ca0"></a><!-- doxytag: member="erica::Event::registered" ref="a2c50ad1fdc0f9cfaebf6d1b0d14a9ca0" args="" -->
+<a class="anchor" id="a09b6290ad4cfba83fd1aec038d614c43"></a><!-- doxytag: member="erica::Event::e" ref="a09b6290ad4cfba83fd1aec038d614c43" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;int, const char*&gt; <a class="el" href="classerica_1_1Event.html#a2c50ad1fdc0f9cfaebf6d1b0d14a9ca0">registered</a><code> [static, private]</code></td>
+          <td class="memname">Entity <a class="el" href="classerica_1_1Event.html#a09b6290ad4cfba83fd1aec038d614c43">e</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>登録済みのイベントのリスト. </p>
+<p>イベントデータ. </p>
 
 </div>
 </div>
@@ -286,7 +255,7 @@ char * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

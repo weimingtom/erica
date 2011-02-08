@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
-<a href="#pri-methods">Private メソッド</a>  </div>
+<a href="#pro-methods">Protected メソッド</a>  </div>
   <div class="headertitle">
 <h1>クラス BasicPlayerView</h1>  </div>
 </div>
@@ -76,14 +76,14 @@ BasicPlayerViewに対する継承グラフ</div>
 Public メソッド</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#a78f41eb05ff5792a9107c6e3e5cd577c">BasicPlayerView</a> (<a class="el" href="classerica_1_1GameLogic.html">GameLogic</a> *<a class="el" href="classerica_1_1GameView.html#af39b51ca0ab5d72c9426c9a6118803b8">logic</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#a105b20a33ab138c88981c58f85629163">~BasicPlayerView</a> ()</td></tr>
-<tr><td colspan="2"><h2><a name="pri-methods"></a>
-Private メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (int msec)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#aeb7558c079be5f354c5ab039dd43e051">handle</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#a17a103a0acb45b9634d04db5b40ee0af">render</a> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pro-methods"></a>
+Protected メソッド</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#ae4ac029fc8b2b9dd07e863b52659fadd">update_impl</a> (int msec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#a4956e62991d6b98fc4b08db2d629139e">handle_impl</a> (const <a class="el" href="classerica_1_1Event.html">Event</a> *event)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1BasicPlayerView.html#a2c5c4c7cd21754340292924dd3f555bf">render_impl</a> () const </td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
-<p>基本的な人間が操作可能な表示とコントロールを行うビュークラス. </p>
+<p>表示と人間が操作可能なコントロールを行う基本的なビュークラス. </p>
 <hr/><h2>コンストラクタとデストラクタ</h2>
 <a class="anchor" id="a78f41eb05ff5792a9107c6e3e5cd577c"></a><!-- doxytag: member="erica::BasicPlayerView::BasicPlayerView" ref="a78f41eb05ff5792a9107c6e3e5cd577c" args="(GameLogic *logic)" -->
 <div class="memitem">
@@ -123,61 +123,61 @@ Private メソッド</h2></td></tr>
 </div>
 </div>
 <hr/><h2>関数</h2>
-<a class="anchor" id="aeb7558c079be5f354c5ab039dd43e051"></a><!-- doxytag: member="erica::BasicPlayerView::handle" ref="aeb7558c079be5f354c5ab039dd43e051" args="(const Event *event)" -->
+<a class="anchor" id="a4956e62991d6b98fc4b08db2d629139e"></a><!-- doxytag: member="erica::BasicPlayerView::handle_impl" ref="a4956e62991d6b98fc4b08db2d629139e" args="(const Event *event)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool handle </td>
+          <td class="memname">bool handle_impl </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classerica_1_1Event.html">Event</a> *&nbsp;</td>
           <td class="paramname"> <em>event</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [private, virtual]</code></td>
+          <td><code> [protected, virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p><a class="el" href="classerica_1_1IEventListener.html#a11c9553e7a7c51228c99427742bc3e9f">IEventListener::handle()</a>の再実装. </p>
+<p><a class="el" href="classerica_1_1IEventListener.html#aeb7558c079be5f354c5ab039dd43e051">IEventListener::handle()</a>の再実装. </p>
 
-<p><a class="el" href="classerica_1_1IEventListener.html#a11c9553e7a7c51228c99427742bc3e9f">IEventListener</a>を実装しています。</p>
+<p><a class="el" href="classerica_1_1IEventListener.html#acbe1833a1b110cd1ac3377308ac9d536">IEventListener</a>を実装しています。</p>
 
 </div>
 </div>
-<a class="anchor" id="a17a103a0acb45b9634d04db5b40ee0af"></a><!-- doxytag: member="erica::BasicPlayerView::render" ref="a17a103a0acb45b9634d04db5b40ee0af" args="() const " -->
+<a class="anchor" id="a2c5c4c7cd21754340292924dd3f555bf"></a><!-- doxytag: member="erica::BasicPlayerView::render_impl" ref="a2c5c4c7cd21754340292924dd3f555bf" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void render </td>
+          <td class="memname">void render_impl </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [private, virtual]</code></td>
+          <td> const<code> [protected, virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p><a class="el" href="classerica_1_1GameView.html#a059899416ea4b28c806bc41e6fe20ad9">GameView::render()</a>の再実装. </p>
+<p><a class="el" href="classerica_1_1GameView.html#a17a103a0acb45b9634d04db5b40ee0af">GameView::render()</a>の再実装. </p>
 
 </div>
 </div>
-<a class="anchor" id="aef7c2d3f032c12fcdac10011ac0ae182"></a><!-- doxytag: member="erica::BasicPlayerView::update" ref="aef7c2d3f032c12fcdac10011ac0ae182" args="(int msec)" -->
+<a class="anchor" id="ae4ac029fc8b2b9dd07e863b52659fadd"></a><!-- doxytag: member="erica::BasicPlayerView::update_impl" ref="ae4ac029fc8b2b9dd07e863b52659fadd" args="(int msec)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void update </td>
+          <td class="memname">void update_impl </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>msec</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [private, virtual]</code></td>
+          <td><code> [protected, virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p><a class="el" href="classerica_1_1GameView.html#af90cef4119eb72908ce2a3849fc30ceb">GameView::update()</a>の再実装. </p>
+<p><a class="el" href="classerica_1_1GameView.html#aef7c2d3f032c12fcdac10011ac0ae182">GameView::update()</a>の再実装. </p>
 
 </div>
 </div>
@@ -200,7 +200,7 @@ Private メソッド</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

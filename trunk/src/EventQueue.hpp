@@ -42,21 +42,21 @@ public:
 
     /**
      * このイベントキューの末尾にイベントを追加する.
-     * 挿入されたイベントは処理された後、内部で削除される。
+     * 挿入されたイベントはtrigger()関数が呼ばれたタイミングで処理された後、内部で削除される。
      * @param[in] event イベント.
      */
     void enqueue (const Event* event);
 
     /**
-     * このイベントキューの先頭からイベントを取得して削除する.
+     * このイベントキューの先頭からイベントを1つ取得して削除する.
      * @return イベント.
      */
     Event* dequeue ();
 
     /**
      * このイベントキューにリスナーを追加する.
-     * @param[in] listener 追加したいリスナー.
-     * @param[in] listener 監視するイベントの名前.
+     * @param[in] listener   追加したいリスナー.
+     * @param[in] event_name 監視するイベントの名前.
      */
     void add_listener (IEventListener* listner, const char* event_name);
 

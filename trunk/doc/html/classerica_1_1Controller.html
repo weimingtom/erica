@@ -56,7 +56,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
   <div class="summary">
 <a href="#pub-methods">Public メソッド</a> &#124;
 <a href="#pro-methods">Protected メソッド</a> &#124;
-<a href="#pro-attribs">Protected 変数</a>  </div>
+<a href="#pro-attribs">Protected 変数</a> &#124;
+<a href="#pri-attribs">Private 変数</a>  </div>
   <div class="headertitle">
 <h1>クラス Controller</h1>  </div>
 </div>
@@ -75,28 +76,34 @@ Controllerに対する継承グラフ</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a34d9534f969ccefda7baaa5b70a0a8fa">Controller</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *out)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#aeee02f1e6f84f42452208c1bf0bb62cf">Controller</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a7c5e0bfebaa8d00a48ef8ce35aeadf56">~Controller</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Controller.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>, <a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Controller.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#ae5b90f7c4eb040ed9314fa2b3f3547e3">get_evnet_queue</a> (int dir) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#aaa4e6827cc32e526518e0451d11b8a9c">set_actor_id</a> (int id)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected メソッド</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a5d4b8e58345b209bf92947c9b184d1c0">attach_actor</a> (int id)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a817d87c66be91803788217d47e2671d9">set_event_queue_impl</a> (<a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Controller.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a>, <a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *<a class="el" href="classerica_1_1Controller.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a>)=0</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected 変数</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a4c802add2830eb8f234f8dd788b4a588">queue</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td></tr>
+<tr><td colspan="2"><h2><a name="pri-attribs"></a>
+Private 変数</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classerica_1_1Controller.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>説明</h2>
 <p>キー入力を処理するコントローラークラス. </p>
 <hr/><h2>コンストラクタとデストラクタ</h2>
-<a class="anchor" id="a34d9534f969ccefda7baaa5b70a0a8fa"></a><!-- doxytag: member="erica::Controller::Controller" ref="a34d9534f969ccefda7baaa5b70a0a8fa" args="(EventQueue *out)" -->
+<a class="anchor" id="aeee02f1e6f84f42452208c1bf0bb62cf"></a><!-- doxytag: member="erica::Controller::Controller" ref="aeee02f1e6f84f42452208c1bf0bb62cf" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classerica_1_1Controller.html">Controller</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
-          <td class="paramname"> <em>out</em></td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -104,12 +111,6 @@ Protected 変数</h2></td></tr>
 </div>
 <div class="memdoc">
 <p>コンストラクタ. </p>
-<dl><dt><b>引数:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>このコントローラーから出るイベントの出力先キュー. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -132,17 +133,62 @@ Protected 変数</h2></td></tr>
 </div>
 </div>
 <hr/><h2>関数</h2>
-<a class="anchor" id="a5d4b8e58345b209bf92947c9b184d1c0"></a><!-- doxytag: member="erica::Controller::attach_actor" ref="a5d4b8e58345b209bf92947c9b184d1c0" args="(int id)" -->
+<a class="anchor" id="ae1162af341d9ad2fdcae3c9ba4bd22cb"></a><!-- doxytag: member="erica::Controller::get_actor_id" ref="ae1162af341d9ad2fdcae3c9ba4bd22cb" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void attach_actor </td>
+          <td class="memname">int get_actor_id </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このコントローラーに関連付けられているアクターIDを取得する. </p>
+<dl class="return"><dt><b>戻り値:</b></dt><dd>アクターID. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae5b90f7c4eb040ed9314fa2b3f3547e3"></a><!-- doxytag: member="erica::Controller::get_evnet_queue" ref="ae5b90f7c4eb040ed9314fa2b3f3547e3" args="(int dir) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* get_evnet_queue </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dir</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このコントローラーに関連付けられているイベントキューを取得する. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>dir</em>&nbsp;</td><td>このイベントキューの方向. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>戻り値:</b></dt><dd>アクターID. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aaa4e6827cc32e526518e0451d11b8a9c"></a><!-- doxytag: member="erica::Controller::set_actor_id" ref="aaa4e6827cc32e526518e0451d11b8a9c" args="(int id)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_actor_id </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>id</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -157,13 +203,76 @@ Protected 変数</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6b7cd5fc8ab7176b91cc61015a8d7df0"></a><!-- doxytag: member="erica::Controller::set_event_queue" ref="a6b7cd5fc8ab7176b91cc61015a8d7df0" args="(EventQueue *in, EventQueue *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set_event_queue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このコントローラーにイベントキュー(in,out)を関連付ける. </p>
+<dl><dt><b>引数:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>in</em>&nbsp;</td><td>関連付けるイベントキュー(in). </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>out</em>&nbsp;</td><td>関連付けるイベントキュー(out). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a817d87c66be91803788217d47e2671d9"></a><!-- doxytag: member="erica::Controller::set_event_queue_impl" ref="a817d87c66be91803788217d47e2671d9" args="(EventQueue *in, EventQueue *out)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void set_event_queue_impl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a> *&nbsp;</td>
+          <td class="paramname"> <em>out</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected, pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p><a class="el" href="classerica_1_1Controller.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue()</a>の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない. </p>
+
+</div>
+</div>
 <hr/><h2>変数</h2>
 <a class="anchor" id="aff9848c5d961418bdf2f617f73b8372d"></a><!-- doxytag: member="erica::Controller::actor_id" ref="aff9848c5d961418bdf2f617f73b8372d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classerica_1_1Controller.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a><code> [protected]</code></td>
+          <td class="memname">int <a class="el" href="classerica_1_1Controller.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -172,17 +281,31 @@ Protected 変数</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4c802add2830eb8f234f8dd788b4a588"></a><!-- doxytag: member="erica::Controller::queue" ref="a4c802add2830eb8f234f8dd788b4a588" args="" -->
+<a class="anchor" id="a0c3c47b4d1b0526b264c512bb29bfcf8"></a><!-- doxytag: member="erica::Controller::in" ref="a0c3c47b4d1b0526b264c512bb29bfcf8" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1Controller.html#a4c802add2830eb8f234f8dd788b4a588">queue</a><code> [protected]</code></td>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1Controller.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>このコントローラーからイベントを出力するときの出力先. </p>
+<p>このコントローラーが監視するイベントキュー(in). </p>
+
+</div>
+</div>
+<a class="anchor" id="af608a37f7b3cea1741409b4bfe11e3c3"></a><!-- doxytag: member="erica::Controller::out" ref="af608a37f7b3cea1741409b4bfe11e3c3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classerica_1_1EventQueue.html">EventQueue</a>* <a class="el" href="classerica_1_1Controller.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>このコントローラーが出力するイベントキュー(out). </p>
 
 </div>
 </div>
@@ -205,7 +328,7 @@ Protected 変数</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -4,7 +4,7 @@ using namespace erica;
 using namespace std;
 
 
-BasicTPSData:: BasicTPSData ()
+BasicTPSData:: BasicTPSData () : state(0)
 {
     state = RUNNING;
 }

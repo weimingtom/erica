@@ -52,17 +52,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </div>
 <div class="contents">
 これは全メンバの一覧です。<a class="el" href="classerica_1_1BasicActor.html">BasicActor</a>継承メンバも含んでいます。<table>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1IEventListener.html#ab46736d8af1931489c42d2493f7bff58">accept</a>(const Event *event)</td><td><a class="el" href="classerica_1_1IEventListener.html">IEventListener</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a0979a846ab01923b85910183950d6979">Actor</a>(EventQueue *out)</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#acda25284baf53e827c329653e51a67f9">Actor</a>()</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#aff9848c5d961418bdf2f617f73b8372d">actor_id</a></td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td><code> [protected]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#a1c0a10167662b18153109f5c835f8ae6">BasicActor</a>(EventQueue *out)</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#a19315308fb3c0b80c4b025ed5e1aca2a">BasicActor</a>()</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#ae1162af341d9ad2fdcae3c9ba4bd22cb">get_actor_id</a>() const </td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#aeb7558c079be5f354c5ab039dd43e051">handle</a>(const Event *event)</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td><code> [private, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#adaa63be5899b31dd3bfbcbc6582a14c7">get_event_queue</a>(int dir) const </td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1IEventListener.html#aeb7558c079be5f354c5ab039dd43e051">handle</a>(const Event *event)</td><td><a class="el" href="classerica_1_1IEventListener.html">IEventListener</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#a4956e62991d6b98fc4b08db2d629139e">handle_impl</a>(const Event *event)</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td><code> [protected, virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1IEventListener.html#a1886ebfc47375aac47ec0502a8626f29">IEventListener</a>()</td><td><a class="el" href="classerica_1_1IEventListener.html">IEventListener</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a0c3c47b4d1b0526b264c512bb29bfcf8">in</a></td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td><code> [protected]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a8f8f80d37794cde9472343e4487ba3eb">name</a></td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td><code> [protected]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#af608a37f7b3cea1741409b4bfe11e3c3">out</a></td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td><code> [protected]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a7fa6e8f01eb4b6bf73edf137758b60dc">tick</a>(int msec)</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a>(int msec)</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td><code> [private, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#aaa4e6827cc32e526518e0451d11b8a9c">set_actor_id</a>(int id)</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a6b7cd5fc8ab7176b91cc61015a8d7df0">set_event_queue</a>(EventQueue *in, EventQueue *out)</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a>(int msec)</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1Actor.html#a95b99266473e7cdfc39b12e2d7f593ca">~Actor</a>()</td><td><a class="el" href="classerica_1_1Actor.html">Actor</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1BasicActor.html#a7d237930d1fcfd1437d9cbe2ae9ad06e">~BasicActor</a>()</td><td><a class="el" href="classerica_1_1BasicActor.html">BasicActor</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classerica_1_1IEventListener.html#aa1f738db95688a1d4a36c1f8514dde10">~IEventListener</a>()</td><td><a class="el" href="classerica_1_1IEventListener.html">IEventListener</a></td><td><code> [virtual]</code></td></tr>
@@ -81,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

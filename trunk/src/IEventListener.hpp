@@ -23,7 +23,8 @@ public:
     virtual ~IEventListener ();
 
     /**
-     * イベントを処理する。
+     * イベントを処理するコールバック関数.
+     * ユーザーはこの関数を実装することでイベントに応じた処理が可能になる。
      * @param[in] event イベント
      * @return 処理したらtrue,処理しなかったらfalseを返す.
      */

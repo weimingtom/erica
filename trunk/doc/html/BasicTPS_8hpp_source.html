@@ -50,46 +50,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __ERICA_BASIC_TPS_HPP__</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __ERICA_BASIC_TPS_HPP__</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;GameLogic.hpp&quot;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;IEventListener.hpp&quot;</span>
-<a name="l00007"></a>00007 
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="keyword">namespace </span>erica {
+<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;BasicTPSLogic.hpp&quot;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;BasicPlayerView.hpp&quot;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;BasicAiView.hpp&quot;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;BasicActor.hpp&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;BasicController.hpp&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;BasicEventParams.hpp&quot;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011     <span class="keyword">class </span>BasicTPSData;
-<a name="l00012"></a>00012     <span class="keyword">class </span>Event;
-<a name="l00013"></a>00013     <span class="keyword">class </span>Actor;
+<a name="l00011"></a>00011 <span class="comment">// 通常不要だがデバッグのため</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;BasicTextPlayerView.hpp&quot;</span>
+<a name="l00013"></a>00013 
 <a name="l00014"></a>00014 
-<a name="l00018"></a><a class="code" href="classerica_1_1BasicTPS.html">00018</a>     <span class="keyword">class </span><a class="code" href="classerica_1_1BasicTPS.html">BasicTPS</a> : <span class="keyword">public</span> <a class="code" href="classerica_1_1GameLogic.html">GameLogic</a>, <span class="keyword">public</span> <a class="code" href="classerica_1_1IEventListener.html">IEventListener</a>
-<a name="l00019"></a>00019 {
-<a name="l00020"></a>00020 <span class="keyword">public</span>:
-<a name="l00024"></a>00024     <a class="code" href="classerica_1_1BasicTPS.html#a217a08d9918290e9c06d635a3fbc8226">BasicTPS</a> ();
-<a name="l00025"></a>00025 
-<a name="l00029"></a>00029     <span class="keyword">virtual</span> <a class="code" href="classerica_1_1BasicTPS.html#a8b9f15f4ae487599bdf51866e2ddb7a4">~BasicTPS</a> ();
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031     
-<a name="l00032"></a>00032 <span class="keyword">private</span>:
-<a name="l00033"></a>00033 
-<a name="l00037"></a>00037     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1BasicTPS.html#a19a5e234a63536c5d48a9eb9cae179ee">create_game</a> (<span class="keyword">const</span> <span class="keywordtype">char</span>* ini_file);
-<a name="l00038"></a>00038 
-<a name="l00042"></a>00042     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classerica_1_1BasicTPS.html#aef7c2d3f032c12fcdac10011ac0ae182">update</a> (<span class="keywordtype">int</span> msec);
-<a name="l00043"></a>00043 
-<a name="l00047"></a>00047     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classerica_1_1BasicTPS.html#aeb7558c079be5f354c5ab039dd43e051">handle</a> (<span class="keyword">const</span> <a class="code" href="classerica_1_1Event.html">Event</a>* event);    
-<a name="l00048"></a>00048    
-<a name="l00052"></a>00052     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1BasicTPS.html#a6f601bb2ce86080b74029196be067b07">spawn_enemy</a> ();
-<a name="l00053"></a>00053 
-<a name="l00057"></a>00057     <span class="keywordtype">void</span> <a class="code" href="classerica_1_1BasicTPS.html#a9721dbee02d6f0e8f25da897450b910c">spawn_my_bullet</a> ();
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 <span class="keyword">private</span>:
-<a name="l00060"></a>00060     std::vector&lt;Actor*&gt;  actors;
-<a name="l00061"></a>00061     <a class="code" href="classerica_1_1BasicTPSData.html">BasicTPSData</a>*        data;
-<a name="l00062"></a>00062 };
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065 } <span class="comment">// namespace erica {</span>
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067 <span class="preprocessor">#endif</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -106,7 +78,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'検索');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してSat Jan 15 2011 17:52:13に生成されました。&nbsp;
+<hr class="footer"/><address class="footer"><small>Ericaゲームエンジンに対してWed Feb 9 2011 08:50:43に生成されました。&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
