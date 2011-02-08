@@ -8,6 +8,10 @@ struct KeyPressedParams {
 };
 
 struct ActorWalkParams {
+    static const int LEFT    = 4;
+    static const int RIGHT   = 6;
+    static const int FORWARD = 8;
+    static const int BACK    = 2;
     int           actor_id;
     unsigned char dir;    
 };

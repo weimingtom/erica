@@ -15,11 +15,12 @@ TEST (EvnetQueue_default_variables)
 
     in->enqueue (ev1);
     in->enqueue (ev2);
-
     CHECK_EQUAL (2, in->size());
     
-    in->clear ();
+    ev1 = in->dequeue ();
+    CHECK_EQUAL (1, in->size());
 
+    in->clear ();
     CHECK_EQUAL (0, in->size());
 }
 
@@ -35,7 +36,7 @@ TEST (EvnetQueue_update)
 
     // キューに入っているイベントが処理されて
     // リスナーのhandle()関数が呼ばれる。
-    in->update (0);
+    in->trigger ();
 
     const Event* ev2 = listener->get_event ();
     CHECK       (ev2 != NULL);

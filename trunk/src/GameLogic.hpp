@@ -109,8 +109,16 @@ protected:
      */
     std::vector<GameView*> views;
 
+    /**
+     *
+     */
+    std::vector<Actor*> actors;
+
+
     // この他にYAML形式で書いたゲーム情報をロードした結果を
     // まるごと全部保管しておく必要がある。
+
+    
 };
 
 

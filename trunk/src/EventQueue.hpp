@@ -36,17 +36,22 @@ public:
     ~EventQueue ();
 
     /**
-     * このイベントキューを更新する.
-     * @param[in] msec 秒数をmsecで指定する.
+     * このイベントキューに入っているイベントを処理する.
      */
-    void update (int msec);
+    void trigger ();
 
     /**
-     * このイベントキューにイベントを追加する.
+     * このイベントキューの末尾にイベントを追加する.
      * 挿入されたイベントは処理された後、内部で削除される。
      * @param[in] event イベント.
      */
     void enqueue (const Event* event);
+
+    /**
+     * このイベントキューの先頭からイベントを取得して削除する.
+     * @return イベント.
+     */
+    Event* dequeue ();
 
     /**
      * このイベントキューにリスナーを追加する.

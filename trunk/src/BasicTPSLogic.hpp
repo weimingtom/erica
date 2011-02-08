@@ -32,24 +32,25 @@ public:
 protected:
 
     /**
-     * 
+     * GameLogic:: load_game()の再実装.
      */
     virtual void load_game_impl (const char* ini_file);
 
     /**
-     * 
+     * GameLogic:: update()の再実装.
      */
     virtual void update_impl (int msec);
 
     /**
-     * 
+     * GameLogic:: end_of_game()の再実装.
+     */
+    virtual bool end_of_game_impl () const;
+
+    /**
+     * IEventListener:: handle()の再実装.
      */
     virtual bool handle_impl (const Event* event);    
 
-    /**
-     * 
-     */
-    virtual bool end_of_game_impl () const;
    
 private:
     /**
@@ -63,7 +64,7 @@ private:
     void spawn_my_bullet ();
 
 private:
-    std::vector<Actor*>  actors;
+
     BasicTPSData*        data;
 };
 

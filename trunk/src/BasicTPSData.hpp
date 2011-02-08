@@ -8,6 +8,10 @@ namespace erica {
  */
 class BasicTPSData
 {
+    static const int RUNNING     = 0;
+    static const int END_OF_GAME = 1;
+
+
 public:
     /**
      * コンストラクタ.
@@ -19,6 +23,23 @@ public:
      */
     ~BasicTPSData ();
 
+    /**
+     *
+     */
+    void quit ();
+
+    /**
+     *
+     */
+    bool end_of_game () const;
+
+    /**
+     *
+     */
+    int get_state () const;
+
+private:
+    int state;
 
 };
 

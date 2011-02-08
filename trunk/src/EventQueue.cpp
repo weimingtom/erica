@@ -13,13 +13,18 @@ EventQueue:: ~EventQueue ()
 {
 }
 
-void EventQueue:: update (int msec)
+void EventQueue:: trigger ()
 {
 }
 
 
 void EventQueue:: enqueue (const Event* event)
 {
+}
+
+Event* EventQueue:: dequeue ()
+{
+    return NULL;
 }
 
 void EventQueue:: add_listener (IEventListener* listener, const char* event_name)
