@@ -65,6 +65,11 @@ public:
      */
     void remove_actor (const Actor* actr);
 
+    /**
+     * ゲームロジックの終了を取得する.
+     * @return 終了すべきならtrue,そうでないならfalse.
+     */
+    bool end_of_game () const;
 
 protected:
 
@@ -80,6 +85,12 @@ protected:
      * @see load_game()
      */
     virtual void load_game_impl (const char* ini_file) = 0;
+
+    /**
+     * end_of_game()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
+     * @see end_of_game()
+     */
+    virtual bool end_of_game_impl () const = 0;
 
 protected:
     /**

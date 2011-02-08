@@ -7,12 +7,12 @@ using namespace std;
 using namespace erica;
 
 
-TEST (BasicTPS_default_vriables)
+TEST (BasicTPSLogic_default_vriables)
 {
     TestActor* actr = new TestActor;
     actr->set_actor_id (101);
 
-    BasicTPS* logic = new BasicTPS;
+    BasicTPSLogic* logic = new BasicTPSLogic;
     logic->add_actor (actr);
 
     Event* ev1 = new Event ("Hartmann", (void*)200, sizeof(void*), 101);

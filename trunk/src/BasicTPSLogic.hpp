@@ -1,5 +1,5 @@
-#ifndef __ERICA_BASIC_TPS_HPP__
-#define __ERICA_BASIC_TPS_HPP__
+#ifndef __ERICA_BASIC_TPS_LOGIC_HPP__
+#define __ERICA_BASIC_TPS_LOGIC_HPP__
 
 #include <vector>
 #include "GameLogic.hpp"
@@ -15,18 +15,18 @@ namespace erica {
 /**
  * 基本的なTPS(サード・パーソン・シューティング)の進行管理を行うロジッククラス.
  */
-    class BasicTPS : public GameLogic, public IEventListener
+    class BasicTPSLogic : public GameLogic, public IEventListener
 {
 public:
     /**
      * コンストラクタ.
      */
-    BasicTPS ();
+    BasicTPSLogic ();
 
     /**
      * デストラクタ.
      */
-    virtual ~BasicTPS ();
+    virtual ~BasicTPSLogic ();
 
     
 protected:
@@ -45,6 +45,11 @@ protected:
      * 
      */
     virtual bool handle_impl (const Event* event);    
+
+    /**
+     * 
+     */
+    virtual bool end_of_game_impl () const;
    
 private:
     /**

@@ -52,3 +52,8 @@ void GameLogic:: remove_actor (const Actor* actr)
 {
 }
 
+bool GameLogic:: end_of_game () const
+{
+    return true;
+}
+
