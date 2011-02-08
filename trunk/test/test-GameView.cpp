@@ -15,7 +15,7 @@ TEST (BasicPlayerView_default_variables)
     BasicTextPlayerView* view = new BasicTextPlayerView (NULL);
     view->add_controller (ctrl);
 
-    Event* ev1 = new Event ("Hartmann", (void*)200, sizeof(void*), 101);
+    Event* ev1 = new Event ("Hartmann", (void*)200, sizeof(void*));
     view->enqueue (ev1);
 
     // これでイベントがコントローラーに送付される.
@@ -27,7 +27,6 @@ TEST (BasicPlayerView_default_variables)
     CHECK_EQUAL ("Hartmann", ev2->name());
     CHECK_EQUAL (1         , ev2->id());
     CHECK_EQUAL (4         , ev2->size());
-    CHECK_EQUAL (101       , ev2->get_actor_id());
     CHECK_EQUAL ((void*)200, ev2->params());
     
     delete ev1;

@@ -26,10 +26,9 @@ public:
      * @param[in] name   このイベントの名前. 
      * @param[in] params イベントパラメーター.
      * @param[in] size   イベントパラメーターのサイズ.
-     * @param[in] size   イベントを発行したアクターのID.
      * @see regist()
      */
-    Event (const char* name, const void* params, int size, int actor_id);
+    Event (const char* name, const void* params, int size);
 
     /**
      * デストラクタ.
@@ -59,13 +58,6 @@ public:
      * @return 一意なID.
      */
     int id () const;
-
-    /**
-     * このイベントを発行したアクターIDを取得する.
-     * @return アクターID.
-     */
-    int get_actor_id () const;
-
 
 private:
     /**

@@ -10,8 +10,8 @@ using namespace erica;
 TEST (EvnetQueue_default_variables) 
 {
     EventQueue* in = new EventQueue;
-    Event*      ev1 = new Event ("Hartmann", (void*)100, sizeof(void*), 1);
-    Event*      ev2 = new Event ("Hartmann", (void*)200, sizeof(void*), 2);
+    Event*      ev1 = new Event ("Hartmann", (void*)100, sizeof(void*));
+    Event*      ev2 = new Event ("Hartmann", (void*)200, sizeof(void*));
 
     in->enqueue (ev1);
     in->enqueue (ev2);
@@ -29,7 +29,7 @@ TEST (EvnetQueue_update)
 {
     TestEventListener* listener = new TestEventListener;
     EventQueue*       in      = new EventQueue;
-    Event*            ev1     = new Event ("Hartmann", (void*)100, sizeof(void*), 1);
+    Event*            ev1     = new Event ("Hartmann", (void*)100, sizeof(void*));
 
     in->add_listener (listener, "Hartmann");
     in->enqueue (ev1);
@@ -44,6 +44,5 @@ TEST (EvnetQueue_update)
     CHECK_EQUAL (ev1->name()        , ev2->name());
     CHECK_EQUAL (ev1->size()        , ev2->size());
     CHECK_EQUAL (ev1->id()          , ev2->id());
-    CHECK_EQUAL (ev1->get_actor_id(), ev2->get_actor_id());
     CHECK_EQUAL (ev1->params()      , ev2->params());
 }

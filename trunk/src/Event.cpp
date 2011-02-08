@@ -4,7 +4,7 @@ using namespace erica;
 using namespace std;
 
 
-Event:: Event (const char* name, const void* params, int size, int actor_id)
+Event:: Event (const char* name, const void* params, int size)
 {
 }
 
@@ -30,11 +30,6 @@ int Event:: size () const
 
 
 int Event:: id () const
-{
-    return 0;
-}
-
-int Event:: get_actor_id () const
 {
     return 0;
 }
