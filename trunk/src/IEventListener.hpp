@@ -38,7 +38,6 @@ protected:
      */
     virtual bool handle_impl (const Event* event) = 0;
 
-
 };
 
 

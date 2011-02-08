@@ -26,6 +26,7 @@ public:
      * @param[in] name   このイベントの名前. 
      * @param[in] params イベントパラメーター.
      * @param[in] size   イベントパラメーターのサイズ.
+     * @param[in] size   イベントを発行したアクターのID.
      * @see regist()
      */
     Event (const char* name, const void* params, int size, int actor_id);
@@ -65,19 +66,6 @@ public:
      */
     int get_actor_id () const;
 
-    /**
-     * イベントを登録する。有効なイベントはあらかじめこの関数を使って登録されていなければならない.
-     * @param[in] name  イベント名.
-     * @param[in] id    一意なID.
-     * @return 一意なID.
-     */
-    static void regist (int id, const char* name);
-
-    /**
-     * 登録されているイベントのリストを取得する。
-     * @return イベントリスト
-     */
-    static std::map<int, const char*> get_registered_events ();
 
 private:
     /**
@@ -85,10 +73,6 @@ private:
      */
     Entity e;
 
-    /**
-     * 登録済みのイベントのリスト.
-     */
-    static std::map<int, const char*> registered;
 };
 
 

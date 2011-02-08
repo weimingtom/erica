@@ -11,10 +11,9 @@ namespace erica {
         class Node;
     };
 
-    class Event;
 
 /**
- * 基本的な人間が操作可能な表示とコントロールを行うビュークラス.
+ * 表示と人間が操作可能なコントロールを行う基本的なビュークラス.
  */
     class BasicPlayerView : public GameView, public IEventListener
 {
@@ -53,9 +52,8 @@ private:
 
     m3g::World* wld;
     std::map<int, m3g::Node*> nodes;
-    
-
 };
+
 
 } // namespace erica {
 

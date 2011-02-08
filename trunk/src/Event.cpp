@@ -3,8 +3,6 @@
 using namespace erica;
 using namespace std;
 
-std::map<int, const char*> Event:: registered;
-
 
 Event:: Event (const char* name, const void* params, int size, int actor_id)
 {
@@ -40,18 +38,6 @@ int Event:: get_actor_id () const
 {
     return 0;
 }
-
-
-void Event:: regist (int id, const char* name)
-{
-    registered.insert (make_pair(id, name));
-}
-
-std::map<int, const char*> Event:: get_registered_events ()
-{
-    return registered;
-}
-
 
 
 

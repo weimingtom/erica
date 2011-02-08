@@ -1,6 +1,6 @@
 #include <unittest++/UnitTest++.h>
 #include <iostream>
-#include "BasicPlayerView.hpp"
+#include "BasicTextPlayerView.hpp"
 #include "Event.hpp"
 #include "TestController.hpp"
 using namespace std;
@@ -12,7 +12,7 @@ TEST (BasicPlayerView_default_variables)
     TestController* ctrl = new TestController;
     ctrl->set_actor_id (101);
 
-    BasicPlayerView* view = new BasicPlayerView (NULL);
+    BasicTextPlayerView* view = new BasicTextPlayerView (NULL);
     view->add_controller (ctrl);
 
     Event* ev1 = new Event ("Hartmann", (void*)200, sizeof(void*), 101);

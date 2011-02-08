@@ -6,18 +6,6 @@ using namespace std;
 using namespace erica;
 
 
-TEST (Regist_Events)
-{
-    /**
-     * ここで使用されるイベント一覧.
-     */
-    Event::regist (1, "Hartmann");
-
-    map<int, const char*> events = Event:: get_registered_events ();
-    CHECK_EQUAL (1, events.size());
-    CHECK_EQUAL ("Hartmann", events.find(1)->second);
-}
-
 TEST (Event_defualt_variables)
 {
     Event* ev = new Event("Hartmann", (void*)200, sizeof(void*), 101);
