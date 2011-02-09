@@ -17,7 +17,6 @@ class BasicController : public Controller, public IEventListener
 public:
     /**
      * コンストラクタ.
-     * @param[in] out  このコントローラーから出るイベントの出力先キュー.
      */
     BasicController ();
 
@@ -28,6 +27,12 @@ public:
 
 
 protected:
+
+    /**
+     * Controller:: update()の実装.
+     */
+    
+virtual void update_impl (int msec);
 
     /**
      * Controller:: set_event_queue()の実装.

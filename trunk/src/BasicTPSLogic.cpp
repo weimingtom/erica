@@ -14,11 +14,13 @@ BasicTPSLogic:: BasicTPSLogic () : GameLogic(), data(NULL)
 
 BasicTPSLogic:: ~BasicTPSLogic ()
 {
+    delete data;
 }
 
 
 void BasicTPSLogic:: load_game_impl (const char* init_file)
 {
+    // TODO:
     // 未実装
 }
 

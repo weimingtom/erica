@@ -47,9 +47,21 @@ public:
      */
     void set_actor_id (int id);
 
+    /**
+     * このコントローラーを更新する.
+     * @param[in]  msec  秒数をmsecで指定する.
+     */
+
+    void update (int msec);
 
 
 protected:
+
+    /**
+     * update()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.
+     * @param[in]  msec  秒数をmsecで指定する.
+     */
+    virtual void update_impl (int msec) = 0;
 
     /**
      * set_event_queue()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.

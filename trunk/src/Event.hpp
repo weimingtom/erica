@@ -11,6 +11,7 @@ namespace erica {
 class Event
 {
     struct Entity {
+        Entity (const char* n, void* p, int s) : name(n), params(p), size(s) {};
         const char* name;
         void*       params;
         int         size;
@@ -25,7 +26,7 @@ public:
      * イベント名は大文字小文字を区別しない。またイベント名は予め登録されたものでなければならない。
      * @param[in] name   このイベントの名前. 
      * @param[in] params イベントパラメーター.
-     * @param[in] size   イベントパラメーターのサイズ.
+     * @param[in] size   イベントパラメーターのサイズ[0,65535].
      * @see regist()
      */
     Event (const char* name, const void* params, int size);

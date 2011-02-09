@@ -27,17 +27,17 @@ public:
 protected:
 
     /**
-     * 
+     * Actor::set_event_queue()の実装.
      */
     virtual void set_event_queue_impl (EventQueue* in, EventQueue* out);
 
     /**
-     * 
+     * IEventListener::handle()の実装.
      */
     virtual bool handle_impl (const Event* event);
     
     /**
-     * 
+     * Actor::update()の実装.
      */
     virtual void update_impl (int msec);
 

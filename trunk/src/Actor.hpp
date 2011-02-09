@@ -53,7 +53,6 @@ public:
      * このアクターを更新する.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-
     void update (int msec);
 
 private:
@@ -87,6 +86,7 @@ protected:
     
     /**
      * このアクターの一意な識別子.
+     * 自動発番されるがユーザーが後から指定しても良い。
      */
     int actor_id;
 

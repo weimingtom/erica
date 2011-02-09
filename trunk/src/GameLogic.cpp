@@ -15,6 +15,8 @@ GameLogic:: GameLogic () : in(NULL), out(NULL)
 
 GameLogic:: ~GameLogic ()
 {
+    delete in;
+    delete out;
 }
 
 GameView* GameLogic:: get_game_view (int id) const
@@ -64,9 +66,9 @@ void GameLogic:: update (int msec)
 
     // イベントの「ロジック」-->「ビュー」への転送
     while (out->size()) {
-        Event* ev = out->dequeue();
+        const Event* ev = out->dequeue();
         for (int i = 0; i < (int)views.size(); i++) {
-            // メモ：手抜き実装
+            // TODO：手抜き実装
             // このイベントは複数のビューから参照されるので
             // deleteしたら落ちる。
             views[i]->enqueue (ev);

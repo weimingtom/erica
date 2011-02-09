@@ -13,7 +13,7 @@ TEST (EventManager_regist)
      */
     EventManager::regist (1, "Hartmann");
 
-    map<int, const char*> events = EventManager:: get_registered_events ();
+    map<const char*, int> events = EventManager:: get_registered_events ();
     CHECK_EQUAL (1, events.size());
-    CHECK_EQUAL ("Hartmann", events.find(1)->second);
+    CHECK_EQUAL (1, events.find("Hartmann")->second);
 }

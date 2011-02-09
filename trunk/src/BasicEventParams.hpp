@@ -2,6 +2,11 @@
 #define __ERICA_BASIC_EVENT_PARAMS_HPP__
 
 namespace erica {
+    
+    struct SystemParams {
+        static const int QUIT = 1;
+        int action;
+    };
 
 struct KeyPressedParams {
     unsigned char key;

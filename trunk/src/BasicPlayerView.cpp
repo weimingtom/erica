@@ -13,6 +13,7 @@ BasicPlayerView:: ~BasicPlayerView ()
 
 void BasicPlayerView:: update_impl (int msec)
 {
+    // nothing to do
 }
 
 bool BasicPlayerView:: handle_impl (const Event* event)
@@ -22,6 +23,7 @@ bool BasicPlayerView:: handle_impl (const Event* event)
 
 void BasicPlayerView:: render_impl () const
 {
+    // nothing to do
 }
 
 

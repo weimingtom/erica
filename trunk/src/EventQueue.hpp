@@ -51,10 +51,10 @@ public:
      * このイベントキューの先頭からイベントを1つ取得して削除する.
      * @return イベント.
      */
-    Event* dequeue ();
+    const Event* dequeue ();
 
     /**
-     * このイベントキューにリスナーを追加する.
+     * イベントを監視するリスナーを追加する. 既に登録済みの場合は何もしない。
      * @param[in] listener   追加したいリスナー.
      * @param[in] event_name 監視するイベントの名前.
      */
@@ -65,7 +65,7 @@ public:
      * リスナーが複数のイベントを監視していた場合、すべて解除される。
      * @param[in] listener 削除したいリスナー.
      */
-    void remove_listener (const IEventListener* listner);
+    void remove_listener (const IEventListener* listener);
 
     /**
      * キューに入っているイベントをすべて削除する.
@@ -88,7 +88,7 @@ private:
     /**
      * イベントのリスナー.
      */
-    std::multimap<int, IEventListener*> listners;
+    std::multimap<int, IEventListener*> listeners;
 };
 
 

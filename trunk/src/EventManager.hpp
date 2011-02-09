@@ -6,7 +6,7 @@
 namespace erica {
 
 /**
- * イベントの名前を管理するクラス.インスタンスかはできない。
+ * イベントの名前を管理するクラス.インスタンス化はできない。
  */
 class EventManager
 {
@@ -23,14 +23,14 @@ public:
      * 登録されているイベントのリストを取得する。
      * @return イベントリスト.
      */
-    static std::map<int, const char*> get_registered_events ();
+    static const std::map<const char*, int> get_registered_events ();
 
     /**
      * イベント名が登録済みかどうか検索する.
      * @param[in] name  イベント名.
      * @return イベントID. 登録されていない場合は0が返る.
      */
-    int find (const char* name) const;
+    static int find (const char* name);
 
 private:
     EventManager ();
@@ -38,11 +38,11 @@ private:
     /**
      * 登録済みのイベントのリスト.
      */
-    static std::map<int, const char*> registered;
+    static std::map<const char*, int> registered;
 
 };
 
 
-}
+} // namesapce erica {
 
 #endif

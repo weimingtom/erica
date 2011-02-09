@@ -13,7 +13,8 @@ TEST (BasicController_default_variables)
 
 TEST (BasicController_set_variables)
 {
-    BasicController* ctrl = new BasicController;
+    
+BasicController* ctrl = new BasicController;
     CHECK_EQUAL (0, ctrl->get_actor_id());
 
     ctrl->set_actor_id (100);

@@ -4,7 +4,7 @@
 using namespace erica;
 using namespace std;
 
-Controller:: Controller () : out(NULL)
+Controller:: Controller () : in(NULL), out(NULL), actor_id(0)
 {
 }
 
@@ -21,9 +21,10 @@ void Controller:: set_event_queue (EventQueue* i, EventQueue* o)
 
 int Controller:: get_actor_id () const
 {
-    return 0;
+    return actor_id;
 }
 
 void Controller:: set_actor_id (int id)
 {
+    actor_id = id;
 }

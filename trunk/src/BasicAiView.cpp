@@ -13,6 +13,7 @@ BasicAiView:: ~BasicAiView ()
 
 void BasicAiView:: update_impl (int msec)
 {
+    // nothing to do
 }
 
 bool BasicAiView:: handle_impl (const Event* event)
@@ -22,6 +23,7 @@ bool BasicAiView:: handle_impl (const Event* event)
 
 void BasicAiView:: render_impl () const
 {
+    // nothing to do
 }
 
 

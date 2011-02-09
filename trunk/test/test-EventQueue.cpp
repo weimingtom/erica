@@ -17,8 +17,9 @@ TEST (EvnetQueue_default_variables)
     in->enqueue (ev2);
     CHECK_EQUAL (2, in->size());
     
-    ev1 = in->dequeue ();
+    const Event* ev3 = in->dequeue ();
     CHECK_EQUAL (1, in->size());
+    CHECK_EQUAL (ev1, ev3);
 
     in->clear ();
     CHECK_EQUAL (0, in->size());

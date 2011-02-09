@@ -17,22 +17,15 @@ BasicTextPlayerView:: ~BasicTextPlayerView ()
 
 void BasicTextPlayerView:: update_impl (int msec)
 {
-    //
-    
+    // nothing to do
 }
 
 bool BasicTextPlayerView:: handle_impl (const Event* ev)
 {
-    if (strcmp(ev->name(), "KEY_PRESSED") == 0) {
-        char key = ((KeyPressedParams*)ev->params())->key;
-        ActorWalkParams params;
-        switch (key) {
-        case 4: params.dir = ActorWalkParams::LEFT; break;
-        case 6: params.dir = ActorWalkParams::RIGHT; break;
-        case 2: params.dir = ActorWalkParams::FORWARD; break;
-        case 8: params.dir = ActorWalkParams::BACK; break;
-        }
-        out->enqueue (new Event("WALK", &params, sizeof(params)));
+    if (strcmp(ev->name(), "SYSTEM") == 0) {
+        SystemParams params;
+        params.action = ((SystemParams*)ev->params())->action;
+        out->enqueue (new Event("SYSTEM", &params, sizeof(params)));
         return true;
     }
     return false;
@@ -40,7 +33,7 @@ bool BasicTextPlayerView:: handle_impl (const Event* ev)
 
 void BasicTextPlayerView:: render_impl () const
 {
-    //
+    // nothing to do
 }
 
 
