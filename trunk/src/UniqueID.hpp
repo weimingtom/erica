@@ -1,5 +1,5 @@
-#ifndef __ERICA_ACTOR_ID_MANAGER_HPP__
-#define __ERICA_ACTOR_ID_MANAGER_HPP__
+#ifndef __ERICA_UNIQUE_HPP__
+#define __ERICA_UNIQUE_HPP__
 
 #include <set>
 
@@ -10,35 +10,57 @@ namespace erica {
  * アクターIDを管理するクラス. インスタンス化はできない.
  * （メモ）これは単なるユニークIDの管理クラスなのでUniqueIDの方がいいか？
  */
-class ActorIDManager
+class UniqueID
 {
 public:
+
+    /**
+     * ユニークIDを生成するコンストラクタ.
+     * IDの範囲は[start,end). (startを含みendを含まない)
+     * @param[in] start  開始ID
+     * @param[in] end    終了ID
+     */
+    UniqueID (int start, int end);
+
+    /**
+     * デストラクタ.
+     */
+    ~UniqueID ();
 
     /**
      * ユニークなアクターIDを取得する.
      * 取得したアクターIDはrelease_unique_actor_id()を使って開放しなければならない。
      * @return アクターID.
      */
-    static int get_unique_actor_id ();
+    int get () const;
 
     /**
      * ユニークなアクターIDを開放する.
      * @param[in] id  アクターID.
      */
-    static void release_unique_actor_id (int id);
+    void release (int id);
 
 private:
-    ActorIDManager ();
 
     /**
-     * 次の空きアクターID.
+     * 開始ID.
      */
-    static int           next;
+    int start;
 
     /**
-     * 使用中のアクターIDのリスト.
+     * 終了ID.
      */
-    static std::set<int> ids;
+    int end;
+
+    /**
+     * 次の空きID.
+     */
+    mutable int next;
+
+    /**
+     * 使用中のIDのリスト.
+     */
+    mutable std::set<int> ids;
 };
 
 

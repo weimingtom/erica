@@ -1,20 +1,20 @@
 #include "Actor.hpp"
-#include "ActorIDManager.hpp"
+#include "UniqueID.hpp"
 #include "EventQueue.hpp"
 #include "Definitions.hpp"
 using namespace std;
 using namespace erica;
 
-
+UniqueID unique_id (ACTOR_ID_AUTO_MIN, ACTOR_ID_AUTO_MAX);
 
 Actor::Actor () : in(NULL), out(NULL), actor_id(0), name(NULL)
 {
-    actor_id = ActorIDManager:: get_unique_actor_id ();
+    actor_id = unique_id.get ();
 }
 
 Actor:: ~Actor ()
 {
-    ActorIDManager:: release_unique_actor_id (actor_id);
+    unique_id.release (actor_id);
 }
 
 
