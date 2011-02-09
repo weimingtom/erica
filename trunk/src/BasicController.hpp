@@ -27,10 +27,10 @@ public:
     virtual ~BasicController ();
 
 
-private:
+protected:
 
     /**
-     *
+     * Controller:: set_event_queue()の実装.
      */
     virtual void set_event_queue_impl (EventQueue* in, EventQueue* out);
 
