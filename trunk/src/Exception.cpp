@@ -20,7 +20,7 @@ Exception:: ~Exception () throw()
 {
 }
     
-const char* Exception:: what () throw()
+const char* Exception:: what () const throw()
 {
     return msg.c_str();
 }

@@ -25,8 +25,5 @@ TEST (UniqueID_release_unique_actor_id)
 
     // とりあえずエラーが起きなければそれでいい.
     unique_id.release (id1);
-    unique_id.
-release (id2);
-
-
+    unique_id.release (id2);
 }

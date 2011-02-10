@@ -1,6 +1,6 @@
 #include "Event.hpp"
+#include "Hash.hpp"
 #include "Exception.hpp"
-#include "EventManager.hpp"
 #include <iostream>
 #include <cstring>
 using namespace erica;
@@ -12,23 +12,20 @@ Event:: Event (const char* name, const void* params, int size) : e(NULL,NULL,0)
     if (name == NULL) {
         throw Exception (__FILE__, __func__, "Event name is NULL.");
     }
-    if (params == NULL) {
-        throw Exception (__FILE__, __func__, "Event params is NULL.");
-    }
     if (size < 0 || size > 65535) {
         throw Exception (__FILE__, __func__, "Event size is invalid size=%d.", size);
     }
 
     e.name   = name;
     e.params = new char [size];
-    e.size   = size;
-
     memcpy (e.params, params, size);
+    e.size   = size;
+    e.id     = hash(name);
 }
 
 Event:: ~Event ()
 {
-    delete (char*)e.params;
+    delete [] (char*)e.params;
 }
 
 const char* Event:: name () const
@@ -48,9 +45,9 @@ int Event:: size () const
 }
 
 
-int Event:: id () const
+unsigned long long Event:: id () const
 {
-    return EventManager:: find(e.name);
+    return e.id;
 }
 
 

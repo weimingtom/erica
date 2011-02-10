@@ -34,6 +34,7 @@ protected:
 
     /**
      * handle()関数の実装。リスナーの派生クラスはこの関数を再実装しなければならない.
+     * この関数でtrueを返す場合はeventをdeleteする責任がある。
      * @param[in] event イベント
      * @return 処理したらtrue,処理しなかったらfalseを返す.
      */

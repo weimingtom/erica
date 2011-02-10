@@ -15,7 +15,7 @@ IEventListener:: ~IEventListener ()
 
 bool IEventListener:: handle (const Event* event)
 {
-    return false;
+    return handle_impl (event);
 }
 
 

@@ -1,11 +1,12 @@
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
-CXX  = g++
+#SRCS     = $(wildcard *.cpp)
+SRCS     = main.cpp test-UniqueID.cpp test-Event.cpp test-EventQueue.cpp TestEventListener.cpp
+OBJS     = $(SRCS:.cpp=.o)
+CXX      = g++
 CXXFLAGS = -Wall -g -I../src
-LD      = g++
-LDFLAGS = -L../src  
-LIBS    = -lerica -lUnitTest++
-TARGET  = a.out
+LD       = g++
+LDFLAGS  = -L../src  
+LIBS     = -lerica -lUnitTest++
+TARGET   = a.out
 
 
 all:  $(TARGET)

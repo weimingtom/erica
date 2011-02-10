@@ -35,9 +35,9 @@ protected:
 virtual void update_impl (int msec);
 
     /**
-     * Controller:: set_event_queue()の実装.
+     * Controller:: set_event_listener()の実装.
      */
-    virtual void set_event_queue_impl (EventQueue* in, EventQueue* out);
+    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out);
 
     /**
      * IEventListener::handle()の実装.

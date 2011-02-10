@@ -19,7 +19,7 @@ public:
      * @param[in] format  printfと同じ文字列フォーマット.
      * @param[in] ...     任意引数.
      */
-    Exception (const char* file, const char* func, const char* format, ...);
+    explicit Exception (const char* file, const char* func, const char* format, ...);
 
     /**
      * デストラクタ.
@@ -30,7 +30,7 @@ public:
      * エラーメッセージの表示.
      * @return エラーメッセージ.
      */
-    virtual const char* what () throw();
+    virtual const char* what () const throw();
 
 private:
     std::string msg;

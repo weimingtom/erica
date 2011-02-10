@@ -21,7 +21,7 @@ void BasicController:: update_impl (int msec)
 }
 
 
-void BasicController:: set_event_queue_impl (EventQueue* in, EventQueue* out)
+void BasicController:: set_event_listener_impl (EventQueue* in, EventQueue* out)
 {
     // イベントリスナーに登録.
     in->add_listener (this, "KEY_PRESSED");

@@ -3,6 +3,7 @@
 #define __TEST_EVENT_LISTENER__
 
 #include "IEventListener.hpp"
+#include <vector>
 
 namespace erica {
     class Event;
@@ -19,11 +20,15 @@ public:
 
     const erica::Event* get_event () const;
 
+    void clear ();
+
 protected:
     virtual bool handle_impl (const erica::Event* event);
 
-private:
-    const erica::Event* event;
+public:
+    std::vector<const erica::Event*> events;
+
+
 };
 
 

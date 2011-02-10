@@ -88,7 +88,7 @@ private:
     /**
      * イベントのリスナー.
      */
-    std::multimap<int, IEventListener*> listeners;
+    std::multimap<unsigned long long, IEventListener*> listeners;
 };
 
 
