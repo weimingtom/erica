@@ -25,7 +25,8 @@ private:
     /**
      *
      */
-    virtual void set_event_queue_impl (erica::EventQueue* in, erica::EventQueue* out);
+    virtual void set_event_listener_impl (erica::EventQueue* in, erica::EventQueue* out);
+
 
 
 

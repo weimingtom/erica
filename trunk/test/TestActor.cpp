@@ -14,7 +14,7 @@ void TestActor:: update_impl (int msec)
 {
 }
 
-void TestActor:: set_event_queue_impl (EventQueue* in, EventQueue* out)
+void TestActor:: set_event_listener_impl (EventQueue* in, EventQueue* out)
 {
 }
 

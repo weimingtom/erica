@@ -17,7 +17,7 @@ BasicController:: ~BasicController ()
 
 void BasicController:: update_impl (int msec)
 {
-
+    // nothing to do.
 }
 
 
@@ -30,14 +30,14 @@ void BasicController:: set_event_listener_impl (EventQueue* in, EventQueue* out)
 
 bool BasicController:: handle_impl (const Event* ev)
 {
-    if (strcmp(ev->name(), "KEY_PRESSED") == 0) {
+    if (*ev == "KEY_PRESSED") {
         char key = ((KeyPressedParams*)ev->params())->key;
         ActorWalkParams params;
         switch (key) {
-        case 4: params.dir = ActorWalkParams::LEFT   ; break;
-        case 6: params.dir = ActorWalkParams::RIGHT  ; break;
-        case 2: params.dir = ActorWalkParams::FORWARD; break;
-        case 8: params.dir = ActorWalkParams::BACK   ; break;
+        case '4': params.dir = ActorWalkParams::LEFT   ; break;
+        case '6': params.dir = ActorWalkParams::RIGHT  ; break;
+        case '2': params.dir = ActorWalkParams::FORWARD; break;
+        case '8': params.dir = ActorWalkParams::BACK   ; break;
         default: return false;
         }
         out->enqueue (new Event("WALK", &params, sizeof(params)));

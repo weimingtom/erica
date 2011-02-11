@@ -27,9 +27,9 @@ public:
 protected:
 
     /**
-     * Actor::set_event_queue()の実装.
+     * Actor::set_event_listner()の実装.
      */
-    virtual void set_event_queue_impl (EventQueue* in, EventQueue* out);
+    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out);
 
     /**
      * IEventListener::handle()の実装.

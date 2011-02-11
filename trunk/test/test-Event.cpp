@@ -31,4 +31,12 @@ TEST (Event_case_insensitive)
     delete ev2;
 }
 
+TEST (Event_operator_equal)
+{
+    Event* ev = new Event("Hartmann", NULL, 0);
+
+    CHECK_EQUAL (*ev, "Hartmann");
+
+    delete ev;
+}
 

@@ -1,5 +1,4 @@
-#SRCS     = $(wildcard *.cpp)
-SRCS     = main.cpp test-UniqueID.cpp test-Event.cpp test-EventQueue.cpp TestEventListener.cpp
+SRCS     = $(wildcard *.cpp)
 OBJS     = $(SRCS:.cpp=.o)
 CXX      = g++
 CXXFLAGS = -Wall -g -I../src

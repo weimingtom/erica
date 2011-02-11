@@ -69,7 +69,7 @@ private:
      * @param[in] in   このアクターが監視するイベントキュー(in).
      * @param[in] out  このアクターが監視するイベントキュー(out).
      */
-    virtual void set_event_queue_impl (EventQueue* in, EventQueue* out) = 0;
+    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out) = 0;
 
 
 protected:

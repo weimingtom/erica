@@ -76,7 +76,7 @@ void GameView:: update (int msec)
     update_impl (msec);
 
     // イベント(out)の「ビュー」-->「ロジック」への転送
-    while (out->size()) {
+    while (logic && out->size()) {
         logic->enqueue (out->dequeue());
     }
 

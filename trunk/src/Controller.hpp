@@ -12,7 +12,7 @@ class Controller
 {
 public:
     /**
-     * コンストラクタ.
+     * コンストラクタ. 
      */
     Controller ();
 

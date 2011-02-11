@@ -2,6 +2,7 @@
 #define __ERICA_EVENT_HPP__
 
 #include <map>
+#include <iosfwd>
 
 namespace erica {
 
@@ -61,6 +62,12 @@ public:
      */
     unsigned long long id () const;
 
+    /**
+     * このクラスの情報を内部表示する。デバッグ用。
+     * param[in]  out  出力先ストリーム.
+     */
+    std::ostream& print (std::ostream& out) const;
+
 private:
     /**
      * イベントデータ.
@@ -72,5 +79,27 @@ private:
 
 } // namespace erica {
 
+/**
+ * このクラスの情報を内部表示する。デバッグ用。
+ * @param[in]  out   出力先ストリーム.
+ * @param[in]  event イベント
+ */
+std::ostream& operator<< (std::ostream& out, const erica::Event& ev);
+
+
+/**
+ * イベントの種類（名前)が等しければtrueを返す比較演算子. 大文字小文字は区別しない.
+ * @param[in]  event  イベント
+ * @param[in]  name   名前文字列
+ */
+bool operator== (const erica::Event& ev, const char* name);
+
+
+/**
+ * イベントの種類（名前)が等しければtrueを返す比較演算子. 大文字小文字は区別しない.
+ * @param[in]  event  イベント
+ * @param[in]  name   名前文字列
+ */
+bool operator== (const char* name, const erica::Event& ev);
 
 #endif

@@ -9,5 +9,7 @@ TEST (Exception_default_variables)
 {
     Exception* e = new Exception ("FILE", "FUNCTION", "MESSAGE");
     
-    CHECK_EQUAL ("FILE:FUNCTION MESSAGE", e.what());
+    CHECK_EQUAL ("FILE:FUNCTION MESSAGE", e->what());
+
+    delete e;
 }

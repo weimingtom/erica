@@ -50,5 +50,28 @@ unsigned long long Event:: id () const
     return e.id;
 }
 
+ostream& Event:: print (std::ostream& out) const
+{
+    out << "Event: name=" << e.name << ", id=0x" << hex << e.id << dec;
+    return out;
+}
+
+
+std::ostream& operator<< (std::ostream& out, const Event& ev)
+{
+    return ev.print (out);
+}
+
+
+bool operator== (const Event& ev, const char* name)
+{
+    return ev.id() == hash(name);
+}
+
+bool operator== (const char* name, const Event& ev)
+{
+    return hash(name) == ev.id();
+}
+
 
 
