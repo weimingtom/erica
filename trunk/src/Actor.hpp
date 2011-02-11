@@ -66,10 +66,8 @@ private:
 
     /**
      * set_event_queue()の実装関数。アクターの派生クラスはこの関数を再実装しなければならない.
-     * @param[in] in   このアクターが監視するイベントキュー(in).
-     * @param[in] out  このアクターが監視するイベントキュー(out).
      */
-    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out) = 0;
+    virtual void set_event_listener_impl () = 0;
 
 
 protected:

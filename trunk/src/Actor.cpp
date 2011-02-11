@@ -36,6 +36,9 @@ EventQueue* Actor:: get_event_queue (int dir) const
     return NULL;
 }
 
-void Actor:: set_event_queue (EventQueue* in, EventQueue* out)
+void Actor:: set_event_queue (EventQueue* i, EventQueue* o)
 {
+    in  = i;
+    out = o;
+    set_event_listener_impl ();
 }

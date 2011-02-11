@@ -4,6 +4,7 @@
 
 #include "IEventListener.hpp"
 #include "Controller.hpp"
+#include <vector>
 
 namespace erica {
     class Event;
@@ -18,8 +19,10 @@ public:
     TestController ();
     virtual ~TestController ();
 
+    std::vector<const erica::Event*> events;
+
 private:
-    virtual void set_event_listener_impl (erica::EventQueue* in, erica::EventQueue* out);
+    virtual void set_event_listener_impl ();
 
     virtual void update_impl (int msec);
 

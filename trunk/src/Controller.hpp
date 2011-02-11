@@ -66,7 +66,7 @@ protected:
     /**
      * set_event_queue()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.
      */
-    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out) = 0;
+    virtual void set_event_listener_impl () = 0;
 
     /**
      * このコントローラーが監視するイベントキュー(in).

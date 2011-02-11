@@ -29,7 +29,7 @@ protected:
     /**
      * Actor::set_event_listner()の実装.
      */
-    virtual void set_event_listener_impl (EventQueue* in, EventQueue* out);
+    virtual void set_event_listener_impl ();
 
     /**
      * IEventListener::handle()の実装.

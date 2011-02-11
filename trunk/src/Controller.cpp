@@ -18,7 +18,7 @@ void Controller:: set_event_queue (EventQueue* i, EventQueue* o)
 {
     in  = i;
     out = o;
-    set_event_listener_impl (i, o);
+    set_event_listener_impl ();
 }
 
 int Controller:: get_actor_id () const

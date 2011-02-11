@@ -23,7 +23,7 @@ void BasicActor:: update_impl (int msec)
 
 }
 
-void BasicActor:: set_event_listener_impl (EventQueue* in, EventQueue* out)
+void BasicActor:: set_event_listener_impl ()
 {
     // WALKイベントの監視
 }

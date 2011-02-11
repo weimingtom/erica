@@ -3,17 +3,26 @@
 #define __TEST_ACTOR_HPP__
 
 
-#include "TestEventListener.hpp"
+#include "IEventListener.hpp"
 #include "Actor.hpp"
+#include <vector>
+
+namespace erica {
+    class Event;
+}
 
 /**
  *
  */
-class TestActor : public erica::Actor, public TestEventListener
+class TestActor : public erica::Actor, public erica::IEventListener
 {
 public:
     TestActor ();
+
     virtual ~TestActor ();
+
+
+    std::vector<const erica::Event*> events;
 
 private:
 
@@ -25,10 +34,12 @@ private:
     /**
      *
      */
-    virtual void set_event_listener_impl (erica::EventQueue* in, erica::EventQueue* out);
+    virtual void set_event_listener_impl ();
 
-
-
+    /**
+     *
+     */
+    bool handle_impl (const erica::Event* ev);
 
 };
 
