@@ -61,12 +61,12 @@ protected:
      * update()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update_impl (int msec) = 0;
+    virtual void update_impl (int msec);
 
     /**
      * set_event_queue()の実装関数。コントローラーの派生クラスはこの関数を再実装しなければならない.
      */
-    virtual void set_event_listener_impl () = 0;
+    virtual void set_event_listener_impl ();
 
     /**
      * このコントローラーが監視するイベントキュー(in).

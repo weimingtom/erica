@@ -2,18 +2,20 @@
 #define __ERICA_TEST_GAME_LOGIC_HPP__
 
 #include "GameLogic.hpp"
-#include "TestEventListener.hpp"
+#include "IEventListener.hpp"
 
 
 namespace erica {
 
+    class Event;
 
 /**
  * 
  */
-    class TestGameLogic : public GameLogic, public TestEventListener
+    class TestGameLogic : public GameLogic, public IEventListener
 {
 public:
+
     /**
      * コンストラクタ.
      */
@@ -23,6 +25,9 @@ public:
      * デストラクタ.
      */
     virtual ~TestGameLogic ();
+
+
+    std::vector<const Event*> events;
 
     
 protected:
@@ -49,6 +54,7 @@ protected:
 
 
 private:
+
 
 };
 

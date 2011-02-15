@@ -14,9 +14,9 @@ EventQueue:: EventQueue ()
 EventQueue:: ~EventQueue ()
 {
     // 未処理のイベントはこのクラスがdeleteする.
-    list<const Event*>::iterator ev;
-    for (ev = events.begin(); ev != events.end(); ev++) {
-        delete *ev;
+    list<const Event*>::iterator it;
+    for (it = events.begin(); it != events.end(); it++) {
+        delete *it;
     }
     events.clear();
 }

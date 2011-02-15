@@ -2,6 +2,8 @@
 #include "UniqueID.hpp"
 #include "EventQueue.hpp"
 #include "Definitions.hpp"
+#include "Exception.hpp"
+#include <iostream>
 using namespace std;
 using namespace erica;
 
@@ -20,20 +22,26 @@ Actor:: ~Actor ()
 
 void Actor:: update (int msec)
 {
+    update_impl (msec);
 }
 
 int Actor:: get_actor_id () const
 {
-    return 0;
+    return actor_id;
 }
 
 void Actor:: set_actor_id (int id)
 {
+    actor_id = id;
 }
 
 EventQueue* Actor:: get_event_queue (int dir) const
 {
-    return NULL;
+    switch (dir) {
+    case EventQueue::IN : return in;
+    case EventQueue::OUT : return out;
+    default: throw Exception (__FILE__, __func__, "Direction is invalid, dir=%d.", dir);
+    }
 }
 
 void Actor:: set_event_queue (EventQueue* i, EventQueue* o)
@@ -42,3 +50,13 @@ void Actor:: set_event_queue (EventQueue* i, EventQueue* o)
     out = o;
     set_event_listener_impl ();
 }
+
+void Actor:: update_impl (int msec)
+{
+}
+
+void Actor:: set_event_listener_impl ()
+{
+}
+
+

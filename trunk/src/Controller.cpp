@@ -34,3 +34,13 @@ void Controller:: set_actor_id (int id)
 
     actor_id = id;
 }
+
+void Controller:: update_impl (int msec)
+{
+
+}
+
+void Controller:: set_event_listener_impl ()
+{
+
+}

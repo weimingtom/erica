@@ -17,12 +17,18 @@ TestController::  ~TestController ()
 
 void TestController:: set_event_listener_impl ()
 {
+    in->add_listener (this, "LOGIC_STORE");
     in->add_listener (this, "ACTOR_STORE");
     in->add_listener (this, "CONTROLLER_STORE");
+
 }
 
 bool TestController:: handle_impl (const Event* ev)
 {
+    if (*ev == "LOGIC_STORE") {
+        out->enqueue (ev);
+        return true;
+    }
     if (*ev == "ACTOR_STORE") {
         out->enqueue (ev);
         return true;

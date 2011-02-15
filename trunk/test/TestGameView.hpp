@@ -2,15 +2,17 @@
 #define __ERICA_TEST_GAME_VIEW_HPP__
 
 #include "GameView.hpp"
-#include "TestEventListener.hpp"
+#include "IEventListener.hpp"
+#include <vector>
 
 namespace erica {
-
+    
+    class Event;
 
 /**
  * 
  */
-class TestGameView : public GameView, public TestEventListener
+class TestGameView : public GameView, public IEventListener
 {
 public:
 
@@ -24,6 +26,7 @@ public:
      */
     virtual ~TestGameView ();
 
+    std::vector<const Event*> events;
 
 protected:
 

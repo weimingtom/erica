@@ -2,6 +2,7 @@
 #define __ERICA_GAME_VIEW_HPP__
 
 #include <map>
+#include <iosfwd>
 #include "IEventListener.hpp"
 
 
@@ -59,18 +60,26 @@ public:
     void remove_controller (const Controller* ctrl);
     
 
+    /**
+     *
+     */
+    virtual std::ostream& print (std::ostream& out) const;
+
+
 protected:
 
     /**
      * update()関数の実装。ビューの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update_impl (int msec) = 0;
+    virtual void update_impl (int msec);
 
     /**
      * render()関数の実装。ビューの派生クラスはこの関数を再実装しなければならない.
      */
-    virtual void render_impl () const = 0;
+    virtual void render_impl () const;
+
+
 
 protected:
 
@@ -100,6 +109,9 @@ protected:
 
 
 } // namespace erica {
+
+
+std::ostream& operator<< (std::ostream& out, const erica::GameView& view);
 
 #endif
 

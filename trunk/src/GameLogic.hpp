@@ -2,6 +2,8 @@
 #define __ERICA_GAME_LOGIC_HPP__
 
 #include <vector>
+#include <iosfwd>
+
 namespace erica {
 
 class GameView;
@@ -36,6 +38,8 @@ public:
      * ゲームのロード.
      * この関数の呼び出しは必須。
      * @param[in] ini_file ロードする初期化ファイルを指定する.
+     * @TODO: これGameLogicクラスにあるべきか、
+     * Loaderクラスとして独立させるべきか悩んでいる。
      */
     void load_game (const char* ini_file);
 
@@ -49,9 +53,16 @@ public:
     /**
      * このロジックのイベントキュー(in)にイベントを入れる.
      * イベントは次のupdate()が呼ばれたタイミングで処理される。
+     * TODO: sink()の方がいいか？
      * @param[in] event イベント
      */
     void enqueue (const Event* event);
+
+    /**
+     * ビューを追加する.
+     * @param[in] view  ビュー.
+     */
+    void add_view (GameView* view);
 
     /**
      * コントローラを追加する.
@@ -60,8 +71,14 @@ public:
     void add_actor (Actor* actr);
 
     /**
+     * ビューを削除する.
+     * @param[in] view  削除するビュー.
+     */
+    void remove_view (const GameView* view);
+
+    /**
      * コントローラを削除する.
-     * @param[in] ctrl  アクター.
+     * @param[in] ctrl  削除するアクター.
      */
     void remove_actor (const Actor* actr);
 
@@ -71,26 +88,33 @@ public:
      */
     bool end_of_game () const;
 
+
+    /**
+     *
+     */
+    virtual std::ostream& print (std::ostream& out) const;
+
 protected:
+
 
     /**
      * update()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  msec  秒数をmsecで指定する.
      */
-    virtual void update_impl (int msec) = 0;
+    virtual void update_impl (int msec) ;
     
     /**
      * create_game()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
      * @param[in]  ini_file 初期化ファイル.
      * @see load_game()
      */
-    virtual void load_game_impl (const char* ini_file) = 0;
+    virtual void load_game_impl (const char* ini_file);
 
     /**
      * end_of_game()関数の実装。ロジックの派生クラスはこの関数を再実装しなければならない.
      * @see end_of_game()
      */
-    virtual bool end_of_game_impl () const = 0;
+    virtual bool end_of_game_impl () const;
 
 protected:
     /**
@@ -123,5 +147,9 @@ protected:
 
 
 } // namespace erica {
+
+
+std::ostream& operator<< (std::ostream& out, const erica::GameLogic& logic);
+
 
 #endif

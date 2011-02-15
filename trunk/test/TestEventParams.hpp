@@ -5,11 +5,21 @@
 
 /**
  * イベント一覧
- * "ACTOR_STORE"     , 自分がアクターなら保存し、そうでないなら転送する。
- * "CONTROLLER_STORE", 自分がコントローラーなら保存し、そうでないなら転送する。
+ * || 名前               || 処理する人 ||
+ * || "ACTOR_STORE"      || Actor     ||
+ * || "CONTROLLER_STORE" || GameLogic ||
+ * ||                    || Controller||
  */
 
+struct LogicStoreParams {
+    int id;
+};
+
 struct ActorStoreParams {
+    int id;
+};
+
+struct ViewStoreParams {
     int id;
 };
 

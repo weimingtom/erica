@@ -6,9 +6,10 @@
 #include "Controller.hpp"
 #include <vector>
 
+
 namespace erica {
+
     class Event;
-}
 
 /**
  *
@@ -29,6 +30,6 @@ private:
     virtual bool handle_impl (const erica::Event* ev);
 };
 
-
+} // namespace erica {
 
 #endif

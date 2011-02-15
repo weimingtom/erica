@@ -63,6 +63,15 @@ void GameView:: remove_controller (const Controller* ctrl)
     
 }
 
+ostream& GameView:: print (ostream& ou) const
+{
+    ou << "GameView: \n";
+    ou << "  in.size  = " << in->size()  << "\n";
+    ou << "  out.size = " << out->size() << "\n";
+    ou << "  ctrls.size = " << ctrls.size() << "\n";
+    return ou;
+}
+
 /**
  * これ以下はNVI化した関数を呼び出す関数.
  */
@@ -85,4 +94,18 @@ void GameView:: update (int msec)
 void GameView:: render () const
 {
     render_impl ();
+}
+
+void GameView:: update_impl (int msec)
+{
+
+}
+
+void GameView:: render_impl () const
+{
+}
+
+ostream& operator<< (ostream& out, const GameView& view)
+{
+    return view.print (out);
 }

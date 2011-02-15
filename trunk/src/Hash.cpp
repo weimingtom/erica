@@ -4,8 +4,7 @@
 using namespace erica;
 
 /**
- * ゲームコーディングコンプリート、マーク・マクシャフリー著
- * より引用。
+ * ゲームコーディングコンプリート、マーク・マクシャフリー著より引用。
  */
 unsigned long long erica:: hash (const char* name)
 {
