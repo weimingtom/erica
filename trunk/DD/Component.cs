@@ -9,9 +9,8 @@ namespace DD {
     /// </summary>
     /// <remarks>
     /// コンポーネントはノードにアタッチされて、ノードに様々なの機能を追加します。
-    /// 
     /// </remarks>
-    public abstract class Component {
+    public class Component {
         #region Field
         Node node;
         #endregion
@@ -33,7 +32,13 @@ namespace DD {
         public Node Node {
             get { return node; }
         }
+
+
         #endregion
+
+        #region Event
+        #endregion
+
 
         #region Method
         /// <summary>
@@ -45,7 +50,26 @@ namespace DD {
         }
 
         /// <summary>
-        /// 更新処理
+        /// アタッチ処理後のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
+        /// </remarks>
+        public virtual void OnAttached () {
+        }
+
+        /// <summary>
+        /// デタッチ処理前のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
+        /// </remarks>
+        public virtual void OnDetached () {
+
+        }
+
+        /// <summary>
+        /// 更新処理のエントリーポイント
         /// </summary>
         /// <remarks>
         /// 更新処理を行う仮想関数のエントリーポイント。
@@ -63,19 +87,51 @@ namespace DD {
         /// キーボード処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// </remarks>
-        public virtual void OnPressed () {
+        public virtual void OnKeyPressed () {
         }
+
 
         /// <summary>
-        /// マウス処理
+        /// キーボード処理
         /// </summary>
         /// <remarks>
-        /// マウス処理を行う仮想関数のエントリーポイント。
+        /// キーボード処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// </remarks>
-        public virtual void OnClicked () {
+        public virtual void OnKeyReleased () {
         }
 
+
+        /// <summary>
+        /// マウスボタン処理
+        /// </summary>
+        /// <remarks>
+        /// マウス ボタンのクリック処理を行う仮想関数のエントリーポイント。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// </remarks>
+        /// <param name="button">マウスボタン</param>
+        /// <param name="x">マウスのX座標（ノード座標系）</param>
+        /// <param name="y">マウスのY座標（ノード座標系）</param>
+        public virtual void OnMouseButtonPressed (MouseButton button, int x, int y) {
+         }
+
+
+        /// <summary>
+        /// マウスボタン処理
+        /// </summary>
+        /// <remarks>
+        /// マウス ボタンのリリース処理を行う仮想関数のエントリーポイント。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// </remarks>
+        /// <param name="button">マウスボタン</param>
+        /// <param name="x">マウスのX座標（ノード座標系）</param>
+        /// <param name="y">マウスのY座標（ノード座標系）</param>
+        public virtual void OnMouseButtonReleased (MouseButton button, int x, int y) {
+        }
+
+    
         /// <summary>
         /// 描画処理
         /// </summary>
@@ -84,6 +140,7 @@ namespace DD {
         /// 通常はユーザーがこの仮想関数をオーバーライドする必要はありません。
         /// この仮想関数の適切な実装を提供するのはエンジン側の責任です。
         /// </remarks>
+        /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
         public virtual void OnDraw (object window) {
 
         }

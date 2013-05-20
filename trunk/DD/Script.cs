@@ -55,15 +55,7 @@ namespace DD {
         public void SetDirector (Director dirc) {
             this.director = dirc;
         }
-
-
-        /// <summary>
-        /// シーンのイベント処理
-        /// </summary>
-        public void Raise () {
-        }
-
-
+        
 
         #endregion
     }

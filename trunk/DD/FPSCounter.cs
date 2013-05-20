@@ -62,7 +62,7 @@ namespace DD {
             var win = window as RenderWindow;
             var txt = new Text (fps.ToString () + " fps", font);
             txt.CharacterSize = 16;
-            txt.Position = new Vector2f (Node.GlobalX, Node.GlobalY);
+            txt.Position = new Vector2f (Node.WindowX, Node.WindowY);
             win.Draw (txt);
         }
         #endregion

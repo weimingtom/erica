@@ -57,11 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="TestBoundingBox.cs" />
     <Compile Include="TestComponent.cs" />
     <Compile Include="TestNode.cs" />
     <Compile Include="TestResourceManager.cs" />
     <Compile Include="TestDirector.cs" />
     <Compile Include="TestScript.cs" />
+    <Compile Include="TestSprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DD\DD.GameEngine.csproj">
@@ -71,6 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SFML\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="media\abstract7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\image2x2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
