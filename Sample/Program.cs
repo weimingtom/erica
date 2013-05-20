@@ -14,19 +14,21 @@ namespace Sample {
             var g2d = DD.Graphics2D.GetInstance ();
             g2d.CreateWindow (800, 450, "こんにちは、世界");
 
-            var node1 = new Node ();
-            node1.Attach (new FPSCounter());
-
-            var node2 = new Node ();
-            node2.Attach (new DD.Sprite ("media/PhilosophyOfLife.png"));
+            var spr = new Sprite ("media/image32x32.png");
+            var node = new Node ();
+            node.Attach (spr);
+            node.SetBoundingBox (0, 0, spr.Width, spr.Height);
+            node.X = 100;
+            node.Y = 100;
             
             var script = new Script ("First Script");
-            script.AddChild (node2);
-            script.AddChild (node1);
+            script.Attach (new FPSCounter());
+            script.Attach (new Sprite ("media/PhilosophyOfLife.png"));
+            script.AddChild (node);
             
             var director = new Director ();
             director.PushScript (script);
-            g2d.OnClose += delegate (object sender, EventArgs eventArgs) {
+            g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
                 director.Exit ();
             };
 
@@ -35,6 +37,7 @@ namespace Sample {
 
             while (director.IsAlive) {
                 director.Update ();
+                g2d.Dispatch (director.CurrentScript);
                 g2d.Draw (director.CurrentScript);
             }
 

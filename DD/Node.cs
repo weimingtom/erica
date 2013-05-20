@@ -9,7 +9,7 @@ namespace DD {
     /// </summary>
     /// <remarks>
     /// スクリプトを構成するノード クラス。
-    /// ノードは <see cref="Script"/> を頂点とする木構造のグラフを構成します。
+    /// ノードは <see cref="Root"/> を頂点とする木構造のグラフを構成します。
     /// </remarks>
     public class Node {
 
@@ -20,6 +20,7 @@ namespace DD {
         List<Component> components;
         int x;
         int y;
+        BoundingBox bbox;
         bool visible;
         bool clickable;
         #endregion
@@ -39,6 +40,7 @@ namespace DD {
             this.name = name;
             this.x = 0;
             this.y = 0;
+            this.bbox = new BoundingBox ();
             this.visible = true;
             this.clickable = true;
             this.parent = null;
@@ -57,7 +59,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// ローカル座標位置X
+        /// 位置X（ローカル座標系）
         /// </summary>
         public int X {
             get { return x; }
@@ -65,7 +67,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// ローカル座標位置Y
+        /// 座標位置Y（ローカル座標系）
         /// </summary>
         public int Y {
             get { return y; }
@@ -73,17 +75,42 @@ namespace DD {
         }
 
         /// <summary>
-        /// グローバル座標位置X
+        /// 位置X（ウィンドウ座標系）
         /// </summary>
-        public int GlobalX {
+        public int WindowX {
             get { return Upwards.Aggregate (0, (x, node) => x + node.x); }
         }
 
         /// <summary>
-        /// グローバル座標位置Y
+        /// 位置Y（ウィンドウ座標系）
         /// </summary>
-        public int GlobalY {
+        public int WindowY {
             get { return Upwards.Aggregate (0, (y, node) => y + node.y); }
+        }
+
+        /// <summary>
+        /// バウンディング ボックス
+        /// </summary>
+        /// <remarks>
+        /// このノードのバウンディング ボックス（ローカル座標系）を返します。
+        /// バウンディング ボックスはノードのクリック領域として利用されます。
+        /// </remarks>
+        public BoundingBox BoundingBox {
+            get { return bbox; }
+        }
+
+        /// <summary>
+        /// ローカル座標系への変換
+        /// </summary>
+        /// <remarks>
+        /// 指定のウィンドウ座標(<paramref name="x"/>,<paramref name="y"/>)を
+        /// このノードのローカル座標系へ変換します。
+        /// </remarks>
+        /// <param name="x">X座標</param>
+        /// <param name="y">Y座標</param>
+        public void TransformToLocal (ref int x, ref int y) {
+            x = x - WindowX;
+            y = y - WindowY;
         }
 
         /// <summary>
@@ -181,7 +208,14 @@ namespace DD {
             }
         }
 
-
+        /// <summary>
+        /// ルート親ノード
+        /// </summary>
+        public Node Root {
+            get {
+                return Upwards.LastOrDefault ();
+            }
+        }
 
         /// <summary>
         /// コンポーネントを列挙する列挙子
@@ -204,8 +238,9 @@ namespace DD {
             if (comp == null) {
                 throw new ArgumentNullException ("Component is null");
             }
-            comp.SetNode(this);
             this.components.Add (comp);
+            comp.SetNode (this);
+            comp.OnAttached ();
         }
 
         /// <summary>
@@ -219,6 +254,7 @@ namespace DD {
             if (comp == null) {
                 return;
             }
+            comp.OnDetached ();
             comp.SetNode (null);
             this.components.Remove (comp);
         }
@@ -231,8 +267,11 @@ namespace DD {
             if (node == null) {
                 throw new ArgumentNullException ("Node is null");
             }
-            if (node.Parent != null) {
+            if (node.parent != null) {
                 throw new ArgumentException ("Node has parent already");
+            }
+            if (node == this) {
+                throw new ArgumentException ("Add myself is invalid");
             }
             node.parent = this;
             this.children.Add (node);
@@ -241,17 +280,31 @@ namespace DD {
         /// <summary>
         /// 子ノードの削除
         /// </summary>
-        /// <param name="child">ノード</param>
-        public void RemoveChild (Node child) {
-            if (child == null) {
+        /// <param name="node">ノード</param>
+        public void RemoveChild (Node node) {
+            if (node == null) {
                 throw new ArgumentNullException ("Node is null");
             }
-            if (child.Parent != this) {
+            if (node.parent != this) {
                 throw new ArgumentNullException ("Node is not child of this");
             }
-            child.parent = null;
-            this.children.Remove (child);
+            node.parent = null;
+            this.children.Remove (node);
 
+        }
+
+        /// <summary>
+        /// バウンディング ボックスの変更
+        /// </summary>
+        /// <param name="x">ボックスの左上のX座標</param>
+        /// <param name="y">ボックスの左上のY座標</param>
+        /// <param name="width">ボックスの幅</param>
+        /// <param name="height">ボックスの高さ</param>
+        public void SetBoundingBox (int x, int y, int width, int height) {
+            if (width < 0 || height < 0) {
+                throw new ArgumentException ("Width or Hegiht is invalid");
+            }
+            this.bbox = new BoundingBox (x, y, x + width, y + height);
         }
 
         /// <summary>

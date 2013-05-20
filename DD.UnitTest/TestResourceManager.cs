@@ -13,7 +13,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestResourceManager {
         [TestMethod]
-        public void TestMethod1 () {
-           }
+        public void Test_New () {
+        }
     }
 }
