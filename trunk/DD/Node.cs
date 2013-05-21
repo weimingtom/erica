@@ -290,7 +290,16 @@ namespace DD {
             }
             node.parent = null;
             this.children.Remove (node);
+        }
 
+        /// <summary>
+        /// ノードの移動
+        /// </summary>
+        /// <param name="x">X方向の移動距離（ピクセル数）</param>
+        /// <param name="y">Y方向の移動距離（ピクセル数）</param>
+        public void Move (int x, int y) {
+            this.x += x;
+            this.y += y;
         }
 
         /// <summary>

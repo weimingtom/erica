@@ -27,7 +27,7 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <remarks>
-        /// シーン名は単なる識別用の文字列でエンジン内部では使用しません。
+        /// スクリプト名は単なる識別用の文字列でエンジン内部では使用しません。
         /// </remarks>
         /// <param name="name">シーン名</param>
         public Script (string name) : base(name) {
@@ -40,7 +40,7 @@ namespace DD {
         /// ディレクター
         /// </summary>
         /// <remarks>
-        /// このシーンを制御するディレクター
+        /// このスクリプトを制御するディレクター
         /// </remarks>
         public Director Director {
             get { return director; }

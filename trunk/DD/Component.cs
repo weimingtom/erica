@@ -106,7 +106,7 @@ namespace DD {
         /// マウスボタン処理
         /// </summary>
         /// <remarks>
-        /// マウス ボタンのクリック処理を行う仮想関数のエントリーポイント。
+        /// マウス ボタンのクリック イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// 座標位置(X,Y)はノードのローカル座標系です。
         /// </remarks>
@@ -121,7 +121,7 @@ namespace DD {
         /// マウスボタン処理
         /// </summary>
         /// <remarks>
-        /// マウス ボタンのリリース処理を行う仮想関数のエントリーポイント。
+        /// マウス ボタンのリリース イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// 座標位置(X,Y)はノードのローカル座標系です。
         /// </remarks>
@@ -129,6 +129,34 @@ namespace DD {
         /// <param name="x">マウスのX座標（ノード座標系）</param>
         /// <param name="y">マウスのY座標（ノード座標系）</param>
         public virtual void OnMouseButtonReleased (MouseButton button, int x, int y) {
+        }
+
+        /// <summary>
+        /// マウスボタン処理
+        /// </summary>
+        /// <remarks>
+        /// マウス ボタンのフォーカス イン イベント処理を行う仮想関数のエントリーポイント。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// </remarks>
+        /// <param name="button">マウス ボタン</param>
+        /// <param name="x">マウスのX座標（ノード座標系）</param>
+        /// <param name="y">マウスのY座標（ノード座標系）</param>
+        public virtual void OnMouseFocusIn (MouseButton button, int x, int y) {
+        }
+
+        /// <summary>
+        /// マウスボタン処理
+        /// </summary>
+        /// <remarks>
+        /// マウス ボタンのフォーカス アウト イベント処理を行う仮想関数のエントリーポイント。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// </remarks>
+        /// <param name="button">マウス ボタン</param>
+        /// <param name="x">マウスのX座標（ノード座標系）</param>
+        /// <param name="y">マウスのY座標（ノード座標系）</param>
+        public virtual void OnMouseFocusOut (MouseButton button, int x, int y) {
         }
 
     

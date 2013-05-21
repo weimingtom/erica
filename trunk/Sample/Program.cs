@@ -12,19 +12,22 @@ namespace Sample {
         static void Main (string[] args) {
 
             var g2d = DD.Graphics2D.GetInstance ();
-            g2d.CreateWindow (800, 450, "こんにちは、世界");
+            g2d.CreateWindow (800, 600, "こんにちは、世界");
 
-            var spr = new Sprite ("media/image32x32.png");
-            var node = new Node ();
-            node.Attach (spr);
-            node.SetBoundingBox (0, 0, spr.Width, spr.Height);
-            node.X = 100;
-            node.Y = 100;
-            
+            var btn1 = new Button (128, 128);
+            btn1.LoadTexutre (ButtonState.Normal, "media/image128x128(Red).png");
+            btn1.LoadTexutre (ButtonState.Focused, "media/image128x128(Green).png");
+            btn1.LoadTexutre (ButtonState.Pressed, "media/image128x128(Blue).png");
+            btn1.LoadTexutre (ButtonState.PressedFocused, "media/image128x128(Cyan).png");
+            var node1 = new Node ("node1");
+            node1.Attach (btn1);
+            node1.Move(100,100);
+
+
             var script = new Script ("First Script");
-            script.Attach (new FPSCounter());
             script.Attach (new Sprite ("media/PhilosophyOfLife.png"));
-            script.AddChild (node);
+            script.Attach (new FPSCounter ());
+            script.AddChild (node1);
             
             var director = new Director ();
             director.PushScript (script);

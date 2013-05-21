@@ -16,8 +16,6 @@ namespace DD.UnitTest {
             var spr = new Sprite ();
 
             Assert.AreEqual ("", spr.TextureName);
-            Assert.AreEqual (0, spr.OffsetX);
-            Assert.AreEqual (0, spr.OffsetY);
             Assert.AreEqual (0, spr.Width);
             Assert.AreEqual (0, spr.Height);
         }
@@ -27,8 +25,6 @@ namespace DD.UnitTest {
             var spr = new Sprite ("abstract7.png");
 
             Assert.AreEqual ("abstract7.png", spr.TextureName);
-            Assert.AreEqual (0, spr.OffsetX);
-            Assert.AreEqual (0, spr.OffsetY);
             Assert.AreEqual (614, spr.Width);
             Assert.AreEqual (1024, spr.Height);
         }
@@ -39,22 +35,10 @@ namespace DD.UnitTest {
             spr.LoadTexture ("abstract7.png");
 
             Assert.AreEqual ("abstract7.png", spr.TextureName);
-            Assert.AreEqual (0, spr.OffsetX);
-            Assert.AreEqual (0, spr.OffsetY);
             Assert.AreEqual (614, spr.Width);
             Assert.AreEqual (1024, spr.Height);
         }
 
-        [TestMethod]
-        public void Test_OffsetXY () {
-            var spr = new Sprite ();
-            spr.OffsetX = 1;
-            spr.OffsetY = 2;
-
-            Assert.AreEqual (1, spr.OffsetX);
-            Assert.AreEqual (2, spr.OffsetY);
-        }
-
-
+   
     }
 }

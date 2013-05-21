@@ -25,4 +25,30 @@ namespace DD {
         Middle,
     }
 
+    /// <summary>
+    /// ボタン状態
+    /// </summary>
+    public enum ButtonState {
+        /// <summary>
+        /// 標準時
+        /// </summary>
+       Normal,
+
+        /// <summary>
+        /// フォーカスを得ている時
+        /// </summary>
+        Focused,
+
+        /// <summary>
+        /// 押されている時
+        /// </summary>
+        Pressed,
+
+        /// <summary>
+        /// 押された状態でフォーカスを得ている時
+        /// </summary>
+        PressedFocused,
+
+    }
+
 }
