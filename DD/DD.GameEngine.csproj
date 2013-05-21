@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoundingBox.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Director.cs" />
     <Compile Include="FPSCounter.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="TestPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\csfml-audio-2.dll">

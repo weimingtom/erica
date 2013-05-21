@@ -212,5 +212,14 @@ namespace DD.UnitTest {
             Assert.AreEqual (6, x);
             Assert.AreEqual (4, y);
         }
+
+        [TestMethod]
+        public void Test_Move () {
+            var node = new Node ();
+            node.Move (1, 2);
+
+            Assert.AreEqual (1, node.X);
+            Assert.AreEqual (2, node.Y);
+        }
     }
 }

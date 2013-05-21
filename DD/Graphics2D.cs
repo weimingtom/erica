@@ -24,12 +24,14 @@ namespace DD {
         static Graphics2D g2d;
         RenderWindow win;
         Script workingScript;
+        Node prevHit;
         #endregion
 
         #region Constructor
         private Graphics2D () {
             this.win = null;
             this.workingScript = null;
+            this.prevHit = null;
         }
         #endregion
 
@@ -57,8 +59,6 @@ namespace DD {
                 g2d.OnClosed.Invoke (g2d, null);
             }
         }
-
-
 
         /// <summary>
         /// <see cref="Graphics2D"/> クラスのインスタンスの取得
@@ -152,11 +152,50 @@ namespace DD {
             }
         }
 
+        private void MouseMovedHandler (object sender, MouseMoveEventArgs move) {
+            var hit = (Node)null;
+
+            foreach (var node in workingScript.Downwards.Reverse ()) {
+                var x = move.X;
+                var y = move.Y;
+                node.TransformToLocal (ref x, ref y);
+                if (node.BoundingBox.Contain (x, y)) {
+                    hit = node;
+                    break;
+                }
+            }
+
+            if (hit != prevHit) {
+                if (prevHit != null) {
+                    var x = move.X;
+                    var y = move.Y;
+                    prevHit.TransformToLocal (ref x, ref y);
+                    foreach (var comp in prevHit.Components) {
+                        comp.OnMouseFocusOut (MouseButton.Left, x, y);
+                    }
+                }
+                if (hit != null) {
+                    var x = move.X;
+                    var y = move.Y;
+                    hit.TransformToLocal (ref x, ref y);
+                    foreach (var comp in hit.Components) {
+                        comp.OnMouseFocusIn (MouseButton.Left, x, y);
+                    }
+                }
+                this.prevHit = hit;
+            }
+
+        }
+
         /// <summary>
         /// 保留中のイベントのディスパッチ
         /// </summary>
         /// <remarks>
         /// デバイスで保留中のイベントを指定のスクリプト <paramref name="script"/> にディスパッチします。
+        /// <note>
+        /// スクリプトが切り替わった時に古い方にマウスのフォーカス アウト イベントが飛ぶ可能性があるが抑制すべき？
+        /// 現状では特に対策をしていない。
+        /// </note>
         /// </remarks>
         /// <param name="script">スクリプト</param>
         public void Dispatch (Script script) {
@@ -168,12 +207,14 @@ namespace DD {
 
             win.MouseButtonPressed += MouseButtonPressedHandler;
             win.MouseButtonReleased += MouseButtonReleasedHandler;
+            win.MouseMoved += MouseMovedHandler;
 
             win.DispatchEvents ();
 
             win.MouseButtonPressed -= MouseButtonPressedHandler;
             win.MouseButtonReleased -= MouseButtonReleasedHandler;
-            
+            win.MouseMoved -= MouseMovedHandler;
+
             this.workingScript = null;
         }
 
