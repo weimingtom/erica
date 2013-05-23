@@ -51,6 +51,9 @@
     <Reference Include="sfmlnet-window-2">
       <HintPath>libs\sfmlnet-window-2.dll</HintPath>
     </Reference>
+    <Reference Include="Sprache">
+      <HintPath>libs\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -59,6 +62,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer">
+      <HintPath>libs\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoundingBox.cs" />
@@ -76,9 +82,12 @@
     <Compile Include="Graphics2D.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Script.cs" />
+    <Compile Include="LineParser.cs" />
+    <Compile Include="World.cs" />
     <Compile Include="Sprite.cs" />
-    <Compile Include="TestPlayer.cs" />
+    <Compile Include="Line.cs" />
+    <Compile Include="LineReader.cs" />
+    <Compile Include="YAMLParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\csfml-audio-2.dll">
@@ -97,17 +106,17 @@
     <Content Include="libs\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Properties\dd_logo.png" />
-    <None Include="Properties\dd-logo.png" />
+    <None Include="Resources\Konatu.ttf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\arial.ttf" />
+    <None Include="Resources\arial.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

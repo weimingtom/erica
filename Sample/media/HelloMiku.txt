@@ -1,0 +1,51 @@
+﻿# ファイルの先頭で'#'から始まる行はコメントです
+# 何行でも続きます
+# コメント行はファイルの途中では使えません。
+
+- Miku
++ voice-001.wave
+ミクだよー1
+
+- Miku
++ voice-002.wave
+ミクだよー2
+
+- Miku
++ voice-003.wave
+ミクだよー3
+
+- Miku
++ voice-004.wave
+ミクだよー4
+
+- Miku
++ voice-005.wave
+ミクだよー5
+
+- Miku
++ voice-006.wave
+* !Sample.MyEventArgs { X: 100, Y: 200 } 
+ミクだよー6 (イベントあり）
+
+- Miku
++ voice-007.wave
+ミクだよー7 （1行目）
+ミクだよー7 （2行目）
+ミクだよー7 （3行目）
+
+- Miku
++ voice-008.wave
+ミクだよー8
+
+- Miku
++ voice-009.wave
+ミクだよー9
+
+- Miku
++ voice-010.wave
+ミクだよー10
+** 終わり **
+
+
+
+

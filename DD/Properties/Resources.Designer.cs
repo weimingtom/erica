@@ -69,5 +69,15 @@ namespace DD.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   型 System.Byte[] のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static byte[] Konatu {
+            get {
+                object obj = ResourceManager.GetObject("Konatu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

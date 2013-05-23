@@ -32,12 +32,12 @@ namespace DD {
     /// 複数のスクリプトをスタック構造で管理し、上記の操作は一番上のスクリプトに対して行われます。
     /// この一番上のスクリプトをカレント スクリプトと呼びます。
     /// </remarks>
-    /// <seealso cref="Script"/>
+    /// <seealso cref="World"/>
     public class Director {
 
         #region Field
         DirectorState state;
-        Stack<Script> scripts;
+        Stack<World> scripts;
         Stopwatch watch;
         #endregion
 
@@ -47,7 +47,7 @@ namespace DD {
         /// </summary>
         public Director () {
             this.state = DirectorState.Alive;
-            this.scripts = new Stack<Script> ();
+            this.scripts = new Stack<World> ();
             this.watch = new Stopwatch ();
 
             watch.Start ();
@@ -73,7 +73,7 @@ namespace DD {
         /// <remarks>
         /// 現在実行中のスクリプトを取得します。
         /// </remarks>
-        public Script CurrentScript {
+        public World CurrentScript {
             get {return scripts.FirstOrDefault();}
         }
 
@@ -93,7 +93,7 @@ namespace DD {
         /// <remarks>
         /// このディレクターにセットされたスクリプトをすべて列挙します。
         /// </remarks>
-        public IEnumerable<Script> Scripts {
+        public IEnumerable<World> Scripts {
             get { return scripts; }
         }
         #endregion
@@ -118,7 +118,7 @@ namespace DD {
         /// すでに追加されているスクリプトを再度登録するとエラーを発生します。
         /// </remarks>
         /// <param name="script">スクリプト</param>
-        public void PushScript (Script script){
+        public void PushScript (World script){
             if (script.Director != null) {
                 throw new InvalidOperationException ("Script has another director");
             }

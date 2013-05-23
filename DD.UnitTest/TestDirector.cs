@@ -26,7 +26,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_CurrnetScene () {
             var direc = new Director ();
-            var sce1 = new Script ("Scene1");
+            var sce1 = new World ("Scene1");
 
             direc.PushScript (sce1);
 
@@ -36,8 +36,8 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_SceneCount () {
             var direc = new Director ();
-            var sce1 = new Script ("Scene1");
-            var sce2 = new Script ("Scene2");
+            var sce1 = new World ("Scene1");
+            var sce2 = new World ("Scene2");
             direc.PushScript (sce1);
             direc.PushScript (sce2);
 
@@ -47,8 +47,8 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Scenes () {
             var direc = new Director ();
-            var sce1 = new Script ("Scene1");
-            var sce2 = new Script ("Scene2");
+            var sce1 = new World ("Scene1");
+            var sce2 = new World ("Scene2");
             direc.PushScript (sce1);
             direc.PushScript (sce2);
 
@@ -59,12 +59,12 @@ namespace DD.UnitTest {
         public void Test_AddScene () {
             var director = new Director ();
 
-            var scene1 = new Script ("Scene1");
+            var scene1 = new World ("Scene1");
             director.PushScript (scene1);
             Assert.AreEqual (1, director.ScriptCount);
             Assert.AreEqual (scene1, director.CurrentScript);
 
-            var scene2 = new Script ("Scene2");
+            var scene2 = new World ("Scene2");
             director.PushScript (scene2);
             Assert.AreEqual (2, director.ScriptCount);
             Assert.AreEqual (scene2, director.CurrentScript);
@@ -74,8 +74,8 @@ namespace DD.UnitTest {
         public void Test_RemoveScene () {
             var director = new Director ();
 
-            var scene1 = new Script ("Scene1");
-            var scene2 = new Script ("Scene2");
+            var scene1 = new World ("Scene1");
+            var scene2 = new World ("Scene2");
             director.PushScript (scene1);
             director.PushScript (scene2);
 
