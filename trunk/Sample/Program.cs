@@ -14,23 +14,21 @@ namespace Sample {
             var g2d = DD.Graphics2D.GetInstance ();
             g2d.CreateWindow (800, 600, "こんにちは、世界");
 
-            var btn1 = new Button (128, 128);
-            btn1.LoadTexutre (ButtonState.Normal, "media/image128x128(Red).png");
-            btn1.LoadTexutre (ButtonState.Focused, "media/image128x128(Green).png");
-            btn1.LoadTexutre (ButtonState.Pressed, "media/image128x128(Blue).png");
-            btn1.LoadTexutre (ButtonState.PressedFocused, "media/image128x128(Cyan).png");
-            var node1 = new Node ("node1");
-            node1.Attach (btn1);
-            node1.Move(100,100);
+            var wld = new World ("First Script");
+            wld.Attach (new Sprite ("media/PhilosophyOfLife.png"));
+            wld.Attach (new FPSCounter ());
 
+            var node = new Node ();
+            var player = new LineReader (800, 150);
+            player.LoadLine("media/HelloMiku.txt");
+            var control = new MyComponent (player);
+            node.Attach (player);
+            node.Attach (control);
+            node.Move (0, 450);
+            wld.AddChild (node);
 
-            var script = new Script ("First Script");
-            script.Attach (new Sprite ("media/PhilosophyOfLife.png"));
-            script.Attach (new FPSCounter ());
-            script.AddChild (node1);
-            
             var director = new Director ();
-            director.PushScript (script);
+            director.PushScript (wld);
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
                 director.Exit ();
             };

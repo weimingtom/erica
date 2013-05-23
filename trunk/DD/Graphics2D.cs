@@ -18,12 +18,12 @@ namespace DD {
     /// スクリプトを描画するとともに、キーボード・マウスなどのIOイベントを処理します。
     /// このクラスはシングルトン化されています。
     /// </remarks>
-    /// <seealso cref="Script"/>
+    /// <seealso cref="World"/>
     public class Graphics2D : IDisposable {
         #region Field
         static Graphics2D g2d;
         RenderWindow win;
-        Script workingScript;
+        World workingScript;
         Node prevHit;
         #endregion
 
@@ -79,7 +79,7 @@ namespace DD {
         /// 指定のスクリプトを描画します。
         /// </remarks>
         /// <param name="script">スクリプト</param>
-        public void Draw (Script script) {
+        public void Draw (World script) {
             if (script == null) {
                 return;
             }
@@ -128,7 +128,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// イベントを処理するハンドラー
+        /// マウスボタンの解放を処理するハンドラー
         /// </summary>
         /// <param name="sender">ウィンドウ</param>
         /// <param name="released">マウス ボタン イベント引数</param>
@@ -152,6 +152,11 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// マウス移動を処理するハンドラー
+        /// </summary>
+        /// <param name="sender">ウィンドウ</param>
+        /// <param name="move">マウス移動引数</param>
         private void MouseMovedHandler (object sender, MouseMoveEventArgs move) {
             var hit = (Node)null;
 
@@ -191,14 +196,15 @@ namespace DD {
         /// 保留中のイベントのディスパッチ
         /// </summary>
         /// <remarks>
-        /// デバイスで保留中のイベントを指定のスクリプト <paramref name="script"/> にディスパッチします。
+        /// デバイスで保留中のイベントを指定のスクリプト <paramref name="script"/> にディスパッチするとともに、
+        /// ゲーム内部で発生するイベントをディスパッチします。
         /// <note>
         /// スクリプトが切り替わった時に古い方にマウスのフォーカス アウト イベントが飛ぶ可能性があるが抑制すべき？
         /// 現状では特に対策をしていない。
         /// </note>
         /// </remarks>
         /// <param name="script">スクリプト</param>
-        public void Dispatch (Script script) {
+        public void Dispatch (World script) {
             if (script == null) {
                 throw new ArgumentNullException ("Script is null");
             }
@@ -214,6 +220,12 @@ namespace DD {
             win.MouseButtonPressed -= MouseButtonPressedHandler;
             win.MouseButtonReleased -= MouseButtonReleasedHandler;
             win.MouseMoved -= MouseMovedHandler;
+
+            foreach (var node in script.Downwards) {
+                foreach (var cmp in node.Components) {
+                    cmp.OnDispatch ();
+                }
+            }
 
             this.workingScript = null;
         }

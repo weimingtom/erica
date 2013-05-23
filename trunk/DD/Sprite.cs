@@ -7,10 +7,11 @@ using SFML.Window;
 
 namespace DD {
     /// <summary>
-    /// スプライト クラス
+    /// スプライト コンポーネント
     /// </summary>
     /// <remarks>
     /// スプライトは矩形・固定サイズの画像を表示します。
+    /// スプライトはバウンディングボックスを書き換えません。
     /// </remarks>
     public partial class Sprite : Component {
         #region Field

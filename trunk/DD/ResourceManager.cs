@@ -23,8 +23,10 @@ namespace DD {
         static ResourceManager rm;
         string fontDirectory;
         string textureDirectory;
+        string lineDirectory;
         Dictionary<string, Font> fonts;
         Dictionary<string, Texture> textures;
+        Dictionary<string, Line[]> lines;
         #endregion
 
         #region Constructor
@@ -34,8 +36,10 @@ namespace DD {
         internal ResourceManager () {
             this.fontDirectory = "./";
             this.textureDirectory = "./";
+            this.lineDirectory = "./";
             this.fonts = new Dictionary<string, Font> ();
             this.textures = new Dictionary<string, Texture> ();
+            this.lines = new Dictionary<string, Line[]> ();
         }
 
         /// <summary>
@@ -67,6 +71,13 @@ namespace DD {
         }
 
         /// <summary>
+        /// ライン ディレクトリ
+        /// </summary>
+        public string LineDirectory {
+            get { return lineDirectory; }
+        }
+
+        /// <summary>
         /// キャッシュ済みの全フォントを列挙する列挙子
         /// </summary>
         public IEnumerable<KeyValuePair<string, Font>> Fonts {
@@ -78,6 +89,13 @@ namespace DD {
         /// </summary>
         public IEnumerable<KeyValuePair<string, Texture>> Textures {
             get { return textures; }
+        }
+
+        /// <summary>
+        /// キャッシュ済みの全ラインを列挙する列挙子
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, Line[]>> Lines {
+            get { return lines; }
         }
 
         #endregion
@@ -110,6 +128,18 @@ namespace DD {
 
 
         /// <summary>
+        /// ライン ディレクトリーの変更
+        /// </summary>
+        /// <remarks>
+        /// デフォルトは""で実行ファイルと同じディレクトリから検索します。
+        /// 指定するディレクトリー名の最後は必ず"/"で終わってください。
+        /// </remarks>
+        /// <param name="name">ディレクトリ名</param>
+        public void SetLineDirectory (string name) {
+            this.lineDirectory = name;
+        }
+
+        /// <summary>
         /// フォントの取得
         /// </summary>
         /// <remarks>
@@ -130,14 +160,14 @@ namespace DD {
         /// デフォルト フォントの取得
         /// </summary>
         /// <remarks>
-        /// デフォルト フォント（"arial.ttf"）を取得します。
+        /// デフォルト フォント（"Konatu.ttf", 子夏フォント）を取得します。
         /// デフォルト フォントはユーザーが用意しなくても常に使用可能です。
         /// </remarks>
         /// <returns>フォント</returns>
         public Font GetDefaultFont () {
-            var name = "arial.ttf";
+            var name = "Konatu.ttf";
             if (!fonts.ContainsKey (name)) {
-                var ttf = new MemoryStream (Properties.Resources.arial);
+                var ttf = new MemoryStream (Properties.Resources.Konatu);
                 this.fonts.Add (name, new Font (ttf));
             }
 
@@ -161,7 +191,17 @@ namespace DD {
             return textures[name];
         }
 
-
+        /// <summary>
+        /// ラインの取得
+        /// </summary>
+        /// <param name="name">ライン ファイル名</param>
+        /// <returns>ラインの配列</returns>
+        public Line[] GetLine (string name) {
+            if (!lines.ContainsKey (name)) {
+                this.lines.Add (name, Line.Load (name));
+            }
+            return lines[name];
+        }
 
         /// <summary>
         /// フォント リソースの解放
@@ -184,6 +224,13 @@ namespace DD {
 
         }
 
+        /// <summary>
+        /// ライン リソースの解放
+        /// </summary>
+        private void ReleaseLine () {
+            // do nothing.
+        }
+
 
         /// <summary>
         /// 全リソースの解放
@@ -191,6 +238,7 @@ namespace DD {
         public void ReleaseAll () {
             ReleaseFont ();
             ReleaseTexture ();
+            ReleaseLine ();
         }
 
         /// <inheritdoc/>

@@ -27,7 +27,7 @@ namespace DD {
 
         #region Property
         /// <summary>
-        /// ノード
+        /// 所属ノード
         /// </summary>
         public Node Node {
             get { return node; }
@@ -56,7 +56,7 @@ namespace DD {
         /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
         /// </remarks>
         public virtual void OnAttached () {
-        }
+           }
 
         /// <summary>
         /// デタッチ処理前のエントリーポイント
@@ -69,6 +69,16 @@ namespace DD {
         }
 
         /// <summary>
+        /// ディスパッチ処理のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// コンポーネントで独自にイベントを発行したい場合はこれをオーバーライドします。
+        /// 通常ユーザーがこれを使用する事はありません。
+        /// </remarks>
+        public virtual void OnDispatch () {
+        }
+
+        /// <summary>
         /// 更新処理のエントリーポイント
         /// </summary>
         /// <remarks>
@@ -78,6 +88,22 @@ namespace DD {
         /// </remarks>
         /// <param name="msec">ゲームが起動してからの起動時間(msec)</param>
         public virtual void OnUpdate (long msec) {
+        }
+
+        /// <summary>
+        /// ライン イベントのエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// イベントが設定されたラインを再生する時呼び出される仮想関数のエントリーポイント。
+        /// このイベントは <see cref="LineReader"/> と同じノードにアタッチされたコンポーネントでのみ有効です。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// 第1引数の <paramref name="sender"/> はイベントの元になったラインです。
+        /// 第2引数の <paramref name="args"/> はラインに設定されていた引数オブジェクトです。
+        /// 実際の型はラインに記述されていた型です。
+        /// </remarks>
+        /// <param name="sender">イベントが設定されていたライン</param>
+        /// <param name="args">任意のオブジェクト</param>
+        public virtual void OnLineEvent (Line sender, object args) {
         }
 
         /// <summary>
