@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoundingBox.cs" />
+    <Compile Include="Rectangle.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Director.cs" />
@@ -83,6 +83,8 @@
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineParser.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="TiledTexture.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Line.cs" />

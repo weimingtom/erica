@@ -20,7 +20,7 @@ namespace DD {
         List<Component> components;
         int x;
         int y;
-        BoundingBox bbox;
+        Rectangle bbox;
         bool visible;
         bool clickable;
         #endregion
@@ -40,7 +40,7 @@ namespace DD {
             this.name = name;
             this.x = 0;
             this.y = 0;
-            this.bbox = new BoundingBox ();
+            this.bbox = new Rectangle ();
             this.visible = true;
             this.clickable = true;
             this.parent = null;
@@ -95,7 +95,7 @@ namespace DD {
         /// このノードのバウンディング ボックス（ローカル座標系）を返します。
         /// バウンディング ボックスはノードのクリック領域として利用されます。
         /// </remarks>
-        public BoundingBox BoundingBox {
+        public Rectangle BoundingBox {
             get { return bbox; }
         }
 
@@ -313,7 +313,7 @@ namespace DD {
             if (width < 0 || height < 0) {
                 throw new ArgumentException ("Width or Hegiht is invalid");
             }
-            this.bbox = new BoundingBox (x, y, x + width, y + height);
+            this.bbox = new Rectangle (x, y, width, height);
         }
 
         /// <summary>

@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DD.UnitTest {
     [TestClass]
-    public class TestBoundingBox {
+    public class TestRectangle {
         [TestMethod]
         public void Test_New () {
-            var bbox = new BoundingBox (1, 1, 3, 3);
+            var bbox = new Rectangle (1, 1, 2, 2);
 
             Assert.AreEqual (1, bbox.X);
             Assert.AreEqual (1, bbox.Y);
@@ -21,7 +21,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Contain () {
-            var bbox = new BoundingBox (1, 1, 3, 3);
+            var bbox = new Rectangle (1, 1, 2, 2);
 
             Assert.AreEqual (true, bbox.Contain (2, 2));
 

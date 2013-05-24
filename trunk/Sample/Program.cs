@@ -15,16 +15,16 @@ namespace Sample {
             g2d.CreateWindow (800, 600, "こんにちは、世界");
 
             var wld = new World ("First Script");
-            wld.Attach (new Sprite ("media/PhilosophyOfLife.png"));
             wld.Attach (new FPSCounter ());
 
             var node = new Node ();
-            var player = new LineReader (800, 150);
-            player.LoadLine("media/HelloMiku.txt");
-            var control = new MyComponent (player);
-            node.Attach (player);
-            node.Attach (control);
-            node.Move (0, 450);
+            var spr = new Sprite (1);
+            spr.SetTexture (0,new TiledTexture ("media/Explosion.png", 4, 8, 30)); 
+            var cmp = new MyComponent (spr);
+            node.Attach (spr);
+            node.Attach (cmp);
+            node.Move (0, 32);
+            node.SetBoundingBox (0, 0, 800, 450);
             wld.AddChild (node);
 
             var director = new Director ();

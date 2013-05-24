@@ -11,116 +11,116 @@ namespace DD {
     /// </summary>
     /// <remarks>
     /// スプライトは矩形・固定サイズの画像を表示します。
-    /// スプライトはバウンディングボックスを書き換えません。
+    /// スプライトは複数のテクスチャーをセット可能で、そのうちの1つだけを選んで有効化します。
+    /// 有効なテクスチャーを次々に変更する事で「ぱらぱらアニメ」のような簡易アニメーションを実装可能です。
+    /// スプライトはバウンディング ボックスを書き換えません。
     /// </remarks>
     public partial class Sprite : Component {
         #region Field
-        string name;
-        int width;
-        int height;
-        Texture tex;
+        Texture[] texs;
+        int active;
         #endregion
 
         #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
-        public Sprite () {
-            this.name = "";
-            this.width = 0;
-            this.height = 0;
-            this.tex = null;
-        }
-
-        /// <summary>
-        /// コンストラクター
-        /// </summary>
         /// <remarks>
-        /// インスタンスを作成し、指定のテクスチャーをロードします。
+        /// テクスチャーを最大 <paramref name="count"/> 枚持つ <see cref="Sprite"/> オブジェクトのインスタンスを生成します。
+        /// アクティブなテクスチャーは0番にセットされます。
         /// </remarks>
-        /// <param name="name">テクスチャー ファイル名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> が <c>null</c></exception>
-        public Sprite (string name)
-            : this () {
-            if (name == null || name == "") {
-                throw new ArgumentNullException ("Name is null");
+        /// <param name="count">テクスチャーの最大数</param>
+        public Sprite (int count) {
+            if (count <= 0) {
+                throw new ArgumentException ("Texture count is invalid");
             }
-            this.name = name;
-            LoadTexture (name);
+            this.texs = new Texture[count];
+            this.active = 0;
         }
         #endregion
 
         #region Property
 
         /// <summary>
-        /// 画像の幅（ピクセル数）
+        /// 現在アクティブなテクスチャー番号
         /// </summary>
-        public int Width {
-            get { return width; }
+        /// <remarks>
+        /// 現在アクティブなテクスチャーの番号を取得または変更します。
+        /// </remarks>
+        public int ActiveTexture {
+            get { return active; }
+            set { this.active = value; }
         }
 
         /// <summary>
-        /// 画像の高さ（ピクセル数）
+        /// テクスチャーの個数
         /// </summary>
-        public int Height {
-            get { return height; }
+        public int TextureCount {
+            get { return texs.Count (); }
         }
 
         /// <summary>
-        /// テクスチャー名
+        /// すべてのテクスチャーを列挙する列挙子
         /// </summary>
-        public string TextureName {
-            get { return name; }
+        public IEnumerable<Texture> Textures {
+            get { return texs; }
         }
 
         #endregion
 
         #region Method
         /// <summary>
-        /// テクスチャーのロード
+        /// テクスチャーの変更
         /// </summary>
-        /// <remarks>
-        /// テクスチャーを指定の画像ファイルからロードします。
-        /// スプライトのサイズはテクスチャー画像のサイズと同一です。
-        /// </remarks>
-        /// <param name="name">テクスチャー ファイル名</param>
-        public void LoadTexture (string name) {
-            if (name == null || name == "") {
-                throw new ArgumentNullException ("Name is null");
+        /// <param name="index">テクスチャー番号</param>
+        /// <param name="tex">テクスチャー オブジェクト</param>
+        public void SetTexture (int index, Texture tex) {
+            if (tex == null) {
+                throw new ArgumentNullException ("Texture is null");
             }
-            this.tex = ResourceManager.GetInstance ().GetTexture (name);
-            this.name = name;
-            this.width = (int)tex.Size.X;
-            this.height = (int)tex.Size.Y;
+            if (index < 0 || index > TextureCount - 1) {
+                throw new ArgumentException ("Index is out of range.");
+            }
+
+            this.texs[index] = tex;
+        }
+
+        /// <summary>
+        /// テクスチャーの取得
+        /// </summary>
+        /// <param name="i">インデックス</param>
+        /// <returns></returns>
+        public Texture GetTexture (int i) {
+            if (i < 0 || i > TextureCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            return texs[i];
+        }
+
+        /// <summary>
+        /// アクティブなテクスチャーの取得
+        /// </summary>
+        /// <returns></returns>
+        public Texture GetActiveTexture () {
+            return texs[active];
         }
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
+            var tex = texs[active];
             if (tex == null) {
                 return;
             }
-            var sprite = new SFML.Graphics.Sprite (tex);
-            sprite.Position = new Vector2f (Node.X, Node.Y);
+            var spr = new SFML.Graphics.Sprite (tex.Data);
+            spr.Position = new Vector2f (Node.WindowX, Node.WindowY);
+
+            var rec = tex.ActiveRegion;
+            spr.TextureRect = new IntRect (rec.X, rec.Y, rec.Width, rec.Height);
 
             var win = window as RenderWindow;
-            win.Draw (sprite);
+            win.Draw (spr);
         }
 
-        /// <inheritdoc/>
-        public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
-            Console.WriteLine ("Mouse button is pressed, x=" + x + ", y=" + y);
-
-        }
-
-        /// <inheritdoc/>
-        public override void OnMouseButtonReleased (MouseButton button, int x, int y) {
-            Console.WriteLine ("Mouse button is released, x=" + x + ", y=" + y);
-        }
-
-        /// <inheritdoc/>
-        public override string ToString () {
-            return name;
-        }
         #endregion
     }
 }
