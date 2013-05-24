@@ -21,30 +21,34 @@ namespace Sample {
     }
 
     public class MyComponent : Component {
-        LineReader player;
-        public MyComponent (LineReader linePlayer) {
-            this.player = linePlayer;
+        Sprite spr;
+        int index;
+        long prev;
+
+        public MyComponent (Sprite spr) {
+            this.spr = spr;
+            this.index = 0;
+            this.prev = 0;
+        }
+
+        public override void OnUpdate (long msec) {
+            if (msec > prev + 33) {
+                var tex = spr.GetTexture (0) as TiledTexture;
+                this.index = (index + 1) % tex.TileCount;
+                tex.ActiveTile = index;
+                prev = msec;
+            }
         }
 
         /// <inheritdoc/>
         public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
             if (button == MouseButton.Left) {
-                player.Next ();
-            }
-            if (button == MouseButton.Right) {
-                player.Prev ();
+                var tex = spr.GetTexture (0) as TiledTexture;
+                this.index = (index + 1) % tex.TileCount;
+                tex.ActiveTile = index;
             }
         }
 
-        /// <inheritdoc/>
-        public override void OnLineEvent (Line line, object args) {
-            Console.WriteLine ("Event !!");
-            Console.WriteLine ("Words = " + line.Words);
-            Console.WriteLine ("Events = " + line.Event);
-            var my = args as MyEventArgs;
-            Console.WriteLine ("X = " + my.X);
-            Console.WriteLine ("Y = " + my.Y);
-        }
 
     }
 }

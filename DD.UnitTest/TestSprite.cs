@@ -12,31 +12,47 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_New1 () {
-            var spr = new Sprite ();
+        public void Test_New () {
+            var spr = new Sprite (4);
 
-            Assert.AreEqual ("", spr.TextureName);
-            Assert.AreEqual (0, spr.Width);
-            Assert.AreEqual (0, spr.Height);
+            Assert.AreEqual (4, spr.TextureCount);
+            Assert.AreEqual (0, spr.ActiveTexture);
         }
 
         [TestMethod]
-        public void Test_New2 () {
-            var spr = new Sprite ("abstract7.png");
+        public void Test_SetTexture () {
+            var spr = new Sprite (4);
+            spr.SetTexture (0,new Texture ("abstract7.png"));
+            spr.SetTexture (1, new Texture ( "image2x2.png"));
 
-            Assert.AreEqual ("abstract7.png", spr.TextureName);
-            Assert.AreEqual (614, spr.Width);
-            Assert.AreEqual (1024, spr.Height);
+            var tex0 = spr.GetTexture (0);
+            Assert.AreEqual ("abstract7.png", tex0.Name);
+            Assert.AreEqual (614, tex0.Width);
+            Assert.AreEqual (1024, tex0.Height);
+
+            var tex1 = spr.GetTexture (1);
+            Assert.AreEqual ("image2x2.png", tex1.Name);
+            Assert.AreEqual (2, tex1.Width);
+            Assert.AreEqual (2, tex1.Height);
         }
 
-        [TestMethod]
-        public void Test_LoadTexture () {
-            var spr = new Sprite ();
-            spr.LoadTexture ("abstract7.png");
 
-            Assert.AreEqual ("abstract7.png", spr.TextureName);
-            Assert.AreEqual (614, spr.Width);
-            Assert.AreEqual (1024, spr.Height);
+        [TestMethod]
+        public void Test_SetActiveTexture () {
+             var spr = new Sprite (4);
+
+            spr.SetTexture (0, new Texture("abstract7.png"));
+            spr.SetTexture (1, new Texture("image2x2.png"));
+
+            spr.ActiveTexture = 1;
+            
+            Assert.AreEqual(1, spr.ActiveTexture);
+        
+            var tex1 = spr.GetActiveTexture ();
+            Assert.AreEqual ("image2x2.png", tex1.Name);
+            Assert.AreEqual (2, tex1.Width);
+            Assert.AreEqual (2, tex1.Height);
+        
         }
 
    

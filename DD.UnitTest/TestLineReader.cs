@@ -12,7 +12,7 @@ namespace DD.UnitTest {
 
 
     [TestClass]
-    public class TestLinePlayer {
+    public class TestLineReader {
         [TestMethod]
         public void Test_New () {
             var ply = new LineReader (600, 480);

@@ -51,14 +51,14 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
-        /// <param name="texture"></param>
-        public Button (string texture) : this(1, 1) {
-            if (texture == null || texture == "") {
+        /// <param name="texFileName"></param>
+        public Button (string texFileName) : this(1, 1) {
+            if (texFileName == null || texFileName == "") {
                 throw new ArgumentNullException ("Texture is null");
             }
-            LoadTexutre (ButtonState.Normal, texture);
-            this.width = (int)normal.Size.X;
-            this.height = (int)normal.Size.Y;
+            LoadTexutre (ButtonState.Normal, texFileName);
+            this.width = normal.Width;
+            this.height = normal.Height;
         }
         #endregion
 
@@ -123,12 +123,12 @@ namespace DD {
         /// テクスチャーのロード
         /// </summary>
         /// <param name="state">ボタン状態</param>
-        /// <param name="name">テクスチャー ファイル名</param>
-        public void LoadTexutre (ButtonState state, string name) {
-            if (name == null || name == "") {
+        /// <param name="fileName">テクスチャー ファイル名</param>
+        public void LoadTexutre (ButtonState state, string fileName) {
+            if (fileName == null || fileName == "") {
                 throw new ArgumentNullException ("Name is null");
             }
-            var tex = ResourceManager.GetInstance ().GetTexture (name);
+            var tex = ResourceManager.GetInstance ().GetTexture (fileName);
             switch (state) {
                 case ButtonState.Normal: this.normal = tex; break;
                 case ButtonState.Focused: this.normal2 = tex; break;
@@ -136,7 +136,7 @@ namespace DD {
                 case ButtonState.PressedFocused: this.pressed2 = tex; break;
                 default: throw new NotImplementedException ("Sorry");
             }
-            this.names.Add (tex, name);
+            this.names.Add (tex, fileName);
         }
 
         /// <inheritdoc/>
@@ -153,11 +153,11 @@ namespace DD {
             var win = window as RenderWindow;
             var spr = new SFML.Graphics.Sprite ();
             switch (state) {
-                case ButtonState.Normal: spr.Texture = normal; break;
-                case ButtonState.Focused: spr.Texture = (normal2 != null) ? normal2 : normal; break;
-                case ButtonState.Pressed: spr.Texture = (pressed != null) ? pressed : normal; break;
-                case ButtonState.PressedFocused: spr.Texture = (pressed2 != null) ? pressed2 :
-                                                    (pressed != null) ? pressed : normal; break;
+                case ButtonState.Normal: spr.Texture = normal.Data; break;
+                case ButtonState.Focused: spr.Texture = (normal2 != null) ? normal2.Data : normal.Data; break;
+                case ButtonState.Pressed: spr.Texture = (pressed != null) ? pressed.Data : normal.Data; break;
+                case ButtonState.PressedFocused: spr.Texture = (pressed2 != null) ? pressed2.Data :
+                                                    (pressed != null) ? pressed.Data : normal.Data; break;
                 default: throw new NotImplementedException ("Sorry");
             }
             spr.Position = new Vector2f (Node.WindowX, Node.WindowY);

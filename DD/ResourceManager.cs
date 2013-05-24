@@ -160,7 +160,7 @@ namespace DD {
         /// デフォルト フォントの取得
         /// </summary>
         /// <remarks>
-        /// デフォルト フォント（"Konatu.ttf", 子夏フォント）を取得します。
+        /// 日本語デフォルト フォント（"Konatu.ttf", 子夏フォント）を取得します。
         /// デフォルト フォントはユーザーが用意しなくても常に使用可能です。
         /// </remarks>
         /// <returns>フォント</returns>
@@ -190,6 +190,22 @@ namespace DD {
 
             return textures[name];
         }
+
+        /// <summary>
+        /// タイル テクスチャーの取得
+        /// </summary>
+        /// <param name="name">テクスチャー ファイル名</param>
+        /// <param name="rows">縦方向のタイルの個数</param>
+        /// <param name="columns">横方向のタイルの個数</param>
+        /// <param name="tileCount">有効なタイル数</param>
+        /// <returns></returns>
+        public TiledTexture GetTiledTexture (string name, int rows, int columns, int tileCount) {
+            if (!textures.ContainsKey (name)) {
+                this.textures.Add (name, new TiledTexture (textureDirectory + name, rows, columns, tileCount));
+            }
+            return textures[name] as TiledTexture;
+        }
+
 
         /// <summary>
         /// ラインの取得
