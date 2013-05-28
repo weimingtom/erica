@@ -160,6 +160,25 @@ namespace DD {
         }
 
         /// <summary>
+        /// スクリプトのアニメーションの更新
+        /// </summary>
+        /// <remarks>
+        /// カレント スクリプトのアニメーションを更新します。
+        /// 現在未実装なので直接オブジェクトの Animate() メソッドを読んでください。
+        /// </remarks>
+        public void Animate () {
+            if (IsAlive == false || CurrentScript == null) {
+                return;
+            }
+
+            foreach (var node in CurrentScript.Downwards) {
+                foreach (var comp in node.Components) {
+                    comp.OnAnimate (watch.ElapsedMilliseconds);
+                }
+            }
+        }
+
+        /// <summary>
         /// ゲームのイベント発生
         /// </summary>
         /// <remarks>

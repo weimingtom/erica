@@ -114,8 +114,7 @@ namespace DD {
             var spr = new SFML.Graphics.Sprite (tex.Data);
             spr.Position = new Vector2f (Node.WindowX, Node.WindowY);
 
-            var rec = tex.ActiveRegion;
-            spr.TextureRect = new IntRect (rec.X, rec.Y, rec.Width, rec.Height);
+            spr.TextureRect = new IntRect (tex.OffsetX, tex.OffsetY, tex.Width, tex.Height);
 
             var win = window as RenderWindow;
             win.Draw (spr);

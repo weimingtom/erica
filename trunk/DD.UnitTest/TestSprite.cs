@@ -27,13 +27,13 @@ namespace DD.UnitTest {
 
             var tex0 = spr.GetTexture (0);
             Assert.AreEqual ("abstract7.png", tex0.Name);
-            Assert.AreEqual (614, tex0.Width);
-            Assert.AreEqual (1024, tex0.Height);
+            Assert.AreEqual (614, tex0.ImageWidth);
+            Assert.AreEqual (1024, tex0.ImageHeight);
 
             var tex1 = spr.GetTexture (1);
             Assert.AreEqual ("image2x2.png", tex1.Name);
-            Assert.AreEqual (2, tex1.Width);
-            Assert.AreEqual (2, tex1.Height);
+            Assert.AreEqual (2, tex1.ImageWidth);
+            Assert.AreEqual (2, tex1.ImageHeight);
         }
 
 
@@ -50,8 +50,8 @@ namespace DD.UnitTest {
         
             var tex1 = spr.GetActiveTexture ();
             Assert.AreEqual ("image2x2.png", tex1.Name);
-            Assert.AreEqual (2, tex1.Width);
-            Assert.AreEqual (2, tex1.Height);
+            Assert.AreEqual (2, tex1.ImageWidth);
+            Assert.AreEqual (2, tex1.ImageHeight);
         
         }
 

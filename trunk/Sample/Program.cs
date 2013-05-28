@@ -19,13 +19,36 @@ namespace Sample {
 
             var node = new Node ();
             var spr = new Sprite (1);
-            spr.SetTexture (0,new TiledTexture ("media/Explosion.png", 4, 8, 30)); 
+            var anim = new AnimationController ();
             var cmp = new MyComponent (spr);
+
             node.Attach (spr);
+            node.Attach (anim);
             node.Attach (cmp);
             node.Move (0, 32);
             node.SetBoundingBox (0, 0, 800, 450);
             wld.AddChild (node);
+
+            var tex = new TiledTexture ("media/Explosion.png", 4, 8, 30);
+            spr.SetTexture (0, tex); 
+            
+            var clip = new AnimationClip ();
+            clip.Duration = 1000;
+            clip.WrapMode = WrapMode.Loop;
+            clip.Speed = 1;
+
+            var track1 = new AnimationTrack ("X", InterpolationType.Linear);
+            track1.AddKeyframe (0, 0);
+            track1.AddKeyframe (1000, 400);
+            clip.AddTrack (node, track1);
+            
+            var track2 = new AnimationTrack ("ActiveTile", InterpolationType.Linear);
+            track2.AddKeyframe (0, 0);
+            track2.AddKeyframe (1000, 29);
+            clip.AddTrack (tex, track2);
+
+            anim.AddClip (clip);
+
 
             var director = new Director ();
             director.PushScript (wld);
@@ -37,6 +60,7 @@ namespace Sample {
             Console.WriteLine ("Start of Main Loop");
 
             while (director.IsAlive) {
+                director.Animate ();
                 director.Update ();
                 g2d.Dispatch (director.CurrentScript);
                 g2d.Draw (director.CurrentScript);

@@ -57,8 +57,8 @@ namespace DD {
                 throw new ArgumentNullException ("Texture is null");
             }
             LoadTexutre (ButtonState.Normal, texFileName);
-            this.width = normal.Width;
-            this.height = normal.Height;
+            this.width = normal.ImageWidth;
+            this.height = normal.ImageHeight;
         }
         #endregion
 

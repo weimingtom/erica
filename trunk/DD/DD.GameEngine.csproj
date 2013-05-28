@@ -67,6 +67,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="AnimationController.cs" />
+    <Compile Include="AnimationTrack.cs" />
+    <Compile Include="IAnimatable.cs" />
+    <Compile Include="IPoint.cs" />
+    <Compile Include="Keyframe.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Component.cs" />
