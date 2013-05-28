@@ -9,20 +9,44 @@ namespace DD.UnitTest {
     public class TestTexture {
         [TestMethod]
         public void Test_New () {
-            var tex = new Texture("abstract7.png");
+            var tex = new Texture ("abstract7.png");
 
             Assert.AreEqual ("abstract7.png", tex.Name);
+            Assert.AreEqual (614, tex.ImageWidth);
+            Assert.AreEqual (1024, tex.ImageHeight);
+            Assert.AreEqual (0, tex.OffsetX);
+            Assert.AreEqual (0, tex.OffsetY);
             Assert.AreEqual (614, tex.Width);
             Assert.AreEqual (1024, tex.Height);
-            Assert.AreEqual (new Rectangle (0, 0, 614, 1024), tex.ActiveRegion);
         }
 
         [TestMethod]
-        public void Test_SetActiveRegion () {
+        public void Test_SetOffset () {
             var tex = new Texture ("abstract7.png");
-            tex.SetActiveRegion (1, 1, 100, 100);
 
-            Assert.AreEqual (new Rectangle (1, 1, 100, 100), tex.ActiveRegion);
+            tex.SetOffset (1, 2);
+            Assert.AreEqual (1, tex.OffsetX);
+            Assert.AreEqual (2, tex.OffsetY);
+
+            tex.OffsetX = 3;
+            tex.OffsetY = 4;
+            Assert.AreEqual (3, tex.OffsetX);
+            Assert.AreEqual (4, tex.OffsetY);
+        }
+
+        [TestMethod]
+        public void Test_SetSize () {
+            var tex = new Texture ("abstract7.png");
+
+            tex.SetSize (1, 2);
+            Assert.AreEqual (1, tex.Width);
+            Assert.AreEqual (2, tex.Height);
+
+            tex.Width = 3;
+            tex.Height = 4;
+            Assert.AreEqual (3, tex.Width);
+            Assert.AreEqual (4, tex.Height);
+
         }
     }
 }

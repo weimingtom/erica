@@ -51,4 +51,40 @@ namespace DD {
 
     }
 
+    /// <summary>
+    /// 補完方法
+    /// </summary>
+    public enum InterpolationType {
+        /// <summary>
+        /// ステップ補完
+        /// </summary>
+        Step,
+
+        /// <summary>
+        /// 線形補完
+        /// </summary>
+        Linear,
+
+        /// <summary>
+        /// 球面線形補完
+        /// </summary>
+        SLerp,
+    }
+
+    /// <summary>
+    /// 繰り返しモード
+    /// </summary>
+    public enum WrapMode {
+        /// <summary>
+        /// 一回限り
+        /// </summary>
+        Once,
+
+        /// <summary>
+        /// 繰り返し再生
+        /// </summary>
+        Loop
+    }
+
+
 }

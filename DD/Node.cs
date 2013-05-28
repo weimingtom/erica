@@ -11,7 +11,7 @@ namespace DD {
     /// スクリプトを構成するノード クラス。
     /// ノードは <see cref="Root"/> を頂点とする木構造のグラフを構成します。
     /// </remarks>
-    public class Node {
+    public class Node  {
 
         #region Field
         string name;

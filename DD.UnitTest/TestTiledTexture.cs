@@ -11,39 +11,25 @@ namespace DD.UnitTest {
         public void Test_New () {
             var tex = new TiledTexture ("Explosion4x8.png", 4, 8, 30);
 
-            Assert.AreEqual (1024, tex.Width);
-            Assert.AreEqual (512, tex.Height);
+            Assert.AreEqual (1024, tex.ImageWidth);
+            Assert.AreEqual (512, tex.ImageHeight);
             Assert.AreEqual (0, tex.ActiveTile);
-            Assert.AreEqual (new Rectangle (0, 0, 128, 128), tex.ActiveRegion);
+            Assert.AreEqual (0, tex.OffsetX);
+            Assert.AreEqual (0, tex.OffsetY);
+            Assert.AreEqual (128, tex.Width);
+            Assert.AreEqual (128, tex.Height);
         }
 
-        [TestMethod]
-        public void Test_GetTileRegion(){
-            var tex = new TiledTexture ("Explosion4x8.png", 4, 8, 30);
-
-            var rect0 = tex.GetTileRegion (0);
-            Assert.AreEqual (0, rect0.X);
-            Assert.AreEqual (0, rect0.Y);
-            Assert.AreEqual (128, rect0.Width);
-            Assert.AreEqual (128, rect0.Height);
-
-            var rect1 = tex.GetTileRegion (31);
-            Assert.AreEqual (896, rect1.X);
-            Assert.AreEqual (384, rect1.Y);
-            Assert.AreEqual (128, rect1.Width);
-            Assert.AreEqual (128, rect1.Height);
-        }
 
         [TestMethod]
         public void Test_SetActiveTile () {
             var tex = new TiledTexture ("Explosion4x8.png", 4, 8, 30);
-            tex.SetActiveTile (29);
+            tex.ActiveTile = 29;
 
-            var rect = tex.ActiveRegion;
-            Assert.AreEqual (1024-128*3, rect.X);
-            Assert.AreEqual (512-128, rect.Y);
-            Assert.AreEqual (128, rect.Width);
-            Assert.AreEqual (128, rect.Height);
+            Assert.AreEqual (1024-128*3, tex.OffsetX);
+            Assert.AreEqual (512-128, tex.OffsetY);
+            Assert.AreEqual (128, tex.Width);
+            Assert.AreEqual (128, tex.Height);
         }
     }
 }

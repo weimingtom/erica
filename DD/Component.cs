@@ -185,6 +185,18 @@ namespace DD {
         public virtual void OnMouseFocusOut (MouseButton button, int x, int y) {
         }
 
+        /// <summary>
+        /// アニメーション処理
+        /// </summary>
+        /// <remarks>
+        /// アニメーション処理を行う仮想関数のエントリーポイント。
+        /// 通常はユーザーがこの仮想関数をオーバーライドする必要はありません。
+        /// この仮想関数の適切な実装を提供するのはエンジン側の責任です。
+        /// </remarks>
+        /// <param name="msec">ワールド時刻(msec)</param>
+        public virtual void OnAnimate (long msec) {
+
+        }
     
         /// <summary>
         /// 描画処理

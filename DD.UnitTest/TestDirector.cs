@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DD;
 
+// OnUpdate と OnAnimate のテストは欲しい
+
 namespace DD.UnitTest {
     [TestClass]
     public class TestDirector {
