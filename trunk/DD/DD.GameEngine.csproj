@@ -90,6 +90,7 @@
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineParser.cs" />
+    <Compile Include="SaveData.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TiledTexture.cs" />
     <Compile Include="World.cs" />
