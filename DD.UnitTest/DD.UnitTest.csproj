@@ -57,6 +57,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestSaveDataContainer.cs" />
     <Compile Include="TestAnimationClip.cs" />
     <Compile Include="TestAnimationController.cs" />
     <Compile Include="TestAnimationTrack.cs" />
