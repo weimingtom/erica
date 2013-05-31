@@ -86,5 +86,19 @@ namespace DD {
         Loop
     }
 
+    /// <summary>
+    /// 繰り返しモード
+    /// </summary>
+    public enum LoopMode {
+        /// <summary>
+        /// 一回限り
+        /// </summary>
+        Once,
+
+        /// <summary>
+        /// 繰り返し再生
+        /// </summary>
+        Loop
+    }
 
 }

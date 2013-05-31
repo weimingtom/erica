@@ -41,6 +41,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AssemblyKeyFile.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-audio-2">
       <HintPath>libs\sfmlnet-audio-2.dll</HintPath>
@@ -91,6 +97,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="SaveData.cs" />
+    <Compile Include="SoundClip.cs" />
+    <Compile Include="SoundController.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TiledTexture.cs" />
     <Compile Include="World.cs" />
@@ -116,6 +124,8 @@
     <Content Include="libs\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="App.config" />
+    <None Include="AssemblyKeyFile.snk" />
     <None Include="Resources\Konatu.ttf" />
   </ItemGroup>
   <ItemGroup>

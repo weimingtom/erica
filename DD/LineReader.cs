@@ -88,6 +88,17 @@ namespace DD {
         }
 
         /// <summary>
+        /// ラインの追加
+        /// </summary>
+        /// <param name="line">ライン オブジェクト</param>
+        public void AddLine (Line line) {
+            if (line == null) {
+                throw new ArgumentNullException ("Line is null");
+            }
+            this.lines.Add (line);
+        }
+
+        /// <summary>
         /// ラインのロード
         /// </summary>
         /// <remarks>
