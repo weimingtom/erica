@@ -249,7 +249,7 @@ namespace DD {
                 this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title);
             }
             catch (DllNotFoundException e) {
-                // libsがあればそちらも探す
+                // ないときはlibsの下も探す
                 if (System.IO.Directory.Exists ("libs")) {
                     System.IO.Directory.SetCurrentDirectory (dir + "/libs");
                     this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title);

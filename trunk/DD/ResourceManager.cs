@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using SFML.Graphics;
 using SFML.Window;
+using SFML.Audio;
 
 namespace DD {
     /// <summary>
@@ -24,9 +25,11 @@ namespace DD {
         string fontDirectory;
         string textureDirectory;
         string lineDirectory;
+        string soundDirectory;
         Dictionary<string, Font> fonts;
         Dictionary<string, Texture> textures;
         Dictionary<string, Line[]> lines;
+        Dictionary<string, SoundClip> sounds;
         #endregion
 
         #region Constructor
@@ -40,6 +43,7 @@ namespace DD {
             this.fonts = new Dictionary<string, Font> ();
             this.textures = new Dictionary<string, Texture> ();
             this.lines = new Dictionary<string, Line[]> ();
+            this.sounds = new Dictionary<string, SoundClip> ();
         }
 
         /// <summary>
@@ -78,6 +82,13 @@ namespace DD {
         }
 
         /// <summary>
+        /// サウンド ディレクトリ
+        /// </summary>
+        public string SoundDirectory {
+            get { return soundDirectory; }
+        }
+
+        /// <summary>
         /// キャッシュ済みの全フォントを列挙する列挙子
         /// </summary>
         public IEnumerable<KeyValuePair<string, Font>> Fonts {
@@ -96,6 +107,13 @@ namespace DD {
         /// </summary>
         public IEnumerable<KeyValuePair<string, Line[]>> Lines {
             get { return lines; }
+        }
+
+        /// <summary>
+        /// キャッシュ済みのすべてのサウンド クリップを列挙する列挙子
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, SoundClip>> SoundClips {
+            get { return sounds; }
         }
 
         #endregion
@@ -137,6 +155,14 @@ namespace DD {
         /// <param name="name">ディレクトリ名</param>
         public void SetLineDirectory (string name) {
             this.lineDirectory = name;
+        }
+
+        /// <summary>
+        /// サウンド ディレクトリーの変更
+        /// </summary>
+        /// <param name="name">ディレクトリ名</param>
+        public void SoundClipDirectory (string name) {
+            this.soundDirectory = name;
         }
 
         /// <summary>
@@ -220,6 +246,20 @@ namespace DD {
         }
 
         /// <summary>
+        /// サウンド クリップの取得
+        /// </summary>
+        /// <param name="name">サウンド ファイル名</param>
+        /// <param name="streaming">ストリーミング再生</param>
+        /// <returns>サウンド クリップ</returns>
+        public SoundClip GetSoundClip (string name, bool streaming) {
+            if (!sounds.ContainsKey (name)) {
+                    this.sounds.Add (name, new SoundClip(name, streaming));
+            }
+            return sounds[name];
+        }
+
+
+        /// <summary>
         /// フォント リソースの解放
         /// </summary>
         private void ReleaseFont () {
@@ -247,6 +287,14 @@ namespace DD {
             // do nothing.
         }
 
+        /// <summary>
+        /// サウンド リソースの開放
+        /// </summary>
+        private void ReleaseSound () {
+            foreach (var sound in sounds) {
+                sound.Value.Dispose ();
+            }
+        }
 
         /// <summary>
         /// 全リソースの解放
@@ -255,6 +303,7 @@ namespace DD {
             ReleaseFont ();
             ReleaseTexture ();
             ReleaseLine ();
+            ReleaseSound ();
         }
 
         /// <inheritdoc/>
