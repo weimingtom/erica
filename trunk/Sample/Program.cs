@@ -17,38 +17,19 @@ namespace Sample {
             var wld = new World ("First Script");
             wld.Attach (new FPSCounter ());
 
+            var cmp = new MyComponent ();
+
+            var line = new LineReader (800, 400);
+            line.LoadLine ("media/HelloMiku.txt");
+            line.SetFeedMode (FeedMode.Automatic, new LineReader.FeedParameters (300, 1000));
+
             var node = new Node ();
-            var spr = new Sprite (1);
-            var anim = new AnimationController ();
-            var cmp = new MyComponent (spr);
-
-            node.Attach (spr);
-            node.Attach (anim);
             node.Attach (cmp);
-            node.Move (0, 32);
-            node.SetBoundingBox (0, 0, 800, 450);
+            node.Attach (line);
+
+            node.Move (0, 200);
+            node.SetBoundingBox (0, 0, 800, 400);
             wld.AddChild (node);
-
-            var tex = new TiledTexture ("media/Explosion.png", 4, 8, 30);
-            spr.SetTexture (0, tex); 
-            
-            var clip = new AnimationClip ();
-            clip.Duration = 1000;
-            clip.WrapMode = WrapMode.Loop;
-            clip.Speed = 1;
-
-            var track1 = new AnimationTrack ("X", InterpolationType.Linear);
-            track1.AddKeyframe (0, 0);
-            track1.AddKeyframe (1000, 400);
-            clip.AddTrack (node, track1);
-            
-            var track2 = new AnimationTrack ("ActiveTile", InterpolationType.Linear);
-            track2.AddKeyframe (0, 0);
-            track2.AddKeyframe (1000, 29);
-            clip.AddTrack (tex, track2);
-
-            anim.AddClip (clip);
-
 
             var director = new Director ();
             director.PushScript (wld);

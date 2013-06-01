@@ -128,7 +128,7 @@ namespace DD {
             if (fileName == null || fileName == "") {
                 throw new ArgumentNullException ("Name is null");
             }
-            var tex = ResourceManager.GetInstance ().GetTexture (fileName);
+            var tex = Resource.GetTexture (fileName);
             switch (state) {
                 case ButtonState.Normal: this.normal = tex; break;
                 case ButtonState.Focused: this.normal2 = tex; break;

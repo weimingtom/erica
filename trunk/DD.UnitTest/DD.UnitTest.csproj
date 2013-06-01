@@ -57,6 +57,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SFML\TestExtensions.cs" />
+    <Compile Include="TestLabel.cs" />
     <Compile Include="TestSaveDataContainer.cs" />
     <Compile Include="TestAnimationClip.cs" />
     <Compile Include="TestAnimationController.cs" />
@@ -75,6 +77,8 @@
     <Compile Include="TestNode.cs" />
     <Compile Include="TestResourceManager.cs" />
     <Compile Include="TestDirector.cs" />
+    <Compile Include="TestSoundClip.cs" />
+    <Compile Include="TestSoundPlayer.cs" />
     <Compile Include="TestTexture.cs" />
     <Compile Include="TestTiledTexture.cs" />
     <Compile Include="TestWorld.cs" />
@@ -99,6 +103,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\image2x2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\nice_music.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\PinPon.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

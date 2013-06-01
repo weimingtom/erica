@@ -5,13 +5,15 @@ using System.Text;
 using SFML.Window;
 using SFML.Graphics;
 using System.IO;
+using System.Diagnostics;
 
 namespace DD {
     /// <summary>
     /// FPS測定コンポーネント
     /// </summary>
     /// <remarks>
-    /// ゲームのFPSを計測し画面に表示します
+    /// ゲームのFPSを計測し画面に表示します。
+    /// FPSの計測には.Netのストップウォッチを直接使用します。
     /// </remarks>
     public partial class FPSCounter : Component {
         #region Field
@@ -19,6 +21,7 @@ namespace DD {
         int count;
         int fps;
         Font font;
+        Stopwatch watch;
         #endregion
 
 
@@ -30,7 +33,9 @@ namespace DD {
             this.prev = 0;
             this.count = 0;
             this.fps = 0;
-            this.font = null;
+            this.font = new Font (new MemoryStream (Properties.Resources.arial));
+            this.watch = new Stopwatch ();
+            this.watch.Start ();
         }
         #endregion
 
@@ -46,6 +51,7 @@ namespace DD {
         #region Method
         /// <inheritdoc/>
         public override void OnUpdate (long msec) {
+            msec = watch.ElapsedMilliseconds;
             if (msec - prev > 1000) {
                 this.fps = count;
                 this.prev = msec;
@@ -56,9 +62,6 @@ namespace DD {
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
-            if (font == null) {
-                font = new Font (new MemoryStream (Properties.Resources.arial));
-            }
             var win = window as RenderWindow;
             var txt = new Text (fps.ToString () + " fps", font);
             txt.CharacterSize = 16;

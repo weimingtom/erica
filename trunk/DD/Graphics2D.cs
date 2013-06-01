@@ -88,7 +88,7 @@ namespace DD {
             }
 
             // Clear screen
-            win.Clear (Color.Blue);
+            win.Clear (SFML.Graphics.Color.Blue);
 
             // 全ノードの描画
             foreach (var node in script.Downwards) {
