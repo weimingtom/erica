@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFML.Graphics;
 using SFML.Window;
+using System.Diagnostics;
 
 namespace DD {
     /// <summary>
@@ -12,32 +13,82 @@ namespace DD {
     /// <remarks>
     /// ラインは日本語で言う台詞（セリフ）の事で、「発言者の名前」「発言テキスト（2～3行）」「音声ファイル」からなります。
     /// このコンポーネントは複数のラインを順番にクリックで再生するのに適しています。
+    /// ライン リーダーはノードのバウンディング ボックスを自身のサイズで書き換えます。
     /// </remarks>
     /// <seealso cref="Line"/>
     public class LineReader : Component {
+
+        #region InnderClass
+        /// <summary>
+        /// フィード パラメーター
+        /// </summary>
+        /// <remarks>
+        /// ラインの表示で使用されるパラメーターです。
+        /// <list type="bullet">
+        ///   <item><see cref="FeedParameters.TimeAfterOneCharacter"/> = 一文字あたりのウェイト値（msec）</item>
+        ///   <item><see cref="FeedParameters.TimeAfterOneSentense"/> = 一行あたりのウェイト値（msec）</item>
+        /// </list>
+        /// </remarks>
+        public struct FeedParameters {
+            /// <summary>
+            /// コンストラクター
+            /// </summary>
+            /// <param name="oneChar">一文字あたりのウェイト値（msec）</param>
+            /// <param name="oneSent"> 一行あたりのウェイト値（msec）</param>
+            public FeedParameters (int oneChar, int oneSent)
+                : this () {
+                this.TimeAfterOneCharacter = oneChar;
+                this.TimeAfterOneSentense = oneSent;
+            }
+            /// <summary>
+            /// 一文字あたりのウェイト値（msec）
+            /// </summary>
+            public int TimeAfterOneCharacter {get; private set;}
+
+            /// <summary>
+            /// 一行あたりのウェイト値（msec）
+            /// </summary>
+            public int TimeAfterOneSentense{get;private set;}
+        }
+        #endregion
+
         #region Field
         List<Line> lines;
         int index;
         int width;
         int height;
         int charSize;
+        Color color;
+        Stopwatch watch;
+        FeedMode feedMode;
+        FeedParameters feedParams;
         bool lineChanged;
         #endregion
 
+        #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
+        /// <remarks>
+        /// ノードのバウンディング ボックスは書き換えません。
+        /// </remarks>
         /// <param name="width">表示領域の横幅（ピクセル数）</param>
         /// <param name="height">表示領域の縦幅（ピクセル数）</param>
         public LineReader (int width, int height) {
-            this.lines = new List<Line>();
+            this.lines = new List<Line> ();
             this.index = 0;
             this.width = width;
             this.height = height;
             this.charSize = 24;
+            this.color = new Color (255, 255, 255, 255);
             this.lineChanged = false;
+            this.watch = new Stopwatch ();
+            this.feedMode = FeedMode.Normal;
+            this.feedParams = new FeedParameters (0, 0);
         }
+        #endregion
 
+        #region Property
         /// <summary>
         /// 表示領域の横幅（ピクセル数）
         /// </summary>
@@ -51,19 +102,21 @@ namespace DD {
         public int Height {
             get { return height; }
         }
-        
+
         /// <summary>
         /// 1文字のサイズ
         /// </summary>
         public int CharacterSize {
             get { return charSize; }
-            set {
-                var size = value;
-                if (size <= 0 || size > 128) {
-                    throw new ArgumentException ("Character size is invalid");
-                }
-                this.charSize = value;
-            }
+            set { SetCharacterSize (value); }
+        }
+
+        /// <summary>
+        /// 文字色
+        /// </summary>
+        public Color Color {
+            get{return color;}
+            set{SetColor(value.R, value.G, value.B, value.A); }
         }
 
         /// <summary>
@@ -84,8 +137,68 @@ namespace DD {
         /// 現在の再生中のライン
         /// </summary>
         public Line CurrentLine {
-            get { return lines.ElementAtOrDefault(index); }
+            get { return lines.ElementAtOrDefault (index); }
         }
+
+        /// <summary>
+        /// 1ラインの表示完了判定
+        /// </summary>
+        /// <remarks>
+        /// Automaticフィードの時にすべての文字の表示が完了している事を示します。
+        /// 
+        /// </remarks>
+        public bool IsOver {
+            get {
+                if (feedMode == FeedMode.Normal) {
+                    return true;
+                }
+                else {
+                    var time = watch.ElapsedMilliseconds;
+                    var duration = feedParams.TimeAfterOneCharacter * lines[index].Words.Length + feedParams.TimeAfterOneSentense;
+                    return (time >= duration) ? true : false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// フィード モード
+        /// </summary>
+        /// <remarks>
+        /// ライン送りを手動か自動から選択します。
+        /// </remarks>
+        public FeedMode FeedMode {
+            get { return feedMode; }
+            set { SetFeedMode (value, feedParams); }
+        }
+
+        /// <summary>
+        /// フィード パラメーター
+        /// </summary>
+        /// <remarks>
+        /// ラインを表示するときのパラメーターです。
+        /// </remarks>
+        public FeedParameters FeedParameter {
+            get { return feedParams; }
+            set { SetFeedMode (feedMode, value); }
+        }
+        #endregion
+
+
+        /// <summary>
+        /// フィードモードの変更
+        /// </summary>
+        /// <remarks>
+        /// フィード（自動送り）機能を自動送りに変更します。
+        /// フィードで使用するパラメーターも一緒に指定します。
+        /// </remarks>
+        /// <param name="mode">フィード モード</param>
+        /// <param name="param">パラメーター</param>
+        public void SetFeedMode (FeedMode mode, FeedParameters param) {
+            this.feedMode = mode;
+            this.feedParams = param;
+        }
+
+        #region Method
 
         /// <summary>
         /// ラインの追加
@@ -106,9 +219,10 @@ namespace DD {
         /// </remarks>
         /// <param name="name">ファイル名</param>
         public void LoadLine (string name) {
-            this.lines = ResourceManager.GetInstance ().GetLine (name).ToList();
+            this.lines = Resource.GetLine (name).ToList ();
             this.index = 0;
             this.lineChanged = true;
+            watch.Restart ();
         }
 
         /// <summary>
@@ -118,6 +232,7 @@ namespace DD {
             if (index < LineCount - 1) {
                 this.lineChanged = true;
                 this.index = index + 1;
+                watch.Restart ();
             }
         }
 
@@ -155,6 +270,29 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// 文字サイズの変更
+        /// </summary>
+        /// <param name="size">サイズ</param>
+        public void SetCharacterSize (int size) {
+            if (size <= 0 || size > 128) {
+                throw new ArgumentException ("Size is invalid");
+            }
+            this.charSize = size;
+        }
+
+        /// <summary>
+        /// 文字色の変更
+        /// </summary>
+        /// <param name="r">赤</param>
+        /// <param name="g">青</param>
+        /// <param name="b">緑</param>
+        /// <param name="a">不透明度</param>
+        public void SetColor (byte r, byte g, byte b, byte a) {
+            this.color = new Color (r, g, b, a);
+        }
+
+        #region Override
         /// <inheritdoc/>
         public override void OnAttached () {
             Node.SetBoundingBox (0, 0, width, height);
@@ -172,17 +310,34 @@ namespace DD {
                 this.lineChanged = false;
             }
         }
+        #endregion
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
             var win = window as RenderWindow;
-            var font = ResourceManager.GetInstance ().GetDefaultFont ();
-            var txt = new Text (lines[index].Words, font);
+            var font = Resource.GetDefaultFont ();
+            var drawWords = lines[index].Words;
+
+            var time = (int)watch.ElapsedMilliseconds;
+            var waitTime = feedParams.TimeAfterOneCharacter;
+            if (waitTime > 0) {
+                var n = Math.Min(time/waitTime, drawWords.Length);
+                drawWords = drawWords.Substring(0, n);
+            }
+
+            var txt = new Text (drawWords, font);
             txt.Position = new Vector2f (Node.WindowX, Node.WindowY);
             txt.CharacterSize = (uint)charSize;
             win.Draw (txt);
         }
 
+        /// <inheritdoc/>
+        public override void OnUpdate (long msec) {
+            if (feedMode == FeedMode.Automatic && IsOver) {
+                Next ();
+            }
+        }
+        #endregion
 
     }
 }

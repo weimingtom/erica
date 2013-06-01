@@ -50,13 +50,36 @@ namespace DD {
         }
 
         /// <summary>
+        /// 同じノードに属する指定のコンポーネントの取得
+        /// </summary>
+        /// <remarks>
+        /// 同じノードにアタッチされた指定の型 <typeparamref name="T"/> のコンポーネントを取得します。
+        /// 同型のコンポーネントが複数あった場合、どれが返るかは未定義です。
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        /// <returns></returns>
+        public T GetComponent<T> () where T : Component {
+            if (Node == null) {
+                return null;
+            }
+
+            foreach (var cmp in Node.Components) {
+                var t = cmp as T;
+                if (t != null) {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// アタッチ処理後のエントリーポイント
         /// </summary>
         /// <remarks>
         /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
         /// </remarks>
         public virtual void OnAttached () {
-           }
+        }
 
         /// <summary>
         /// デタッチ処理前のエントリーポイント
@@ -140,7 +163,7 @@ namespace DD {
         /// <param name="x">マウスのX座標（ノード座標系）</param>
         /// <param name="y">マウスのY座標（ノード座標系）</param>
         public virtual void OnMouseButtonPressed (MouseButton button, int x, int y) {
-         }
+        }
 
 
         /// <summary>
@@ -197,7 +220,7 @@ namespace DD {
         public virtual void OnAnimate (long msec) {
 
         }
-    
+
         /// <summary>
         /// 描画処理
         /// </summary>

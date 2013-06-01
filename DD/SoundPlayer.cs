@@ -12,7 +12,7 @@ namespace DD {
     /// サウンドクリップを直接再生する事もできるので、
     /// 現在のところあまり意味はない。
     /// </remarks>
-    public class SoundController : Component {
+    public class SoundPlayer : Component {
         #region Field
         List<SoundClip> clips;
         #endregion
@@ -21,7 +21,7 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
-        public SoundController () {
+        public SoundPlayer () {
             this.clips = new List<SoundClip> ();
         }
         #endregion

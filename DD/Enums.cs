@@ -101,4 +101,54 @@ namespace DD {
         Loop
     }
 
+    /// <summary>
+    /// 文字スタイル
+    /// </summary>
+    [Flags]
+    public enum CharacterStyle {
+        /// <summary>
+        /// 標準
+        /// </summary>
+        Regular = 0,
+
+        /// <summary>
+        /// 太字
+        /// </summary>
+        Bold,
+
+        /// <summary>
+        /// 斜体
+        /// </summary>
+        Italic,
+
+        /// <summary>
+        /// 下線付き
+        /// </summary>
+        Underlined,
+
+        /// <summary>
+        /// 影付き
+        /// </summary>
+        /// <note>
+        /// 影付き文字の一般的な実装は（自分で）文字をずらしながら2回書く事です。
+        /// これだけ実装方法が他と少し違う。
+        /// </note>
+        Shadow
+    }
+
+    /// <summary>
+    /// フィード モード
+    /// </summary>
+    public enum FeedMode {
+        /// <summary>
+        /// 手動送り
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// 自動送り
+        /// </summary>
+        Automatic
+    }
+
 }

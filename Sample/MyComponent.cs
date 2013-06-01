@@ -21,31 +21,25 @@ namespace Sample {
     }
 
     public class MyComponent : Component {
-        Sprite spr;
-        int index;
+        int i;
+        SoundClip chime;
 
-        public MyComponent (Sprite spr) {
-            this.spr = spr;
-            this.index = 0;
+        public MyComponent () {
+            this.chime = new SoundClip ("media/PinPon.wav");
         }
 
         public override void OnUpdate (long msec) {
-            /*
-            if (msec > prev + 33) {
-                var tex = spr.GetTexture (0) as TiledTexture;
-                this.index = (index + 1) % tex.TileCount;
-                tex.ActiveTile = index;
-                prev = msec;
-            }
-             * */
         }
-
         /// <inheritdoc/>
         public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
             if (button == MouseButton.Left) {
-                var tex = spr.GetTexture (0) as TiledTexture;
-                this.index = (index + 1) % tex.TileCount;
-                tex.ActiveTile = index;
+                Console.WriteLine("Clicked " + i++);
+                var line = GetComponent<LineReader> ();
+                line.Next ();
+            }
+            else if (button == MouseButton.Right) {
+                var line = GetComponent<LineReader> ();
+                line.Prev ();
             }
         }
 

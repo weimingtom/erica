@@ -76,9 +76,11 @@
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="IAnimatable.cs" />
     <Compile Include="IPoint.cs" />
     <Compile Include="Keyframe.cs" />
+    <Compile Include="Label.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Button.cs" />
@@ -97,8 +99,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="SaveData.cs" />
+    <Compile Include="SFML\Extentions.cs" />
     <Compile Include="SoundClip.cs" />
-    <Compile Include="SoundController.cs" />
+    <Compile Include="SoundPlayer.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TiledTexture.cs" />
     <Compile Include="World.cs" />
