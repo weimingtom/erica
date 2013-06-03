@@ -32,6 +32,9 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
+        /// <remarks>
+        /// 指定のサイズの <see cref="Button"/> オブジェクトを作成します。
+        /// </remarks>
         /// <param name="width">ボタンの幅</param>
         /// <param name="height">ボタンの高さ</param>
         public Button (int width, int height) {
@@ -51,7 +54,10 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
-        /// <param name="texFileName"></param>
+        /// <remarks>
+        /// テクスチャーファイルをロードし、それと同じサイズの<see cref="Button"/> オブジェクトを作成ます。
+        /// </remarks>
+        /// <param name="texFileName">テクスチャーファイル名</param>
         public Button (string texFileName) : this(1, 1) {
             if (texFileName == null || texFileName == "") {
                 throw new ArgumentNullException ("Texture is null");
