@@ -20,8 +20,20 @@ namespace Sample {
             var cmp = new MyComponent ();
 
             var line = new LineReader (800, 400);
-            line.LoadLine ("media/HelloMiku.txt");
-            line.SetFeedMode (FeedMode.Automatic, new LineReader.FeedParameters (300, 1000));
+            line.LoadFromFile ("media/HelloMiku.txt");
+            line.SetFeedMode (FeedMode.Automatic);
+            line.SetFeedParameter(new LineReader.FeedParameters (200, 2000));
+            line.Color = Color.White;
+
+            var sound1 = new SoundClip ("media/System41.wav");
+            var sound2 = new SoundClip("media/System7.wav");
+            line.Ticked += (x,y) => {
+                sound1.Play ();
+            };
+            line.Tacked += (x, y) => {
+                sound2.Play ();
+            };
+
 
             var node = new Node ();
             node.Attach (cmp);

@@ -42,7 +42,7 @@ namespace DD.UnitTest {
             label.Color = Color.White;
             Assert.AreEqual (Color.White, label.Color);
 
-            label.SetColor (0,0,0,1);
+            label.SetColor (0,0,0,255);
             Assert.AreEqual (Color.Black, label.Color);
         }
 

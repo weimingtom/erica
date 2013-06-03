@@ -28,7 +28,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_AddLine () {
             var reader = new LineReader (600, 480);
-            reader.AddLine(new Line ("Actor", "Words", "Sound", "Event"));
+            reader.AddLine (new Line ("Actor", "Words", "Sound", "Event"));
 
             Assert.AreEqual (1, reader.LineCount);
         }
@@ -38,7 +38,7 @@ namespace DD.UnitTest {
         public void Test_LoadLine () {
             var reader = new LineReader (600, 480);
 
-            reader.LoadLine ("HelloMiku.txt");
+            reader.LoadFromFile ("HelloMiku.txt");
 
             Assert.AreEqual (10, reader.LineCount);
         }
@@ -49,7 +49,7 @@ namespace DD.UnitTest {
 
             reader.CharacterSize = 1;
             Assert.AreEqual (1, reader.CharacterSize);
-            
+
             reader.SetCharacterSize (2);
             Assert.AreEqual (2, reader.CharacterSize);
         }
@@ -59,10 +59,10 @@ namespace DD.UnitTest {
             var reader = new LineReader (600, 480);
 
             reader.Color = new Color (1, 2, 3, 4);
-            Assert.AreEqual(new Color(1,2,3,4), reader.Color);
-            
-            reader.SetColor(5,6,7,8);
-            Assert.AreEqual(new Color(5,6,7,8), reader.Color);
+            Assert.AreEqual (new Color (1, 2, 3, 4), reader.Color);
+
+            reader.SetColor (5, 6, 7, 8);
+            Assert.AreEqual (new Color (5, 6, 7, 8), reader.Color);
         }
 
 
@@ -70,7 +70,7 @@ namespace DD.UnitTest {
         public void Test_Jump () {
             var reader = new LineReader (600, 480);
 
-            reader.LoadLine ("HelloMiku.txt");
+            reader.LoadFromFile ("HelloMiku.txt");
 
             reader.Jump (5);
             Assert.AreEqual (5, reader.CurrentPosition);
@@ -90,9 +90,17 @@ namespace DD.UnitTest {
         public void Test_SetFeedMode () {
             var reader = new LineReader (600, 480);
 
-            reader.SetFeedMode (FeedMode.Automatic, new LineReader.FeedParameters (1, 2));
+            reader.SetFeedMode (FeedMode.Automatic);
 
             Assert.AreEqual (FeedMode.Automatic, reader.FeedMode);
+        }
+
+        [TestMethod]
+        public void Test_SetFeedParameter () {
+            var reader = new LineReader (600, 480);
+
+            reader.SetFeedParameter (new LineReader.FeedParameters (1, 2));
+
             Assert.AreEqual (1, reader.FeedParameter.TimeAfterOneCharacter);
             Assert.AreEqual (2, reader.FeedParameter.TimeAfterOneSentense);
 

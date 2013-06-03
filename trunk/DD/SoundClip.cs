@@ -27,23 +27,25 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <remarks>
-        /// 初期値はオンメモリの時はループ再生OFFで、
-        /// ストリーミングの時はループ再生ONです。
+        /// ストリーミングの再生の有無を指定して <see cref="SoundClip"/> オブジェクトを作成します。
+        /// ストリーミング再生は大きすぎてすべてのデータをメモリ上に乗せられないサウンド
+        /// （例えばBGM）を再生するのに適しています。
+        /// ストリーミング再生の時に限りループを有効にします。
         /// </remarks>
-        /// <param name="name">ファイル名</param>
+        /// <param name="fileName">ファイル名</param>
         /// <param name="streaming">ストリーミング再生</param>
-        public SoundClip (string name, bool streaming) {
-            if (name == null || name == "") {
+        public SoundClip (string fileName, bool streaming) {
+            if (fileName == null || fileName == "") {
                 throw new ArgumentNullException ("Name is null or empty");
             }
-            this.name = name;
+            this.name = fileName;
             if (streaming) {
                 this.sound = null;
-                this.music = new Music (name);
+                this.music = new Music (fileName);
                 this.Loop = true;
             }
             else {
-                this.sound = new Sound (new SoundBuffer (name));
+                this.sound = new Sound (new SoundBuffer (fileName));
                 this.music = null;
                 this.Loop = false;
             }
@@ -54,7 +56,8 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <remarks>
-        /// データをすべてメモリ上に置きます。
+        /// ストリーミング再生を無効にして <see cref="SoundClip"/> オブジェクトを作成します。
+        /// データはすべてメモリ上に置かれます。これは効果音などの再生に適しています。
         /// </remarks>
         /// <param name="name">ファイル名</param>
         public SoundClip (string name) : this (name, false) {
@@ -91,6 +94,7 @@ namespace DD {
         /// ボリュームを[0,1]で指定します。
         /// 0が無音で1が最大です。デフォルトは1.0です。
         /// </remarks>
+        /// SFMLはボリュームを[0,100]で表すのでその1/100.
         public float Volume {
             get { return (sound != null) ? sound.Volume / 100f : music.Volume / 100f; }
             set { SetVolume (value); }

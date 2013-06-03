@@ -23,7 +23,7 @@ namespace DD {
         /// フィード パラメーター
         /// </summary>
         /// <remarks>
-        /// ラインの表示で使用されるパラメーターです。
+        /// ラインの自動送りの時に、文字表示のタイミング制御に使用されるパラメーターです。
         /// <list type="bullet">
         ///   <item><see cref="FeedParameters.TimeAfterOneCharacter"/> = 一文字あたりのウェイト値（msec）</item>
         ///   <item><see cref="FeedParameters.TimeAfterOneSentense"/> = 一行あたりのウェイト値（msec）</item>
@@ -43,12 +43,12 @@ namespace DD {
             /// <summary>
             /// 一文字あたりのウェイト値（msec）
             /// </summary>
-            public int TimeAfterOneCharacter {get; private set;}
+            public int TimeAfterOneCharacter { get; private set; }
 
             /// <summary>
             /// 一行あたりのウェイト値（msec）
             /// </summary>
-            public int TimeAfterOneSentense{get;private set;}
+            public int TimeAfterOneSentense { get; private set; }
         }
         #endregion
 
@@ -59,11 +59,28 @@ namespace DD {
         int height;
         int charSize;
         Color color;
-        Stopwatch watch;
         FeedMode feedMode;
         FeedParameters feedParams;
-        bool lineChanged;
+        TimeCounter tick;
+        TimeCounter tack;
+        TimeCounter tackWait;
         #endregion
+
+        /// <summary>
+        /// チック イベント
+        /// </summary>
+        /// <remarks>
+        /// 1文字表示される度にこのチック イベントが呼び出されます。
+        /// </remarks>
+        public event EventHandler Ticked;
+
+        /// <summary>
+        /// タック イベント
+        /// </summary>
+        /// <remarks>
+        /// 1ライン表示される度にこのタック イベントが呼び出されます。
+        /// </remarks>
+        public event EventHandler Tacked;
 
         #region Constructor
         /// <summary>
@@ -81,10 +98,11 @@ namespace DD {
             this.height = height;
             this.charSize = 24;
             this.color = new Color (255, 255, 255, 255);
-            this.lineChanged = false;
-            this.watch = new Stopwatch ();
-            this.feedMode = FeedMode.Normal;
+            this.feedMode = FeedMode.Manual;
             this.feedParams = new FeedParameters (0, 0);
+            this.tick = null;
+            this.tack = null;
+            this.tackWait = null;
         }
         #endregion
 
@@ -115,8 +133,8 @@ namespace DD {
         /// 文字色
         /// </summary>
         public Color Color {
-            get{return color;}
-            set{SetColor(value.R, value.G, value.B, value.A); }
+            get { return color; }
+            set { SetColor (value.R, value.G, value.B, value.A); }
         }
 
         /// <summary>
@@ -149,14 +167,7 @@ namespace DD {
         /// </remarks>
         public bool IsOver {
             get {
-                if (feedMode == FeedMode.Normal) {
-                    return true;
-                }
-                else {
-                    var time = watch.ElapsedMilliseconds;
-                    var duration = feedParams.TimeAfterOneCharacter * lines[index].Words.Length + feedParams.TimeAfterOneSentense;
-                    return (time >= duration) ? true : false;
-                }
+                return !tack.IsRunning;
             }
         }
 
@@ -168,7 +179,7 @@ namespace DD {
         /// </remarks>
         public FeedMode FeedMode {
             get { return feedMode; }
-            set { SetFeedMode (value, feedParams); }
+            set { SetFeedMode (value); }
         }
 
         /// <summary>
@@ -179,23 +190,37 @@ namespace DD {
         /// </remarks>
         public FeedParameters FeedParameter {
             get { return feedParams; }
-            set { SetFeedMode (feedMode, value); }
+            set { SetFeedParameter (value); }
         }
         #endregion
 
 
         /// <summary>
-        /// フィードモードの変更
+        /// フィード モードの変更
         /// </summary>
         /// <remarks>
         /// フィード（自動送り）機能を自動送りに変更します。
+        /// </remarks>
+        /// <note>
+        /// フィード パラメーターを変更すると内部の時計がリセットされ、
+        /// 自動送り中の文字列が最初から表示し直します。仕様です。
+        /// </note>
+        /// <param name="mode">フィード モード</param>
+        public void SetFeedMode (FeedMode mode) {
+            this.feedMode = mode;
+        }
+
+        /// <summary>
+        /// フィード パラメーターの変更
+        /// </summary>
+        /// <remarks>
         /// フィードで使用するパラメーターも一緒に指定します。
         /// </remarks>
-        /// <param name="mode">フィード モード</param>
         /// <param name="param">パラメーター</param>
-        public void SetFeedMode (FeedMode mode, FeedParameters param) {
-            this.feedMode = mode;
+        public void SetFeedParameter (FeedParameters param) {
             this.feedParams = param;
+     
+            RecreateTimeCounter ();
         }
 
         #region Method
@@ -218,11 +243,10 @@ namespace DD {
         /// ファイルからライン形式で書かれたラインをロードします。
         /// </remarks>
         /// <param name="name">ファイル名</param>
-        public void LoadLine (string name) {
+        public void LoadFromFile (string name) {
             this.lines = Resource.GetLine (name).ToList ();
             this.index = 0;
-            this.lineChanged = true;
-            watch.Restart ();
+            LineChange (0);
         }
 
         /// <summary>
@@ -230,9 +254,7 @@ namespace DD {
         /// </summary>
         public void Next () {
             if (index < LineCount - 1) {
-                this.lineChanged = true;
-                this.index = index + 1;
-                watch.Restart ();
+                LineChange (index + 1);
             }
         }
 
@@ -241,8 +263,7 @@ namespace DD {
         /// </summary>
         public void Prev () {
             if (index > 0) {
-                this.lineChanged = true;
-                this.index = index - 1;
+                LineChange (index - 1);
             }
         }
 
@@ -251,8 +272,7 @@ namespace DD {
         /// </summary>
         public void Rewind () {
             if (index != 0) {
-                this.lineChanged = true;
-                this.index = 0;
+                LineChange (0);
             }
         }
 
@@ -265,9 +285,65 @@ namespace DD {
                 throw new IndexOutOfRangeException ("Index is out of range");
             }
             if (index != i) {
-                this.lineChanged = true;
-                this.index = i;
+                LineChange (i);
             }
+        }
+
+        /// <summary>
+        /// ラインの変更
+        /// </summary>
+        /// <param name="next"></param>
+        private void LineChange (int next) {
+            this.index = next;
+            
+            if (lines[index].Event != null) {
+                if (Node != null) {
+                    foreach (var cmp in Node.Components) {
+                        cmp.OnLineEvent (CurrentLine, YAMLParser.Parse (lines[index].Event));
+                    }
+                }
+            }
+
+            RecreateTimeCounter ();
+         }
+
+        private void RecreateTimeCounter () {
+            if (LineCount == 0) {
+                return;
+            }
+            if (tick != null) {
+                this.tick.Close ();
+            }
+            if (tack != null) {
+                this.tack.Close ();
+            }
+            if (tackWait != null) {
+                this.tackWait.Close ();
+            }
+
+            var wordCount = lines[index].Words.Length;
+            var charWait = feedParams.TimeAfterOneCharacter;
+            var lineWait = feedParams.TimeAfterOneSentense;
+
+            this.tick = new TimeCounter (wordCount, charWait);                         // 1文字終わり
+            this.tack = new TimeCounter (1, wordCount * charWait + 1);                 // 1行終わり
+            this.tackWait = new TimeCounter (1, wordCount * charWait + lineWait + 1);  // 1行終わり + 自動送り用のウェイト
+                                         
+            
+            tick.Elapsed += () => {
+                if (Ticked != null) {
+                    Ticked.Invoke (lines[index], null);
+                }
+            };
+            tack.Elapsed += () => {
+                if (Tacked != null) {
+                    Tacked.Invoke (lines[index], null);
+                }
+            };
+
+            tick.Start ();
+            tack.Start ();
+            tackWait.Start ();
         }
 
         /// <summary>
@@ -298,42 +374,23 @@ namespace DD {
             Node.SetBoundingBox (0, 0, width, height);
         }
 
-        /// <inheritdoc/>
-        public override void OnDispatch () {
-            if (lineChanged) {
-                var args = CurrentLine.Event;
-                if (args != null) {
-                    foreach (var cmp in Node.Components) {
-                        cmp.OnLineEvent (CurrentLine, YAMLParser.Parse (args));
-                    }
-                }
-                this.lineChanged = false;
-            }
-        }
         #endregion
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
             var win = window as RenderWindow;
+            var words = lines[index].Words.Substring (0, tick.Count);
             var font = Resource.GetDefaultFont ();
-            var drawWords = lines[index].Words;
-
-            var time = (int)watch.ElapsedMilliseconds;
-            var waitTime = feedParams.TimeAfterOneCharacter;
-            if (waitTime > 0) {
-                var n = Math.Min(time/waitTime, drawWords.Length);
-                drawWords = drawWords.Substring(0, n);
-            }
-
-            var txt = new Text (drawWords, font);
+            var txt = new Text (words, font);
             txt.Position = new Vector2f (Node.WindowX, Node.WindowY);
             txt.CharacterSize = (uint)charSize;
+            txt.Color = color.ToSFML ();
             win.Draw (txt);
         }
 
         /// <inheritdoc/>
         public override void OnUpdate (long msec) {
-            if (feedMode == FeedMode.Automatic && IsOver) {
+            if (feedMode == FeedMode.Automatic && !tackWait.IsRunning) {
                 Next ();
             }
         }

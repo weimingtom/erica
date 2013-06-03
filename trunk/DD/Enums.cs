@@ -143,7 +143,7 @@ namespace DD {
         /// <summary>
         /// 手動送り
         /// </summary>
-        Normal,
+        Manual,
 
         /// <summary>
         /// 自動送り

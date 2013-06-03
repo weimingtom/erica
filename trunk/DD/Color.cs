@@ -81,7 +81,7 @@ namespace DD {
         /// 黒
         /// </summary>
         public static Color Black {
-            get { return new Color (0,0,0,1); }
+            get { return new Color (0,0,0,255); }
         }
     }
 }

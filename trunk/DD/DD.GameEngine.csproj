@@ -105,6 +105,7 @@
     <Compile Include="StateMachine.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TiledTexture.cs" />
+    <Compile Include="TimeCounter.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Line.cs" />

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SFML\TestExtensions.cs" />
+    <Compile Include="TestColor.cs" />
     <Compile Include="TestLabel.cs" />
     <Compile Include="TestSaveDataContainer.cs" />
     <Compile Include="TestAnimationClip.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="TestStateMachine.cs" />
     <Compile Include="TestTexture.cs" />
     <Compile Include="TestTiledTexture.cs" />
+    <Compile Include="TestTimeCounter.cs" />
     <Compile Include="TestWorld.cs" />
     <Compile Include="TestSprite.cs" />
     <Compile Include="MyEventArgs.cs" />

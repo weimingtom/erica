@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
-
-
     /// <summary>
     /// ステート マシーン クラス
     /// </summary>
@@ -113,8 +111,8 @@ namespace DD {
             /// <summary>
             /// ステートからenumへの明示的な型変換
             /// </summary>
-            /// <param name="state">変換元の<see cref="State"/>オブジェクト</param>
-            /// <returns>対応する<paramref name="T"/>型のenum値</returns>
+            /// <param name="state"> 変換元の<see cref="State"/>オブジェクト</param>
+            /// <returns>対応する <typeref name="T"/>型のenum値</returns>
             public static implicit operator T (State state) {
                 return state.enumValue;
             }
@@ -213,8 +211,7 @@ namespace DD {
         /// 
         /// </remarks>
         public void Process () {
-            var state = states.Find (x => x.EnumValue.Equals (CurrentState));
-            foreach (var tran in state.Transitions) {
+            foreach (var tran in CurrentState.Transitions) {
                 var next = tran.Key;
                 var pred = tran.Value;
                 if (pred ()) {
