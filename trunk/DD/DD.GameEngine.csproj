@@ -102,6 +102,7 @@
     <Compile Include="SFML\Extentions.cs" />
     <Compile Include="SoundClip.cs" />
     <Compile Include="SoundPlayer.cs" />
+    <Compile Include="StateMachine.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TiledTexture.cs" />
     <Compile Include="World.cs" />
