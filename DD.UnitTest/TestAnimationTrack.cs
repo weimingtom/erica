@@ -45,22 +45,22 @@ namespace DD.UnitTest {
         public void Test_AddKeyframe_ValueType () {
             var track = new AnimationTrack ("PropetyName", InterpolationType.Step);
 
-            track.AddKeyframe (1, new Point (1, 2));
-            track.AddKeyframe (2, new Point (3, 4));
-            track.AddKeyframe (3, new Point (5, 6));
-            track.AddKeyframe (4, new Point (7, 8));
+            track.AddKeyframe (1, new Vector3 (1, 2, 3));
+            track.AddKeyframe (2, new Vector3 (4, 5, 6));
+            track.AddKeyframe (3, new Vector3 (7, 8, 9));
+            track.AddKeyframe (4, new Vector3 (10, 11, 12));
 
             Assert.AreEqual (1, track.GetKeyframe (0).Time);
-            Assert.AreEqual (new Point(1,2), track.GetKeyframe (0).Value);
+            Assert.AreEqual (new Vector3(1,2,3), track.GetKeyframe (0).Value);
 
             Assert.AreEqual (2, track.GetKeyframe (1).Time);
-            Assert.AreEqual (new Point (3, 4), track.GetKeyframe (1).Value);
+            Assert.AreEqual (new Vector3 (4,5,6), track.GetKeyframe (1).Value);
 
             Assert.AreEqual (3, track.GetKeyframe (2).Time);
-            Assert.AreEqual (new Point (5, 6), track.GetKeyframe (2).Value);
+            Assert.AreEqual (new Vector3 (7,8,9), track.GetKeyframe (2).Value);
 
             Assert.AreEqual (4, track.GetKeyframe (3).Time);
-            Assert.AreEqual (new Point (7, 8), track.GetKeyframe (3).Value);
+            Assert.AreEqual (new Vector3 (10,11,12), track.GetKeyframe (3).Value);
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace DD.UnitTest {
         public void Test_Sample_Step_ValueType () {
             var track = new AnimationTrack ("PropetyName", InterpolationType.Step);
 
-            track.AddKeyframe (1, new Point(1,2));
-            track.AddKeyframe (2, new Point(2,3));
+            track.AddKeyframe (1, new Vector3 (1, 2, 0));
+            track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
             Assert.AreEqual (1.0f, track.Sample (0.0f).X, 0.0001f);
             Assert.AreEqual (1.0f, track.Sample (0.5f).X, 0.0001f);
@@ -131,8 +131,8 @@ namespace DD.UnitTest {
         public void Test_Sample_Linear_ValueType () {
             var track = new AnimationTrack ("PropetyName", InterpolationType.Linear);
 
-            track.AddKeyframe ( 1, new Point(1,2));
-            track.AddKeyframe (2, new Point (2, 3));
+            track.AddKeyframe (1, new Vector3 (1, 2, 0));
+            track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
             Assert.AreEqual (1.0f, track.Sample (0.0f).X, 0.0001f);
             Assert.AreEqual (1.0f, track.Sample (0.5f).X, 0.0001f);

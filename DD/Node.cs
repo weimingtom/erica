@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
+
+
+
     /// <summary>
     /// ノード クラス
     /// </summary>
@@ -11,42 +14,41 @@ namespace DD {
     /// スクリプトを構成するノード クラス。
     /// ノードは <see cref="Root"/> を頂点とする木構造のグラフを構成します。
     /// </remarks>
-    public class Node  {
+    public class Node : Transformable {
+
 
         #region Field
         string name;
         Node parent;
         List<Node> children;
         List<Component> components;
-        int x;
-        int y;
         Rectangle bbox;
         bool visible;
         bool clickable;
+
         #endregion
 
         #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
-        public Node () : this("") {
+        public Node ()
+            : this ("") {
         }
 
         /// <summary>
         /// コンストラクター
         /// </summary>
         /// <param name="name">ノード名</param>
-        public Node (string name) {
+        public Node (string name) : base() {
             this.name = name;
-            this.x = 0;
-            this.y = 0;
             this.bbox = new Rectangle ();
             this.visible = true;
             this.clickable = true;
             this.parent = null;
             this.children = new List<Node> ();
             this.components = new List<Component> ();
-            
+
         }
         #endregion
 
@@ -58,35 +60,7 @@ namespace DD {
             get { return name; }
         }
 
-        /// <summary>
-        /// 位置X（ローカル座標系）
-        /// </summary>
-        public int X {
-            get { return x; }
-            set { this.x = value; }
-        }
 
-        /// <summary>
-        /// 座標位置Y（ローカル座標系）
-        /// </summary>
-        public int Y {
-            get { return y; }
-            set { this.y = value; }
-        }
-
-        /// <summary>
-        /// 位置X（ウィンドウ座標系）
-        /// </summary>
-        public int WindowX {
-            get { return Upwards.Aggregate (0, (x, node) => x + node.x); }
-        }
-
-        /// <summary>
-        /// 位置Y（ウィンドウ座標系）
-        /// </summary>
-        public int WindowY {
-            get { return Upwards.Aggregate (0, (y, node) => y + node.y); }
-        }
 
         /// <summary>
         /// バウンディング ボックス
@@ -99,19 +73,7 @@ namespace DD {
             get { return bbox; }
         }
 
-        /// <summary>
-        /// ローカル座標系への変換
-        /// </summary>
-        /// <remarks>
-        /// 指定のウィンドウ座標(<paramref name="x"/>,<paramref name="y"/>)を
-        /// このノードのローカル座標系へ変換します。
-        /// </remarks>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        public void TransformToLocal (ref int x, ref int y) {
-            x = x - WindowX;
-            y = y - WindowY;
-        }
+
 
         /// <summary>
         /// 表示フラグ
@@ -175,7 +137,7 @@ namespace DD {
         /// </remarks>
         public IEnumerable<Node> Downwards {
             get {
-                var downs = new List<Node> () {this};
+                var downs = new List<Node> () { this };
                 var nodes = this.children;
                 while (nodes.Count > 0) {
                     downs.AddRange (nodes);
@@ -209,8 +171,12 @@ namespace DD {
         }
 
         /// <summary>
-        /// ルート親ノード
+        /// ルート ノード
         /// </summary>
+        /// <remarks>
+        /// ルート ノードとツリーを上方向に null になるまでたどった時の一番上のノードの事を言います。
+        /// 親ノードが null の場合は自分がルート ノードです。
+        /// </remarks>
         public Node Root {
             get {
                 return Upwards.LastOrDefault ();
@@ -223,6 +189,72 @@ namespace DD {
         public IEnumerable<Component> Components {
             get { return components; }
         }
+
+        /// <summary>
+        /// このノード座標系からグローバル座標系への複合変換行列
+        /// </summary>
+        public Matrix4x4 GlobalTransform {
+            get { return Upwards.Aggregate (Matrix4x4.Identity, (t, node) => node.Transform * t); }
+        }
+
+        /// <summary>
+        /// グローバル座標系からこのノード座標系への複合変換行列
+        /// </summary>
+        public Matrix4x4 LocalTransform {
+            get { return Upwards.Aggregate (Matrix4x4.Identity, (t, node) => t * node.Transform.Inverse ()); }
+        }
+
+        /// <summary>
+        /// グローバル座標系での座標位置
+        /// </summary>
+        /// <remarks>
+        /// このプロパティは <see cref="GlobalTranslation"/> と等価です。
+        /// </remarks>
+        public Vector3 GlobalPoint {
+            get {
+                return GlobalTranslation;
+            }
+        }
+
+        /// <summary>
+        /// グローバル座標系での平行移動要素
+        /// </summary>
+        public Vector3 GlobalTranslation {
+            get {
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+                GlobalTransform.Decompress (out T, out R, out S);
+                return T;
+            }
+        }
+
+        /// <summary>
+        /// グローバル座標系での回転要素
+        /// </summary>
+        public Quaternion GlobalRotation {
+            get {
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+                GlobalTransform.Decompress (out T, out R, out S);
+                return R;
+            }
+        }
+
+        /// <summary>
+        /// グローバル座標系でのスケール要素
+        /// </summary>
+        public Vector3 GlobalScale {
+            get {
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+                GlobalTransform.Decompress (out T, out R, out S);
+                return S;
+            }
+        }
+
         #endregion
 
         #region Method
@@ -232,11 +264,17 @@ namespace DD {
         /// <remarks>
         /// コンポーネントをノードに追加します。
         /// すでに他のノードで登録されているコンポーネントは登録できません。
+        /// すでに登録済みのコンポーネントと同型のコンポーネントを登録可能です。
+        /// これについては後日変更するかもしれません。
+        /// このタイミングで <see cref="Component.OnAttached"/> が呼び出されます。
         /// </remarks>
         /// <param name="comp">コンポーネント</param>
         public void Attach (Component comp) {
             if (comp == null) {
                 throw new ArgumentNullException ("Component is null");
+            }
+            if (comp.Node != null) {
+                throw new ArgumentException ("Component has already attached to another node.");
             }
             this.components.Add (comp);
             comp.SetNode (this);
@@ -248,10 +286,14 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// ノードからコンポーネントを削除します。
+         /// このタイミングで <see cref="Component.OnDetached"/> が呼び出されます。
         /// </remarks>
         /// <param name="comp">コンポーネント</param>
         public void Detach (Component comp) {
             if (comp == null) {
+                return;
+            }
+            if (comp.Node != this) {
                 return;
             }
             comp.OnDetached ();
@@ -292,15 +334,7 @@ namespace DD {
             this.children.Remove (node);
         }
 
-        /// <summary>
-        /// ノードの移動
-        /// </summary>
-        /// <param name="x">X方向の移動距離（ピクセル数）</param>
-        /// <param name="y">Y方向の移動距離（ピクセル数）</param>
-        public void Move (int x, int y) {
-            this.x += x;
-            this.y += y;
-        }
+
 
         /// <summary>
         /// バウンディング ボックスの変更
@@ -336,9 +370,11 @@ namespace DD {
         public Component GetComponent (int index) {
             if (index < 0 || index >= ComponentCount) {
                 throw new ArgumentException ("Index is out of components");
-            } 
+            }
             return components[index];
         }
+
+
 
         /// <inheritdoc/>
         public override string ToString () {

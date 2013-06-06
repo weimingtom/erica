@@ -43,7 +43,7 @@ namespace DD {
         /// </summary>
         public byte R {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace DD {
         /// </summary>
         public byte G {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace DD {
         /// </summary>
         public byte B {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace DD {
         /// </summary>
         public byte A {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>

@@ -17,10 +17,10 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_New2 () {
-            var frame = new Keyframe (1, new Point(1,2));
+            var frame = new Keyframe (1, new Vector3(1,2,3));
 
             Assert.AreEqual (1, frame.Time);
-            Assert.AreEqual (new Point(1,2), frame.Value);
+            Assert.AreEqual (new Vector3(1,2,3), frame.Value);
         }
     }
 }

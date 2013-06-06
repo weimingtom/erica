@@ -86,7 +86,7 @@ namespace DD {
         /// <param name="x">点のX座標</param>
         /// <param name="y">点のY座標</param>
         /// <returns></returns>
-        public bool Contain (int x, int y) {
+        public bool Contain (float x, float y) {
             return (x >= X && x < X2) && (y >= Y && y < Y2);
         }
     }

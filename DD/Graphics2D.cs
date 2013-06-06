@@ -110,15 +110,17 @@ namespace DD {
         /// <param name="clicked">マウス ボタン イベント引数</param>
         private void MouseButtonPressedHandler (object sender, MouseButtonEventArgs clicked) {
             foreach (var node in workingScript.Downwards.Reverse ()) {
-                var x = (int)clicked.X;
-                var y = (int)clicked.Y;
-                node.TransformToLocal (ref x, ref y);
+                var x = (float)clicked.X;
+                var y = (float)clicked.Y;
+                var z = 0f;
+                node.LocalTransform.Apply (ref x, ref y, ref z);
+
                 if (node.BoundingBox.Contain (x, y)) {
                     foreach (var comp in node.Components) {
                         switch (clicked.Button) {
-                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, x, y); break;
-                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, x, y); break;
-                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, x, y); break;
+                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)x, (int)y); break;
+                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)x, (int)y); break;
+                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)x, (int)y); break;
                             default: break;
                         }
                         continue;
@@ -134,15 +136,16 @@ namespace DD {
         /// <param name="released">マウス ボタン イベント引数</param>
         private void MouseButtonReleasedHandler (object sender, MouseButtonEventArgs released) {
             foreach (var node in workingScript.Downwards.Reverse ()) {
-                var x = released.X;
-                var y = released.Y;
-                node.TransformToLocal (ref x, ref y);
+                var x = (float)released.X;
+                var y = (float)released.Y;
+                var z = 0f;
+                node.LocalTransform.Apply (ref x, ref y, ref z);
                 if (node.BoundingBox.Contain (x, y)) {
                     foreach (var comp in node.Components) {
                         switch (released.Button) {
-                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, x, y); break;
-                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, x, y); break;
-                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, x, y); break;
+                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)x, (int)y); break;
+                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)x, (int)y); break;
+                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)x, (int)y); break;
                             default: break;
                         }
                     }
@@ -161,9 +164,10 @@ namespace DD {
             var hit = (Node)null;
 
             foreach (var node in workingScript.Downwards.Reverse ()) {
-                var x = move.X;
-                var y = move.Y;
-                node.TransformToLocal (ref x, ref y);
+                var x = (float)move.X;
+                var y = (float)move.Y;
+                var z = 0f;
+                node.LocalTransform.Apply (ref x, ref y, ref z);
                 if (node.BoundingBox.Contain (x, y)) {
                     hit = node;
                     break;
@@ -172,19 +176,21 @@ namespace DD {
 
             if (hit != prevHit) {
                 if (prevHit != null) {
-                    var x = move.X;
-                    var y = move.Y;
-                    prevHit.TransformToLocal (ref x, ref y);
+                    var x = (float)move.X;
+                    var y = (float)move.Y;
+                    var z = 0f;
+                    prevHit.LocalTransform.Apply (ref x, ref y, ref z);
                     foreach (var comp in prevHit.Components) {
-                        comp.OnMouseFocusOut (MouseButton.Left, x, y);
+                        comp.OnMouseFocusOut (MouseButton.Left, (int)x, (int)y);
                     }
                 }
                 if (hit != null) {
-                    var x = move.X;
-                    var y = move.Y;
-                    hit.TransformToLocal (ref x, ref y);
+                    var x = (float)move.X;
+                    var y = (float)move.Y;
+                    var z = 0f;
+                    hit.LocalTransform.Apply (ref x, ref y, ref z);
                     foreach (var comp in hit.Components) {
-                        comp.OnMouseFocusIn (MouseButton.Left, x, y);
+                        comp.OnMouseFocusIn (MouseButton.Left, (int)x, (int)y);
                     }
                 }
                 this.prevHit = hit;

@@ -94,8 +94,8 @@ namespace DD {
         /// <remarks>
         /// 指定のキーフレームに（時刻、値）を設定します。
         /// （dynamic宣言なので）値にはすべての型を指定可能ですが、プリミティブ型（Int32, Single, etc.）か、
-        /// Length プロパティとインデクサ-（'[]'）を実装した構造体以外は例外を発生します。
-        /// また2回目以降に初回呼び出しと異なる型を指定する事はできません。
+        /// ComponentCount プロパティとインデクサ-（'[]'）を実装した構造体以外は例外を発生します。
+        /// また2回目以降に初回呼び出しと異なる型、コンポーネント数の <paramref name="value"/> を指定する事はできません。
         /// 値は書き換え対象のプロパティの型と同一か、暗黙的に変換できる必要があります。
         /// もしそうでない場合 OnAnimate() の処理の途中でキャスト例外が発生します。
         /// </remarks>
@@ -107,17 +107,20 @@ namespace DD {
             }
             var type = (Type)value.GetType ();
             if (!type.IsValueType) {
-                throw new ArgumentException ("Value type is invalid, type=", type.Name);
+                throw new ArgumentException ("Type is invalid, type=", type.Name);
             }
-            if (!type.IsPrimitive && (type.GetProperty ("Length") == null || type.GetProperty ("Item") == null)) {
-                throw new ArgumentException ("Value type has not Length or Indexer[]");
+            if (!type.IsPrimitive && (type.GetProperty ("ComponentCount") == null || type.GetProperty ("Item") == null)) {
+                throw new ArgumentException ("Value don't have ComponentCount property or Indexer[]");
             }
             if (compType != null && type != compType) {
-                throw new ArgumentException ("Value type is different, this=" + compType.Name);
+                throw new ArgumentException ("Value type is different from previous one, this=" + compType.Name);
             }
-            var count = type.IsPrimitive ? 1 : value.Length;
+            var count = type.IsPrimitive ? 1 : value.ComponentCount;
             if (compType != null && count != compCount) {
-                throw new ArgumentException ("Value length is differenct, this=" + compCount);
+                throw new ArgumentException ("Value length is different from previous one, this=" + compCount);
+            }
+            if (interpType == InterpolationType.SLerp && type != typeof (Quaternion)) {
+                throw new ArgumentException ("SLerp is only for Quaternion value");
             }
 
             this.compType = type;
@@ -163,6 +166,7 @@ namespace DD {
             switch (interpType) {
                 case InterpolationType.Step: return Step (a, left.Value, right.Value);
                 case InterpolationType.Linear: return Linear (a, left.Value, right.Value);
+                case InterpolationType.SLerp: return SLerp (a, left.Value, right.Value);
                 default: throw new NotImplementedException ("Sorry");
             }
 
@@ -210,6 +214,21 @@ namespace DD {
                 throw new InvalidOperationException ("This never happen!");
             }
 
+        }
+
+        /// <summary>
+        /// 球面線形補完
+        /// </summary>
+        /// <remarks>
+        /// この補完形式は <see cref="InterpolationType.SLerp"/> 専用です。
+        /// それ以外の時は例外を発生します。
+        /// </remarks>
+        /// <param name="a">補完係数 [0,1]</param>
+        /// <param name="left">クォータニオン1</param>
+        /// <param name="right">クォータニオン2</param>
+        /// <returns></returns>
+        internal dynamic SLerp (float a, dynamic left, dynamic right) {
+                return Quaternion.Slerp(a, left, right);
         }
         #endregion
 

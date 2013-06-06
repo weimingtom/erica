@@ -39,10 +39,11 @@ namespace DD {
         /// <summary>
         /// カラーをSFML形式に変更
         /// </summary>
-        /// <param name="color">DDのカラー</param>
+        /// <param name="c">DDのカラー</param>
         /// <returns>SFMLのカラー</returns>
-        public static SFML.Graphics.Color ToSFML (this DD.Color color) {
-            return new SFML.Graphics.Color (color.R, color.G, color.B, color.A);
+        public static SFML.Graphics.Color ToSFML (this DD.Color c) {
+            return new SFML.Graphics.Color (c.R, c.G, c.B, c.A);
         }
+
     }
 }

@@ -17,32 +17,47 @@ namespace Sample {
             var wld = new World ("First Script");
             wld.Attach (new FPSCounter ());
 
+            //------------
+
             var cmp = new MyComponent ();
 
-            var line = new LineReader (800, 400);
-            line.LoadFromFile ("media/HelloMiku.txt");
-            line.SetFeedMode (FeedMode.Automatic);
-            line.SetFeedParameter(new LineReader.FeedParameters (200, 2000));
-            line.Color = Color.White;
+            var spr = new Sprite ();
+            spr.AddTexture (new Texture ("media/Arrow.png"));
+            spr.OffsetX = -spr.ActiveTexture.Width / 2 ;
+            spr.OffsetY = -spr.ActiveTexture.Height / 2;
 
-            var sound1 = new SoundClip ("media/System41.wav");
-            var sound2 = new SoundClip("media/System7.wav");
-            line.Ticked += (x,y) => {
-                sound1.Play ();
-            };
-            line.Tacked += (x, y) => {
-                sound2.Play ();
-            };
+            //--------------
+            var node1 = new Node ();
+            node1.Translation = new Vector3 (100, 100, 0);
 
+            var node2 = new Node ();
+            node2.Attach (cmp);
+            node2.Attach (spr);
 
-            var node = new Node ();
-            node.Attach (cmp);
-            node.Attach (line);
+            //node.Expand (3, 3, 1);
+            node2.Move (100, 100, 0);
+            node2.Expand (2, 2, 1);
+            //node.Rotate (45, 0, 0, 1);
+            
+            //---------------
 
-            node.Move (0, 200);
-            node.SetBoundingBox (0, 0, 800, 400);
-            wld.AddChild (node);
+            var track = new AnimationTrack ("Rotation", InterpolationType.SLerp);
+            track.AddKeyframe (0, new Quaternion (0, 0, 0, 1));
+            track.AddKeyframe (1000 * 10, new Quaternion (350, 0, 0, 1));
+            var clip = new AnimationClip ();
+            clip.Duration = 1000 * 10;
+            clip.Speed = 4.0f;
+            clip.AddTrack (node2, track);
 
+            var ctr = new AnimationController ();
+            ctr.AddClip (clip);
+            node2.Attach (ctr);
+            
+            //---------------------------------
+
+            wld.AddChild (node1);
+            node1.AddChild (node2);
+            
             var director = new Director ();
             director.PushScript (wld);
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
