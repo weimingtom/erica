@@ -13,17 +13,21 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_New () {
-            var spr = new Sprite (4);
+            var spr = new Sprite ();
 
-            Assert.AreEqual (4, spr.TextureCount);
-            Assert.AreEqual (0, spr.ActiveTexture);
+            Assert.AreEqual (0, spr.TextureCount);
+            Assert.AreEqual (null, spr.ActiveTexture);
+            Assert.AreEqual (1, spr.OffsetX);
+            Assert.AreEqual (1, spr.OffsetY);
         }
 
         [TestMethod]
         public void Test_SetTexture () {
-            var spr = new Sprite (4);
-            spr.SetTexture (0,new Texture ("abstract7.png"));
-            spr.SetTexture (1, new Texture ( "image2x2.png"));
+            var spr = new Sprite ();
+            spr.AddTexture (new Texture ("abstract7.png"));
+            spr.AddTexture (new Texture ("image2x2.png"));
+
+            Assert.AreEqual (2, spr.TextureCount);
 
             var tex0 = spr.GetTexture (0);
             Assert.AreEqual ("abstract7.png", tex0.Name);
@@ -39,22 +43,43 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SetActiveTexture () {
-             var spr = new Sprite (4);
+            var spr = new Sprite ();
+            spr.AddTexture (new Texture ("abstract7.png"));
+            spr.AddTexture (new Texture ("image2x2.png"));
 
-            spr.SetTexture (0, new Texture("abstract7.png"));
-            spr.SetTexture (1, new Texture("image2x2.png"));
+            spr.ActiveTextureIndex = 1;
+            Assert.AreEqual (1, spr.ActiveTextureIndex);
 
-            spr.ActiveTexture = 1;
-            
-            Assert.AreEqual(1, spr.ActiveTexture);
-        
             var tex1 = spr.GetActiveTexture ();
             Assert.AreEqual ("image2x2.png", tex1.Name);
             Assert.AreEqual (2, tex1.ImageWidth);
             Assert.AreEqual (2, tex1.ImageHeight);
-        
         }
 
-   
+        [TestMethod]
+        public void Test_RemoveTexture () {
+            var spr = new Sprite ();
+            var tex1 = new Texture ("abstract7.png");
+            var tex2 = new Texture ("image2x2.png");
+            spr.AddTexture (tex1);
+            spr.AddTexture (tex2);
+
+            spr.RemoveTexture (tex1);
+
+            Assert.AreEqual (tex2, spr.ActiveTexture);
+        }
+
+
+        [TestMethod]
+        public void Test_SetOffset () {
+            var spr = new Sprite ();
+            spr.SetOffset (1, 2);
+
+
+            Assert.AreEqual (1, spr.OffsetX);
+            Assert.AreEqual (2, spr.OffsetY);
+        }
+
+
     }
 }

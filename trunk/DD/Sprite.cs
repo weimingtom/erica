@@ -17,8 +17,10 @@ namespace DD {
     /// </remarks>
     public partial class Sprite : Component {
         #region Field
-        Texture[] texs;
-        int active;
+        List<Texture> texs;
+        Texture active;
+        int offsetX;
+        int offsetY;
         #endregion
 
         #region Constructor
@@ -26,16 +28,13 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <remarks>
-        /// テクスチャーを最大 <paramref name="count"/> 枚持つ <see cref="Sprite"/> オブジェクトのインスタンスを生成します。
-        /// アクティブなテクスチャーは0番にセットされます。
+        /// アクティブなテクスチャーは null にセットされます。
         /// </remarks>
-        /// <param name="count">テクスチャーの最大数</param>
-        public Sprite (int count) {
-            if (count <= 0) {
-                throw new ArgumentException ("Texture count is invalid");
-            }
-            this.texs = new Texture[count];
-            this.active = 0;
+        public Sprite () {
+            this.texs = new List<Texture>();
+            this.active = null;
+            this.offsetX = 0;
+            this.offsetY = 0;
         }
         #endregion
 
@@ -46,10 +45,66 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 現在アクティブなテクスチャーの番号を取得または変更します。
+        /// このプロパティはアニメーション システムが値を書き換えてアクティブ テクスチャーを変更する為に存在しています。
+        /// 配列型のプロパティのアニメーションに対応したら消すかもしれません。
         /// </remarks>
-        public int ActiveTexture {
+        public int ActiveTextureIndex {
+            get { return texs.FindIndex(x => x == active); }
+            set {
+                if (value < 0 || value > TextureCount - 1) {
+                    throw new IndexOutOfRangeException ("Index is out of range");
+                }
+                this.active = texs[value];
+            }
+        }
+
+        /// <summary>
+        /// 現在アクティブなテクスチャー
+        /// </summary>
+        /// <remarks>
+        /// 現在アクティブなテクスチャーの番号を取得または変更します。
+        /// </remarks>
+        public Texture ActiveTexture {
             get { return active; }
-            set { this.active = value; }
+            set {
+                if (!texs.Contains (value)) {
+                    throw new ArgumentException ("Texture is not in this Sprite");
+                }
+                this.active = value;
+            }
+        }
+
+        /// <summary>
+        /// オフセット座標X（ピクセル数）
+        /// </summary>
+        /// <remarks>
+        /// オフセット座標はスプライトを描画する時にローカル座標位置の原点から(x,y)だけ動かします。
+        /// </remarks>
+        public int OffsetX {
+            get { return offsetX; }
+            set { SetOffset (value, offsetX); }
+        }
+
+        /// <summary>
+        /// オフセット座標Y（ピクセル数）
+        /// </summary>
+        /// <remarks>
+        /// オフセット座標はスプライトを描画する時にローカル座標位置の原点から(x,y)だけ動かします。
+        /// </remarks>
+        public int OffsetY {
+            get { return offsetY; }
+            set { SetOffset (offsetX, value); }
+        }
+
+        /// <summary>
+        /// オフセット座標の変更
+        /// </summary>
+        /// <param name="x">X（ピクセル数）</param>
+        /// <param name="y">Y（ピクセル数）</param>
+        /// <returns></returns>
+        public void SetOffset (int x, int y) {
+            this.offsetX = x;
+            this.offsetY = y;
         }
 
         /// <summary>
@@ -70,19 +125,38 @@ namespace DD {
 
         #region Method
         /// <summary>
-        /// テクスチャーの変更
+        /// テクスチャーの追加
         /// </summary>
-        /// <param name="index">テクスチャー番号</param>
+        /// <remarks>
+        /// このスプライトで使用するテクスチャーを追加します。
+        /// セットされたテクスチャーの中から1つを選んで（アクティブ テクスチャー）描画されます。
+        /// </remarks>
         /// <param name="tex">テクスチャー オブジェクト</param>
-        public void SetTexture (int index, Texture tex) {
+        public void AddTexture (Texture tex) {
             if (tex == null) {
                 throw new ArgumentNullException ("Texture is null");
             }
-            if (index < 0 || index > TextureCount - 1) {
-                throw new ArgumentException ("Index is out of range.");
+            this.texs.Add(tex);
+            if (active == null) {
+                this.active = tex;
             }
+        }
 
-            this.texs[index] = tex;
+        /// <summary>
+        /// テクスチャーの削除
+        /// </summary>
+        /// <remarks>
+        /// テクスチャーを削除します。もし削除されたテクスチャーがアクティブだった場合、
+        /// 既存のテクスチャーの中から1つがアクティブ テクスチャーとして再選択されます。
+        /// どれが選ばれるかは未定義です。
+        /// </remarks>
+        /// <param name="tex">削除したいテクスチャー</param>
+        /// <returns>削除したら true, そうでなければ false.</returns>
+        public bool RemoveTexture (Texture tex) {
+            if (active == tex) {
+                this.active = (TextureCount > 0) ? texs[0] : null;
+            }
+            return this.texs.Remove (tex);
         }
 
         /// <summary>
@@ -102,17 +176,21 @@ namespace DD {
         /// </summary>
         /// <returns></returns>
         public Texture GetActiveTexture () {
-            return texs[active];
+            return active;
         }
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
-            var tex = texs[active];
-            if (tex == null) {
+            if (active == null) {
                 return;
             }
+            var tex = active;
             var spr = new SFML.Graphics.Sprite (tex.Data);
-            spr.Position = new Vector2f (Node.WindowX, Node.WindowY);
+
+            spr.Position = new Vector2f (Node.GlobalTranslation.X + offsetX,
+                                         Node.GlobalTranslation.Y + offsetY);
+            spr.Scale = new Vector2f (Node.GlobalScale.X, Node.GlobalScale.Y);
+            spr.Rotation = Node.GlobalRotation.Angle;
 
             spr.TextureRect = new IntRect (tex.OffsetX, tex.OffsetY, tex.Width, tex.Height);
 

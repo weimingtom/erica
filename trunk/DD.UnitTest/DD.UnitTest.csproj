@@ -57,9 +57,14 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="TestColor.cs" />
     <Compile Include="TestLabel.cs" />
+    <Compile Include="TestMatrix3x3.cs" />
+    <Compile Include="TestMatrix4x4.cs" />
+    <Compile Include="TestMyMath.cs" />
+    <Compile Include="TestQuaternion.cs" />
     <Compile Include="TestSaveDataContainer.cs" />
     <Compile Include="TestAnimationClip.cs" />
     <Compile Include="TestAnimationController.cs" />
@@ -69,7 +74,8 @@
     <Compile Include="TestLineParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="TestPoint.cs" />
+    <Compile Include="TestTransformable.cs" />
+    <Compile Include="TestVector3.cs" />
     <Compile Include="TestRectangle.cs" />
     <Compile Include="TestButton.cs" />
     <Compile Include="TestComponent.cs" />

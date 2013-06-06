@@ -10,7 +10,7 @@ namespace DD.UnitTest {
 
         public class MyDummyTarget {
             public float Speed { get; set; }
-            public Point Point { get; set; }
+            public Vector3 Point { get; set; }
         }
 
         [TestMethod]
@@ -107,8 +107,8 @@ namespace DD.UnitTest {
             clip.Duration = 3;
 
             var track = new AnimationTrack ("Point", InterpolationType.Step);
-            track.AddKeyframe (1, new Point (1, 2));
-            track.AddKeyframe (2, new Point (2, 3));
+            track.AddKeyframe (1, new Vector3 (1, 2, 0));
+            track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
             var target = new MyDummyTarget ();
 
@@ -141,8 +141,8 @@ namespace DD.UnitTest {
             clip.Duration = 3;
 
             var track = new AnimationTrack ("Point", InterpolationType.Step);
-            track.AddKeyframe (1, new Point (1, 2));
-            track.AddKeyframe (2, new Point (2, 3));
+            track.AddKeyframe (1, new Vector3 (1, 2, 0));
+            track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
             var target = new MyDummyTarget ();
 

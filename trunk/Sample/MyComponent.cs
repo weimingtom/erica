@@ -33,13 +33,10 @@ namespace Sample {
         /// <inheritdoc/>
         public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
             if (button == MouseButton.Left) {
-                Console.WriteLine("Clicked " + i++);
-                var line = GetComponent<LineReader> ();
-                line.Next ();
+                Console.WriteLine("Left Clicked " + i++);
             }
             else if (button == MouseButton.Right) {
-                var line = GetComponent<LineReader> ();
-                line.Prev ();
+                Console.WriteLine ("Right Clicked " + i++);
             }
         }
 
