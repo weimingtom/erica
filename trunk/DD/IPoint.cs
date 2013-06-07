@@ -8,7 +8,7 @@ namespace DD {
     /// ポイント構造体
     /// </summary>
     /// <remarks>
-    /// 現在使われていません。将来的に使います。たぶん
+    /// 現在使われていません。使用しないでください
     /// </remarks>
     public struct IPoint {
         int x;
@@ -21,6 +21,7 @@ namespace DD {
         /// <param name="y">Y座標</param>
         public IPoint (int x, int y)
             : this () {
+                throw new NotImplementedException ("廃止された");
             this.x = x;
             this.y = y;
         }

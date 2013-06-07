@@ -166,7 +166,7 @@ namespace DD {
                                                     (pressed != null) ? pressed.Data : normal.Data; break;
                 default: throw new NotImplementedException ("Sorry");
             }
-            spr.Position = new Vector2f (Node.GlobalTranslation.X, Node.GlobalTranslation.Y);
+            spr.Position = new Vector2f (Node.GlobalX, Node.GlobalY);
             win.Draw (spr);
         }
 

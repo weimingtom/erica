@@ -63,23 +63,7 @@ namespace DD {
             this.M22 = m[8];
         }
 
-        /// <summary>
-        /// コピー コンストラクター
-        /// </summary>
-        /// <param name="m">コピー元の <see cref="Matrix3x3"/> オブジェクト</param>
-        public Matrix3x3 (Matrix3x3 m)
-            : this () {
-            this.M00 = m.M00;
-            this.M01 = m.M01;
-            this.M02 = m.M02;
-            this.M10 = m.M10;
-            this.M11 = m.M11;
-            this.M12 = m.M12;
-            this.M20 = m.M20;
-            this.M21 = m.M21;
-            this.M22 = m.M22;
-        }
-        #endregion
+              #endregion
 
 
         #region Property

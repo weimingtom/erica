@@ -7,7 +7,39 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestAnimationTrack {
-      
+
+        public struct MyStruct {
+            public MyStruct (int x, int y) :this(){
+                this.X = x;
+                this.Y = y;
+            }
+            public int X {
+                get;
+                internal set;
+            }
+            public int Y {
+                get;
+                internal set;
+            }
+            public int this[int index] {
+                get {
+                    switch (index) {
+                        case 0: return X;
+                        case 1: return Y;
+                        default: throw new IndexOutOfRangeException ("Index is out of range");
+                    }
+                }
+                set {
+                    switch (index) {
+                        case 0: this.X = value; break;
+                        case 1: this.Y = value; break;
+                        default: throw new IndexOutOfRangeException ("Index is out of range");
+                    }
+                }
+            }
+            public int ComponentCount { get { return 2; } }
+        }
+
         [TestMethod]
         public void Test_New () {
             var track = new AnimationTrack ("PropetyName", InterpolationType.Step);
@@ -179,8 +211,8 @@ namespace DD.UnitTest {
         public void Test_Sample_ValueType_Float2Int () {
             var track = new AnimationTrack ("PropetyName", InterpolationType.Linear);
 
-            track.AddKeyframe (1, new IPoint (1, 0));     // Int
-            track.AddKeyframe (100, new IPoint (100, 0)); // Int
+            track.AddKeyframe (1, new MyStruct (1, 0));     // Int
+            track.AddKeyframe (100, new MyStruct (100, 0)); // Int
 
             Assert.AreEqual (1, track.Sample (1).X);         // Int
             Assert.AreEqual (50, track.Sample (50).X);       // Int

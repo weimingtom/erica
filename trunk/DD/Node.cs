@@ -11,7 +11,7 @@ namespace DD {
     /// ノード クラス
     /// </summary>
     /// <remarks>
-    /// スクリプトを構成するノード クラス。
+    /// シーン グラフを構成するノード クラス。
     /// ノードは <see cref="Root"/> を頂点とする木構造のグラフを構成します。
     /// </remarks>
     public class Node : Transformable {
@@ -205,6 +205,59 @@ namespace DD {
         }
 
         /// <summary>
+        /// グローバル座標系での位置X
+        /// </summary>
+        /// <remarks>
+        /// このプロパティは利便性のために実装されています。
+        /// <see cref="GlobalTransform"/> の平行移動成分のXと同じです。
+        /// </remarks>
+        public float GlobalX {
+            get {
+                Vector3 point;
+                Quaternion rotation;
+                Vector3 scale;
+                GlobalTransform.Decompress (out point, out rotation, out scale);
+                return point.X;
+            }
+        }
+
+        /// <summary>
+        /// グローバル座標系での位置Y
+        /// </summary>
+        /// <remarks>
+        /// このプロパティは利便性のために実装されています。
+        /// <see cref="GlobalTransform"/> の平行移動成分のYと同じです。
+        /// </remarks>
+        public float GlobalY {
+            get {
+                Vector3 point;
+                Quaternion rotation;
+                Vector3 scale;
+                GlobalTransform.Decompress (out point, out rotation, out scale);
+                return point.Y;
+            }
+        }
+
+        /// <summary>
+        /// グローバル座標系での位置Z
+        /// </summary>
+        /// <remarks>
+        /// このプロパティは利便性のために実装されています。
+        /// <see cref="GlobalTransform"/> の平行移動成分のYと同じです。
+        /// </remarks>
+        public float GlobalZ {
+            get {
+                Vector3 point;
+                Quaternion rotation;
+                Vector3 scale;
+                GlobalTransform.Decompress (out point, out rotation, out scale);
+                return point.Z;
+            }
+        }
+        
+
+        /*
+        /// <summary>
         /// グローバル座標系での座標位置
         /// </summary>
         /// <remarks>
@@ -254,6 +307,7 @@ namespace DD {
                 return S;
             }
         }
+        */
 
         #endregion
 

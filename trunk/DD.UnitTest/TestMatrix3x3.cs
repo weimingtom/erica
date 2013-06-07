@@ -56,22 +56,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (9, m.M22);
         }
 
-        [TestMethod]
-        public void Test_New_3 () {
-            var m = new Matrix3x3 (new Matrix3x3 (1, 2, 3,
-                                                 4, 5, 6,
-                                                 7, 8, 9));
-            Assert.AreEqual (1, m.M00);
-            Assert.AreEqual (2, m.M01);
-            Assert.AreEqual (3, m.M02);
-            Assert.AreEqual (4, m.M10);
-            Assert.AreEqual (5, m.M11);
-            Assert.AreEqual (6, m.M12);
-            Assert.AreEqual (7, m.M20);
-            Assert.AreEqual (8, m.M21);
-            Assert.AreEqual (9, m.M22);
-        }
-
+      
         [TestMethod]
         public void Test_Indexer () {
             var m = new Matrix3x3 (1, 2, 3,

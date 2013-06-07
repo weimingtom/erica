@@ -78,7 +78,6 @@
     <Compile Include="AnimationTrack.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
-    <Compile Include="IAnimatable.cs" />
     <Compile Include="IPoint.cs" />
     <Compile Include="Keyframe.cs" />
     <Compile Include="Label.cs" />
