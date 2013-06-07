@@ -31,7 +31,7 @@ namespace DD {
         /// アクティブなテクスチャーは null にセットされます。
         /// </remarks>
         public Sprite () {
-            this.texs = new List<Texture>();
+            this.texs = new List<Texture> ();
             this.active = null;
             this.offsetX = 0;
             this.offsetY = 0;
@@ -49,7 +49,7 @@ namespace DD {
         /// 配列型のプロパティのアニメーションに対応したら消すかもしれません。
         /// </remarks>
         public int ActiveTextureIndex {
-            get { return texs.FindIndex(x => x == active); }
+            get { return texs.FindIndex (x => x == active); }
             set {
                 if (value < 0 || value > TextureCount - 1) {
                     throw new IndexOutOfRangeException ("Index is out of range");
@@ -78,18 +78,18 @@ namespace DD {
         /// オフセット座標X（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// オフセット座標はスプライトを描画する時にローカル座標位置の原点から(x,y)だけ動かします。
+        /// オフセット座標はスプライトを描画する時にローカル座標の原点からずらすピクセル数(x,y)です。
         /// </remarks>
         public int OffsetX {
             get { return offsetX; }
-            set { SetOffset (value, offsetX); }
+            set { SetOffset (value, offsetY); }
         }
 
         /// <summary>
         /// オフセット座標Y（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// オフセット座標はスプライトを描画する時にローカル座標位置の原点から(x,y)だけ動かします。
+        /// オフセット座標はスプライトを描画する際にローカル座標の原点からずらすピクセル数(x,y)です。
         /// </remarks>
         public int OffsetY {
             get { return offsetY; }
@@ -97,8 +97,39 @@ namespace DD {
         }
 
         /// <summary>
+        /// 画像の幅（ピクセル数）
+        /// </summary>
+        /// <remarks>
+        /// 画像の幅は現在アクティブなテクスチャーの画像領域と同じです。
+        /// アクティブなテクスチャーを変更すると変わる事があります。。
+        /// </remarks>
+        public int Width {
+            get { return (active != null) ? active.Width : 0; }
+        }
+
+        /// <summary>
+        /// 画像の高さ（ピクセル数）
+        /// </summary>
+        /// <remarks>
+        /// 画像の高さは現在アクティブなテクスチャーの画像領域と同じです。
+        /// アクティブなテクスチャーを変更すると変わる事があります。。
+        /// </remarks>
+        public int Height {
+            get { return (active != null) ? active.Height : 0; }
+        }
+
+        /// <summary>
         /// オフセット座標の変更
         /// </summary>
+        /// <remarks>
+        /// スプライトを（ローカル座標上で）原点から (<paramref name="x"/>,<paramref name="y"/>) だけずらします。
+        /// これは典型的には回転中心を画像の中心にあわせるのに使用します。
+        /// <code>
+        ///          var spr = new Sprite ();
+        ///          spr.OffsetX = -spr.ActiveTexture.Width / 2 ;
+        ///          spr.OffsetY = -spr.ActiveTexture.Height / 2;
+        /// </code>
+        /// </remarks>
         /// <param name="x">X（ピクセル数）</param>
         /// <param name="y">Y（ピクセル数）</param>
         /// <returns></returns>
@@ -136,7 +167,7 @@ namespace DD {
             if (tex == null) {
                 throw new ArgumentNullException ("Texture is null");
             }
-            this.texs.Add(tex);
+            this.texs.Add (tex);
             if (active == null) {
                 this.active = tex;
             }
@@ -154,7 +185,7 @@ namespace DD {
         /// <returns>削除したら true, そうでなければ false.</returns>
         public bool RemoveTexture (Texture tex) {
             if (active == tex) {
-                this.active = (TextureCount > 0) ? texs[0] : null;
+                this.active = texs.FirstOrDefault (x => x != tex);
             }
             return this.texs.Remove (tex);
         }
@@ -162,7 +193,7 @@ namespace DD {
         /// <summary>
         /// テクスチャーの取得
         /// </summary>
-        /// <param name="i">インデックス</param>
+        /// <param name="i">テクスチャー番号</param>
         /// <returns></returns>
         public Texture GetTexture (int i) {
             if (i < 0 || i > TextureCount - 1) {
@@ -187,12 +218,27 @@ namespace DD {
             var tex = active;
             var spr = new SFML.Graphics.Sprite (tex.Data);
 
-            spr.Position = new Vector2f (Node.GlobalTranslation.X + offsetX,
-                                         Node.GlobalTranslation.Y + offsetY);
-            spr.Scale = new Vector2f (Node.GlobalScale.X, Node.GlobalScale.Y);
-            spr.Rotation = Node.GlobalRotation.Angle;
+            Vector3 point;
+            Quaternion rotation;
+            Vector3 scale;
+            Node.GlobalTransform.Decompress (out point, out rotation, out scale);
 
+            // クォータニオンは指定したのと等価な軸が反対で回転角度[0,180]の回転で返ってくる事がある
+            // ここで回転軸(0,0,-1)のものを(0,0,1)に変換する必要がある
+            var angle = rotation.Angle;
+            var axis = rotation.Axis;
+            var dot = Vector3.Dot (axis, new Vector3 (0, 0, 1));
+            if (dot < 0) {
+                angle = 360 - angle;
+                axis = -axis;
+            }
+
+            spr.Position = new Vector2f (point.X, point.Y);
+            spr.Scale = new Vector2f (scale.X, scale.Y);
+            spr.Rotation = angle;
             spr.TextureRect = new IntRect (tex.OffsetX, tex.OffsetY, tex.Width, tex.Height);
+
+            spr.Origin = new Vector2f (-offsetX, -offsetY);
 
             var win = window as RenderWindow;
             win.Draw (spr);

@@ -208,7 +208,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_GlobalTranslation () {
+        public void Test_GlobalXY () {
             var nod1 = new Node ();
             var nod2 = new Node ();
             var nod3 = new Node ();
@@ -217,43 +217,18 @@ namespace DD.UnitTest {
             nod1.AddChild (nod2);
             nod2.AddChild (nod3);
 
-            var translation = nod3.GlobalTranslation;
-            var expected = new Vector3 (3, 4, 5);
+            Vector3 point;
+            Quaternion rotation;
+            Vector3 scale;
 
-            Assert.AreEqual (expected, translation);
+            nod3.GlobalTransform.Decompress(out point, out rotation, out scale);
+
+            Assert.AreEqual(point.X, nod3.GlobalX);
+            Assert.AreEqual(point.Y, nod3.GlobalY);
+            Assert.AreEqual(point.Z, nod3.GlobalZ);
         }
 
-        [TestMethod]
-        public void Test_GlobalScale () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Scale = new Vector3 (1, 2, 3);
-            nod3.Scale = new Vector3 (2, 2, 2);
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
-
-            var scale = nod3.GlobalScale;
-            var expected = new Vector3 (2, 4, 6);
-
-            Assert.AreEqual (expected, scale);
-        }
-
-        [TestMethod]
-        public void Test_GlobalRotation () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Rotation = new Quaternion (45, 0, 0, 1);
-            nod3.Rotation = new Quaternion (45, 0, 0, 1);
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
-
-            var rotation = nod3.GlobalRotation;
-            var expected = new Quaternion (90,0,0,1);
-
-            Assert.AreEqual (expected, rotation);
-        }
+       
 
     }
 }

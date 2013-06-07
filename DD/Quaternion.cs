@@ -23,13 +23,13 @@ namespace DD {
 
         #region Constructor
         /// <summary>
-        /// コンストラクター
+        ///  Angle-Axis形式で<see cref="Quaternion"/> オブジェクトを作成するコンストラクター
         /// </summary>       
         /// <remarks>
         /// 角度と回転軸を指定して <see cref="Quaternion"/> オブジェクトを作成します。
         /// 指定する回転軸は正規化されている必要はありません。回転角は度数で <c>[0,360)</c> の範囲で指定します。
         /// 返されたクォータニオンは正規化済みです。
-        /// <c>Angle=0,Axis=(0,0,0)</c>はゼロクォータニオンを示す特殊な組み合わせです。
+        /// <c>Angle=0,Axis=(0,0,0)</c>はゼロクォータニオンを示す特殊な組み合わせで、このときに限り長さが0の回転軸を受け付けます。
         /// </remarks>
         /// <param name="angle">回転角度(in degree[0,360))</param>
         /// <param name="ax">回転軸のX要素</param>
@@ -50,49 +50,30 @@ namespace DD {
             }
             else {
                 var axis = new Vector3 (ax, ay, az).Normalize ();
-                var theta = (float)Math.PI * angle / 180.0f;
-                this.X = axis.X * (float)Math.Sin (theta / 2.0f);
-                this.Y = axis.Y * (float)Math.Sin (theta / 2.0f);
-                this.Z = axis.Z * (float)Math.Sin (theta / 2.0f);
-                this.W = (float)Math.Cos (theta / 2.0f);
+                var theta = (Math.PI * angle / 180.0);
+                
+                this.X = (float)(axis.X * Math.Sin (theta / 2.0));
+                this.Y = (float)(axis.Y * Math.Sin (theta / 2.0));
+                this.Z = (float)(axis.Z * Math.Sin (theta / 2.0));
+                this.W = (float)(Math.Cos (theta / 2.0));
             }
         }
 
         /// <summary>
-        /// コンストラクター
+        /// Angle-Axis形式で<see cref="Quaternion"/> オブジェクトを作成するコンストラクター
         /// </summary>
         /// <remarks>
-        /// 回転行列 <param name="m"/> と等価な <see cref="Quaternion"/> オブジェクトを作成します。
-        /// <note>
-        /// コンストラクター内部でインデクサー使うのｲｸﾅｲ
-        /// 後で変更する。
-        /// </note>
+        /// 角度と回転軸を指定して <see cref="Quaternion"/> オブジェクトを作成します。
+        /// 指定する回転軸は正規化されている必要はありません。回転角は度数で <c>[0,360)</c> の範囲で指定します。
+        /// 返されたクォータニオンは正規化済みです。
+        /// <c>Angle=0,Axis=(0,0,0)</c>はゼロクォータニオンを示す特殊な組み合わせで、このときに限り長さが0の回転軸を受け付けます。
         /// </remarks>
-        /// <returns></returns>
-        public Quaternion (Matrix3x3 m) : this() {
-            var trace = m[0] + m[4] + m[8];
-            if (trace > 0) {
-                var s = (float)Math.Sqrt (trace + 1.0f);
-                var t = 0.5f / s;
-                this[0] = (m[7] - m[5]) * t;
-                this[1] = (m[2] - m[6]) * t;
-                this[2] = (m[3] - m[1]) * t;
-                this[3] = s * 0.5f;
-            }
-            else {
-                var i = 0;
-                i = (m[4] > m[0]) ? 1 : i;
-                i = (m[8] > m[i * 4]) ? 2 : i;
-                var j = (i + 1) % 3;
-                var k = (j + 1) % 3;
-                var s = (float)Math.Sqrt ((m[i * 4] - (m[j * 4] + m[k * 4])) + 1.0f);
-                var t = (s != 0) ? 0.5f / s : s;
-                this[i] = s * 0.5f;
-                this[j] = (m[j * 3 + i] + m[i * 3 + j]) * t;
-                this[k] = (m[k * 3 + i] + m[i * 3 + k]) * t;
-                this[3] = (m[k * 3 + j] - m[j * 3 + k]) * t;
-            }
+        /// <param name="angle">回転角度 [0,360)</param>
+        /// <param name="axis">回転軸</param>
+        public Quaternion (float angle, Vector3 axis) : this(angle, axis.X, axis.Y, axis.Z){
+
         }
+
         #endregion
 
         #region Property
@@ -170,7 +151,7 @@ namespace DD {
             }
         }
 
-              /// <summary>
+        /// <summary>
         /// クォータニオンの長さの自乗
         /// </summary>
         public float Length2 {
@@ -188,7 +169,7 @@ namespace DD {
         /// </remarks>
         public float Angle {
             get {
-                return 2 * (float)Math.Acos (W) / (float)Math.PI * 180;
+                return (float)(2 * Math.Acos (W) / Math.PI * 180);
             }
         }
 
@@ -205,8 +186,7 @@ namespace DD {
         /// </remarks>
         public Vector3 Axis {
             get {
-                var d = (float)Math.Sqrt (1 - W * W);
-                if (d == 0) {
+                if (X == 0 && Y == 0 && Z == 0 && W == 1) {
                     return new Vector3 (0, 0, 0);
                 }
                 return new Vector3 (X, Y, Z).Normalize ();
@@ -241,11 +221,30 @@ namespace DD {
         #region Method
 
         /// <summary>
-        /// 数値を直接指定してクォータニオンを作成します
+        /// 単位クォータニオンを作成します
+        /// </summary>
+        /// <remarks>
+        /// 単位クォータニオン((0,0,0),1)は回転角度0の回転を表します。
+        /// このクォータニオンを何回適応してもベクトルは変化しません。
+        /// また単位クォータニオンの逆数と共益は単位クォータニオンになります。
+        /// </remarks>
+        public static Quaternion Identity {
+            get {
+                var q = new Quaternion ();
+                q.X = 0;
+                q.Y = 0;
+                q.Z = 0;
+                q.W = 1;
+                return q;
+            }
+        }
+
+        /// <summary>
+        /// 数値を直接指定してクォータニオンを作成
         /// </summary>
         /// <remarks>
         /// 引数の <paramref name="normalize"/> フラグを true に指定すると正規化します。
-        /// ユーザーは自分が何をやっているのかよく理解しているときを除き、このメソッドを使うべきではありません。
+        /// ユーザーは自分が何をやっているのかよく理解している場合を除き、このメソッドを使うべきではありません。
         /// </remarks>
         /// <param name="x">X要素(ベクトル成分i)</param>
         /// <param name="y">Y要素(ベクトル成分j)</param>
@@ -267,24 +266,40 @@ namespace DD {
 
 
         /// <summary>
-        /// 単位クォータニオンを作成します
+        /// 回転行列から等価なクォータニオンの作成
         /// </summary>
         /// <remarks>
-        /// 単位クォータニオン((0,0,0),1)は回転角度0の回転を表します。
-        /// このクォータニオンを何回適応してもベクトルは変化しません。
-        /// また単位クォータニオンの逆数と共益は単位クォータニオンになります。
+        /// 回転行列からクォータニオンが計算できない場合、単位クォータニオンが返ります。
         /// </remarks>
-        public static Quaternion Identity {
-            get {
-                var q = new Quaternion ();
-                q.X = 0;
-                q.Y = 0;
-                q.Z = 0;
-                q.W = 1;
-                return q;
+        /// <param name="m">回転行列</param>
+        /// <returns>クォータニオン</returns>
+        public static Quaternion CreateFromMatrix (Matrix3x3 m) {
+            var q = new Quaternion ();
+            var trace = m[0] + m[4] + m[8];
+            if (trace > 0) {
+                var s = (float)Math.Sqrt (trace + 1.0f);
+                var t = 0.5f / s;
+                q[0] = (m[7] - m[5]) * t;
+                q[1] = (m[2] - m[6]) * t;
+                q[2] = (m[3] - m[1]) * t;
+                q[3] = s * 0.5f;
             }
+            else {
+                var i = 0;
+                i = (m[4] > m[0]) ? 1 : i;
+                i = (m[8] > m[i * 4]) ? 2 : i;
+                var j = (i + 1) % 3;
+                var k = (j + 1) % 3;
+                var s = (float)Math.Sqrt ((m[i * 4] - (m[j * 4] + m[k * 4])) + 1.0f);
+                var t = (s != 0) ? 0.5f / s : s;
+                q[i] = s * 0.5f;
+                q[j] = (m[j * 3 + i] + m[i * 3 + j]) * t;
+                q[k] = (m[k * 3 + i] + m[i * 3 + k]) * t;
+                q[3] = (m[k * 3 + j] - m[j * 3 + k]) * t;
+            }
+            return q;
         }
-
+ 
         /// <summary>
         /// 逆クォータニオン
         /// </summary>
@@ -296,6 +311,9 @@ namespace DD {
         /// </remarks>
         /// <returns>作成された逆クォータニオン</returns>
         public Quaternion Inverse () {
+            if (Length2 == 0) {
+                throw new ArithmeticException ("Can't calculate inverse of this Quaternion");
+            }
             return Quaternion.Set (-X / Length2, -Y / Length2, -Z / Length2, W / Length2, false);
         }
 
@@ -388,7 +406,7 @@ namespace DD {
         public static Quaternion operator / (Quaternion q, float f) {
             return q * (1 / f);
         }
-        
+
         /// <summary>
         /// クォータニオン同士の足し算
         /// </summary>
@@ -405,16 +423,15 @@ namespace DD {
             }
             return Quaternion.Set (q1[0] + q2[0], q1[1] + q2[1], q1[2] + q2[2], q1[3] + q2[3], false);
         }
-        
+
 
         /// <summary>
         /// クォータニオンの球面補間
         /// </summary>
         /// <remarks>
         /// 引数 s=0 の時クォータニオン <paramref name="q1"/> に、s=1 の時クォータニオン <paramref name="q2"/> に等しくなります。
-        /// クォータニオンはその性質上2つの「等価」な回転が必ず存在します。
-        /// 例えば45(1,0,0)と-45(-1,0,0)は等価な回転と見なされます。
-        /// このメソッドが上記どちらのパターンを返すかは不定です。
+        /// 球面補完が計算できないクォータニオン (4次元空間で2つのクォータニオンの角度が0または180度）の場合は s の値にかかわらず q1 が返ります。
+        /// このメソッドが例外やNANを返す事はありません。
         /// 補間結果は常にわずかな計算誤差を含みます。
         /// クォータニオンの定義から長さが１でないクォータニオンを球面補間した場合、結果はそれほど正しくありません。
         /// </remarks>
@@ -426,13 +443,20 @@ namespace DD {
             if (s < 0 || s > 1) {
                 throw new ArgumentException ("S is invalid");
             }
-
-            var a = (float)Math.Acos (Dot (q1, q2));
-            if (a < 0.00005f) {
+            var dot = Dot (q1, q2);
+            if (1 - dot * dot < 0.000005) {
                 return q1;
             }
-            var q = (q1 * (float)Math.Sin ((1 - s) * a) + q2 * (float)Math.Sin (s * a)) / (float)Math.Sin (a);
-            return q;
+            var th = Math.Acos (Dot (q1, q2));
+            if (th > 0) {
+                var w1 = (float)(Math.Sin ((1 - s) * th) / Math.Sin (th));
+                var w2 = (float)(Math.Sin (s * th) / Math.Sin (th));
+                return q1 * w1 + q2 * w2;
+            }
+            else {
+                // NAN
+                return q1;
+            }
         }
 
         /// <summary>
@@ -568,7 +592,7 @@ namespace DD {
         /// </remarks>
         /// <returns></returns>
         public override int GetHashCode () {
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode() ^ W.GetHashCode();
+            return X.GetHashCode () ^ Y.GetHashCode () ^ Z.GetHashCode () ^ W.GetHashCode ();
         }
 
         /// <inheritdoc/>

@@ -79,34 +79,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (15, mat.M32);
             Assert.AreEqual (16, mat.M33);
         }
-
-        [TestMethod]
-        public void Test_New_4 () {
-            var mat = new Matrix4x4 (new Matrix4x4 (1, 2, 3, 4,
-                                                    5, 6, 7, 8,
-                                                    9, 10, 11, 12,
-                                                    13, 14, 15, 16));
-
-            Assert.AreEqual (1, mat.M00);
-            Assert.AreEqual (2, mat.M01);
-            Assert.AreEqual (3, mat.M02);
-            Assert.AreEqual (4, mat.M03);
-            Assert.AreEqual (5, mat.M10);
-            Assert.AreEqual (6, mat.M11);
-            Assert.AreEqual (7, mat.M12);
-            Assert.AreEqual (8, mat.M13);
-            Assert.AreEqual (9, mat.M20);
-            Assert.AreEqual (10, mat.M21);
-            Assert.AreEqual (11, mat.M22);
-            Assert.AreEqual (12, mat.M23);
-            Assert.AreEqual (13, mat.M30);
-            Assert.AreEqual (14, mat.M31);
-            Assert.AreEqual (15, mat.M32);
-            Assert.AreEqual (16, mat.M33);
-        }
-
-
-
+        
         [TestMethod]
         public void Test_Identity () {
             var mat = Matrix4x4.Identity;
@@ -252,7 +225,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_TranslationMatrix () {
-            var mat = Matrix4x4.CreateTranslation (1, 2, 3);
+            var mat = Matrix4x4.CreateFromTranslation (1, 2, 3);
             var exptected = new Matrix4x4 (1, 0, 0, 1,
                                            0, 1, 0, 2,
                                            0, 0, 1, 3,
@@ -263,7 +236,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void TestScalingMatrix () {
-            var mat = Matrix4x4.CreateScale (1, 2, 3);
+            var mat = Matrix4x4.CreateFromScale (1, 2, 3);
             var expected = new Matrix4x4 (1, 0, 0, 0,
                                           0, 2, 0, 0,
                                           0, 0, 3, 0,
@@ -285,7 +258,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_RotationMatrix_2 () {
-            var mat = Matrix4x4.CreateRotation (new Quaternion (45, 0, 0, 1));
+            var mat = Matrix4x4.CreateFromRotation (new Quaternion (45, 0, 0, 1));
             var s = (float)Math.Sin (45 * Math.PI / 180.0f);
             var c = (float)Math.Cos (45 * Math.PI / 180.0f);
             var expected = new Matrix4x4 (c, -s, 0, 0,
@@ -298,9 +271,9 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Decompress () {
-            var t = Matrix4x4.CreateTranslation (1, 2, 3);
+            var t = Matrix4x4.CreateFromTranslation (1, 2, 3);
             var r = Matrix4x4.CreateRotation (45, 0, 0, 1);
-            var s = Matrix4x4.CreateScale (1, 2, 3);
+            var s = Matrix4x4.CreateFromScale (1, 2, 3);
             var trs = t * r * s;
 
             Vector3 outT;

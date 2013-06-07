@@ -23,7 +23,7 @@ namespace DD.UnitTest {
             tr.Translation = new Vector3 (1, 2, 3);
             Assert.AreEqual (new Vector3 (1, 2, 3), tr.Translation);
 
-            tr.Move (1, 1, 1);
+            tr.Translate (1, 1, 1);
             Assert.AreEqual (new Vector3 (2, 3, 4), tr.Translation);
         }
 
@@ -40,16 +40,16 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Rotation () {
-            var tr = (Transformable)new Node ();
+            var node = (Transformable)new Node ();
 
-            tr.Rotation = new Quaternion (45, 0, 0, 1);
-            Assert.AreEqual (new Quaternion(45, 0,0,1), tr.Rotation);
+            node.Rotation = new Quaternion (45, 0, 0, 1);
+            Assert.AreEqual (new Quaternion(45, 0,0,1), node.Rotation);
 
-            tr.Rotate (45, 0, 0, 1);
-            Assert.AreEqual (new Quaternion(90,0,0,1), tr.Rotation);
+            node.Rotate (45, 0, 0, 1);
+            Assert.AreEqual (new Quaternion(90,0,0,1), node.Rotation);
 
-            tr.Rotate (new Quaternion(45,0,0,1));
-            Assert.AreEqual (new Quaternion (135, 0, 0, 1), tr.Rotation);
+            node.Rotate (new Quaternion(45,0,0,1));
+            Assert.AreEqual (new Quaternion (135, 0, 0, 1), node.Rotation);
         }
 
         [TestMethod]
@@ -63,9 +63,9 @@ namespace DD.UnitTest {
             tr.Rotation = R;
             tr.Scale = S;
 
-            var TRS = Matrix4x4.CreateTranslation (1, 2, 3) * 
-                      Matrix4x4.CreateRotation (R) * 
-                      Matrix4x4.CreateScale (1, 2, 3);
+            var TRS = Matrix4x4.CreateFromTranslation (1, 2, 3) * 
+                      Matrix4x4.CreateFromRotation (R) * 
+                      Matrix4x4.CreateFromScale (1, 2, 3);
 
             Assert.AreEqual (TRS, tr.Transform);
         }

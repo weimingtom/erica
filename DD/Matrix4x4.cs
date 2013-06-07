@@ -16,22 +16,22 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
-        /// <param name="m00"></param>
-        /// <param name="m01"></param>
-        /// <param name="m02"></param>
-        /// <param name="m03"></param>
-        /// <param name="m10"></param>
-        /// <param name="m11"></param>
-        /// <param name="m12"></param>
-        /// <param name="m13"></param>
-        /// <param name="m20"></param>
-        /// <param name="m21"></param>
-        /// <param name="m22"></param>
-        /// <param name="m23"></param>
-        /// <param name="m30"></param>
-        /// <param name="m31"></param>
-        /// <param name="m32"></param>
-        /// <param name="m33"></param>
+        /// <param name="m00">M00要素</param>
+        /// <param name="m01">M01要素</param>
+        /// <param name="m02">M02要素</param>
+        /// <param name="m03">M03要素</param>
+        /// <param name="m10">M10要素</param>
+        /// <param name="m11">M11要素</param>
+        /// <param name="m12">M12要素</param>
+        /// <param name="m13">M13要素</param>
+        /// <param name="m20">M20要素</param>
+        /// <param name="m21">M21要素</param>
+        /// <param name="m22">M22要素</param>
+        /// <param name="m23">M23要素</param>
+        /// <param name="m30">M30要素</param>
+        /// <param name="m31">M31要素</param>
+        /// <param name="m32">M32要素</param>
+        /// <param name="m33">M33要素</param>
         public Matrix4x4 (float m00, float m01, float m02, float m03,
                           float m10, float m11, float m12, float m13,
                           float m20, float m21, float m22, float m23,
@@ -84,30 +84,7 @@ namespace DD {
             this.M32 = m[14];
             this.M33 = m[15];
         }
-
-        /// <summary>
-        /// コピーコンストラクター
-        /// </summary>
-        /// <param name="m">コピー元の<see cref="Matrix4x4"/> オブジェクト</param>
-        public Matrix4x4 (Matrix4x4 m)
-            : this () {
-            this.M00 = m.M00;
-            this.M01 = m.M01;
-            this.M02 = m.M02;
-            this.M03 = m.M03;
-            this.M10 = m.M10;
-            this.M11 = m.M11;
-            this.M12 = m.M12;
-            this.M13 = m.M13;
-            this.M20 = m.M20;
-            this.M21 = m.M21;
-            this.M22 = m.M22;
-            this.M23 = m.M23;
-            this.M30 = m.M30;
-            this.M31 = m.M31;
-            this.M32 = m.M32;
-            this.M32 = m.M32;
-        }
+     
         #endregion
 
 
@@ -357,7 +334,7 @@ namespace DD {
         /// <param name="ty">平行移動量Y</param>
         /// <param name="tz">平行移動量Z</param>
         /// <returns>4x4の行列</returns>
-        public static Matrix4x4 CreateTranslation (float tx, float ty, float tz) {
+        public static Matrix4x4 CreateFromTranslation (float tx, float ty, float tz) {
             return new Matrix4x4 (1, 0, 0, tx,
                                   0, 1, 0, ty,
                                   0, 0, 1, tz,
@@ -371,7 +348,7 @@ namespace DD {
         /// <param name="sy">拡大縮小率Y</param>
         /// <param name="sz">拡大縮小率Z</param>
         /// <returns></returns>
-        public static Matrix4x4 CreateScale (float sx, float sy, float sz) {
+        public static Matrix4x4 CreateFromScale (float sx, float sy, float sz) {
             return new Matrix4x4 (sx, 0, 0, 0,
                                   0, sy, 0, 0,
                                   0, 0, sz, 0,
@@ -387,7 +364,7 @@ namespace DD {
         /// <param name="az">回転軸Z</param>
         /// <returns></returns>
         public static Matrix4x4 CreateRotation (float angle, float ax, float ay, float az) {
-            return CreateRotation (new Quaternion (angle, ax, ay, az));
+            return CreateFromRotation (new Quaternion (angle, ax, ay, az));
         }
 
         /// <summary>
@@ -395,7 +372,7 @@ namespace DD {
         /// </summary>
         /// <param name="q">クォータニオン</param>
         /// <returns></returns>
-        public static Matrix4x4 CreateRotation (Quaternion q) {
+        public static Matrix4x4 CreateFromRotation (Quaternion q) {
             return (Matrix4x4)q.Matrix3x3;
         }
 
@@ -407,7 +384,7 @@ namespace DD {
         /// <param name="scale">スケーリング成分</param>
         /// <returns>分解できれば true, そうでなければ false</returns>
         public bool Decompress (out Vector3 translation, out Quaternion rotation, out Vector3 scale) {
-            var m = new Matrix4x4(this);
+            var m = this;
             var tx = m[3];
             var ty = m[7];
             var tz = m[11];
@@ -415,13 +392,16 @@ namespace DD {
             var sy = (float)Math.Sqrt (m[1] * m[1] + m[5] * m[5] + m[9] * m[9] + m[13] * m[13]);
             var sz = (float)Math.Sqrt (m[2] * m[2] + m[6] * m[6] + m[10] * m[10] + m[14] * m[14]);
             if (sx == 0 || sy == 0 || sz == 0) {
-                throw new ArithmeticException ("This matrix can't be divided to TRS");
+                translation = new Vector3 (0, 0, 0);
+                rotation = Quaternion.Identity;
+                scale = new Vector3 (1, 1, 1);
+                return false;
             }
 
             translation = new Vector3 (tx, ty, tz);
-            rotation = new Quaternion (new Matrix3x3 (m[0] / sx, m[1] / sy, m[2] / sz,
-                                                      m[4] / sx, m[5] / sy, m[6] / sz,
-                                                      m[8] / sx, m[9] / sy, m[10] / sz));
+            rotation = Quaternion.CreateFromMatrix (new Matrix3x3 (m[0] / sx, m[1] / sy, m[2] / sz,
+                                                                   m[4] / sx, m[5] / sy, m[6] / sz,
+                                                                   m[8] / sx, m[9] / sy, m[10] / sz));
             scale = new Vector3 (sx, sy, sz);
 
             return true;

@@ -213,6 +213,27 @@ namespace DD.UnitTest {
             Assert.AreEqual (new Vector3 (0, -1, 0), v3);
         }
 
+        [TestMethod]
+        public void Test_1 () {
+            var q = new Quaternion[9];
+            q[0] = new Quaternion (0, 0, 0, 1);
+            q[1] = new Quaternion (45, 0, 0, 1);
+            q[2] = new Quaternion (90, 0, 0, 1);
+            q[3] = new Quaternion (135, 0, 0, 1);
+            q[4] = new Quaternion (180, 0, 0, 1);
+            q[5] = new Quaternion (225, 0, 0, 1);
+            q[6] = new Quaternion (270, 0, 0, 1);
+            q[7] = new Quaternion (315, 0, 0, 1);
+            q[8] = new Quaternion (360, 0, 0, 1);
+
+            for (var i = 0; i < q.Length; i++) {
+                Console.WriteLine ("q = " + q[i].Angle);
+            }
+
+
+
+        }
+
 
     }
 }

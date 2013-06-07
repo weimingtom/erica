@@ -108,9 +108,9 @@ namespace DD {
         /// </remarks>
         public Matrix4x4 Transform {
             get {
-                var T = Matrix4x4.CreateTranslation (tx, ty, tz);
-                var R = Matrix4x4.CreateRotation (rot);
-                var S = Matrix4x4.CreateScale (sx, sy, sz);
+                var T = Matrix4x4.CreateFromTranslation (tx, ty, tz);
+                var R = Matrix4x4.CreateFromRotation (rot);
+                var S = Matrix4x4.CreateFromScale (sx, sy, sz);
                 return T * R * S;
             }
         }
@@ -118,6 +118,67 @@ namespace DD {
 
 
         #region Method
+
+
+        /// <summary>
+        /// 平行移動成分の変更
+        /// </summary>
+        /// <remarks>
+        /// それまでセットされていた平行移動成文を破棄し、新しい値にセットします。
+        /// </remarks>
+        /// <param name="tx">X方向の平行移動量</param>
+        /// <param name="ty">Y方向の平行移動量</param>
+        /// <param name="tz">Z方向の平行移動量</param>
+        public void SetTranslation (float tx, float ty, float tz) {
+            this.tx = tx;
+            this.ty = ty;
+            this.tz = tz;
+        }
+
+        /// <summary>
+        /// 回転成分の変更
+        /// </summary>
+        /// <remarks>
+        /// 回転角度は [0,360) の範囲で指定します。回転軸は正規化されている必要はありません。
+        /// </remarks>
+        /// <param name="angle">回転角度 [0,360)</param>
+        /// <param name="ax">回転軸X</param>
+        /// <param name="ay">回転軸Y</param>
+        /// <param name="az">回転軸Z</param>
+        public void SetRotation (float angle, float ax, float ay, float az) {
+            if (angle < 0 || angle >= 360) {
+                throw new ArgumentException ("Angle is invalid");
+            }
+            if (angle != 0 && (ax == 0 && ay == 0 && az == 0)) {
+                throw new ArgumentException ("Rotation Axis is invalid");
+            }
+            this.rot = new Quaternion (angle, ax, ay, az);
+        }
+
+        /// <summary>
+        /// 回転成分の変更
+        /// </summary>
+        /// <param name="rot">回転を表すクォータニオン</param>
+        public void SetRotation (Quaternion rot) {
+            if (1 - rot.Length > 0.01f) {
+                throw new ArgumentException ("Quaternion is not normaized");
+            }
+
+            this.rot = rot;
+        }
+
+        /// <summary>
+        /// スケール成分の変更
+        /// </summary>
+        /// <param name="sx">X方向の拡大率</param>
+        /// <param name="sy">Y方向の拡大率</param>
+        /// <param name="sz">Z方向の拡大率</param>
+        public void SetScale (float sx, float sy, float sz) {
+            this.sx = sx;
+            this.sy = sy;
+            this.sz = sz;
+        }
+        
         /// <summary>
         /// ノードの移動
         /// </summary>
@@ -127,7 +188,7 @@ namespace DD {
         /// <param name="x">X方向の移動距離（ピクセル数）</param>
         /// <param name="y">Y方向の移動距離（ピクセル数）</param>
         /// <param name="z">Z方向の移動距離（ピクセル数）</param>
-        public void Move (float x, float y, float z) {
+        public void Translate (float x, float y, float z) {
             this.tx += x;
             this.ty += y;
             this.tz += z;
@@ -177,61 +238,6 @@ namespace DD {
             this.sz *= sz;
         }
 
-
-        /// <summary>
-        /// 平行移動成分の変更
-        /// </summary>
-        /// <remarks>
-        /// それまでセットされていた平行移動成文を破棄し、新しい値にセットします。
-        /// </remarks>
-        /// <param name="tx">X方向の平行移動量</param>
-        /// <param name="ty">Y方向の平行移動量</param>
-        /// <param name="tz">Z方向の平行移動量</param>
-        public void SetTranslation (float tx, float ty, float tz) {
-            this.tx = tx;
-            this.ty = ty;
-            this.tz = tz;
-        }
-
-        /// <summary>
-        /// 回転成分の変更
-        /// </summary>
-        /// <remarks>
-        /// 回転角度は [0,360) の範囲で指定します。回転軸は正規化されている必要はありません。
-        /// </remarks>
-        /// <param name="angle">回転角度 [0,360)</param>
-        /// <param name="ax">回転軸X</param>
-        /// <param name="ay">回転軸Y</param>
-        /// <param name="az">回転軸Z</param>
-        public void SetRotation (float angle, float ax, float ay, float az) {
-            if (angle < 0 || angle >= 360) {
-                throw new ArgumentException ("Angle is invalid");
-            }
-            if (angle != 0 && (ax == 0 && ay == 0 && az == 0)) {
-                throw new ArgumentException ("Rotation Axis is invalid");
-            }
-            this.rot = new Quaternion (angle, ax, ay, az);
-        }
-
-        /// <summary>
-        /// 回転成分の変更
-        /// </summary>
-        /// <param name="rot">回転を表すクォータニオン</param>
-        public void SetRotation (Quaternion rot) {
-            this.rot = rot;
-        }
-
-        /// <summary>
-        /// スケール成分の変更
-        /// </summary>
-        /// <param name="sx">X方向の拡大率</param>
-        /// <param name="sy">Y方向の拡大率</param>
-        /// <param name="sz">Z方向の拡大率</param>
-        public void SetScale (float sx, float sy, float sz) {
-            this.sx = sx;
-            this.sy = sy;
-            this.sz = sz;
-        }
         #endregion
 
     }

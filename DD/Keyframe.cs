@@ -27,11 +27,11 @@ namespace DD {
         /// <summary>
         /// 時刻
         /// </summary>
-        public int Time { get; set; }
+        public int Time { get; private set; }
 
         /// <summary>
         /// 値
         /// </summary>
-        public dynamic Value { get; set; }
+        public dynamic Value { get; private set; }
     }
 }
