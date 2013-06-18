@@ -64,7 +64,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// 座標（ローカル座標系）
+        /// 位置（ローカル座標系）
         /// </summary>
         public Vector3 Translation {
             get { return new Vector3 (tx, ty, tz); }
@@ -72,7 +72,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// 座標（ローカル座標系）
+        /// 位置（ローカル座標系）
         /// </summary>
         /// <remarks>
         /// このプロパティは <see cref="Translation"/> の別名です。
@@ -121,10 +121,10 @@ namespace DD {
 
 
         /// <summary>
-        /// 平行移動成分の変更
+        /// 平行移動量の変更（ローカル座標）
         /// </summary>
         /// <remarks>
-        /// それまでセットされていた平行移動成文を破棄し、新しい値にセットします。
+        /// それまでセットされていたこのノードの平行移動量を破棄し、新しい値に変更します。
         /// </remarks>
         /// <param name="tx">X方向の平行移動量</param>
         /// <param name="ty">Y方向の平行移動量</param>
@@ -136,19 +136,17 @@ namespace DD {
         }
 
         /// <summary>
-        /// 回転成分の変更
+        /// 回転成分の変更（ローカル座標）
         /// </summary>
         /// <remarks>
-        /// 回転角度は [0,360) の範囲で指定します。回転軸は正規化されている必要はありません。
+        /// 回転角度は度数(degree)で指定します。値に制限はありません。0度以下や360度以上も可能です。
+        /// 回転軸は正規化されている必要はありません。
         /// </remarks>
         /// <param name="angle">回転角度 [0,360)</param>
         /// <param name="ax">回転軸X</param>
         /// <param name="ay">回転軸Y</param>
         /// <param name="az">回転軸Z</param>
         public void SetRotation (float angle, float ax, float ay, float az) {
-            if (angle < 0 || angle >= 360) {
-                throw new ArgumentException ("Angle is invalid");
-            }
             if (angle != 0 && (ax == 0 && ay == 0 && az == 0)) {
                 throw new ArgumentException ("Rotation Axis is invalid");
             }

@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DD.AnimationClip" Collapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAEECSABICgAAABQBoAJEAQAAAAQAAAAAAAA=</HashCode>
+      <FileName>AnimationClip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.AnimationController" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAIQAACCEAAAAAAAAAAAAAAAAAAAABgAA=</HashCode>
+      <FileName>AnimationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.AnimationTrack" Collapsed="true">
+    <Position X="18.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgAAEQIAgAEAAABAJAAAAIAAAAIAAAAQAADAA=</HashCode>
+      <FileName>AnimationTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Button" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCQACAAAFQAIgAQSQABAAEgAIAAIAAAEAAAABAAEAIA=</HashCode>
+      <FileName>Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Component" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oQAACAAAEAUAIAASAABABAAAAAAAAQAAAAAAAAEAIQA=</HashCode>
+      <FileName>Component.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Director" Collapsed="true">
+    <Position X="20.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAACAAAAIBAAAAAAAQAAAAAAAgEIAAYBAAAAgA=</HashCode>
+      <FileName>Director.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.FPSCounter" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAACAAAAAAABABAAAAAAAAAAAAAABBAAAEQAAA=</HashCode>
+      <FileName>FPSCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.GlobalSettings" Collapsed="true">
+    <Position X="17" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Graphics2D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgIAAAAACAAQgAAAAAAAAiIBgAECAQIAABAAAEAAEA=</HashCode>
+      <FileName>Graphics2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DD.Label" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAIAAAIAAEAKRAAAAAAgAEAACIBAgAiAAAAAA=</HashCode>
+      <FileName>Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Line" Collapsed="true">
+    <Position X="20.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAgAAAAAAAgAAAAIAAAAAAAgAEAAAABCAAAAAgAAA=</HashCode>
+      <FileName>Line.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.LineParser" Collapsed="true">
+    <Position X="22.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgEAAEAgAAgAAAAAAAAAAAAgAAAAACAAACAAABAAg=</HashCode>
+      <FileName>LineParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.LineReader" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hghAAAAgNgAAACQCYARCAEaAABYAAkCAAAgAiAFBMAA=</HashCode>
+      <FileName>LineReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.MyMath" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>MyMath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Node" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAAAAIEK5EBAKMTAYAAKIEAAAIBwAACAAABBA=</HashCode>
+      <FileName>Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Resource" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABkAAAgKAGQIBABASAAAFAAAABoEAAACBQAAAIgQAAA=</HashCode>
+      <FileName>ResourceManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DD.SaveDataContainer" Collapsed="true">
+    <Position X="22.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgIEAAAAwCAJACAgAFAAAAEAQAAACAAECAgAAAgA=</HashCode>
+      <FileName>SaveData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Extentions" Collapsed="true">
+    <Position X="22.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SFML\Extentions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.SoundClip" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIACADACAAAAAAAAQAAQQEAACAoAIAAAAAAAA=</HashCode>
+      <FileName>SoundClip.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DD.SoundPlayer" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAACAAAAQAACCEAAAAAAAAAAAAAAAAAAAABgAA=</HashCode>
+      <FileName>SoundPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Sprite" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACADBAAAAADAgABAAEAAAAAAIQDAAAwAoAAAAAE=</HashCode>
+      <FileName>Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.StateMachine&lt;T&gt;" Collapsed="true">
+    <Position X="18.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAEAABACgCBACAAAAAoAAIEAAAADAAAQAA=</HashCode>
+      <FileName>StateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Texture" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBCAABATAwAAIAEQCAAAEAhDAAAAQAAAAAAA=</HashCode>
+      <FileName>Texture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DD.TiledTexture" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAEAAAABAAAAAAgQgAAAACAAAIggAAAE=</HashCode>
+      <FileName>TiledTexture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.TimeCounter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAACAABAAABIAAQASAAAAAAAAAIQAAAAGAAAA=</HashCode>
+      <FileName>TimeCounter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DD.Transformable" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hQAAAAAAAAAAgIBCCAIAAAQCEAAAAAgAABIGAgAAYAE=</HashCode>
+      <FileName>Transformable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.World" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>World.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.YAMLParser" Collapsed="true">
+    <Position X="22.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>YAMLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Properties.Resources" Collapsed="true">
+    <Position X="20.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABGAAQAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Physics.Collider" Collapsed="true">
+    <Position X="8.5" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="DD.Physics.Collider.ColliderType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Physics\Collider.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>4GAAEAQCAACAEQBhgAEQAEAJgQoBAAAegQQQAACAhAA=</HashCode>
+      <FileName>Physics\Collider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Physics.CollisionShape">
+    <Position X="5.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Physics\CollisionShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Physics.BoxCollision" Collapsed="true">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Physics\BoxCollision.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Material">
+    <Position X="11.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Material.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DD.Physics.PhysicsMaterial" Collapsed="true">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAQAAAAAQABAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Physics\PhysicsMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="DD.Color" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAACAAAAAAABAAAAAAAAAAAKAEABQA=</HashCode>
+      <FileName>Color.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DD.IPoint" Collapsed="true">
+    <Position X="18.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAECAAAAABAAAAAAAAAAABgAAAAYAA=</HashCode>
+      <FileName>IPoint.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DD.Keyframe" Collapsed="true">
+    <Position X="20.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAQA=</HashCode>
+      <FileName>Keyframe.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DD.Matrix3x3" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAEqAIAACAAAAAAALIAAEAAAAgABiA=</HashCode>
+      <FileName>Matrix3x3.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="DD.Matrix4x4" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABIAAAQABAAAAQEqAKAACACAAAAALIAAkAAAAgABiA=</HashCode>
+      <FileName>Matrix4x4.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="DD.Quaternion" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABIQABAABQAE+AYAAABACAgAQIAAAEAABAEIZiE=</HashCode>
+      <FileName>Quaternion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="DD.Rectangle" Collapsed="true">
+    <Position X="20.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAIAAAAAADAEAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Rectangle.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DD.Vector3" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAE+AUAAABACAAAAIAAAACAAAEAZiE=</HashCode>
+      <FileName>Vector3.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Enum Name="DD.DirectorState" Collapsed="true">
+    <Position X="20.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAA=</HashCode>
+      <FileName>Director.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.MouseButton" Collapsed="true">
+    <Position X="20.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.ButtonState" Collapsed="true">
+    <Position X="17" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIgAAAAAAAAAAAAAAIAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.InterpolationType" Collapsed="true">
+    <Position X="17" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAIAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.WrapMode" Collapsed="true">
+    <Position X="22.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.LoopMode" Collapsed="true">
+    <Position X="18.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.CharacterStyle" Collapsed="true">
+    <Position X="18.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAACAAEAAAAAAAEAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DD.FeedMode" Collapsed="true">
+    <Position X="22.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="メイリオ" Size="9" />
+</ClassDiagram>

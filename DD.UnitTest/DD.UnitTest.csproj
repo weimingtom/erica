@@ -57,6 +57,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Physics\TestBoxCollision.cs" />
+    <Compile Include="Physics\TestCollider.cs" />
+    <Compile Include="Physics\TestContactPoint.cs" />
+    <Compile Include="Physics\TestPhysics2D.cs" />
+    <Compile Include="Physics\TestPhysicsMaterial.cs" />
+    <Compile Include="Physics\TestSphereCollision.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="TestColor.cs" />
     <Compile Include="TestLabel.cs" />

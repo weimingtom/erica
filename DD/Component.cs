@@ -36,9 +36,6 @@ namespace DD {
 
         #endregion
 
-        #region Event
-        #endregion
-
 
         #region Method
         /// <summary>
@@ -76,7 +73,7 @@ namespace DD {
         /// アタッチ処理後のエントリーポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
+        /// このメソッドの中で <see cref="Node"/> が <c>null</c> でない事は保証されています。
         /// </remarks>
         public virtual void OnAttached () {
         }
@@ -85,7 +82,7 @@ namespace DD {
         /// デタッチ処理前のエントリーポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="Node"/> が <c>null</c> でない事が保証されます。
+        /// このメソッドの中で <see cref="Node"/> が <c>null</c> でない事は保証されています。
         /// </remarks>
         public virtual void OnDetached () {
 
@@ -109,8 +106,38 @@ namespace DD {
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// 引数の <paramref name="msec"/> はゲームが起動してからの経過時間をミリ秒単位であらわします。
         /// </remarks>
-        /// <param name="msec">ゲームが起動してからの起動時間(msec)</param>
+        /// <param name="msec">ゲームが起動してからの起動時間 (msec)</param>
         public virtual void OnUpdate (long msec) {
+        }
+
+        /// <summary>
+        /// 物理エンジンの更新処理のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// 物理エンジンが更新処理を行う仮想関数のエントリーポイント。
+        /// 通常ユーザーがこの仮想関数をオーバーライドする必要はありません。
+        /// </remarks>
+        public virtual void OnPhysicsUpdate () {
+        }
+
+
+        /// <summary>
+        /// 物理エンジンのコリジョン発生のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// 物理エンジンのコリジョン発生処理を行う仮想関数のエントリーポイント。
+        /// </remarks>
+        /// <param name="cp">衝突地点情報</param>
+        public virtual void OnCollisionEnter (Physics.ContactPoint cp) {
+        }
+
+        /// <summary>
+        /// 物理エンジンのコリジョン消失のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// 物理エンジンのコリジョン消失処理を行う仮想関数のエントリーポイント。
+        /// </remarks>
+        public virtual void OnCollisionExit (Physics.Collider collider) {
         }
 
         /// <summary>

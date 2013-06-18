@@ -12,13 +12,38 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_New () {
+        public void Test_New_1 () {
             var spr = new Sprite ();
 
             Assert.AreEqual (0, spr.TextureCount);
             Assert.AreEqual (null, spr.ActiveTexture);
             Assert.AreEqual (0, spr.OffsetX);
             Assert.AreEqual (0, spr.OffsetY);
+            Assert.AreEqual (Color.White, spr.Color);
+        }
+
+        [TestMethod]
+        public void Test_New_2 () {
+            var tex = new Texture ("image2x2.png");
+            var spr = new Sprite (tex);
+
+            Assert.AreEqual (1, spr.TextureCount);
+            Assert.AreEqual (tex, spr.ActiveTexture);
+            Assert.AreEqual (0, spr.OffsetX);
+            Assert.AreEqual (0, spr.OffsetY);
+            Assert.AreEqual (Color.White, spr.Color);
+        }
+
+        [TestMethod]
+        public void Test_SetColor () {
+            var spr = new Sprite ();
+
+            spr.Color = new Color (1, 2, 3, 4);
+            Assert.AreEqual (new Color (1, 2, 3, 4), spr.Color);
+
+            spr.SetColor (5, 6, 7, 8);
+            Assert.AreEqual (new Color (5, 6, 7, 8), spr.Color);
+
         }
 
         [TestMethod]

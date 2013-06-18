@@ -14,6 +14,7 @@ namespace DD {
     /// <remarks>
     /// ゲームのFPSを計測し画面に表示します。
     /// FPSの計測には.Netのストップウォッチを直接使用します。
+    /// アタッチされたノードの表示優先度を最大にします。
     /// </remarks>
     public partial class FPSCounter : Component {
         #region Field
@@ -49,6 +50,12 @@ namespace DD {
         #endregion
 
         #region Method
+
+        /// <inheritdoc/>
+        public override void OnAttached () {
+            Node.DrawPriority = -127;
+        }
+
         /// <inheritdoc/>
         public override void OnUpdate (long msec) {
             msec = watch.ElapsedMilliseconds;
