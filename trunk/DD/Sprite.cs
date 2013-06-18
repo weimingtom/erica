@@ -21,13 +21,15 @@ namespace DD {
         Texture active;
         int offsetX;
         int offsetY;
+        Color color;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// コンストラクター
+        /// 標準のコンストラクター
         /// </summary>
         /// <remarks>
+        /// テクスチャーは未定義です。
         /// アクティブなテクスチャーは null にセットされます。
         /// </remarks>
         public Sprite () {
@@ -35,6 +37,25 @@ namespace DD {
             this.active = null;
             this.offsetX = 0;
             this.offsetY = 0;
+            this.color = Color.White;
+        }
+
+        /// <summary>
+        /// テクスチャーを指定するコンストラクター
+        /// </summary>
+        /// <remarks>
+        /// テクスチャーを指定して <see cref="Sprite"/> コンポーネントを作成します。
+        /// アクティブなテクスチャーはそれにセットされます。
+        /// </remarks>
+        public Sprite (Texture texture) {
+            if (texture == null) {
+                throw new ArgumentNullException ("Texture is null");
+            }
+            this.texs = new List<Texture> () {texture};
+            this.active = texture;
+            this.offsetX = 0;
+            this.offsetY = 0;
+            this.color = Color.White;
         }
         #endregion
 
@@ -116,6 +137,17 @@ namespace DD {
         /// </remarks>
         public int Height {
             get { return (active != null) ? active.Height : 0; }
+        }
+
+        /// <summary>
+        /// スプライトの基本色
+        /// </summary>
+        /// <remarks>
+        /// スプライトはこの色とテクスチャーをかけ算した色で描画されます。
+        /// </remarks>
+        public Color Color {
+            get { return color; }
+            set { SetColor (value.R, value.G, value.B, value.A); }
         }
 
         /// <summary>
@@ -205,10 +237,27 @@ namespace DD {
         /// <summary>
         /// アクティブなテクスチャーの取得
         /// </summary>
-        /// <returns></returns>
+        /// <returns>テクスチャー</returns>
         public Texture GetActiveTexture () {
             return active;
         }
+
+        /// <summary>
+        /// 基本色の変更
+        /// </summary>
+        /// <remarks>
+        /// スプライトの基本色を変更します。
+        /// スプライトはこの色とテクスチャーをかけ算した色で描画されます。
+        /// </remarks>
+        /// <param name="r">赤</param>
+        /// <param name="g">緑</param>
+        /// <param name="b">青</param>
+        /// <param name="a">不透明度</param>
+        public void SetColor (byte r, byte g, byte b, byte a) {
+            this.color = new Color (r, g, b, a);
+        }
+
+
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
@@ -239,6 +288,7 @@ namespace DD {
             spr.TextureRect = new IntRect (tex.OffsetX, tex.OffsetY, tex.Width, tex.Height);
 
             spr.Origin = new Vector2f (-offsetX, -offsetY);
+            spr.Color = color.ToSFML ();
 
             var win = window as RenderWindow;
             win.Draw (spr);

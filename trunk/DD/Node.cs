@@ -25,7 +25,7 @@ namespace DD {
         Rectangle bbox;
         bool visible;
         bool clickable;
-
+        sbyte drawPriority;
         #endregion
 
         #region Constructor
@@ -40,14 +40,16 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <param name="name">ノード名</param>
-        public Node (string name) : base() {
+        public Node (string name)
+            : base () {
             this.name = name;
             this.bbox = new Rectangle ();
             this.visible = true;
             this.clickable = true;
-            this.parent = null;
+             this.parent = null;
             this.children = new List<Node> ();
             this.components = new List<Component> ();
+            this.drawPriority = 0;
 
         }
         #endregion
@@ -71,6 +73,7 @@ namespace DD {
         /// </remarks>
         public Rectangle BoundingBox {
             get { return bbox; }
+            set { SetBoundingBox (value.X, value.Y, value.Width, value.Height); }
         }
 
 
@@ -84,6 +87,18 @@ namespace DD {
         public bool Visible {
             get { return visible; }
             set { this.visible = value; }
+        }
+
+        /// <summary>
+        /// 表示優先度
+        /// </summary>
+        /// <remarks>
+        /// このノードの表示優先度 (-127～128) を取得・設定するプロパティ。
+        /// デフォルトは 0 で -127 が一番優先度が高く（一番手前に）表示されます。
+        /// </remarks>
+        public sbyte DrawPriority {
+            get { return drawPriority; }
+            set { SetDrawPriority (value); }
         }
 
         /// <summary>
@@ -126,13 +141,14 @@ namespace DD {
         }
 
         /// <summary>
-        /// 全ての子ノードを列挙する列挙子
+        /// 自分自身と全ての子ノードを列挙する列挙子
         /// </summary>
         /// <remarks>
         /// 自分自身と自分から再帰的に辿れるすべての子ノードを列挙します。
         /// 順番は先頭が自分で幅優先探索で子ノードが続きます。
         /// <note>
         /// 幅優先で実装してあるがこの仕様は有益か？
+        /// --> SceneDepth を実装して後からソートした方が実装が簡単になる。後で修正する
         /// </note>
         /// </remarks>
         public IEnumerable<Node> Downwards {
@@ -152,7 +168,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// すべての親ノードを列挙する列挙子
+        /// 自分自身とすべての親ノードを列挙する列挙子
         /// </summary>
         /// <remarks>
         /// 自分自身と自分から辿れるすべての親ノードを列挙します。
@@ -191,17 +207,24 @@ namespace DD {
         }
 
         /// <summary>
-        /// このノード座標系からグローバル座標系への複合変換行列
+        /// このノードのローカル座標系からグローバル座標系への複合変換行列
         /// </summary>
         public Matrix4x4 GlobalTransform {
             get { return Upwards.Aggregate (Matrix4x4.Identity, (t, node) => node.Transform * t); }
         }
 
         /// <summary>
-        /// グローバル座標系からこのノード座標系への複合変換行列
+        /// グローバル座標系からこのノードのローカル座標系への複合変換行列
         /// </summary>
         public Matrix4x4 LocalTransform {
             get { return Upwards.Aggregate (Matrix4x4.Identity, (t, node) => t * node.Transform.Inverse ()); }
+        }
+
+        /// <summary>
+        /// グローバル座標系からこのノードの親のローカル座標系への複合変換行列
+        /// </summary>
+        public Matrix4x4 ParentTransform {
+            get { return Upwards.Skip (1).Aggregate (Matrix4x4.Identity, (t, node) => t * node.Transform.Inverse ()); }
         }
 
         /// <summary>
@@ -254,7 +277,7 @@ namespace DD {
                 return point.Z;
             }
         }
-        
+
 
         /*
         /// <summary>
@@ -313,6 +336,82 @@ namespace DD {
 
         #region Method
         /// <summary>
+        /// 平行移動量の変更（グローバル座標）
+        /// </summary>
+        /// <remarks>
+        /// それまでセットされていたこのノードの平行移動量を破棄し、新しい値に変更します。
+        /// このメソッドはグローバル座標で指定する事を除き <see cref="Transformable.SetTranslation"/> と同じです。
+        /// </remarks>
+        /// <param name="tx">X方向の平行移動量</param>
+        /// <param name="ty">Y方向の平行移動量</param>
+        /// <param name="tz">Z方向の平行移動量</param>
+        public void SetGlobalTranslation (float tx, float ty, float tz) {
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            var P = ParentTransform;
+            var G = Matrix4x4.CreateFromTranslation(tx,ty,tz);
+            (P * G).Decompress (out T, out R, out S);
+
+            SetTranslation (T.X, T.Y, T.Z);
+        }
+
+        /// <summary>
+        /// 回転成分の変更（グローバル座標）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドはグローバル座標で指定する事を除き <see cref="Transformable.SetRotation(Quaternion)"/> と同じです。
+        /// </remarks>
+        /// <param name="rot">回転クォータニオン</param>
+        public void SetGlobalRotation (Quaternion rot) {
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            var P = ParentTransform;
+            var G = Matrix4x4.CreateFromRotation(rot);
+            (P * G).Decompress (out T, out R, out S);
+
+            SetRotation (R);
+        }
+
+        /// <summary>
+        /// 回転成分の変更（グローバル座標）
+        /// </summary>
+        /// <remarks>
+        /// 回転角度は度数(degree)で指定します。値に制限はありません。0度以下や360度以上も可能です。
+        /// 回転軸は正規化されている必要はありません。
+        /// このメソッドはグローバル座標で指定する事を除き <see cref="Transformable.SetRotation(float,float,float,float)"/> と同じです。
+        /// </remarks>
+        /// <param name="angle">回転角度 [0,360)</param>
+        /// <param name="ax">回転軸X</param>
+        /// <param name="ay">回転軸Y</param>
+        /// <param name="az">回転軸Z</param>
+        public void SetGlobalRotation (float angle, float ax, float ay, float az) {
+            SetGlobalRotation (new Quaternion (angle, ax, ay, az));
+        }
+
+        /// <summary>
+        /// スケールの変更（グローバル座標）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドはグローバル座標で指定する事を除き <see cref="Transformable.SetScale(float,float,float)"/> と同じです。
+        /// </remarks>
+        /// <param name="sx">X方向の拡大率</param>
+        /// <param name="sy">Y方向の拡大率</param>
+        /// <param name="sz">Z方向の拡大率</param>
+        public void SetGlobalScale (float sx, float sy, float sz) {
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            var P = ParentTransform;
+            var G = Matrix4x4.CreateFromScale(sx,sy,sz);
+            (P * G).Decompress (out T, out R, out S);
+
+            SetScale (S.X, S.Y, S.Z);
+        }
+
+
+        /// <summary>
         /// コンポーネントのアタッチ
         /// </summary>
         /// <remarks>
@@ -340,7 +439,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// ノードからコンポーネントを削除します。
-         /// このタイミングで <see cref="Component.OnDetached"/> が呼び出されます。
+        /// このタイミングで <see cref="Component.OnDetached"/> が呼び出されます。
         /// </remarks>
         /// <param name="comp">コンポーネント</param>
         public void Detach (Component comp) {
@@ -405,6 +504,15 @@ namespace DD {
         }
 
         /// <summary>
+        /// 表示優先度の変更
+        /// </summary>
+        /// 表示優先度を変更します。デフォルトは 0 で -127 が一番優先度が高く、128が一番低いです。
+        /// <param name="priority">優先度[-127,128]</param>
+        public void SetDrawPriority (sbyte priority) {
+            this.drawPriority = priority;
+        }
+
+        /// <summary>
         /// 子ノードの取得
         /// </summary>
         /// <param name="index">インデックス</param>
@@ -427,6 +535,8 @@ namespace DD {
             }
             return components[index];
         }
+
+
 
 
 

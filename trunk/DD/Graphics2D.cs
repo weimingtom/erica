@@ -45,6 +45,9 @@ namespace DD {
         public event EventHandler OnClosed;
         #endregion
 
+        #region Propety
+        #endregion
+
         #region Method
 
         /// <summary>
@@ -73,33 +76,42 @@ namespace DD {
         }
 
         /// <summary>
-        /// スクリプトの描画
+        /// 最大フレームレートの設定
+        /// </summary>
+        /// <param name="max"></param>
+        public void SetFrameRateLimit (int max) {
+            win.SetFramerateLimit ((uint)max);
+        }
+
+
+        /// <summary>
+        /// シーンの描画
         /// </summary>
         /// <remarks>
-        /// 指定のスクリプトを描画します。
+        /// 指定のシーンを描画します。
+        /// ノードは <see cref="Node.Visible"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
-        /// <param name="script">スクリプト</param>
-        public void Draw (World script) {
-            if (script == null) {
-                return;
-            }
-            if (!win.IsOpen ()) {
+        /// <param name="world">シーン</param>
+        public void Draw (World world) {
+            if (world == null || !win.IsOpen()) {
                 return;
             }
 
-            // Clear screen
+            // スクリーンのクリア
             win.Clear (SFML.Graphics.Color.Blue);
 
             // 全ノードの描画
-            foreach (var node in script.Downwards) {
-                if (node.Visible) {
-                    foreach (var comp in node.Components) {
-                        comp.OnDraw (win);
-                    }
+            var nodes = from node in world.Downwards
+                        where node.Visible == true
+                        orderby node.DrawPriority descending
+                        select node;
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components) {
+                    comp.OnDraw (win);
                 }
             }
 
-            // Update the window
+            // 表示
             win.Display ();
         }
 

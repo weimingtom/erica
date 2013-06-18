@@ -48,6 +48,9 @@
     <AssemblyOriginatorKeyFile>AssemblyKeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FarseerPhysics">
+      <HintPath>libs\FarseerPhysics.dll</HintPath>
+    </Reference>
     <Reference Include="sfmlnet-audio-2">
       <HintPath>libs\sfmlnet-audio-2.dll</HintPath>
     </Reference>
@@ -76,15 +79,25 @@
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="Physics\BoxCollision.cs" />
+    <Compile Include="Physics\ContactPoint.cs" />
+    <Compile Include="Physics\Collider.cs" />
+    <Compile Include="Physics\CollisionShape.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IPoint.cs" />
     <Compile Include="Keyframe.cs" />
     <Compile Include="Label.cs" />
+    <Compile Include="Material.cs" />
     <Compile Include="Matrix3x3.cs" />
     <Compile Include="Matrix4x4.cs" />
     <Compile Include="MyMath.cs" />
+    <Compile Include="Physics\Enums.cs" />
+    <Compile Include="Physics\Physics2D.cs" />
+    <Compile Include="Physics\PhysicsMaterial.cs" />
+    <Compile Include="Physics\SphereCollision.cs" />
     <Compile Include="Quaternion.cs" />
+    <Compile Include="Physics\FarseerExtensions.cs" />
     <Compile Include="Transformable.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="Rectangle.cs" />
@@ -136,6 +149,7 @@
     </Content>
     <None Include="App.config" />
     <None Include="AssemblyKeyFile.snk" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\Konatu.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +162,7 @@
   <ItemGroup>
     <None Include="Resources\arial.ttf" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
