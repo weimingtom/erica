@@ -79,7 +79,7 @@
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationTrack.cs" />
-    <Compile Include="Physics\BoxCollision.cs" />
+    <Compile Include="Physics\BoxCollider.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
     <Compile Include="Physics\Collider.cs" />
     <Compile Include="Physics\CollisionShape.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Physics\Enums.cs" />
     <Compile Include="Physics\Physics2D.cs" />
     <Compile Include="Physics\PhysicsMaterial.cs" />
-    <Compile Include="Physics\SphereCollision.cs" />
+    <Compile Include="Physics\SphereCollider.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
     <Compile Include="Transformable.cs" />

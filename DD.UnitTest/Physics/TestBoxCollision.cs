@@ -10,7 +10,7 @@ namespace DD.UnitTest.Physics {
     public class TestBoxCollision {
         [TestMethod]
         public void Test_New () {
-            var box = new BoxCollision (1, 2, 3);
+            var box = new BoxCollider (1, 2, 3);
 
             Assert.AreEqual (1, box.Width);
             Assert.AreEqual (2, box.Height);

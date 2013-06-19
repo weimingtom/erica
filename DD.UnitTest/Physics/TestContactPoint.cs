@@ -7,17 +7,17 @@ using DD.Physics;
 
 namespace DD.UnitTest.Physics {
     [TestClass]
-    public class TestContactPoint {
+    public class TestCollision {
         [TestMethod]
         public void Test_New () {
-            var coll = new Collider (ColliderType.Dynamic);
+            var collidee = new Collider ();
             var p = new Vector3 (1, 2, 3);
             var n = new Vector3 (4, 5, 6);
-            var cp = new ContactPoint (coll, p, n);
+            var col = new Collision (collidee, p, n);
 
-            Assert.AreEqual (coll, cp.Collidee);
-            Assert.AreEqual (p, cp.Point);
-            Assert.AreEqual (n, cp.Normal);
+            Assert.AreEqual (collidee, col.Collidee);
+            Assert.AreEqual (p, col.Point);
+            Assert.AreEqual (n, col.Normal);
         }
     }
 }

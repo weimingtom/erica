@@ -51,7 +51,7 @@ namespace DD.Sample {
         }
 
         /// <inheritdoc/>
-        public override void OnCollisionEnter (DD.Physics.ContactPoint cp) {
+        public override void OnCollisionEnter (DD.Physics.Collision cp) {
             Console.WriteLine (Node.Name + " : Collision Enter : Collidee = {0}, Point = {1}, Normal = {2}", cp.Collidee.Node.Name, cp.Point, cp.Normal);
             chime.Play ();
         }

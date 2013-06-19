@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FarseerPhysics.Common;
-using FarseerPhysics.Collision;
+using FarseerPhysics.Collision.Shapes;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
+using Microsoft.Xna.Framework;
 
 namespace DD.Physics {
     /// <summary>
@@ -14,7 +15,7 @@ namespace DD.Physics {
     /// <remarks>
     /// ローカル座標の原点に箱の中心が来るように箱形のコリジョン形状を定義します。
     /// </remarks>
-    public class BoxCollision : CollisionShape {
+    public class BoxCollider : CollisionShape {
         #region Field
         float width;
         float height;
@@ -33,7 +34,7 @@ namespace DD.Physics {
         /// <param name="width">幅（ピクセル数）</param>
         /// <param name="height">高さ（ピクセル数）</param>
         /// <param name="depth">奥行き（ピクセル数）</param>
-        public BoxCollision (float width, int height, int depth) {
+        public BoxCollider (float width, int height, int depth) {
             if (width < 0 || height < 0 || depth < 0) {
                 throw new ArgumentException ("Size is invalid");
             }
@@ -68,11 +69,11 @@ namespace DD.Physics {
 
         #region Method
         /// <inheritdoc/>
-        internal override Body CreateBody () {
+        internal override Shape CreateShape () {
             var phy = Physics2D.GetInstance ();
-            var wld = (FarseerPhysics.Dynamics.World)phy.GetWorld ();
-
-            return BodyFactory.CreateRectangle(wld, width/phy.PPM, height/phy.PPM, 1000);
+            var hw = width / (2 * phy.PPM);
+            var hh = height / (2 * phy.PPM);
+            return new PolygonShape (PolygonTools.CreateRectangle (hw , hh), 1000);
         }
         #endregion
 
