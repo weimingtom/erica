@@ -22,33 +22,30 @@ namespace DD.Physics {
     public class Collider : Component {
 
         #region Field
+        Body body;
         CollisionShape shape;
         PhysicsMaterial mat;
-        Body body;
-        uint group;
         uint mask;
-        ColliderType type;
-        bool gravitational;
-        bool fixedRotation;
-        bool bullet;
-        bool trigger;
         #endregion
 
         #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
-        public Collider (ColliderType type) {
-            this.group = 0xffffffff;
+        /// <remarks>
+        /// デフォルトはスタティック オブジェクト。
+        /// </remarks>
+        public Collider () {
+            var wld = Physics2D.GetInstance ().GetWorld () as FarseerPhysics.Dynamics.World;
+            if (wld == null) {
+                throw new InvalidOperationException ("Physics world is not created");
+            }
             this.mask = 0xffffffff;
             this.shape = null;
             this.mat = null;
-            this.type = type;
-            this.gravitational = true;
-            this.fixedRotation = false;
-            this.bullet = false;
-            this.trigger = false;
-            this.body = null;
+
+            this.body = new Body (wld, this);
+ 
         }
         #endregion
 
@@ -81,8 +78,8 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// 物理エンジンで使用するオブジェクト。
-        /// Box2D専用というわけではないので object 型。
         /// Farseer.Dynamics.Bodyにキャストして使う。
+        /// ユーザーはこのプロパティを使用しません。
         /// </remarks>
         public object Body {
             get { return body; }
@@ -95,8 +92,22 @@ namespace DD.Physics {
         /// コライダーは振る舞いから(1) ダイナミック (2) スタティック (3) キネマティックの3種類があります。
         /// </remarks>
         public ColliderType Type {
-            get { return type; }
-            set { SetColliderType (value); }
+            get {
+                switch (body.BodyType) {
+                    case BodyType.Dynamic: return ColliderType.Dynamic;
+                    case BodyType.Static: return ColliderType.Static;
+                    case BodyType.Kinematic: return ColliderType.Kinematic;
+                    default: throw new NotImplementedException ("Sorry");
+                }
+            }
+            set {
+                switch (value) {
+                    case ColliderType.Dynamic: this.body.BodyType = BodyType.Dynamic; break;
+                    case ColliderType.Static: this.body.BodyType = BodyType.Static; break;
+                    case ColliderType.Kinematic: this.body.BodyType = BodyType.Kinematic; break;
+                    default: throw new NotImplementedException ("Sorry");
+                }
+            }
         }
 
         /// <summary>
@@ -106,7 +117,7 @@ namespace DD.Physics {
         /// このコライダーがキネマティックかどうかを取得するプロパティです。
         /// </remarks>
         public bool IsKinematic {
-            get { return (type == ColliderType.Kinematic); }
+            get { return (body.BodyType == BodyType.Kinematic); }
         }
 
         /// <summary>
@@ -116,7 +127,7 @@ namespace DD.Physics {
         /// このコライダーがスタティックかどうかを取得するプロパティです。
         /// </remarks>
         public bool IsStatic {
-            get { return (type == ColliderType.Static); }
+            get { return (body.BodyType == BodyType.Static); }
         }
 
         /// <summary>
@@ -126,7 +137,7 @@ namespace DD.Physics {
         /// このコライダーがダイナミックかどうかを取得するプロパティです。
         /// </remarks>
         public bool IsDynamic {
-            get { return (type == ColliderType.Dynamic); }
+            get { return (body.BodyType == BodyType.Dynamic); }
         }
 
         /// <summary>
@@ -137,18 +148,8 @@ namespace DD.Physics {
         /// ボディ作成前は必ず <c>false</c> が返ります。
         /// </remarks>
         public bool IsEnabled {
-            get {
-                if (body == null) {
-                    return false;
-                }
-                return body.Enabled; 
-            }
-            set {
-                if (body == null) {
-                    return;
-                }
-                SetEnable (value);
-            }
+            get { return body.Enabled; }
+            set { this.body.Enabled = value; }
         }
 
         /// <summary>
@@ -160,13 +161,8 @@ namespace DD.Physics {
         /// ボディ作成前は必ず <c>false</c> が返ります。
         /// </remarks>
         public bool IsSleeping {
-            get {
-                if (body == null) {
-                    return false;
-                }
-                return !body.Awake; 
-            }
-            set { SetSleep (value); }
+            get { return !body.Awake; }
+            set { this.body.Awake = !value; }
         }
 
         /// <summary>
@@ -176,8 +172,8 @@ namespace DD.Physics {
         /// このコライダーが重力の影響を受けるかどうかを取得、設定します。
         /// </remarks>
         public bool IsGravitational {
-            get { return gravitational; }
-            set { SetGravitional (value); }
+            get { return !body.IgnoreGravity; }
+            set { this.body.IgnoreGravity = !value; }
         }
 
         /// <summary>
@@ -188,8 +184,8 @@ namespace DD.Physics {
         /// ゲームにとって回転固定は必須です。
         /// </remarks>
         public bool IsFixedRotation {
-            get { return fixedRotation; }
-            set { SetFixedRotation (value); }
+            get { return body.FixedRotation; }
+            set { this.body.FixedRotation = value; }
         }
 
         /// <summary>
@@ -202,8 +198,8 @@ namespace DD.Physics {
         /// 重い処理なので必要がない限り <c>true</c> にしないでください。
         /// </remarks>
         public bool IsBullet {
-            get { return bullet; }
-            set { SetBullet (value); }
+            get { return body.IsBullet; }
+            set { this.body.IsBullet = value; }
         }
 
         /// <summary>
@@ -217,45 +213,38 @@ namespace DD.Physics {
         /// なおトリガーモードはスタティック、ダイナミック、キネマティックに関係なく設定可能です（普通はスタティックを使うが・・）。
         /// </remarks>
         public bool IsTrigger {
-            get { return trigger; }
-            set { SetTrigger (value); }
+            get { return (body.FixtureList.Count == 0) ? false : body.FixtureList[0].IsSensor; }
+            set { this.body.IsSensor = value; }
         }
 
-        /// <summary>
-        /// コリジョン グループ
-        /// </summary>
-        /// <remarks>
-        /// コリジョン グループです。現在実装されていません。
-        /// </remarks>
-        public uint CollisionGroup {
-            get { return group; }
-            set { SetCollisionGroup (value); }
-        }
 
         /// <summary>
         /// コリジョン マスク
         /// </summary>
         /// <remarks>
-        /// コリジョン マスクです。現在実装されていません。
+        /// コリジョン マスクです。
         /// </remarks>
         public uint CollisionMask {
             get { return mask; }
-            set { SetCollisionMask (value); }
+            set { this.mask = value; }
         }
 
         /// <summary>
         /// 重量
         /// </summary>
         /// <remarks>
-        /// このコライダーの重量です。単位は kg/m^3.
-        /// 自動設定されるので変更できません。
-        /// <note>
-        /// なぜか FarseerPhysics では SetDensity が無いため後から密度を変更できない。
-        /// 重量ベースでBody.Massを直接書き換えてしまっていいものかどうか悩み中。
-        /// </note>
+        /// このコライダーの重量です。単位は [kg/m^3].
+        /// 初期値は形状を水で満たした物と同じです。
         /// </remarks>
         public float Mass {
             get { return body.Mass; }
+            set {
+                if (value < 0) {
+                    throw new ArgumentException ("Mass is invalid");
+                }
+                body.Mass = value;
+                body.ResetMassData ();
+            }
         }
 
         /// <summary>
@@ -280,18 +269,8 @@ namespace DD.Physics {
         /// ボディ作成前は0ベクトルが返ります。セッターは無視されます。
         /// </remarks>
         public Vector3 LinearVelocity {
-            get {
-                if (body == null) {
-                    return new Vector3();
-                }
-                return new Vector3 ( body.LinearVelocity.X,  body.LinearVelocity.Y, 0);
-            }
-            set {
-                if (body == null) {
-                    return;
-                }
-                SetLinearVelocity (value.X, value.Y, value.Z);
-            }
+            get { return new Vector3 (body.LinearVelocity.X, body.LinearVelocity.Y, 0); }
+            set { this.body.LinearVelocity = new Vector2 (value.X, value.Y); }
         }
 
         /// <summary>
@@ -299,21 +278,10 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// 物理エンジンによって計算された現在の角速度。
-        /// ボディ作成前は0が返ります。セッターは無視あれます。
         /// </remarks>
         public float AngularVelocity {
-            get {
-                if (body == null) {
-                    return 0;
-                }
-                return body.AngularVelocity / (float)Math.PI * 180;
-            }
-            set {
-                if (body == null) {
-                    return;
-                }
-                SetAngularVelocity (value);
-            }
+            get { return body.AngularVelocity / (float)Math.PI * 180; }
+            set { this.body.AngularVelocity = value / 180f * (float)Math.PI; }
         }
 
         /// <summary>
@@ -322,11 +290,11 @@ namespace DD.Physics {
         /// <remarks>
         /// このコライダーと現在衝突中の物体を列挙する列挙子
         /// </remarks>
-        public IEnumerable<ContactPoint> Collisions {
+        public IEnumerable<Collision> Collisions {
             get {
                 var phy = Physics2D.GetInstance ();
 
-                var list = new List<ContactPoint> ();
+                var list = new List<Collision> ();
                 for (var edge = body.ContactList; edge != null; edge = edge.Next) {
 
                     FixedArray2<Vector2> points;
@@ -334,7 +302,7 @@ namespace DD.Physics {
                     edge.Contact.GetWorldManifold (out normal, out points);
 
                     var collidee = ((edge.Contact.FixtureA.UserData != this) ? edge.Contact.FixtureA.UserData : edge.Contact.FixtureB.UserData) as Collider;
-                    
+
                     // DDでは法線は衝突相手から自分を向く方と定義しているので
                     // Bが衝突相手だった場合は反転が必要
                     if (collidee == edge.Contact.FixtureB.UserData) {
@@ -343,24 +311,21 @@ namespace DD.Physics {
                     normal.Normalize ();
 
                     var count = edge.Contact.Manifold.PointCount;
-                    if (count == 1) {
+                    if (count == 0 && edge.Contact.IsTouching ()) {
+                        // センサー（トリガー）モード
+                        // count=0 かつ Manifold は未定義
+                        list.Add (new Collision (collidee, new Vector3(), new Vector3()));
+                    } 
+                    else if (count == 1) {
                         var cp = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
                         var nrm = new Vector3 (normal.X, normal.Y, 0);
-                        list.Add (new ContactPoint (collidee, cp, nrm));
+                        list.Add (new Collision (collidee, cp, nrm));
                     }
-                    else if(count == 2) {
+                    else if (count == 2) {
                         var cp = new Vector3 ((points[0].X + points[0].X) / 2.0f * phy.PPM, (points[1].Y + points[1].Y) / 2.0f * phy.PPM, 0);
                         var nrm = new Vector3 (normal.X, normal.Y, 0);
-                        list.Add (new ContactPoint (collidee, cp, nrm));
+                        list.Add (new Collision (collidee, cp, nrm));
                     }
-                    else if (edge.Contact.IsTouching ()) {
-                        // センサー（トリガー）モード
-                        // Manifoldは作られないのでcountも0
-                        var cp = new Vector3 (0, 0, 0);
-                        var nrm = new Vector3 (0, 0, 0);
-                        list.Add (new ContactPoint (collidee, cp, nrm));
-                    }
-
                 }
                 return list;
             }
@@ -372,8 +337,7 @@ namespace DD.Physics {
         /// コリジョン形状の変更
         /// </summary>
         /// <remarks>
-        /// コリジョン形状を変更します。このメソッドの後に <see cref="CreateBody"/> を呼び出してオブジェクトを再生産する必要があります。
-        /// 自動では反映されません。
+        /// コリジョン形状を変更します。
         /// コリジョン形状に <c>null</c> に設定すると例外が発生します。
         /// </remarks>
         /// <param name="shape">コリジョン形状</param>
@@ -381,7 +345,14 @@ namespace DD.Physics {
             if (shape == null) {
                 throw new ArgumentNullException ("Shape is null");
             }
+
             this.shape = shape;
+            this.body.CreateFixture (shape.CreateShape (), this);
+
+            /// コリジョン イベントは Body ではなく Fixture にセットされるので、
+            /// 形状を定義した後にセットする必要がある。
+            this.body.OnCollision += new OnCollisionEventHandler (CollisionEnterEventHandler);
+            this.body.OnSeparation += new OnSeparationEventHandler (CollisionExitEventHandler);
         }
 
         /// <summary>
@@ -392,301 +363,24 @@ namespace DD.Physics {
         /// 自動では反映されません。
         /// 物理特性に <c>null</c> に設定すると例外が発生します。
         /// </remarks>
-        /// <param name="material">物理特性</param>
-        public void SetMaterial (PhysicsMaterial material) {
-            if (material == null) {
+        /// <param name="mat">物理特性</param>
+        public void SetMaterial (PhysicsMaterial mat) {
+            if (mat == null) {
                 throw new ArgumentNullException ("Material is null");
             }
-            this.mat = material;
+
+            this.mat = mat;
+
+            UpdateMaterial ();
         }
 
-        /// <summary>
-        /// 物理オブジェクトの作成
-        /// </summary>
-        /// <remarks>
-        /// ユーザーはコライダーの形状と物理特性をセットした後、このメソッドを呼び出して
-        /// 物理オブジェクトを作成（設定を物理エンジンに反映）する必要があります。
-        /// 自動的には反映されません。
-        /// 設定済みのボディがある場合は削除します。
-        /// </remarks>
-        public void CreateBody () {
-            if (shape == null) {
-                throw new InvalidOperationException ("Shape is null");
-            }
-            if (mat == null) {
-                throw new InvalidOperationException ("Material is null");
-            }
-            if (body != null) {
-                body.Dispose ();
-            }
-
-            var phy = Physics2D.GetInstance ();
-            if (phy.GetWorld () == null) {
-                throw new InvalidOperationException ("Physics world is not created.");
-            }
-
-            this.body = shape.CreateBody ();
-            foreach (var fix in body.FixtureList) {
-                fix.UserData = this;
-            }
-
-            if (mat != null) {
-                UpdateBody ();
-            }
-            body.OnCollision += new OnCollisionEventHandler (CollisionEnterEventHandler);
-            body.OnSeparation += new OnSeparationEventHandler (CollisionExitEventHandler);
+        public void UpdateMaterial () {
+            this.body.Friction = mat.Friction;
+            this.body.Restitution = mat.Restitution;
+            this.body.LinearDamping = mat.LinearDamping;
+            this.body.AngularDamping = mat.AngulerDamping;
         }
 
-        /// <summary>
-        /// コリジョン発生イベント ハンドラー
-        /// </summary>
-        /// <param name="fixtureA">フィクスチャーA</param>
-        /// <param name="fixtureB">フィクスチャーB</param>
-        /// <param name="contact">(Farseerの)コンタクト情報</param>
-        /// <returns></returns>
-        private bool CollisionEnterEventHandler (Fixture fixtureA, Fixture fixtureB, Contact contact) {
-            var phy = Physics2D.GetInstance ();
-                        
-            Vector2 normal;   // A --> B
-            FixedArray2<Vector2> points;
-            contact.GetWorldManifold (out normal, out points);
-
-            var collidee = ((contact.FixtureA.UserData != this) ? contact.FixtureA.UserData : contact.FixtureB.UserData) as Collider;
-            
-            // DDでは法線は衝突相手から自分を向く方と定義しているので
-            // Bが衝突相手だった場合は反転が必要
-            if (collidee == contact.FixtureB.UserData) {
-                normal = -normal;
-            }
-            normal.Normalize ();
-
-            var count = contact.Manifold.PointCount;
-            if (count == 1) {
-                var p = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
-                var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new ContactPoint (collidee, p, n);
-                foreach (var comp in Node.Components) {
-                    comp.OnCollisionEnter (cp);
-                }
-            }
-            else if (count == 2) {
-                var p = new Vector3 ((points[0].X + points[1].X) / 2.0f * phy.PPM, (points[0].Y + points[1].Y) / 2.0f * phy.PPM, 0);
-                var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new ContactPoint (collidee, p, n);
-                foreach (var comp in Node.Components) {
-                    comp.OnCollisionEnter (cp);
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// コリジョン解消イベント ハンドラー
-        /// </summary>
-        /// <param name="fixtureA">フィクスチャーA</param>
-        /// <param name="fixtureB">フィクスチャーB</param>
-        private void CollisionExitEventHandler (Fixture fixtureA, Fixture fixtureB) {
-            var collidee = ((fixtureA.UserData != this) ? fixtureA.UserData : fixtureB.UserData) as Collider;
-            foreach (var comp in Node.Components) {
-                comp.OnCollisionExit (collidee);
-            }
-        }
-
-
-        /// <summary>
-        /// 物理オブジェクトの更新
-        /// </summary>
-        /// <remarks>
-        /// 物理エンジンに設定を反映します。物理形状や物理特性を変更した後に呼び出します。
-        /// 現状では自動的に更新しているので、ユーザーが自分でこれを呼ぶ必要はありません。
-        /// （一人突っ込み：なら internal にしろよ）
-        /// </remarks>
-        public void UpdateBody () {
-            if (shape == null) {
-                throw new InvalidCastException ("Shape is null");
-            }
-            if (mat == null) {
-                throw new InvalidCastException ("Material is null");
-            }
-            if (body == null) {
-                throw new InvalidCastException ("Body is null");
-            }
-
-            body.BodyType = type.ToFarseer ();
-            body.IsBullet = bullet;
-            body.IsSensor = trigger;
-            body.IgnoreGravity = !gravitational;
-            body.FixedRotation = fixedRotation;
-            body.LinearDamping = mat.LinearDamping;
-            body.AngularDamping = mat.AngulerDamping;
-            foreach (var fix in body.FixtureList) {
-                fix.Restitution = mat.Restitution;
-                fix.Friction = mat.Friction;
-            }
-        }
-
-        /// <summary>
-        /// コリジョン マスクの変更
-        /// </summary>
-        /// <remarks>
-        /// 現状でコリジョン マスクは未実装です。
-        /// </remarks>
-        /// <param name="mask">マスク</param>
-        public void SetCollisionMask (uint mask) {
-            this.mask = mask;
-        }
-
-        /// <summary>
-        /// コリジョン グループの変更
-        /// </summary>
-        /// <remarks>
-        /// 現状でコリジョン グループは未実装です。
-        /// </remarks>
-        /// <param name="group">グループID</param>
-        public void SetCollisionGroup (uint group) {
-            this.group = group;
-        }
-
-        /// <summary>
-        /// コリジョン タイプの変更
-        /// </summary>
-        /// <remarks>
-        /// コリジョンタイプを変更します。
-        /// (1)ダイナミック (2)スタティック (3) キネマティック
-        /// </remarks>
-        /// <param name="type">タイプ</param>
-        public void SetColliderType (ColliderType type) {
-            this.type = type;
-        }
-
-        /// <summary>
-        /// 重力制御の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーが重力を受けるかどうかを変更します。
-        /// </remarks>
-        /// <param name="enable">有効・無効</param>
-        public void SetGravitional (bool enable) {
-            this.gravitational = enable;
-        }
-
-        /// <summary>
-        /// 回転固定の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーが回転固定かどうかを変更します。
-        /// </remarks>
-        /// <param name="enable">有効・無効</param>
-        public void SetFixedRotation (bool enable) {
-            this.fixedRotation = enable;
-        }
-
-        /// <summary>
-        /// 有効・無効の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーが物理エンジン制御されるかどうかを変更します。
-        /// このメソッドは物理エンジンと直接通信します。
-        /// <c>false</c> にするとこのコライダーは一時的に物理エンジンの制御から外れます。
-        /// <note>
-        /// 他の物体が無効化した物体に当たってきたらどうなるの？
-        /// 判定自体もなくなってるの？
-        /// 後で確認
-        /// </note>
-        /// </remarks>
-        /// <param name="enable">有効・無効</param>
-        public void SetEnable (bool enable) {
-            if (body == null) {
-                return;
-            }
-            this.body.Enabled = enable;
-        }
-
-        /// <summary>
-        /// 弾丸モードの変更
-        /// </summary>
-        /// <remarks>
-        /// 弾丸モードに変更します。
-        /// 弾丸モードはダイナミック-ダイナミックの判定の精度が上がります。
-        /// 重し処理なので必要があるまで <c>enable</c> にしないでください。
-        /// </remarks>
-        /// <param name="enalbe">有効・無効</param>
-        public void SetBullet (bool enalbe) {
-            this.bullet = enalbe;
-        }
-
-        /// <summary>
-        /// トリガー モードの変更
-        /// </summary>
-        /// <remarks>
-        /// トリガーモードの有効・無効を変更します。
-        /// </remarks>
-        /// <param name="enalbe">有効・無効</param>
-        public void SetTrigger (bool enalbe) {
-            this.trigger = enalbe;
-        }
-
-        /// <summary>
-        /// 速度の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーの速度を変更します。
-        /// このメソッドは物理エンジンと直接通信します。
-        /// 通常速度は物理エンジンによって算出されるのでこのメソッドを使用してユーザーが直接変更しないでください。
-        /// ただしキネマティック体はこのメソッドによって制御されます。
-        /// </remarks>
-        /// <param name="x">速度のX成分</param>
-        /// <param name="y">速度のY成分</param>
-        /// <param name="z">速度のZ成分</param>
-        public void SetLinearVelocity (float x, float y, float z) {
-            if (body == null) {
-                return;
-            }
-            this.body.LinearVelocity = new Microsoft.Xna.Framework.Vector2 (x, y);
-        }
-
-        /// <summary>
-        /// 角速度の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーの角速度を変更します。
-        /// このメソッドは物理エンジンと直接通信します。
-        /// 通常角速度は物理エンジンによって算出されるのでこのメソッドを使用してユーザーが直接変更しないでください。
-        /// ただしキネマティック体はこのメソッドによって制御されます。
-        /// </remarks>
-        /// <param name="angle">角速度 (in degree)</param>
-        public void SetAngularVelocity (float angle) {
-            if (body == null) {
-                return;
-            }
-            this.body.AngularVelocity = angle / 180.0f * (float)Math.PI;
-        }
-
-        /// <summary>
-        /// スリープ状態の変更
-        /// </summary>
-        /// <remarks>
-        /// このコライダーを強制的にスリープ状態に移行させます。
-        /// 通常物理エンジンが自動的にスリープ状態に移行させるので、このメソッドを使用して直接変更しないでください。
-        /// </remarks>
-        /// <param name="sleep">スリープ状態</param>
-        public void SetSleep (bool sleep) {
-            this.IsSleeping = sleep;
-        }
-
-        /// <summary>
-        /// コリジョン形状のオフセット
-        /// </summary>
-        /// <remarks>
-        /// コリジョン形状をローカル座標原点からオフセット分移動させます。
-        /// 現在未実装です。
-        /// </remarks>
-        /// <param name="x">オフセットのX</param>
-        /// <param name="y">オフセットのY</param>
-        /// <param name="z">オフセットのZ</param>
-        public void SetOffset (float x, float y, float z) {
-            // ?
-        }
 
         /// <summary>
         /// 力の付加
@@ -708,7 +402,7 @@ namespace DD.Physics {
                 return;
             }
 
-            this.body.ApplyForce (new Vector2(x,y));
+            this.body.ApplyForce (new Vector2 (x, y));
         }
 
         /// <summary>
@@ -729,11 +423,70 @@ namespace DD.Physics {
             this.body.ApplyTorque (torque);
         }
 
-        /// <inheritdoc/>
-        public override void OnDetached () {
-            if (body != null) {
-                body.Dispose ();
-                body = null;
+        /// <summary>
+        /// コリジョン発生イベント ハンドラー
+        /// </summary>
+        /// <param name="fixtureA">フィクスチャーA</param>
+        /// <param name="fixtureB">フィクスチャーB</param>
+        /// <param name="contact">(Farseerの)コンタクト情報</param>
+        /// <returns></returns>
+        private bool CollisionEnterEventHandler (Fixture fixtureA, Fixture fixtureB, Contact contact) {
+            var phy = Physics2D.GetInstance ();
+
+            var collidee = ((contact.FixtureA.UserData != this) ? contact.FixtureA.UserData : contact.FixtureB.UserData) as Collider;
+
+            if (((this.CollisionMask & collidee.GroupID) == 0) || ((collidee.CollisionMask & this.GroupID) == 0)) {
+                return false;
+            }
+            
+            Vector2 normal;   // A --> B
+            FixedArray2<Vector2> points;
+            contact.GetWorldManifold (out normal, out points);
+
+            // DDでは法線は衝突相手から自分を向く方と定義しているので
+            // Bが衝突相手だった場合は反転が必要
+            if (collidee == contact.FixtureB.UserData) {
+                normal = -normal;
+            }
+            normal.Normalize ();
+
+            var count = contact.Manifold.PointCount;
+            if (count == 0 && contact.IsTouching ()) {
+                // センサー（トリガー）モード
+                // count=0 かつ Manifold は未定義
+                var cp = new Collision (collidee, new Vector3 (0, 0, 0), new Vector3 (0, 0, 0));
+                foreach (var comp in Node.Components) {
+                    comp.OnCollisionEnter (cp);
+                }
+            }
+            else if (count == 1) {
+                var p = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
+                var n = new Vector3 (normal.X, normal.Y, 0);
+                var cp = new Collision (collidee, p, n);
+                foreach (var comp in Node.Components) {
+                    comp.OnCollisionEnter (cp);
+                }
+            }
+            else if (count == 2) {
+                var p = new Vector3 ((points[0].X + points[1].X) / 2.0f * phy.PPM, (points[0].Y + points[1].Y) / 2.0f * phy.PPM, 0);
+                var n = new Vector3 (normal.X, normal.Y, 0);
+                var cp = new Collision (collidee, p, n);
+                foreach (var comp in Node.Components) {
+                    comp.OnCollisionEnter (cp);
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// コリジョン解消イベント ハンドラー
+        /// </summary>
+        /// <param name="fixtureA">フィクスチャーA</param>
+        /// <param name="fixtureB">フィクスチャーB</param>
+        private void CollisionExitEventHandler (Fixture fixtureA, Fixture fixtureB) {
+            var collidee = ((fixtureA.UserData != this) ? fixtureA.UserData : fixtureB.UserData) as Collider;
+            foreach (var comp in Node.Components) {
+                comp.OnCollisionExit (collidee);
             }
         }
 

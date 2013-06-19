@@ -7,7 +7,7 @@ using DD.Physics;
 namespace DD.Sample {
     public class UpdraftComponent : Component {
 
-        public override void OnCollisionEnter (ContactPoint cp) {
+        public override void OnCollisionEnter (Collision cp) {
             base.OnCollisionEnter (cp);
         }
 
@@ -16,7 +16,7 @@ namespace DD.Sample {
 
             foreach (var c in col.Collisions) {
                 Console.WriteLine ("Apply force to {0}", c.Collidee.Node.Name);
-                c.Collidee.ApplyForce (0, -100000, 0);
+                c.Collidee.ApplyForce (-10000, -100000, 0);
             }
         }
     }

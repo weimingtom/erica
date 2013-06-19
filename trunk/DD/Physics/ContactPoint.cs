@@ -6,12 +6,12 @@ using System.Text;
 namespace DD.Physics {
 
     /// <summary>
-    /// コンタクト ポイント構造体
+    /// コリジョン構造体
     /// </summary>
     /// <remarks>
     /// 衝突地点の情報をワールド座標系で保持します。
     /// </remarks>
-    public struct ContactPoint {
+    public struct Collision {
         /// <summary>
         /// コンストラクター
         /// </summary>
@@ -22,7 +22,7 @@ namespace DD.Physics {
         /// <param name="collidee">衝突した相手（<see cref="Collider"/> オブジェクト）</param>
         /// <param name="point">衝突地点（ローカル座標）</param>
         /// <param name="normal">法線（ローカル座標）</param>
-        internal ContactPoint (Collider collidee, Vector3 point, Vector3 normal)
+        internal Collision (Collider collidee, Vector3 point, Vector3 normal)
             : this () {
             this.Normal = normal;
             this.Point = point;

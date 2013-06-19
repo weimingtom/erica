@@ -30,7 +30,6 @@ namespace DD.Physics {
         Vector3 gravity;
         float ppm;
         long prev;
-        Stopwatch watch;
         #endregion
 
         #region Constructor
@@ -41,9 +40,6 @@ namespace DD.Physics {
             this.wld = null;
             this.gravity = new Vector3 (0, 9.8f, 0);
             this.prev = 0;
-            this.watch = new Stopwatch ();
-
-            watch.Start ();
         }
 
         /// <summary>
@@ -164,8 +160,7 @@ namespace DD.Physics {
         /// </note>
         /// </remarks>
         /// <param name="ddworld">DDのワールド</param>
-        public void Step (DD.World ddworld) {
-            var msec = watch.ElapsedMilliseconds;
+        public void Step (DD.World ddworld, long msec) {
             if (prev == 0) {
                 prev = msec;
             }
@@ -176,10 +171,6 @@ namespace DD.Physics {
                             select (Collider)comp;
             
             foreach (var col in colliders) {
-                if (col.Body == null) {
-                    col.CreateBody ();
-                }
-                col.UpdateBody ();
 
                 Vector3 T;
                 Quaternion R;

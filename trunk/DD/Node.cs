@@ -26,6 +26,8 @@ namespace DD {
         bool visible;
         bool clickable;
         sbyte drawPriority;
+        uint groupID;
+        int userID;
         #endregion
 
         #region Constructor
@@ -50,7 +52,8 @@ namespace DD {
             this.children = new List<Node> ();
             this.components = new List<Component> ();
             this.drawPriority = 0;
-
+            this.groupID = 0xffffffffu;
+            this.userID = 0;
         }
         #endregion
 
@@ -62,7 +65,21 @@ namespace DD {
             get { return name; }
         }
 
+        /// <summary>
+        /// ユーザーID
+        /// </summary>
+        public int UserID {
+            get { return userID; }
+            set { this.userID = value; }
+        }
 
+        /// <summary>
+        /// グループID
+        /// </summary>
+        public uint GroupID {
+            get { return groupID; }
+            set { this.groupID = value; }
+        }
 
         /// <summary>
         /// バウンディング ボックス
@@ -487,6 +504,21 @@ namespace DD {
             this.children.Remove (node);
         }
 
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// 指定のユーザーIDのノードを下方向から検索します。
+        /// 一致するIDのノードが2つ以上あった場合は、どれが返るかは未定義です。
+        /// 見つからない場合は <c>null</c> が返ります。
+        /// </remarks>
+        /// <param name="userID">検索したいユーザーID</param>
+        /// <returns></returns>
+        public Node Find (int userID) {
+            return (from node in Downwards
+                    where node.userID == userID
+                    select node).FirstOrDefault();
+        }
 
 
         /// <summary>

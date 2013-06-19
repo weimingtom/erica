@@ -10,6 +10,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Common;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 
 namespace DD.Sample {
@@ -32,26 +33,26 @@ namespace DD.Sample {
             spr4.AddTexture (new Texture ("media/Brick-1024x64.jpg"));
             spr4.SetOffset (-spr4.Width / 2, -spr4.Height / 2);
 
-            var col1 = new Collider (ColliderType.Static);
-            col1.SetShape (new BoxCollision (spr1.Width, spr1.Height, 0));
+            var col1 = new Collider ();
+            col1.Type = ColliderType.Static;
+            col1.SetShape (new BoxCollider (spr1.Width, spr1.Height, 0));
             col1.SetMaterial (new PhysicsMaterial ());
-            col1.CreateBody ();
-
-            var col2 = new Collider (ColliderType.Static);
-            col2.SetShape (new BoxCollision (spr2.Width, spr2.Height, 0));
+       
+            var col2 = new Collider ();
+            col2.Type = ColliderType.Static;
+            col2.SetShape (new BoxCollider (spr2.Width, spr2.Height, 0));
             col2.SetMaterial (new PhysicsMaterial ());
-            col2.CreateBody ();
-
-            var col3 = new Collider (ColliderType.Static);
-            col3.SetShape (new BoxCollision (spr3.Width, spr3.Height, 0));
+       
+            var col3 = new Collider ();
+            col3.Type = ColliderType.Static;
+            col3.SetShape (new BoxCollider (spr3.Width, spr3.Height, 0));
             col3.SetMaterial (new PhysicsMaterial ());
-            col3.CreateBody ();
-
-            var col4 = new Collider (ColliderType.Static);
-            col4.SetShape (new BoxCollision (spr4.Width, spr4.Height, 0));
+       
+            var col4 = new Collider ();
+            col4.Type = ColliderType.Static;
+            col4.SetShape (new BoxCollider (spr4.Width, spr4.Height, 0));
             col4.SetMaterial (new PhysicsMaterial ());
-            col4.CreateBody ();
-
+       
             var node1 = new Node ("Wall1");
             node1.Translate (400, 584, 0);
             node1.Attach (spr1);
@@ -92,17 +93,17 @@ namespace DD.Sample {
             spr2.AddTexture (new Texture ("media/Moon.png"));
             spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
 
-            var col1 = new Collider (ColliderType.Dynamic);
-            col1.SetShape (new SphereCollision (spr1.Width / 2));
+            var col1 = new Collider ();
+            col1.Type = ColliderType.Dynamic;
+            col1.SetShape (new SphereCollider (spr1.Width / 2));
             col1.SetMaterial (new PhysicsMaterial ());
 
 
-            var col2 = new Collider (ColliderType.Dynamic);
-            col2.SetShape (new SphereCollision (spr2.Width / 2));
+            var col2 = new Collider ();
+            col2.Type = ColliderType.Dynamic;
+            col2.SetShape (new SphereCollider (spr2.Width / 2));
             col2.SetMaterial (new PhysicsMaterial ());
-            col2.CreateBody ();
-
-
+            
             var cmp1 = new MyComponent ();
 
             //var cmp2 = new MyComponent ();
@@ -114,7 +115,7 @@ namespace DD.Sample {
             node1.Attach (col1);
             node1.Attach (cmp1);
             node1.Rotate (-135, 0, 0, 1);
-
+            node1.GroupID = 1;
 
             var node2 = new Node ("Ball2");
             node2.SetBoundingBox (-spr2.Width / 2, -spr2.Height / 2, spr2.Width, spr2.Height);
@@ -135,10 +136,10 @@ namespace DD.Sample {
             var spr = new Sprite(new Texture("media/Arrow.png"));
             spr.SetOffset(-spr.Width/2, -spr.Height/2);
 
-            var col = new Collider (ColliderType.Static);
-            col.SetShape (new BoxCollision (spr.Width*2, 600, 0));
+            var col = new Collider ();
+            col.Type = ColliderType.Static;
+            col.SetShape (new BoxCollider (spr.Width*2, 600, 0));
             col.SetMaterial (new PhysicsMaterial ());
-            col.CreateBody ();
             col.IsTrigger = true;
 
 
@@ -196,13 +197,16 @@ namespace DD.Sample {
 
             g2d.SetFrameRateLimit (30);
 
-
+            var watch = new Stopwatch ();
+            watch.Start ();
+            
             while (director.IsAlive) {
+                var msec = watch.ElapsedMilliseconds;
 
-                p2d.Step (director.CurrentScript);
+                p2d.Step (director.CurrentScript, msec);
 
-                director.Animate ();
-                director.Update ();
+                director.Animate (msec);
+                director.Update (msec);
                 g2d.Dispatch (director.CurrentScript);
                 g2d.Draw (director.CurrentScript);
 

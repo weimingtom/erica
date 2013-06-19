@@ -33,6 +33,19 @@ namespace DD {
             get { return node; }
         }
 
+        /// <summary>
+        /// ユーザーID
+        /// </summary>
+        public int UserID {
+            get { return node.UserID; }
+        }
+
+        /// <summary>
+        /// グループID
+        /// </summary>
+        public uint GroupID {
+            get { return node.GroupID; }
+        }
 
         #endregion
 
@@ -128,7 +141,7 @@ namespace DD {
         /// 物理エンジンのコリジョン発生処理を行う仮想関数のエントリーポイント。
         /// </remarks>
         /// <param name="cp">衝突地点情報</param>
-        public virtual void OnCollisionEnter (Physics.ContactPoint cp) {
+        public virtual void OnCollisionEnter (Physics.Collision cp) {
         }
 
         /// <summary>

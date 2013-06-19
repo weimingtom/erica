@@ -20,6 +20,24 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, node.Clickable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
+            Assert.AreEqual (0, node.UserID);
+            Assert.AreEqual (0xffffffffu, node.GroupID);
+        }
+
+        [TestMethod]
+        public void Test_SetUserID () {
+            var node = new Node ("Node1");
+
+            node.UserID = 0x12345678;
+            Assert.AreEqual (0x12345678, node.UserID);
+        }
+
+        [TestMethod]
+        public void Test_SetGroupID () {
+            var node = new Node ("Node1");
+
+            node.GroupID = 0x12345678u;
+            Assert.AreEqual (0x12345678u, node.GroupID);
         }
 
         [TestMethod]
@@ -135,7 +153,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (nod1, nod3.Root);
         }
 
-       
+
         [TestMethod]
         public void Test_Attach () {
             var node = new Node ();
@@ -171,6 +189,26 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Find () {
+            var nod1 = new Node ("Node1");
+            var nod2 = new Node ("Node2");
+            var nod3 = new Node ("Node3");
+            nod1.AddChild (nod2);
+            nod1.AddChild (nod3);
+
+            nod1.UserID = 1;
+            nod2.UserID = 2;
+            nod3.UserID = 3;
+
+            Assert.AreEqual (nod1, nod1.Find (1));
+            Assert.AreEqual (nod2, nod1.Find (2));
+            Assert.AreEqual (nod3, nod1.Find (3));
+            Assert.AreEqual (null, nod1.Find (4));
+        }
+
+    
+
+        [TestMethod]
         public void Test_SetBoundingBox () {
             var node = new Node ();
             node.SetBoundingBox (1, 2, 3, 4);
@@ -182,7 +220,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (4, node.BoundingBox.X2);
             Assert.AreEqual (6, node.BoundingBox.Y2);
 
-            node.BoundingBox = new Rectangle (5,6,7,8);
+            node.BoundingBox = new Rectangle (5, 6, 7, 8);
 
             Assert.AreEqual (5, node.BoundingBox.X);
             Assert.AreEqual (6, node.BoundingBox.Y);
@@ -194,7 +232,7 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_GlobalTransform (){
+        public void Test_GlobalTransform () {
             var nod1 = new Node ();
             var nod2 = new Node ();
             var nod3 = new Node ();
@@ -209,9 +247,9 @@ namespace DD.UnitTest {
             Quaternion rotation;
             Vector3 scale;
 
-            nod3.GlobalTransform.Decompress(out translation, out rotation, out scale);
+            nod3.GlobalTransform.Decompress (out translation, out rotation, out scale);
 
-            Assert.AreEqual (new Vector3 (5,6,7), translation);
+            Assert.AreEqual (new Vector3 (5, 6, 7), translation);
             Assert.AreEqual (Quaternion.Identity, rotation);
             Assert.AreEqual (new Vector3 (2, 2, 2), scale);
         }
@@ -278,11 +316,11 @@ namespace DD.UnitTest {
             Quaternion rotation;
             Vector3 scale;
 
-            nod3.GlobalTransform.Decompress(out point, out rotation, out scale);
+            nod3.GlobalTransform.Decompress (out point, out rotation, out scale);
 
-            Assert.AreEqual(point.X, nod3.GlobalX);
-            Assert.AreEqual(point.Y, nod3.GlobalY);
-            Assert.AreEqual(point.Z, nod3.GlobalZ);
+            Assert.AreEqual (point.X, nod3.GlobalX);
+            Assert.AreEqual (point.Y, nod3.GlobalY);
+            Assert.AreEqual (point.Z, nod3.GlobalZ);
         }
 
 

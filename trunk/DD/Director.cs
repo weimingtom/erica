@@ -38,7 +38,6 @@ namespace DD {
         #region Field
         DirectorState state;
         Stack<World> scripts;
-        Stopwatch watch;
         #endregion
 
         #region Constructor
@@ -48,10 +47,7 @@ namespace DD {
         public Director () {
             this.state = DirectorState.Alive;
             this.scripts = new Stack<World> ();
-            this.watch = new Stopwatch ();
-
-            watch.Start ();
-        }
+            }
         #endregion
 
 
@@ -148,13 +144,13 @@ namespace DD {
         /// <remarks>
         /// カレント スクリプトの更新処理を実行します。
         /// </remarks>
-        public void Update () {
+        public void Update (long msec) {
             if (IsAlive == false || CurrentScript == null) {
                 return;
             }
             foreach (var node in CurrentScript.Downwards) {
                 foreach (var comp in node.Components) {
-                    comp.OnUpdate (watch.ElapsedMilliseconds);
+                    comp.OnUpdate (msec);
                 }
             }
         }
@@ -166,14 +162,14 @@ namespace DD {
         /// カレント スクリプトのアニメーションを更新します。
         /// 現在未実装なので直接オブジェクトの Animate() メソッドを読んでください。
         /// </remarks>
-        public void Animate () {
+        public void Animate (long msec) {
             if (IsAlive == false || CurrentScript == null) {
                 return;
             }
 
             foreach (var node in CurrentScript.Downwards) {
                 foreach (var comp in node.Components) {
-                    comp.OnAnimate (watch.ElapsedMilliseconds);
+                    comp.OnAnimate (msec);
                 }
             }
         }
@@ -195,7 +191,6 @@ namespace DD {
         /// これ以降このディレクターを使用する事はできません。
         /// </remarks>
         public void Exit () {
-            watch.Stop ();
             this.state = DirectorState.Dead;
         }
         #endregion

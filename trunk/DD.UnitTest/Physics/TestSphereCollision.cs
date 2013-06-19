@@ -10,7 +10,7 @@ namespace DD.UnitTest.Physics {
     public class TestSphereCollision {
         [TestMethod]
         public void Test_New () {
-            var sph = new SphereCollision (1.0f);
+            var sph = new SphereCollider (1.0f);
 
             Assert.AreEqual (1, sph.Radius);
         }
