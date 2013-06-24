@@ -64,8 +64,12 @@
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
     <Compile Include="Physics\TestSphereCollision.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
+    <Compile Include="SFML\TestGraphics2D.cs" />
     <Compile Include="TestColor.cs" />
+    <Compile Include="TestInputReceiver.cs" />
+    <Compile Include="TestKeyAlias.cs" />
     <Compile Include="TestLabel.cs" />
+    <Compile Include="TestMaterial.cs" />
     <Compile Include="TestMatrix3x3.cs" />
     <Compile Include="TestMatrix4x4.cs" />
     <Compile Include="TestMyMath.cs" />
@@ -74,7 +78,6 @@
     <Compile Include="TestAnimationClip.cs" />
     <Compile Include="TestAnimationController.cs" />
     <Compile Include="TestAnimationTrack.cs" />
-    <Compile Include="TestIAnimatable.cs" />
     <Compile Include="TestKeyframe.cs" />
     <Compile Include="TestLineParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

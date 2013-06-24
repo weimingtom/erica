@@ -18,7 +18,7 @@ namespace DD.UnitTest {
             g2d.CreateWindow (800, 600, "UnitTest");
 
             var p2d = DD.Physics.Physics2D.GetInstance ();
-            p2d.CreateWorld (800, 600, 600);
+            p2d.CreateWorld (32);
         }
 
         [AssemblyCleanup ()]

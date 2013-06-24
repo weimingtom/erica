@@ -189,7 +189,16 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Find () {
+        public void Test_GetComponent () {
+            var node = new Node ();
+            var comp = new Component ();
+            node.Attach (comp);
+
+            Assert.AreEqual (comp, node.GetComponent<Component> ());
+        }
+
+        [TestMethod]
+        public void Test_Find_UserID () {
             var nod1 = new Node ("Node1");
             var nod2 = new Node ("Node2");
             var nod3 = new Node ("Node3");
@@ -206,6 +215,23 @@ namespace DD.UnitTest {
             Assert.AreEqual (null, nod1.Find (4));
         }
 
+        [TestMethod]
+        public void Test_Find_Predicate () {
+            var nod1 = new Node ("Node1");
+            var nod2 = new Node ("Node2");
+            var nod3 = new Node ("Node3");
+            nod1.AddChild (nod2);
+            nod1.AddChild (nod3);
+
+            nod1.UserID = 1;
+            nod2.UserID = 2;
+            nod3.UserID = 3;
+
+            Assert.AreEqual (nod1, nod1.Find (x => x.UserID == 1));
+            Assert.AreEqual (nod2, nod1.Find (x => x.UserID == 2));
+            Assert.AreEqual (nod3, nod1.Find (x => x.UserID == 3));
+            Assert.AreEqual (null, nod1.Find (x => x.UserID == 4));
+        }
     
 
         [TestMethod]

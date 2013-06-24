@@ -11,10 +11,11 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_New () {
-            var sce = new World ("Script1");
+            var wld = new World ("Script1");
 
-            Assert.AreEqual ("Script1", sce.Name);
-            Assert.AreEqual (null, sce.Director);
+            Assert.AreEqual ("Script1", wld.Name);
+            Assert.AreEqual (null, wld.Director);
+            Assert.IsNotNull (wld.InputReceiver);
         }
 
         [TestMethod]
@@ -26,7 +27,6 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (direc, sce.Director);
         }
-
 
     }
 }

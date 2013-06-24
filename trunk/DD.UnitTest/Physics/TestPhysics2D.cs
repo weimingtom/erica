@@ -12,7 +12,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_CreatWorld () {
             var p2d = Physics2D.GetInstance ();
-            p2d.CreateWorld (800,600,0);
+            p2d.CreateWorld (32);
 
             Assert.IsNotNull(p2d.GetWorld());
 
@@ -22,11 +22,11 @@ namespace DD.UnitTest.Physics {
         public void Test_SetGravity () {
             var p2d = Physics2D.GetInstance ();
 
-            p2d.Gravity = new Vector3 (1, 2, 3);
-            Assert.AreEqual (new Vector3 (1, 2, 0), p2d.Gravity);
+            p2d.Gravity = new Vector2 (1, 2);
+            Assert.AreEqual (new Vector2 (1, 2), p2d.Gravity);
 
-            p2d.SetGravity (4,5,6);
-            Assert.AreEqual (new Vector3 (4,5, 0), p2d.Gravity);
+            p2d.SetGravity (3, 4);
+            Assert.AreEqual (new Vector2 (3, 4), p2d.Gravity);
         }
     }
 }

@@ -16,7 +16,6 @@ namespace DD {
     /// </remarks>
     public class Node : Transformable {
 
-
         #region Field
         string name;
         Node parent;
@@ -208,7 +207,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// ルート ノードとツリーを上方向に null になるまでたどった時の一番上のノードの事を言います。
-        /// 親ノードが null の場合は自分がルート ノードです。
+        /// 親ノードが <c>null</c> の場合は自分がルート ノードです。
         /// </remarks>
         public Node Root {
             get {
@@ -520,6 +519,37 @@ namespace DD {
                     select node).FirstOrDefault();
         }
 
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// 指定の条件式 <paramref name="pred"/> を満たすノードを下方向から検索します。
+        /// 条件に一致するノードが2つ以上あった場合は、どれが返るかは未定義です。
+        /// 見つからない場合は <c>null</c> が返ります。
+        /// </remarks>
+        /// <param name="pred">条件式</param>
+        /// <returns></returns>
+        public Node Find (Func<Node, bool> pred) {
+            return (from node in Downwards
+                    where pred(node) == true
+                    select node).FirstOrDefault ();
+        }
+
+        /// <summary>
+        /// コンポーネントの取得
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされているコンポーネントから指定の型 <typeparamref name="T"/> の物を返します。
+        /// 一致する型のコンポーネントが2つ以上あった場合は、どれが返るかは未定義です。
+        /// 見つからない場合は <c>null</c> が返ります。
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        /// <returns></returns>
+        public T GetComponent<T> () where T : Component {
+            return (from comp in components
+                    where comp is T
+                    select (T)comp).FirstOrDefault ();
+        }
 
         /// <summary>
         /// バウンディング ボックスの変更

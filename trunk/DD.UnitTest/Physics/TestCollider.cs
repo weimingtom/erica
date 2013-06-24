@@ -124,9 +124,10 @@ namespace DD.UnitTest.Physics {
             var col = new Collider ();
             col.Shape = new SphereCollider (1.0f);
             col.Material = new PhysicsMaterial ();
+            col.Type = ColliderType.Kinematic;
 
-            col.LinearVelocity = new Vector3 (1, 2, 3);
-            Assert.AreEqual (new Vector3 (1, 2, 0), col.LinearVelocity);
+            col.LinearVelocity = new Vector2 (1, 2);
+            Assert.AreEqual (new Vector2 (1, 2), col.LinearVelocity);
         }
 
         [TestMethod]
@@ -134,9 +135,11 @@ namespace DD.UnitTest.Physics {
             var col = new Collider ();
             col.Shape = new SphereCollider (1.0f);
             col.Material = new PhysicsMaterial ();
+            col.Type = ColliderType.Kinematic;
 
-            col.AngularVelocity = 1;
-            Assert.AreEqual (1, col.AngularVelocity, 0.0001f);
+            col.AngularVelocity = 45;
+            Assert.AreEqual (45, col.AngularVelocity, 0.0001f);
+
         }
     }
 }
