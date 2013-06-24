@@ -8,6 +8,8 @@ using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
+using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+
 namespace DD.Physics {
     /// <summary>
     /// 2Dの物理エンジン デバイス クラス
@@ -27,9 +29,12 @@ namespace DD.Physics {
         #region Field
         static Physics2D p2d;
         FarseerPhysics.Dynamics.World wld;
-        Vector3 gravity;
         float ppm;
         long prev;
+        #endregion
+
+        #region ReadOnly
+        readonly Vector2 gravity = new Vector2 (0, 9.8f);
         #endregion
 
         #region Constructor
@@ -38,7 +43,6 @@ namespace DD.Physics {
         /// </summary>
         private Physics2D () {
             this.wld = null;
-            this.gravity = new Vector3 (0, 9.8f, 0);
             this.prev = 0;
         }
 
@@ -61,33 +65,25 @@ namespace DD.Physics {
         /// 物理世界の構築
         /// </summary>
         /// <remarks>
-        /// 物理エンジン上に（物理演算用の）世界を作成します。単位はメートル(m)です。
-        /// 物理エンジンを使用する前にこの世界を構築してください。
-        /// 世界のサイズは「めやす」です。
-        /// 物体がこの世界の外側に飛び出しても計算には問題はありません（極端に離れると精度が悪くなる）。
-        /// <note>
-        /// 現在このサイズは使用せず <see cref="PPM"/> = 32 を固定で使用している。
-        /// まあ問題ない。
-        /// </note>
+        /// （物理演算用の）世界を作成します。物理エンジンを使用するにはこの世界の構築が必要です。
+        /// 引数は物理世界の1mが何ピクセルに相当するかを指定します。
+        /// Box2Dでは慣用的に1mは32ピクセルです。 Box2D は 0.1m ～ 10m の範囲がもっとも精度良くシミュレーション可能です。
+        /// 物体がこの範囲の外側に飛び出しても計算に問題はありませんが精度が悪くなります。
         /// </remarks>
-        /// <param name="width">幅 (m)</param>
-        /// <param name="height">高さ (m)</param>
-        /// <param name="depth">奥行き (m)</param>
-        public void CreateWorld (float width, float height, float depth) {
-            if (width < 0 || height < 0 || depth < 0) {
-                throw new ArgumentException ("Size of physics world is invalid");
+        /// <param name="ppm">1mあたりのピクセル数(推奨32) [Pixel/Meter]</param>
+        public void CreateWorld (float ppm) {
+            if (ppm <= 0) {
+                throw new ArgumentException ("Pixel/Meter is invalid");
             }
             if (wld != null) {
-                wld.Clear ();
+                this.wld.Clear ();
             }
-            this.wld = new FarseerPhysics.Dynamics.World (new Vector2 (gravity.X, gravity.Y));
-            
-            // 慣用的に32ピクセル=1mだが
-            // 本当はワールド サイズから計算すべき
-            this.ppm = 32;
+            this.wld = new FarseerPhysics.Dynamics.World (new XnaVector2 (gravity.X, gravity.Y));
+            this.ppm = ppm;
         }
         #endregion
 
+ 
         #region Propety
         /// <summary>
         /// 重力加速度
@@ -96,9 +92,14 @@ namespace DD.Physics {
         /// 重力加速度を取得・設定するプロパティです。
         /// 初期値では 9.8 (m/s^2) です（注意：プラスです）。
         /// </remarks>
-        public Vector3 Gravity {
-            get { return gravity; }
-            set { SetGravity (value.X, value.Y, value.Z); }
+        public Vector2 Gravity {
+            get {
+                if (wld == null) {
+                    return gravity;
+                }
+                return new Vector2(wld.Gravity.X, wld.Gravity.Y);
+            }
+            set { SetGravity (value.X, value.Y); }
         }
 
         /// <summary>
@@ -136,15 +137,13 @@ namespace DD.Physics {
         /// 重力加速度の変更
         /// </summary>
         /// <remarks>
-        /// 単位はMKS単位系です。初期は 9.8 (m/s^2) です。
+        /// 単位はMKS単位系です。初期値は 9.8 (m/s^2) です。
         /// </remarks>
-        /// <param name="x">X方向 (m)</param>
-        /// <param name="y">Y方向 (m)</param>
-        /// <param name="z">Z方向 (m)</param>
-        public void SetGravity (float x, float y, float z) {
-            this.gravity = new Vector3 (x, y, z);
+        /// <param name="x">X方向の重力加速度 (m)</param>
+        /// <param name="y">Y方向の重力加速度 (m)</param>
+        public void SetGravity (float x, float y) {
             if (wld != null) {
-                wld.Gravity = new Vector2 (x, y);
+                this.wld.Gravity = new XnaVector2 (x, y);
             }
         }
 
@@ -152,14 +151,14 @@ namespace DD.Physics {
         /// 物理エンジンを1ステップ進める
         /// </summary>
         /// <remarks>
-        /// 物理エンジンを1ステップ進めます。
-        /// <note>
-        /// メモ： タイムステップ(dt)として実測値を使用しているが、これはまずい。
-        /// ゲームをポーズしてる時も時間が進んでしまう。
-        /// 後で修正する。
-        /// </note>
+        /// 物理エンジンを1ステップ進めます。オブジェクトの位置･回転は計算結果に従って変更されます。
+        /// またコリジョン イベントが発生する場合があります。
+        /// <seealso cref="Component.OnPhysicsUpdate"/>
+        /// <seealso cref="Component.OnCollisionEnter"/>
+        /// <seealso cref="Component.OnCollisionExit"/>
         /// </remarks>
         /// <param name="ddworld">DDのワールド</param>
+        /// <param name="msec">ワールド時刻 (msec)</param>
         public void Step (DD.World ddworld, long msec) {
             if (prev == 0) {
                 prev = msec;
@@ -186,13 +185,14 @@ namespace DD.Physics {
                 }
 
                 var body = (Body)col.Body;
-                body.Position = new Vector2 (T.X / PPM, T.Y / PPM);
+                body.Position = new XnaVector2 (T.X / PPM, T.Y / PPM);
                 body.Rotation = angle;
             }
             
 
             float dt = (msec - prev) / 1000f;
             wld.Step (dt);
+
 
             foreach (var node in ddworld.Downwards) {
                 foreach (var comp in node.Components) {

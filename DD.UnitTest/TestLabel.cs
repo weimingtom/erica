@@ -47,6 +47,18 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_SetOffset () {
+            var label = new Label ();
+
+            label.Offset = new Vector2 (1, 2);
+            Assert.AreEqual (new Vector2 (1, 2), label.Offset);
+
+            label.SetOffset (3, 4);
+            Assert.AreEqual (new Vector2 (3, 4), label.Offset);
+        }
+
+
+        [TestMethod]
         public void Test_SetShadowOffset () {
             var label = new Label ();
 

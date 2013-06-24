@@ -9,6 +9,8 @@ using FarseerPhysics.Dynamics.Contacts;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
+using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+
 namespace DD.Physics {
     /// <summary>
     /// コライダー コンポーネント
@@ -25,6 +27,7 @@ namespace DD.Physics {
         Body body;
         CollisionShape shape;
         PhysicsMaterial mat;
+        int hash;
         uint mask;
         #endregion
 
@@ -43,6 +46,7 @@ namespace DD.Physics {
             this.mask = 0xffffffff;
             this.shape = null;
             this.mat = null;
+            this.hash = 0;
 
             this.body = new Body (wld, this);
  
@@ -254,10 +258,10 @@ namespace DD.Physics {
         /// 質量中心をローカル座標で取得します。
         /// 基本的には使用しません。
         /// </remarks>
-        public Vector3 CenterOfMass {
+        public Vector2 CenterOfMass {
             get {
                 var center = body.LocalCenter;
-                return new Vector3 (center.X, center.Y, 0);
+                return new Vector2 (center.X, center.Y);
             }
         }
 
@@ -266,11 +270,19 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// 物理エンジンによって計算された現在の速度。
-        /// ボディ作成前は0ベクトルが返ります。セッターは無視されます。
+        /// 角速度の変更はキネマティック体に限り可能です。
+        /// それ以外のタイプでは無視されます。
         /// </remarks>
-        public Vector3 LinearVelocity {
-            get { return new Vector3 (body.LinearVelocity.X, body.LinearVelocity.Y, 0); }
-            set { this.body.LinearVelocity = new Vector2 (value.X, value.Y); }
+        public Vector2 LinearVelocity {
+            get {
+                return new Vector2 (body.LinearVelocity.X, body.LinearVelocity.Y);
+            }
+            set {
+                if (!IsKinematic) {
+                    return;
+                }
+                this.body.LinearVelocity = new XnaVector2 (value.X, value.Y);
+            }
         }
 
         /// <summary>
@@ -278,10 +290,19 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// 物理エンジンによって計算された現在の角速度。
+        /// 角速度の変更はキネマティック体の時に限り可能です。
+        /// それ以外のタイプでは無視されます。
         /// </remarks>
         public float AngularVelocity {
-            get { return body.AngularVelocity / (float)Math.PI * 180; }
-            set { this.body.AngularVelocity = value / 180f * (float)Math.PI; }
+            get { 
+                return body.AngularVelocity / (float)Math.PI * 180; 
+            }
+            set {
+                if (!IsKinematic) {
+                    return;
+                }
+                this.body.AngularVelocity = value / 180f * (float)Math.PI; 
+            }
         }
 
         /// <summary>
@@ -297,8 +318,8 @@ namespace DD.Physics {
                 var list = new List<Collision> ();
                 for (var edge = body.ContactList; edge != null; edge = edge.Next) {
 
-                    FixedArray2<Vector2> points;
-                    Vector2 normal;               // A --> B
+                    FixedArray2<XnaVector2> points;
+                    XnaVector2 normal;               // A --> B
                     edge.Contact.GetWorldManifold (out normal, out points);
 
                     var collidee = ((edge.Contact.FixtureA.UserData != this) ? edge.Contact.FixtureA.UserData : edge.Contact.FixtureB.UserData) as Collider;
@@ -349,8 +370,8 @@ namespace DD.Physics {
             this.shape = shape;
             this.body.CreateFixture (shape.CreateShape (), this);
 
-            /// コリジョン イベントは Body ではなく Fixture にセットされるので、
-            /// 形状を定義した後にセットする必要がある。
+            // コリジョン イベントは Body ではなく Fixture にセットされるので、
+            // 形状を定義した後にセットする必要がある。
             this.body.OnCollision += new OnCollisionEventHandler (CollisionEnterEventHandler);
             this.body.OnSeparation += new OnSeparationEventHandler (CollisionExitEventHandler);
         }
@@ -359,8 +380,8 @@ namespace DD.Physics {
         /// 物理特性の変更
         /// </summary>
         /// <remarks>
-        /// コリジョンの物理材質を変更します。このメソッドの後に <see cref="CreateBody"/> を呼び出してオブジェクトを再生産する必要があります。
-        /// 自動では反映されません。
+        /// コリジョンの物理材質を変更します。
+        /// 値は次回 <see cref="OnPhysicsUpdate"/> が呼ばれたタイミングで物理エンジンに反映されます。
         /// 物理特性に <c>null</c> に設定すると例外が発生します。
         /// </remarks>
         /// <param name="mat">物理特性</param>
@@ -370,15 +391,26 @@ namespace DD.Physics {
             }
 
             this.mat = mat;
-
-            UpdateMaterial ();
         }
 
+        /// <summary>
+        /// マテリアルの物理エンジンへの反映
+        /// </summary>
+        /// <remarks>
+        /// マテリアルの値を物理エンジンに反映します。
+        /// ハッシュ値をチェックし必要ない場合は何もしません。
+        /// </remarks>
         public void UpdateMaterial () {
+            if (mat == null || hash == mat.GetHashValue ()) {
+                return;
+            }
+
             this.body.Friction = mat.Friction;
             this.body.Restitution = mat.Restitution;
             this.body.LinearDamping = mat.LinearDamping;
             this.body.AngularDamping = mat.AngulerDamping;
+
+            this.hash = mat.GetHashValue ();
         }
 
 
@@ -402,11 +434,11 @@ namespace DD.Physics {
                 return;
             }
 
-            this.body.ApplyForce (new Vector2 (x, y));
+            this.body.ApplyForce (new XnaVector2 (x, y));
         }
 
         /// <summary>
-        /// 回転の付加
+        /// 回転（トルク）の付加
         /// </summary>
         /// <remarks>
         /// 物体に指定のトルクをを加えます。
@@ -439,8 +471,8 @@ namespace DD.Physics {
                 return false;
             }
             
-            Vector2 normal;   // A --> B
-            FixedArray2<Vector2> points;
+            XnaVector2 normal;   // A --> B
+            FixedArray2<XnaVector2> points;
             contact.GetWorldManifold (out normal, out points);
 
             // DDでは法線は衝突相手から自分を向く方と定義しているので
@@ -496,6 +528,8 @@ namespace DD.Physics {
                 return;
             }
             var phy = Physics2D.GetInstance ();
+
+            UpdateMaterial ();
 
             var x = body.WorldCenter.X * phy.PPM;
             var y = body.WorldCenter.Y * phy.PPM;

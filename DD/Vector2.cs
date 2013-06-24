@@ -4,29 +4,23 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
-    /// <summary>
+     /// <summary>
     /// ベクトル構造体
     /// </summary>
     /// <remarks>
-    /// 3次元の座標(x,y,z)を表します。
-    /// ただし現在の所 z は使用しません。
-    /// <note>
-    /// zを消さないのは将来的に3次元に拡張する予定があるため。
-    /// </note>
+    /// 2次元の座標(x,y)を表します。
     /// </remarks>
-    public struct Vector3 : IEquatable<Vector3> {
+    public struct Vector2 : IEquatable<Vector2> {
 
         /// <summary>
         /// コンストラクター
         /// </summary>
         /// <param name="x">位置X</param>
         /// <param name="y">位置Y</param>
-        /// <param name="z">位置Z</param>
-        public Vector3 (float x, float y, float z)
+        public Vector2 (float x, float y)
             : this () {
             this.X = x;
             this.Y = y;
-            this.Z = z;
         }
 
         /// <summary>
@@ -40,40 +34,35 @@ namespace DD {
         public float Y { get; private set; }
 
         /// <summary>
-        /// Z座標
-        /// </summary>
-        public float Z { get; private set; }
-
-        /// <summary>
         /// コンポーネント数
         /// </summary>
         public int ComponentCount {
-            get { return 3; }
+            get { return 2; }
         }
 
         /// <summary>
         /// ベクトルの長さ
         /// </summary>
         public float Length {
-            get { return (float)Math.Sqrt (X * X + Y * Y + Z * Z); }
+            get { return (float)Math.Sqrt (X * X + Y * Y); }
         }
 
         /// <summary>
         /// ベクトルの長さの自乗
         /// </summary>
         public float Length2 {
-            get { return (X * X + Y * Y + Z * Z); }
+            get { return (X * X + Y * Y); }
         }
 
         /// <summary>
         /// このベクトルを正規化したベクトルを作成します
         /// </summary>
         /// <returns>正規化済みのベクトル</returns>
-        public Vector3 Normalize () {
+        public Vector2 Normalize () {
             if (Length == 0) {
                 throw new ArithmeticException ("Divied by 0");
             }
-            return new Vector3 (X / Length, Y / Length, Z / Length);
+            return new Vector2 (X / Length, Y / Length);
         }
 
         /// <summary>
@@ -81,12 +70,11 @@ namespace DD {
         /// </summary>
         /// <param name="index">インデックス</param>
         /// <returns>座標位置</returns>
-        public float this [int index] {
+        public float this[int index] {
             get {
                 switch (index) {
                     case 0: return X;
                     case 1: return Y;
-                    case 2: return Z;
                     default: throw new IndexOutOfRangeException ("Index is out of range");
                 }
             }
@@ -94,7 +82,6 @@ namespace DD {
                 switch (index) {
                     case 0: this.X = value; break;
                     case 1: this.Y = value; break;
-                    case 2: this.Z = value; break;
                     default: throw new IndexOutOfRangeException ("Index is out of range");
                 }
             }
@@ -106,8 +93,8 @@ namespace DD {
         /// <param name="v">ベクトル</param>
         /// <param name="f">floatの値</param>
         /// <returns></returns>
-        public static Vector3 operator * (Vector3 v, float f) {
-            return new Vector3 (v.X * f, v.Y * f, v.Z * f);
+        public static Vector2 operator * (Vector2 v, float f) {
+            return new Vector2 (v.X * f, v.Y * f);
         }
 
         /// <summary>
@@ -116,7 +103,7 @@ namespace DD {
         /// <param name="f">floatの値</param>
         /// <param name="v">ベクトル</param>
         /// <returns></returns>
-        public static Vector3 operator * (float f, Vector3 v) {
+        public static Vector2 operator * (float f, Vector2 v) {
             return v * f;
         }
 
@@ -126,11 +113,11 @@ namespace DD {
         /// <param name="v">ベクトル</param>
         /// <param name="f">floatの値</param>
         /// <returns></returns>
-        public static Vector3 operator / (Vector3 v, float f) {
+        public static Vector2 operator / (Vector2 v, float f) {
             if (f == 0) {
                 throw new ArgumentException ("Divided by 0");
             }
-            return new Vector3 (v.X / f, v.Y / f, v.Z / f);
+            return new Vector2 (v.X / f, v.Y / f);
         }
 
         /// <summary>
@@ -139,11 +126,11 @@ namespace DD {
         /// <remarks>
         /// 2つのベクトルをコンポーネント要素毎に足して新しいベクトルを作成します
         /// </remarks>
-        /// <param name="v1">ベクトル１</param>
-        /// <param name="v2">ベクトル２</param>
+        /// <param name="v1">ベクトル1</param>
+        /// <param name="v2">ベクトル2</param>
         /// <returns></returns>
-        public static Vector3 operator + (Vector3 v1, Vector3 v2) {
-            return new Vector3 (v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+        public static Vector2 operator + (Vector2 v1, Vector2 v2) {
+            return new Vector2 (v1.X + v2.X, v1.Y + v2.Y);
         }
 
         /// <summary>
@@ -152,11 +139,11 @@ namespace DD {
         /// <remarks>
         /// 2つのベクトルをコンポーネント要素毎に引いて新しいベクトルを作成します
         /// </remarks>
-        /// <param name="v1">ベクトル１</param>
-        /// <param name="v2">ベクトル２</param>
+        /// <param name="v1">ベクトル1</param>
+        /// <param name="v2">ベクトル2</param>
         /// <returns></returns>
-        public static Vector3 operator - (Vector3 v1, Vector3 v2) {
-            return new Vector3 (v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+        public static Vector2 operator - (Vector2 v1, Vector2 v2) {
+            return new Vector2 (v1.X - v2.X, v1.Y - v2.Y);
         }
 
         /// <summary>
@@ -164,8 +151,8 @@ namespace DD {
         /// </summary>
         /// <param name="v">ベクトル</param>
         /// <returns>反転したベクトル</returns>
-        public static Vector3 operator - (Vector3 v) {
-            return new Vector3 (-v.X, -v.Y, -v.Z);
+        public static Vector2 operator - (Vector2 v) {
+            return new Vector2 (-v.X, -v.Y);
         }
 
         /// <summary>
@@ -174,24 +161,13 @@ namespace DD {
         /// <param name="a">ベクトルA</param>
         /// <param name="b">ベクトルB</param>
         /// <returns>内積値</returns>
-        public static float Dot (Vector3 a, Vector3 b) {
-            return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        public static float Dot (Vector2 a, Vector2 b) {
+            return a.X * b.X + a.Y * b.Y;
         }
-
-        /// <summary>
-        /// 2つのベクトルの外積
-        /// </summary>
-        /// <param name="a">ベクトルA</param>
-        /// <param name="b">ベクトルB</param>
-        /// <returns>外積値</returns>
-        public static Vector3 Cross (Vector3 a, Vector3 b) {
-            return new Vector3 (a.Y * b.Z - b.Y * a.Z, a.Z * b.X - b.Z * a.X, a.X * b.Y - b.X * a.Y);
-        }
-
 
         /// <inheritdoc/>
         public override string ToString () {
-            return String.Format ("({0},{1},{2})", X, Y, Z);
+            return String.Format ("({0},{1})", X, Y);
         }
 
         /// <inheritdoc/>
@@ -199,31 +175,28 @@ namespace DD {
             if (obj == null || this.GetType () != obj.GetType ()) {
                 return false;
             }
-            return this.Equals ((Vector3)obj);
+            return this.Equals ((Vector2)obj);
         }
 
         /// <inheritdoc/>
-        public bool Equals (Vector3 other) {
+        public bool Equals (Vector2 other) {
             return (Math.Abs (X - other.X) < GlobalSettings.Torrelance) &&
-                   (Math.Abs (Y - other.Y) < GlobalSettings.Torrelance) &&
-                   (Math.Abs (Z - other.Z) < GlobalSettings.Torrelance);
+                   (Math.Abs (Y - other.Y) < GlobalSettings.Torrelance);
         }
 
         /// <inheritdoc/>
         public override int GetHashCode () {
-            return X.GetHashCode () ^ Y.GetHashCode () ^ Z.GetHashCode ();
+            return X.GetHashCode () ^ Y.GetHashCode ();
         }
 
         /// <inheritdoc/>
-        public static bool operator == (Vector3 a, Vector3 b) {
-            return (a.X == b.X) && (a.Y == b.Y) && (a.Z == b.Z);
+        public static bool operator == (Vector2 a, Vector2 b) {
+            return (a.X == b.X) && (a.Y == b.Y);
         }
 
         /// <inheritdoc/>
-        public static bool operator != (Vector3 a, Vector3 b) {
+        public static bool operator != (Vector2 a, Vector2 b) {
             return !(a == b);
         }
     }
-
-
 }

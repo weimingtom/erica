@@ -79,13 +79,14 @@
     <Compile Include="AnimationClip.cs" />
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="InputReceiver.cs" />
+    <Compile Include="KeyAlias.cs" />
     <Compile Include="Physics\BoxCollider.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
     <Compile Include="Physics\Collider.cs" />
     <Compile Include="Physics\CollisionShape.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
-    <Compile Include="IPoint.cs" />
     <Compile Include="Keyframe.cs" />
     <Compile Include="Label.cs" />
     <Compile Include="Material.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
     <Compile Include="Transformable.cs" />
+    <Compile Include="Vector2.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Button.cs" />

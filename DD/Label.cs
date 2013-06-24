@@ -21,19 +21,21 @@ namespace DD {
         int shadowOffset;
         Color color;
         CharacterStyle style;
+        Vector2 offset;
         #endregion
 
         #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">表示文字列</param>
         public Label (string text) {
             this.text = text ?? "";
             this.charSize = 16;
             this.shadowOffset = 2;
             this.color = Color.White;
             this.style = CharacterStyle.Regular;
+            this.offset = new Vector2 (0,0);
         }
 
         /// <summary>
@@ -87,6 +89,14 @@ namespace DD {
         public Color Color {
             get { return color; }
             set { SetColor (value.R, value.G, value.B, value.A); }
+        }
+
+        /// <summary>
+        /// オフセット（ピクセル座標）
+        /// </summary>
+        public Vector2 Offset {
+            get { return offset; }
+            set { SetOffset (value.X, value.Y); }
         }
         #endregion
 
@@ -151,17 +161,26 @@ namespace DD {
 
             if (style.HasFlag (DD.CharacterStyle.Shadow)) {
                 var txt2 = new Text (text, font, (uint)charSize);
-                txt2.Position = new Vector2f (Node.GlobalX + shadowOffset, Node.GlobalY + shadowOffset);
+                txt2.Position = new Vector2f (Node.GlobalX + offset.X + shadowOffset, Node.GlobalY + offset.Y+shadowOffset);
                 txt2.Color = Color.Black.ToSFML ();
                 txt2.Style = style.ToSFML ();
                 win.Draw (txt2);
             }
 
             var txt = new Text (text, font, (uint)charSize);
-            txt.Position = new Vector2f (Node.GlobalX, Node.GlobalY);
+            txt.Position = new Vector2f (Node.GlobalX + offset.X, Node.GlobalY + offset.Y);
             txt.Color = color.ToSFML ();
             txt.Style = style.ToSFML ();
             win.Draw (txt);
+        }
+
+        /// <summary>
+        /// オフセットの変更
+        /// </summary>
+        /// <param name="px">X方向のオフセット（ピクセル座標）</param>
+        /// <param name="py">Y方向のオフセット（ピクセル座標）</param>
+        public void SetOffset (float px, float py) {
+            this.offset = new Vector2 (px, py);
         }
 
         /// <inheritdoc/>

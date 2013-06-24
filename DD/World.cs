@@ -11,6 +11,8 @@ namespace DD {
     /// シーンは <see cref="World"/> を頂点とする <see cref="Node"/> の木構造のグラフです。
     /// ゲームのあらゆる要素はノードに所属し、シーンを通して更新されます。
     /// 多くのゲームでは1シーンが1画面に相当します。
+    /// デフォルトのスクリプト。
+    /// <see cref="InputReceiver"/>
     /// </remarks>
     /// <seealso cref="Node"/>
     public class World : Node {
@@ -33,6 +35,8 @@ namespace DD {
         /// </remarks>
         /// <param name="name">シーン名</param>
         public World (string name) : base(name) {
+            this.director = null;
+            this.Attach (new InputReceiver ());
         }
         #endregion
 
@@ -46,6 +50,13 @@ namespace DD {
         /// </remarks>
         public Director Director {
             get { return director; }
+        }
+
+        /// <summary>
+        /// デフォルトのインプット レシーバー
+        /// </summary>
+        public InputReceiver InputReceiver {
+            get { return GetComponent<InputReceiver> (); }
         }
         #endregion
 

@@ -34,17 +34,83 @@ namespace DD {
         }
 
         /// <summary>
+        /// ワールド ノード
+        /// </summary>
+        /// <remarks>
+        /// シーン ツリーの一番上のノード <see cref="World"/> を取得するプロパティです。
+        /// </remarks>
+        public World World {
+            get {
+                if (node == null || !(node.Root is World)) {
+                    return null;
+                }
+                return node.Root as World;
+            }
+        }
+
+        /// <summary>
         /// ユーザーID
         /// </summary>
+        /// <remarks>
+        /// ノードのユーザーIDを返すプロパティです。
+        /// </remarks>
         public int UserID {
-            get { return node.UserID; }
+            get {
+                if (node == null) {
+                    throw new InvalidOperationException ("This component is not attached");
+                }
+                return node.UserID;
+            }
         }
 
         /// <summary>
         /// グループID
         /// </summary>
+        /// <remarks>
+        /// ノードのグループIDを返すプロパティです。
+        /// </remarks>
         public uint GroupID {
-            get { return node.GroupID; }
+            get {
+                if (node == null) {
+                    throw new InvalidOperationException ("This component is not attached");
+                }
+                return node.GroupID;
+            }
+        }
+
+        /// <summary>
+        /// インプット レシーバー
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルのインプット レシーバー <see cref="InputReceiver"/> または、それが存在しない場合は
+        /// <see cref="World"/> にアタッチされたグローバルのインプット レシーバー  <see cref="InputReceiver"/> を返します。
+        /// <see cref="World"/> クラスは必ずデフォルトのインプット レシーバーを1つ保持しています。
+        /// </remarks>
+        public InputReceiver Input {
+            get {
+                var input = GetComponent<InputReceiver> ();
+                if (input != null) {
+                    return input;
+                }
+                if (!IsAttached || !IsUnderWorld) {
+                    throw new InvalidOperationException ("This component is not under World");
+                }
+                return World.GetComponent<InputReceiver> ();
+            }
+        }
+
+        /// <summary>
+        /// このコンポーネントがアタッチ済みかどうかを確認するプロパティ
+        /// </summary>
+        public bool IsAttached {
+            get { return node != null; }
+        }
+
+        /// <summary>
+        /// このコンポーネントがアタッチされたノードがワールドに
+        /// </summary>
+        public bool IsUnderWorld {
+            get { return (node != null) && (node.Root is World); }
         }
 
         #endregion
@@ -60,26 +126,48 @@ namespace DD {
         }
 
         /// <summary>
-        /// 同じノードに属する指定のコンポーネントの取得
+        /// コンポーネントの検索
         /// </summary>
         /// <remarks>
-        /// 同じノードにアタッチされた指定の型 <typeparamref name="T"/> のコンポーネントを取得します。
+        /// このノードにアタッチされたコンポーネントの中から、指定の型 <typeparamref name="T"/> のコンポーネントを取得します。
         /// 同型のコンポーネントが複数あった場合、どれが返るかは未定義です。
         /// </remarks>
         /// <typeparam name="T">コンポーネント型</typeparam>
         /// <returns></returns>
-        public T GetComponent<T> () where T : Component {
-            if (Node == null) {
+        protected T GetComponent<T> () where T : Component {
+            if (node == null) {
                 return null;
             }
 
-            foreach (var cmp in Node.Components) {
-                var t = cmp as T;
-                if (t != null) {
-                    return t;
-                }
-            }
-            return null;
+            return node.GetComponent<T> ();
+        }
+
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// シーンの全ノードから指定のユーザーIDのノードを検索します。
+        /// 同一のIDを持ったノードが2つ以上存在する場合、どのノードが返るかは未定義です。
+        /// 見つからない場合は <c>null</c> を返します。
+        /// </remarks>
+        /// <param name="userID">検索したいノードのユーザーID</param>
+        /// <returns>ノード</returns>
+        protected Node GetNode (int userID) {
+            return World.Find (userID);
+        }
+
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// シーンの全ノードから指定の条件式 <paramref name="pred"/> を満たすノードを検索します。
+        /// 条件式を満たすノードが2つ以上存在する場合、どのノードが返るかは未定義です。
+        /// 見つからない場合は <c>null</c> を返します。
+        /// </remarks>
+        /// <param name="pred">条件式</param>
+        /// <returns>ノード</returns>
+        protected Node GetNode (Func<Node, bool> pred) {
+            return World.Find (pred);
         }
 
         /// <summary>
