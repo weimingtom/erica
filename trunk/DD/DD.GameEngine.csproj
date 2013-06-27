@@ -71,8 +71,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TiledSharp">
+      <HintPath>libs\TiledSharp.dll</HintPath>
+    </Reference>
     <Reference Include="YamlSerializer">
       <HintPath>libs\YamlSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="zlib.net">
+      <HintPath>libs\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +105,9 @@
     <Compile Include="Physics\SphereCollider.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
+    <Compile Include="TiledMapComposer.cs" />
+    <Compile Include="TiledMapLayer.cs" />
+    <Compile Include="TiledMapObjectGroup.cs" />
     <Compile Include="Transformable.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="Vector3.cs" />

@@ -6,6 +6,7 @@ using System.IO;
 using SFML.Graphics;
 using SFML.Window;
 using SFML.Audio;
+using System.Drawing;
 
 namespace DD {
     /// <summary>
@@ -25,7 +26,7 @@ namespace DD {
         static string textureDirectory;
         static string lineDirectory;
         static string soundDirectory;
-        static Dictionary<string, Font> fonts;
+        static Dictionary<string, SFML.Graphics.Font> fonts;
         static Dictionary<string, Texture> textures;
         static Dictionary<string, Line[]> lines;
         static Dictionary<string, SoundClip> sounds;
@@ -39,7 +40,7 @@ namespace DD {
             fontDirectory = "./";
             textureDirectory = "./";
             lineDirectory = "./";
-            fonts = new Dictionary<string, Font> ();
+            fonts = new Dictionary<string, SFML.Graphics.Font> ();
             textures = new Dictionary<string, Texture> ();
             lines = new Dictionary<string, Line[]> ();
             sounds = new Dictionary<string, SoundClip> ();
@@ -79,7 +80,7 @@ namespace DD {
         /// <summary>
         /// キャッシュ済みの全フォントを列挙する列挙子
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, Font>> Fonts {
+        public static IEnumerable<KeyValuePair<string, SFML.Graphics.Font>> Fonts {
             get { return fonts; }
         }
 
@@ -165,9 +166,9 @@ namespace DD {
         /// </remarks>
         /// <param name="name">フォントのファイル名</param>
         /// <returns>フォント</returns>
-        public static Font GetFont (string name) {
+        public static SFML.Graphics.Font GetFont (string name) {
             if (!fonts.ContainsKey (name)) {
-                fonts.Add (name, new Font (fontDirectory + name));
+                fonts.Add (name, new SFML.Graphics.Font (fontDirectory + name));
             }
 
             return fonts[name];
@@ -181,11 +182,11 @@ namespace DD {
         /// デフォルト フォントはユーザーが用意しなくても常に使用可能です。
         /// </remarks>
         /// <returns>フォント</returns>
-        public static Font GetDefaultFont () {
+        public static SFML.Graphics.Font GetDefaultFont () {
             var name = "Konatu.ttf";
             if (!fonts.ContainsKey (name)) {
                 var ttf = new MemoryStream (Properties.Resources.Konatu);
-                fonts.Add (name, new Font (ttf));
+                fonts.Add (name, new SFML.Graphics.Font (ttf));
             }
 
             return fonts[name];
@@ -195,14 +196,39 @@ namespace DD {
         /// テクスチャーの取得
         /// </summary>
         /// <remarks>
-        /// 必要ならディレクトリ <see cref="FontDirectory"/> にある
-        /// フォント ファイル<paramref name="name"/> をロードします。
+        /// 初回のみファイルからテクスチャーをロードし、リソース管理に組み入れます。
+        /// 2回目以降は同一のオブジェクトが返ります。
         /// </remarks>
         /// <param name="name">テクスチャー ファイル名</param>
         /// <returns>テクスチャー</returns>
         public static Texture GetTexture (string name) {
             if (!textures.ContainsKey (name)) {
                 textures.Add (name, new Texture (textureDirectory + name));
+            }
+
+            return textures[name];
+        }
+
+        /// <summary>
+        /// テクスチャーの取得
+        /// </summary>
+        /// <remarks>
+        /// 初回のみ <see cref="Bitmap"/> からテクスチャーをロードし、リソース管理に組み入れます。
+        /// 2回目以降は同一のオブジェクトが返ります。
+        /// </remarks>
+        /// <param name="name"><see cref="Bitmap"/> オブジェクト</param>
+        /// <returns>テクスチャー</returns>
+        public static Texture GetTexture (Bitmap bitmap, string name) {
+            if (!textures.ContainsKey (name)) {
+                textures.Add (name, new Texture (bitmap, name));
+            }
+
+            return textures[name];
+        }
+
+        public static Texture GetTexture (MemoryStream stream, string name) {
+            if (!textures.ContainsKey (name)) {
+                textures.Add (name, new Texture (stream, name));
             }
 
             return textures[name];
@@ -216,12 +242,12 @@ namespace DD {
         /// <param name="columns">横方向のタイルの個数</param>
         /// <param name="tileCount">有効なタイル数</param>
         /// <returns></returns>
-        public static TiledTexture GetTiledTexture (string name, int rows, int columns, int tileCount) {
-            if (!textures.ContainsKey (name)) {
-                textures.Add (name, new TiledTexture (textureDirectory + name, rows, columns, tileCount));
-            }
-            return textures[name] as TiledTexture;
-        }
+        //public static TiledTexture GetTiledTexture (string name, int rows, int columns, int tileCount) {
+        //    if (!textures.ContainsKey (name)) {
+        //        textures.Add (name, new TiledTexture (textureDirectory + name, rows, columns, tileCount));
+        //    }
+        //    return textures[name] as TiledTexture;
+        //}
 
 
         /// <summary>

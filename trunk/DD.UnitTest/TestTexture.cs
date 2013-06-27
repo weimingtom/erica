@@ -3,50 +3,41 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
+using System.IO;
 
 namespace DD.UnitTest {
     [TestClass]
     public class TestTexture {
         [TestMethod]
-        public void Test_New () {
+        public void Test_New_1 () {
             var tex = new Texture ("abstract7.png");
 
             Assert.AreEqual ("abstract7.png", tex.Name);
-            Assert.AreEqual (614, tex.ImageWidth);
-            Assert.AreEqual (1024, tex.ImageHeight);
-            Assert.AreEqual (0, tex.OffsetX);
-            Assert.AreEqual (0, tex.OffsetY);
             Assert.AreEqual (614, tex.Width);
             Assert.AreEqual (1024, tex.Height);
         }
 
         [TestMethod]
-        public void Test_SetOffset () {
-            var tex = new Texture ("abstract7.png");
+        public void Test_New_2 () {
+            var bitmap = new Bitmap ("abstract7.png");
+            var tex = new Texture (bitmap, "abstract7.png");
 
-            tex.SetOffset (1, 2);
-            Assert.AreEqual (1, tex.OffsetX);
-            Assert.AreEqual (2, tex.OffsetY);
-
-            tex.OffsetX = 3;
-            tex.OffsetY = 4;
-            Assert.AreEqual (3, tex.OffsetX);
-            Assert.AreEqual (4, tex.OffsetY);
+            Assert.AreEqual ("abstract7.png", tex.Name);
+            Assert.AreEqual (614, tex.Width);
+            Assert.AreEqual (1024, tex.Height);
         }
 
         [TestMethod]
-        public void Test_SetSize () {
-            var tex = new Texture ("abstract7.png");
+        public void Test_New_3 () {
 
-            tex.SetSize (1, 2);
-            Assert.AreEqual (1, tex.Width);
-            Assert.AreEqual (2, tex.Height);
+            var bytes = File.ReadAllBytes ("abstract7.png");
+            var tex = new Texture (new MemoryStream(bytes), "abstract7.png");
 
-            tex.Width = 3;
-            tex.Height = 4;
-            Assert.AreEqual (3, tex.Width);
-            Assert.AreEqual (4, tex.Height);
-
+            Assert.AreEqual ("abstract7.png", tex.Name);
+            Assert.AreEqual (614, tex.Width);
+            Assert.AreEqual (1024, tex.Height);
         }
+
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="MapProperty1" value="100"/>
+  <property name="MapProperty2" value="200.0f"/>
+  <property name="MapProperty3" value="&quot;Hello Tiled&quot;"/>
+ </properties>
+ <tileset firstgid="1" name="Desert" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="tmw_desert_spacing.png" width="265" height="199"/>
+  <tile id="0">
+   <properties>
+    <property name="TileProperty1" value="100"/>
+    <property name="TileProperty2" value="200.0f"/>
+    <property name="TileProperty3" value="&quot;Hello Tiled&quot;"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2Y2Q6CMBBFqz64kIhLIi5RUVxw9/+/ziFCIJMG2tJORsPDCTYp6fHOIBM3QoiNQ4aAD4wcn2PCU+K3ZeD1K/klWc2AAJgz8JHRAtpAB3m7OGsBLDVYAX1gAHgEWeyAvQaRRb8WWsclfgfgChwJ/XTyixTzpPA7MfR7Iy/sdxff/n8Q++Gew+uqvHBf2vCTPQcxyi/7XOWHc7WV3xmtMx/d/FzXF3tiLmn9VLlZ8Oum9ET+Liqjo7gvY13Tzxf5fJF91zI8xX2y+0z8ApHPF2NgUsFUcZ/sPpe9R00o5HMOJ8+Q0MdkNqPweqZXld/O4vsnsnS+Kip+idM73Uvp92Loh/uam59JfYvzBZXfS8MPZ8ktP1mtOftR5mcym1H6/QshA4dfAWfF7b/BpsYNDfX4AJ7afw8AGQAA
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="40" height="40" visible="0">
+  <object name="Object1" type="DD.UnitTest.TestTiledMapComposer+MyComponent, DD.UnitTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" x="192" y="64" width="48" height="48">
+   <properties>
+    <property name="ObjectProperty1" value="100"/>
+    <property name="ObjectProperty2" value="100.5"/>
+    <property name="ObjectProperty3" value="Hello Tiled 1"/>
+    <property name="ObjectProperty4" value="true"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="Object2" type="DD.UnitTest.TestTiledMapComposer+MyComponent, DD.UnitTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" x="72" y="121" width="52" height="52">
+   <properties>
+    <property name="ObjectProperty1" value="200"/>
+    <property name="ObjectProperty2" value="200.5"/>
+    <property name="ObjectProperty3" value="Hello Tiled 2"/>
+    <property name="ObjectProperty4" value="true"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <imagelayer name="Background" width="40" height="40">
+  <image source="abstract7.png"/>
+ </imagelayer>
+</map>

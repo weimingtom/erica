@@ -11,56 +11,81 @@ namespace DD {
     /// </summary>
     /// <remarks>
     /// スプライトは矩形・固定サイズの画像を表示します。
-    /// スプライトは複数のテクスチャーをセット可能で、そのうちの1つだけを選んで有効化します。
+    /// スプライトは複数のテクスチャーをセット可能で、そのうちの1つを選んで描画します。
     /// 有効なテクスチャーを次々に変更する事で「ぱらぱらアニメ」のような簡易アニメーションを実装可能です。
     /// スプライトはバウンディング ボックスを書き換えません。
+    /// <note>
+    /// 描画の際に Node.Opacity の実効値をかけるべきですが現在未実装です。
+    /// </note>
     /// </remarks>
     public partial class Sprite : Component {
         #region Field
+        int width;
+        int height;
+        Vector2 offset;
         List<Texture> texs;
         Texture active;
-        int offsetX;
-        int offsetY;
         Color color;
+        Vector2 texOffset;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// 標準のコンストラクター
+        /// デフォルトの <see cref="Sprite"/> コンポーネントを作成
         /// </summary>
         /// <remarks>
         /// テクスチャーは未定義です。
         /// アクティブなテクスチャーは null にセットされます。
         /// </remarks>
-        public Sprite () {
+        public Sprite (int width, int height) {
+            this.width = width;
+            this.height = height;
             this.texs = new List<Texture> ();
             this.active = null;
-            this.offsetX = 0;
-            this.offsetY = 0;
+            this.offset = new Vector2(0, 0);
             this.color = Color.White;
+            this.texOffset = new Vector2 (0, 0);
         }
 
         /// <summary>
-        /// テクスチャーを指定するコンストラクター
+        /// テクスチャーを指定して <see cref="Sprite"/> コンポーネントを作成
         /// </summary>
         /// <remarks>
         /// テクスチャーを指定して <see cref="Sprite"/> コンポーネントを作成します。
-        /// アクティブなテクスチャーはそれにセットされます。
+        /// スプライトのサイズはテクスチャー画像のサイズと同一に設定されます。
         /// </remarks>
         public Sprite (Texture texture) {
             if (texture == null) {
                 throw new ArgumentNullException ("Texture is null");
             }
+            this.width = texture.Width;
+            this.height = texture.Height;
             this.texs = new List<Texture> () {texture};
             this.active = texture;
-            this.offsetX = 0;
-            this.offsetY = 0;
+            this.offset = new Vector2(0,0);
             this.color = Color.White;
+            this.texOffset = new Vector2 (0, 0);
         }
+
+        /// <summary>
+        /// テクスチャーとサイズを指定して <see cref="Sprite"/> コンポーネントを作成
+        /// </summary>
+        /// <remarks>
+        /// テクスチャーとサイズを指定して <see cref="Sprite"/> コンポーネントを作成します。
+        /// スプライトのサイズはテクスチャー画像サイズとは無関係に引数で指定した値が使用されます。
+        /// </remarks>
+        /// <param name="texture">テクスチャー</param>
+        public Sprite (Texture texture, int width, int height) : this(texture) {
+            if (width < 0 || height < 0) {
+                throw new ArgumentException ("Size is invalid");
+            }
+            this.width = width;
+            this.height = height;
+        }
+
         #endregion
 
         #region Property
-
         /// <summary>
         /// 現在アクティブなテクスチャー番号
         /// </summary>
@@ -83,7 +108,8 @@ namespace DD {
         /// 現在アクティブなテクスチャー
         /// </summary>
         /// <remarks>
-        /// 現在アクティブなテクスチャーの番号を取得または変更します。
+        /// 現在アクティブなテクスチャーを取得または変更します。
+        /// ここで指定できるテクスチャーはこのスプライト オブジェクトに登録済みの物に限ります。
         /// </remarks>
         public Texture ActiveTexture {
             get { return active; }
@@ -96,47 +122,48 @@ namespace DD {
         }
 
         /// <summary>
-        /// オフセット座標X（ピクセル数）
+        /// オフセット（ピクセル座標）
         /// </summary>
         /// <remarks>
-        /// オフセット座標はスプライトを描画する時にローカル座標の原点からずらすピクセル数(x,y)です。
+        /// このスプライトを描画する際にオフセット ピクセル分ずらして描画します。
         /// </remarks>
-        public int OffsetX {
-            get { return offsetX; }
-            set { SetOffset (value, offsetY); }
+        public Vector2 Offset {
+            get { return offset; }
+            set { SetOffset (value.X, value.Y); }
         }
 
         /// <summary>
-        /// オフセット座標Y（ピクセル数）
+        /// スプライトの幅（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// オフセット座標はスプライトを描画する際にローカル座標の原点からずらすピクセル数(x,y)です。
-        /// </remarks>
-        public int OffsetY {
-            get { return offsetY; }
-            set { SetOffset (offsetX, value); }
-        }
-
-        /// <summary>
-        /// 画像の幅（ピクセル数）
-        /// </summary>
-        /// <remarks>
-        /// 画像の幅は現在アクティブなテクスチャーの画像領域と同じです。
-        /// アクティブなテクスチャーを変更すると変わる事があります。。
+        /// このスプライトが描画されるときの幅（ピクセルス数）です。
+        /// 変更はできません。
         /// </remarks>
         public int Width {
-            get { return (active != null) ? active.Width : 0; }
+            get { return width; }
         }
 
         /// <summary>
         /// 画像の高さ（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// 画像の高さは現在アクティブなテクスチャーの画像領域と同じです。
-        /// アクティブなテクスチャーを変更すると変わる事があります。。
+        /// このスプライトが描画されるときの高さ（ピクセルス数）です。
+        /// 変更はできません。
         /// </remarks>
         public int Height {
-            get { return (active != null) ? active.Height : 0; }
+            get { return height; }
+        }
+
+        /// <summary>
+        /// テクスチャーオフセット（ピクセル数）
+        /// </summary>
+        /// <remarks>
+        /// テクスチャーを取得する際に画像ピクセルを (0,0) からではなく、このピクセル数分ずらした位置から取得します。
+        /// 1枚のテクスチャー画像を複数のスプライトで使用したり、時間によって位置を変更してぱらぱらアニメ機能を実装するのに利用可能です。
+        /// </remarks>
+        public Vector2 TextureOffset {
+            get { return texOffset; }
+            set { this.texOffset = value; }
         }
 
         /// <summary>
@@ -151,7 +178,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// オフセット座標の変更
+        /// オフセットの変更
         /// </summary>
         /// <remarks>
         /// スプライトを（ローカル座標上で）原点から (<paramref name="x"/>,<paramref name="y"/>) だけずらします。
@@ -164,10 +191,8 @@ namespace DD {
         /// </remarks>
         /// <param name="x">X（ピクセル数）</param>
         /// <param name="y">Y（ピクセル数）</param>
-        /// <returns></returns>
-        public void SetOffset (int x, int y) {
-            this.offsetX = x;
-            this.offsetY = y;
+        public void SetOffset (float x, float y) {
+            this.offset = new Vector2 (x, y);
         }
 
         /// <summary>
@@ -235,14 +260,6 @@ namespace DD {
         }
 
         /// <summary>
-        /// アクティブなテクスチャーの取得
-        /// </summary>
-        /// <returns>テクスチャー</returns>
-        public Texture GetActiveTexture () {
-            return active;
-        }
-
-        /// <summary>
         /// 基本色の変更
         /// </summary>
         /// <remarks>
@@ -257,6 +274,15 @@ namespace DD {
             this.color = new Color (r, g, b, a);
         }
 
+        /// <summary>
+        /// テクスチャー オフセット（ピクセル数）の変更
+        /// </summary>
+        /// <param name="x">X方向のオフセット量（ピクセル数）</param>
+        /// <param name="y">Y方向のオフセット量（ピクセル数）</param>
+        public void SetTextureOffset (int x, int y) {
+            this.texOffset = new Vector2 (x, y);
+        }
+
 
 
         /// <inheritdoc/>
@@ -265,7 +291,6 @@ namespace DD {
                 return;
             }
             var tex = active;
-            var spr = new SFML.Graphics.Sprite (tex.Data);
 
             Vector3 point;
             Quaternion rotation;
@@ -282,12 +307,13 @@ namespace DD {
                 axis = -axis;
             }
 
+            var spr = new SFML.Graphics.Sprite (tex.Data);
             spr.Position = new Vector2f (point.X, point.Y);
             spr.Scale = new Vector2f (scale.X, scale.Y);
             spr.Rotation = angle;
-            spr.TextureRect = new IntRect (tex.OffsetX, tex.OffsetY, tex.Width, tex.Height);
-
-            spr.Origin = new Vector2f (-offsetX, -offsetY);
+            spr.TextureRect = new IntRect ((int)texOffset.X, (int)texOffset.Y, width, height);
+            
+            spr.Origin = new Vector2f (-offset.X, -offset.Y);
             spr.Color = color.ToSFML ();
 
             var win = window as RenderWindow;

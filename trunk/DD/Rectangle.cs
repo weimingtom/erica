@@ -10,9 +10,6 @@ namespace DD {
     /// <remarks>
     /// 2Dの矩形領域をあらわす構造体です。
     /// 矩形領域の左と上側の境界線上は有効で、右と下側の境界線上は無効です。
-    /// <note>
-    /// これ整数型で大丈夫か・・・
-    /// </note>
     /// </remarks>
     public struct Rectangle {
 
@@ -23,7 +20,7 @@ namespace DD {
         /// <param name="y">矩形領域の左上のY座標（ピクセル）</param>
         /// <param name="width">矩形領域の幅（ピクセル）</param>
         /// <param name="height">矩形領域の高さ（ピクセル）</param>
-        public Rectangle (int x, int y, int width, int height) : this() {
+        public Rectangle (float x, float y, float width, float height) : this() {
             if (width <= 0 || height <= 0) {
                 throw new ArgumentException ("Rectangle is invalid");
             }
@@ -36,7 +33,7 @@ namespace DD {
         /// <summary>
         /// 矩形領域の左上のX座標（ピクセル）
         /// </summary>
-        public int X {
+        public float X {
             get;
             set;
         }
@@ -44,7 +41,7 @@ namespace DD {
         /// <summary>
         /// 矩形領域の左上のY座標（ピクセル）
         /// </summary>
-        public int Y {
+        public float Y {
             get;
             private set;
         }
@@ -52,7 +49,7 @@ namespace DD {
         /// <summary>
         /// 矩形領域の幅（ピクセル）
         /// </summary>
-        public int Width {
+        public float Width {
             get;
             private set;
         }
@@ -60,7 +57,7 @@ namespace DD {
         /// <summary>
         /// 矩形領域の高さ（ピクセル）
         /// </summary>
-        public int Height {
+        public float Height {
             get;
             private set;
         }
@@ -68,14 +65,14 @@ namespace DD {
         /// <summary>
         /// 矩形領域の右下のX座標（ピクセル）
         /// </summary>
-        public int X2 {
+        public float X2 {
             get { return X + Width; }
         }
 
         /// <summary>
         /// 矩形領域の右下のY座標（ピクセル）
         /// </summary>
-        public int Y2 {
+        public float Y2 {
             get { return Y + Height;}
         }
 
