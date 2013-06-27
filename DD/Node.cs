@@ -27,6 +27,8 @@ namespace DD {
         sbyte drawPriority;
         uint groupID;
         int userID;
+        Dictionary<string, object> userData;
+        float opacity;
         #endregion
 
         #region Constructor
@@ -53,6 +55,8 @@ namespace DD {
             this.drawPriority = 0;
             this.groupID = 0xffffffffu;
             this.userID = 0;
+            this.userData = new Dictionary<string, object> ();
+            this.opacity = 1f;
         }
         #endregion
 
@@ -62,6 +66,7 @@ namespace DD {
         /// </summary>
         public string Name {
             get { return name; }
+            set { this.name = value; }
         }
 
         /// <summary>
@@ -78,6 +83,34 @@ namespace DD {
         public uint GroupID {
             get { return groupID; }
             set { this.groupID = value; }
+        }
+
+        /// <summary>
+        /// ユーザー データ
+        /// </summary>
+        /// <remarks>
+        /// ユーザーはノードにユーザー データとして任意の値をキー、バリュー形式で追加する事が可能です。
+        /// ユーザー データの管理はすべてユーザーの責任です。
+        /// エンジン側では一切使用または管理しません。
+        /// </remarks>
+        public Dictionary<string, object> UserData {
+            get { return userData; }
+        }
+
+        /// <summary>
+        /// 不透明度
+        /// </summary>
+        /// <remarks>
+        /// ノード全体の不透明度
+        /// </remarks>
+        public float Opacity {
+            get { return opacity; }
+            set {
+                if (value < 0 || value > 1) {
+                    throw new ArgumentException ("Opacity is invalid");
+                }
+                this.opacity = value;
+            }
         }
 
         /// <summary>
@@ -100,7 +133,7 @@ namespace DD {
         /// <remarks>
         /// このフラグが <c>true</c> の時は表示されます。
         /// </remarks>
-        public bool Visible {
+        public bool Visibility {
             get { return visible; }
             set { this.visible = value; }
         }
@@ -558,7 +591,7 @@ namespace DD {
         /// <param name="y">ボックスの左上のY座標</param>
         /// <param name="width">ボックスの幅</param>
         /// <param name="height">ボックスの高さ</param>
-        public void SetBoundingBox (int x, int y, int width, int height) {
+        public void SetBoundingBox (float x, float y, float width, float height) {
             if (width < 0 || height < 0) {
                 throw new ArgumentException ("Width or Hegiht is invalid");
             }

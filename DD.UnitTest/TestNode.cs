@@ -16,44 +16,64 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.X);
             Assert.AreEqual (0, node.Y);
             Assert.AreEqual (null, node.Parent);
-            Assert.AreEqual (true, node.Visible);
+            Assert.AreEqual (true, node.Visibility);
             Assert.AreEqual (true, node.Clickable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
             Assert.AreEqual (0, node.UserID);
             Assert.AreEqual (0xffffffffu, node.GroupID);
+            Assert.AreEqual (1f, node.Opacity);
+            Assert.AreEqual (0, node.UserData.Count ());
         }
 
         [TestMethod]
-        public void Test_SetUserID () {
-            var node = new Node ("Node1");
+        public void Test_Name () {
+            var node = new Node ("Name1");
+
+            Assert.AreEqual ("Name1", node.Name);
+
+            node.Name = "Name2";
+            Assert.AreEqual ("Name2", node.Name);
+        }
+
+        [TestMethod]
+        public void Test_UserID () {
+            var node = new Node ("Node");
 
             node.UserID = 0x12345678;
             Assert.AreEqual (0x12345678, node.UserID);
         }
 
         [TestMethod]
-        public void Test_SetGroupID () {
-            var node = new Node ("Node1");
+        public void Test_GroupID () {
+            var node = new Node ("Node");
 
             node.GroupID = 0x12345678u;
             Assert.AreEqual (0x12345678u, node.GroupID);
         }
 
         [TestMethod]
-        public void Test_Visible () {
-            var node = new Node ("Node1");
+        public void Test_Opacity () {
+            var node = new Node ();
 
-            node.Visible = false;
-            Assert.AreEqual (false, node.Visible);
-
-            node.Visible = true;
-            Assert.AreEqual (true, node.Visible);
+            node.Opacity = 0.5f;
+            Assert.AreEqual (0.5f, node.Opacity);
         }
 
         [TestMethod]
+        public void Test_Visibility () {
+            var node = new Node ("Node");
+
+            node.Visibility = false;
+            Assert.AreEqual (false, node.Visibility);
+
+            node.Visibility = true;
+            Assert.AreEqual (true, node.Visibility);
+        }
+        
+        [TestMethod]
         public void Test_Clickable () {
-            var node = new Node ("Node1");
+            var node = new Node ("Node");
 
             node.Clickable = false;
             Assert.AreEqual (false, node.Clickable);
@@ -61,6 +81,18 @@ namespace DD.UnitTest {
             node.Clickable = true;
             Assert.AreEqual (true, node.Clickable);
         }
+
+        [TestMethod]
+        public void Test_UserData () {
+            var node = new Node ("Node");
+            node.UserData.Add ("Key1", 1);
+            node.UserData.Add ("Key2", 2);
+
+            Assert.AreEqual (1, (int)node.UserData["Key1"]);
+            Assert.AreEqual (2, (int)node.UserData["Key2"]);
+        }
+
+
 
         [TestMethod]
         public void Test_AddChild () {

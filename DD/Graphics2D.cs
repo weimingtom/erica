@@ -125,7 +125,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 指定のシーンを描画します。
-        /// ノードは <see cref="Node.Visible"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
+        /// ノードは <see cref="Node.Visibility"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
         /// <param name="world">シーン</param>
         public void Draw (World world) {
@@ -138,7 +138,7 @@ namespace DD {
 
             // 全ノードの描画
             var nodes = from node in world.Downwards
-                        where node.Visible == true
+                        where node.Upwards.Aggregate(true, (x,y) =>  x & y.Visibility) == true
                         orderby node.DrawPriority descending
                         select node;
             foreach (var node in nodes) {

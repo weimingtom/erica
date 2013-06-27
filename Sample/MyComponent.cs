@@ -6,6 +6,11 @@ using System.Text;
 namespace DD.Sample {
     public class MyComponent : Component {
 
+        public int MyProp1 {
+            get;
+            set;
+        }
+
         public override void OnUpdate (long msec) {
 
             if (Input != null) {

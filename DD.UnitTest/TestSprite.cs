@@ -13,12 +13,14 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_New_1 () {
-            var spr = new Sprite ();
+            var spr = new Sprite (64, 64);
 
+            Assert.AreEqual (64, spr.Width);
+            Assert.AreEqual (64, spr.Height);
             Assert.AreEqual (0, spr.TextureCount);
             Assert.AreEqual (null, spr.ActiveTexture);
-            Assert.AreEqual (0, spr.OffsetX);
-            Assert.AreEqual (0, spr.OffsetY);
+            Assert.AreEqual (0, spr.Offset.X);
+            Assert.AreEqual (0, spr.Offset.Y);
             Assert.AreEqual (Color.White, spr.Color);
         }
 
@@ -27,16 +29,25 @@ namespace DD.UnitTest {
             var tex = new Texture ("image2x2.png");
             var spr = new Sprite (tex);
 
+            Assert.AreEqual (2, spr.Width);
+            Assert.AreEqual (2, spr.Height);
             Assert.AreEqual (1, spr.TextureCount);
             Assert.AreEqual (tex, spr.ActiveTexture);
-            Assert.AreEqual (0, spr.OffsetX);
-            Assert.AreEqual (0, spr.OffsetY);
+            Assert.AreEqual (0, spr.Offset.X);
+            Assert.AreEqual (0, spr.Offset.Y);
             Assert.AreEqual (Color.White, spr.Color);
         }
 
         [TestMethod]
+        public void Test_New_3 () {
+            // jpegのロード
+        }
+
+
+
+        [TestMethod]
         public void Test_SetColor () {
-            var spr = new Sprite ();
+            var spr = new Sprite (64, 64);
 
             spr.Color = new Color (1, 2, 3, 4);
             Assert.AreEqual (new Color (1, 2, 3, 4), spr.Color);
@@ -47,43 +58,37 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_SetTexture () {
-            var spr = new Sprite ();
+        public void Test_AddTexture () {
+            var spr = new Sprite (64, 64);
             spr.AddTexture (new Texture ("abstract7.png"));
             spr.AddTexture (new Texture ("image2x2.png"));
 
+            Assert.AreEqual (64, spr.Width);
+            Assert.AreEqual (64, spr.Height);
             Assert.AreEqual (2, spr.TextureCount);
-
-            var tex0 = spr.GetTexture (0);
-            Assert.AreEqual ("abstract7.png", tex0.Name);
-            Assert.AreEqual (614, tex0.ImageWidth);
-            Assert.AreEqual (1024, tex0.ImageHeight);
-
-            var tex1 = spr.GetTexture (1);
-            Assert.AreEqual ("image2x2.png", tex1.Name);
-            Assert.AreEqual (2, tex1.ImageWidth);
-            Assert.AreEqual (2, tex1.ImageHeight);
+            Assert.AreEqual ("abstract7.png", spr.GetTexture(0).Name);
+            Assert.AreEqual ("image2x2.png", spr.GetTexture(1).Name);
         }
 
 
         [TestMethod]
         public void Test_SetActiveTexture () {
-            var spr = new Sprite ();
+            var spr = new Sprite (64, 64);
             spr.AddTexture (new Texture ("abstract7.png"));
             spr.AddTexture (new Texture ("image2x2.png"));
 
             spr.ActiveTextureIndex = 1;
             Assert.AreEqual (1, spr.ActiveTextureIndex);
 
-            var tex1 = spr.GetActiveTexture ();
+            var tex1 = spr.ActiveTexture;
             Assert.AreEqual ("image2x2.png", tex1.Name);
-            Assert.AreEqual (2, tex1.ImageWidth);
-            Assert.AreEqual (2, tex1.ImageHeight);
+            Assert.AreEqual (2, tex1.Width);
+            Assert.AreEqual (2, tex1.Height);
         }
 
         [TestMethod]
         public void Test_RemoveTexture () {
-            var spr = new Sprite ();
+            var spr = new Sprite (64, 64);
             var tex1 = new Texture ("abstract7.png");
             var tex2 = new Texture ("image2x2.png");
             spr.AddTexture (tex1);
@@ -95,28 +100,30 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Width_Height () {
-            var spr = new Sprite ();
-            spr.AddTexture (new Texture ("abstract7.png"));
-
-            Assert.AreEqual (614, spr.Width);
-            Assert.AreEqual (1024, spr.Height);
-        }
-
-        [TestMethod]
         public void Test_SetOffset () {
-            var spr = new Sprite ();
- 
-            spr.OffsetX = 1;
-            spr.OffsetY = 2;
+            var spr = new Sprite (64, 64);
+            spr.Offset = new Vector2(1,2);
 
-            Assert.AreEqual (1, spr.OffsetX);
-            Assert.AreEqual (2, spr.OffsetY);
+            Assert.AreEqual (1, spr.Offset.X);
+            Assert.AreEqual (2, spr.Offset.Y);
 
             spr.SetOffset (3, 4);
 
-            Assert.AreEqual (3, spr.OffsetX);
-            Assert.AreEqual (4, spr.OffsetY);
+            Assert.AreEqual (3, spr.Offset.X);
+            Assert.AreEqual (4, spr.Offset.Y);
+        }
+
+        [TestMethod]
+        public void Test_SetTextureOffset () {
+            var spr = new Sprite (64, 64);
+            spr.TextureOffset = new Vector2 (1, 2);
+
+            Assert.AreEqual (1, spr.TextureOffset.X);
+            Assert.AreEqual (2, spr.TextureOffset.Y);
+
+            spr.SetTextureOffset (3, 4);
+            Assert.AreEqual (3, spr.TextureOffset.X);
+            Assert.AreEqual (4, spr.TextureOffset.Y);
         }
 
 

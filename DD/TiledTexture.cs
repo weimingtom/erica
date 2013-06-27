@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
+    /*
     /// <summary>
     /// タイル テクスチャー クラス
     /// </summary>
@@ -22,6 +23,7 @@ namespace DD {
         #endregion
 
         #region Constructor
+
         /// <summary>
         /// コンストラクター
         /// </summary>
@@ -29,8 +31,7 @@ namespace DD {
         /// <param name="rows">縦方向のタイル数</param>
         /// <param name="columns">横方向のタイル数</param>
         /// <param name="tiles">有効なタイル数</param>
-        public TiledTexture (string name, int rows, int columns, int tiles)
-            : base (name) {
+        public TiledTexture (string name, int rows, int columns, int tiles) : base(name) {
             if (rows <= 0 || columns <= 0) {
                 throw new ArgumentException ("Rows or Columns is invalid");
             }
@@ -42,9 +43,8 @@ namespace DD {
             this.tiles = tiles;
             this.tileWidth = ImageWidth / columns;
             this.tileHeight = ImageHeight / rows;
-            this.Width = tileWidth;
-            this.Height = tileHeight;
-
+            this.TextureWidth = tileWidth;
+            this.TextureHeight = tileHeight;
             this.ActiveTile = 0;
         }
         #endregion
@@ -93,11 +93,12 @@ namespace DD {
             this.active = index;
             var x = (index % columns) * tileWidth;
             var y = (index / columns) * tileHeight;
-            this.SetOffset (x, y);
+            this.SetTextureOffset (x, y);
         }
 
 
         #endregion
 
     }
+     * */
 }

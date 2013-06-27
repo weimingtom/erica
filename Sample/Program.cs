@@ -26,6 +26,16 @@ namespace DD.Sample {
             return node;
         }
 
+        private static Node CreateTiledMap () {
+            var cmp = new TiledMapComposer ();
+            var node = new Node ();
+            node.Attach (cmp);
+
+            cmp.LoadFromFile ("media/desert.tmx");
+
+            return node;
+        }
+
         private static Node CreateLabel () {
             var label1 = new Label ("");
             var label2 = new Label ("");
@@ -50,14 +60,27 @@ namespace DD.Sample {
             var node1 = CreateBar ();
             var node2 = CreateFPSCounter();
             var node3 = CreateLabel ();
+            var node4 = CreateTiledMap ();
 
+            var my = node4.Find (x => x.Name == "Object1");
+            if (my != null) {
+                var comp = my.GetComponent<MyComponent> ();
+                Console.WriteLine ("Object1.Prop = " + comp.MyProp1);
+            }
+            my = node4.Find (x => x.Name == "Object2");
+            if (my != null) {
+                var comp = my.GetComponent<MyComponent> ();
+                Console.WriteLine ("Object2.Prop = " + comp.MyProp1);
+            }
+                
             // ----------------------------------------
 
             var wld = new DD.World ("First Script");
-            wld.Attach (new Sprite (new Texture ("media/DarkGalaxy.jpg")));
+            //wld.Attach (new Sprite (new Texture ("media/DarkGalaxy.jpg")));
             wld.AddChild (node1);
             wld.AddChild (node2);
             wld.AddChild (node3);
+            wld.AddChild (node4);
 
             var director = new Director ();
             director.PushScript (wld);

@@ -17,20 +17,16 @@ namespace DD.Sample.PhysicsSample {
     static class PhysicsProgram {
 
         private static Node CreateWalls () {
-            var spr1 = new Sprite ();
-            spr1.AddTexture (new Texture ("media/Brick-1024x64.jpg"));
+            var spr1 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
             spr1.SetOffset (-spr1.Width / 2, -spr1.Height / 2);
 
-            var spr2 = new Sprite ();
-            spr2.AddTexture (new Texture ("media/Brick-1024x64.jpg"));
+            var spr2 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
             spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
 
-            var spr3 = new Sprite ();
-            spr3.AddTexture (new Texture ("media/Brick-1024x64.jpg"));
+            var spr3 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
             spr3.SetOffset (-spr3.Width / 2, -spr3.Height / 2);
 
-            var spr4 = new Sprite ();
-            spr4.AddTexture (new Texture ("media/Brick-1024x64.jpg"));
+            var spr4 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
             spr4.SetOffset (-spr4.Width / 2, -spr4.Height / 2);
 
             var col1 = new Collider ();
@@ -85,12 +81,10 @@ namespace DD.Sample.PhysicsSample {
         }
 
         private static Node CreateBalls () {
-            var spr1 = new Sprite ();
-            spr1.AddTexture (new Texture ("media/Earth.png"));
+            var spr1 = new Sprite (new Texture ("media/Earth.png"));
             spr1.SetOffset (-spr1.Width / 2, -spr1.Height / 2);
 
-            var spr2 = new Sprite ();
-            spr2.AddTexture (new Texture ("media/Moon.png"));
+            var spr2 = new Sprite (new Texture ("media/Moon.png"));
             spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
 
             var col1 = new Collider ();
