@@ -22,10 +22,19 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Indexer () {
+            var anim = new AnimationController ();
+            var clip = new AnimationClip (100, "Clip");
+            anim.AddClip (clip);
+
+            Assert.AreEqual (clip, anim["Clip"]);
+        }
+
+        [TestMethod]
         public void Test_AddClip () {
             var anim = new AnimationController ();
-            var clip1 = new AnimationClip ("Name");
-            var clip2 = new AnimationClip ("Name");
+            var clip1 = new AnimationClip (100, "Name");
+            var clip2 = new AnimationClip (100, "Name");
 
             anim.AddClip (clip1);
             anim.AddClip (clip2);
@@ -46,7 +55,7 @@ namespace DD.UnitTest {
             track.AddKeyframe (1, 1.0f);
             track.AddKeyframe (2, 2.0f);
 
-            var clip = new AnimationClip ("TestClip");
+            var clip = new AnimationClip (100, "TestClip");
             clip.WrapMode = WrapMode.Once;
             clip.Duration = 3;
 
@@ -72,7 +81,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Float_Loop () {
 
-            var clip = new AnimationClip ("TestClip");
+            var clip = new AnimationClip (100, "TestClip");
             clip.WrapMode = WrapMode.Loop;
             clip.Duration = 3;
 
@@ -102,7 +111,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Point_Once () {
 
-            var clip = new AnimationClip ("TestClip");
+            var clip = new AnimationClip (100, "TestClip");
             clip.WrapMode = WrapMode.Once;
             clip.Duration = 3;
 
@@ -136,7 +145,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Point_Loop () {
 
-            var clip = new AnimationClip ("TestClip");
+            var clip = new AnimationClip (100, "TestClip");
             clip.WrapMode = WrapMode.Loop;
             clip.Duration = 3;
 

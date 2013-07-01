@@ -16,6 +16,7 @@ namespace DD.UnitTest {
             Assert.AreEqual ("Script1", wld.Name);
             Assert.AreEqual (null, wld.Director);
             Assert.IsNotNull (wld.InputReceiver);
+            Assert.IsNotNull (wld.AnimationController);
         }
 
         [TestMethod]

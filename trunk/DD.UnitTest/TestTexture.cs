@@ -10,7 +10,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestTexture {
         [TestMethod]
-        public void Test_New_1 () {
+        public void Test_New_1_FromFile () {
             var tex = new Texture ("abstract7.png");
 
             Assert.AreEqual ("abstract7.png", tex.Name);
@@ -19,7 +19,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_New_2 () {
+        public void Test_New_2_FromBitmap () {
             var bitmap = new Bitmap ("abstract7.png");
             var tex = new Texture (bitmap, "abstract7.png");
 
@@ -29,7 +29,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_New_3 () {
+        public void Test_New_3_FromStream () {
 
             var bytes = File.ReadAllBytes ("abstract7.png");
             var tex = new Texture (new MemoryStream(bytes), "abstract7.png");

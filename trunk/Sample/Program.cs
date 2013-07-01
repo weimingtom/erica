@@ -5,48 +5,41 @@ using System.Text;
 using System.Diagnostics;
 
 namespace DD.Sample {
-    public static class Program {
-
-        static Node CreateBar () {
-
-            var spr = new Sprite (new Texture("media/Rectangle-160x40.png"));
-            var cmp = new MyComponent ();
-            
-            var node = new Node ();
-            node.Attach (spr);
-            node.Attach (cmp);
-            node.Translate (320, 500, 0);
-
-            return node;
-        }
-
+    class Program {
         private static Node CreateFPSCounter () {
             var node = new Node ();
             node.Attach (new FPSCounter ());
             return node;
         }
 
-        private static Node CreateTiledMap () {
-            var cmp = new TiledMapComposer ();
-            var node = new Node ();
-            node.Attach (cmp);
+        private static Node CreateMyCharacter () {
+            var spr = new Sprite (new Texture ("media/Character-Gelato.png"), 24, 32);
 
-            cmp.LoadFromFile ("media/desert.tmx");
+            var cmp = new MyCharacterComponent ();
+            var node = new Node ();
+            node.Attach (spr);
+            node.Attach (cmp);
+            node.SetTranslation (100, 100, 0);
 
             return node;
         }
 
-        private static Node CreateLabel () {
-            var label1 = new Label ("");
-            var label2 = new Label ("");
-            label1.SetOffset (0, 0);
-            label2.SetOffset (0, 16);
+        private static Node CreateLabels () {
+            var label = new Label ();
+            var node = new Node ("Label");
 
+            node.Attach (label);
+            node.SetTranslation (50, 100, 0);
+
+            return node;
+        }
+
+        private static Node CreateWalls () {
+            var spr = new Sprite (new Texture ("media/Rectangle-160x40.png"));
             var node = new Node ();
-            node.UserID = 1;
-            node.SetTranslation (10, 32, 0);
-            node.Attach (label1);
-            node.Attach(label2);
+            node.Attach (spr);
+            node.SetTranslation (200, 150, 0);
+            node.SetBoundingBox (0, 0, spr.Width, spr.Height);
 
             return node;
         }
@@ -57,26 +50,16 @@ namespace DD.Sample {
 
             // ----------------------------------------
 
-            var node1 = CreateBar ();
-            var node2 = CreateFPSCounter();
-            var node3 = CreateLabel ();
-            var node4 = CreateTiledMap ();
+            var node1 = CreateFPSCounter ();
+            var node2 = CreateMyCharacter ();
+            var node3 = CreateLabels ();
+            var node4 = CreateWalls ();
 
-            var my = node4.Find (x => x.Name == "Object1");
-            if (my != null) {
-                var comp = my.GetComponent<MyComponent> ();
-                Console.WriteLine ("Object1.Prop = " + comp.MyProp1);
-            }
-            my = node4.Find (x => x.Name == "Object2");
-            if (my != null) {
-                var comp = my.GetComponent<MyComponent> ();
-                Console.WriteLine ("Object2.Prop = " + comp.MyProp1);
-            }
-                
+
+
             // ----------------------------------------
 
             var wld = new DD.World ("First Script");
-            //wld.Attach (new Sprite (new Texture ("media/DarkGalaxy.jpg")));
             wld.AddChild (node1);
             wld.AddChild (node2);
             wld.AddChild (node3);
@@ -90,7 +73,7 @@ namespace DD.Sample {
 
             Console.WriteLine ("Start of Main Loop");
 
-            //g2d.SetFrameRateLimit (30);
+            g2d.SetFrameRateLimit (30);
 
             var watch = new Stopwatch ();
             watch.Start ();
@@ -110,4 +93,3 @@ namespace DD.Sample {
     }
 
 }
-

@@ -79,7 +79,22 @@ namespace DD.UnitTest {
             Assert.AreNotEqual (wld.InputReceiver, comp.Input);
         }
 
+        [TestMethod]
+        public void Test_AnimationController () {
+            var wld = new World ();
+            var node = new Node ();
+            var anim = new AnimationController ();
+            var comp = new MyComponent ();
 
+            node.Attach (anim);
+            node.Attach (comp);
+
+            Assert.AreEqual (anim, comp.Animation);
+
+            wld.AddChild (node);
+
+            Assert.AreNotEqual (wld.AnimationController, comp.Animation);
+        }
 
         [TestMethod]
         public void Test_GetComponent () {

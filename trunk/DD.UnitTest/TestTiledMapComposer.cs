@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// 
-// TiledSharp の TiledCore.cs で  var asm = Assembly.GetEntryAssembly(); が出るためコメントアウト
+// --------------------------------------------------------------------------------------
+// TiledSharp の TiledCore.cs : var asm = Assembly.GetEntryAssembly(); の所で
+// エラーが出るためコメントアウト
 // さてどうしたものか
 
 namespace DD.UnitTest {

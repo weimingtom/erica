@@ -75,6 +75,8 @@ namespace DD {
         /// スプライトのサイズはテクスチャー画像サイズとは無関係に引数で指定した値が使用されます。
         /// </remarks>
         /// <param name="texture">テクスチャー</param>
+        /// <param name="width">幅（ピクセル数）</param>
+        /// <param name="height">高さ（ピクセル数）</param>
         public Sprite (Texture texture, int width, int height) : this(texture) {
             if (width < 0 || height < 0) {
                 throw new ArgumentException ("Size is invalid");

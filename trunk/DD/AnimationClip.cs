@@ -12,7 +12,22 @@ namespace DD {
     /// 原則としてアニメーションに対する操作はこのクリップ単位で行います。
     /// </remarks>
     public class AnimationClip {
+        /// <summary>
+        /// 再生状態
+        /// </summary>
+        public enum State {
+            /// <summary>
+            /// 再生中
+            /// </summary>
+            Playing,
+            /// <summary>
+            /// 停止中
+            /// </summary>
+            Stopped
+        }
+
         #region Field
+        State state;
         string name;
         int duration;
         int localRefTime;
@@ -31,20 +46,23 @@ namespace DD {
         /// エンジン側では使用しません。
         /// </remarks>
         /// <param name="name">このクリップの名前</param>
-        public AnimationClip (string name) {
+        /// <param name="duration">クリップの長さ（msec）</param>
+        public AnimationClip (int duration, string name) {
             this.name = name ?? "";
-            this.duration = 0;
+            this.duration = duration;
             this.localRefTime = 0;
             this.worldRefTime = 0;
             this.speed = 1;
             this.tracks = new List<Tuple<object, AnimationTrack>> ();
             this.wrapMode = WrapMode.Loop;
+            this.state = State.Stopped;
         }
 
         /// <summary>
         /// コンストラクター
         /// </summary>
-        public AnimationClip () : this("") {
+        public AnimationClip (int duration)
+            : this (duration, "") {
         }
         #endregion
 
@@ -61,7 +79,12 @@ namespace DD {
         /// </summary>
         public int Duration {
             get { return duration; }
-            set { SetDuration (value); }
+            set {
+                if (value <= 0) {
+                    throw new ArgumentException ("Duration is invalid");
+                }
+                this.duration = value;
+            }
         }
 
         /// <summary>
@@ -69,7 +92,7 @@ namespace DD {
         /// </summary>
         public WrapMode WrapMode {
             get { return wrapMode; }
-            set { SetWrapMode (value); }
+            set { this.wrapMode = value; }
         }
 
         /// <summary>
@@ -83,6 +106,13 @@ namespace DD {
         public float Speed {
             get { return speed; }
             set { SetSpeed (value, 0); }
+        }
+
+        /// <summary>
+        /// 再生中フラグ
+        /// </summary>
+        public bool IsPlaying {
+            get { return state == State.Playing; }
         }
 
         /// <summary>
@@ -101,6 +131,27 @@ namespace DD {
         #endregion
 
         #region Method
+
+        /// <summary>
+        /// 再生の開始
+        /// </summary>
+        /// <remarks>
+        /// このクリップを再生します。すでに再生中のクリップを再度再生した場合、単にこれを無視します。
+        /// </remarks>
+        public void Play () {
+            this.state = State.Playing;
+        }
+
+        /// <summary>
+        /// 再生の停止
+        /// </summary>
+        /// <remarks>
+        /// このクリップの再生を停止します。すでに停止中のクリップを再度停止した場合、単にこれを無視します。
+        /// </remarks>
+        public void Stop () {
+            this.state = State.Stopped;
+        }
+
         /// <summary>
         /// トラックの追加
         /// </summary>
@@ -115,7 +166,7 @@ namespace DD {
             if (track == null) {
                 throw new ArgumentNullException ("Track is null");
             }
-            this.tracks.Add (Tuple.Create(target, track));
+            this.tracks.Add (Tuple.Create (target, track));
         }
 
         /// <summary>
@@ -169,29 +220,6 @@ namespace DD {
             this.localRefTime = GetPlaybackPosition (worldTime);
             this.worldRefTime = worldTime;
             this.speed = speed;
-        }
-
-        /// <summary>
-        /// クリップの長さの変更
-        /// </summary>
-        /// <remarks>
-        /// クリップの長さを変更します。長さは msec 単位で指定します。
-        /// クリップの繰り返しはこのクリップ長を元に行われます。
-        /// </remarks>
-        /// <param name="duration">クリップの長さ</param>
-        public void SetDuration (int duration) {
-            if (duration <= 0) {
-                throw new ArgumentException ("Duration is invalid");
-            }
-            this.duration = duration;
-        }
-
-        /// <summary>
-        /// 繰り返しモードの変更
-        /// </summary>
-        /// <param name="mode">繰り返しモード</param>
-        public void SetWrapMode (WrapMode mode) {
-            this.wrapMode = mode;
         }
 
         /// <summary>

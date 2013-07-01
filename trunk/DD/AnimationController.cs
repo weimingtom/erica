@@ -38,12 +38,19 @@ namespace DD {
         }
 
         /// <summary>
-        /// インデクサー
+        /// クリップに名前でアクセスするアクセッサー
         /// </summary>
-        /// <param name="index">クリップ番号</param>
+        /// <remarks>
+        /// 指定の名前のクリップが見つからない場合は <c>null</c> が返ります。
+        /// </remarks>
+        /// <param name="name">クリップの名前</param>
         /// <returns></returns>
-        public AnimationClip this[int index] {
-            get { return clips[index]; }
+        public AnimationClip this[string name] {
+            get { 
+                return (from x in clips
+                             where x.Name == name
+                             select x).FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -77,7 +84,7 @@ namespace DD {
 
         /// <inheritdoc/>
         public override void OnAnimate (long msec) {
-            foreach (var clip in clips) {
+            foreach (var clip in clips.Where(x=>x.IsPlaying)) {
                 var pos = clip.GetPlaybackPosition (msec);
                 foreach (var track in clip.Tracks) {
                     var target = track.Item1;
