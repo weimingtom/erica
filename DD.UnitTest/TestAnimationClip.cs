@@ -9,18 +9,19 @@ namespace DD.UnitTest {
     public class TestAnimationClip {
         [TestMethod]
         public void Test_New () {
-            var clip = new AnimationClip ("ClipName");
+            var clip = new AnimationClip (100, "ClipName");
 
+            Assert.AreEqual (100, clip.Duration);
             Assert.AreEqual ("ClipName", clip.Name);
-            Assert.AreEqual (0, clip.Duration);
             Assert.AreEqual (0, clip.TrackCount);
             Assert.AreEqual (1, clip.Speed);
             Assert.AreEqual (WrapMode.Loop, clip.WrapMode);
+            Assert.AreEqual (false, clip.IsPlaying);
         }
 
         [TestMethod]
         public void Test_AddTrack () {
-            var clip = new AnimationClip ("ClipName");
+            var clip = new AnimationClip (100, "ClipName");
             var track1 = new AnimationTrack ("PropName", InterpolationType.Linear);
             var track2 = new AnimationTrack ("PropName", InterpolationType.Linear);
             var dummy = new Node ();
@@ -36,7 +37,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_RemoveTrack () {
-            var clip = new AnimationClip ("ClipName");
+            var clip = new AnimationClip (100, "ClipName");
             var track1 = new AnimationTrack ("PropName",  InterpolationType.Linear);
             var track2 = new AnimationTrack ("PropName", InterpolationType.Linear);
             var dummy = new Node ();
@@ -56,9 +57,8 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SetDuration() {
-            var clip = new AnimationClip ("ClipName");
+            var clip = new AnimationClip (100, "ClipName");
 
-            clip.SetDuration (100);
             Assert.AreEqual (100, clip.Duration);
 
             clip.Duration = 200;
@@ -68,15 +68,15 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SetWrapMode () {
-            var clip = new AnimationClip ("ClipName");
-            clip.SetWrapMode (WrapMode.Loop);
+            var clip = new AnimationClip (100, "ClipName");
+            clip.WrapMode = WrapMode.Loop;
 
             Assert.AreEqual (WrapMode.Loop, clip.WrapMode);
         }
 
         [TestMethod]
         public void Test_GetPlaybackPoisition () {
-            var clip = new AnimationClip ("ClipName");
+            var clip = new AnimationClip (100, "ClipName");
             clip.Duration = 2;
         
             clip.WrapMode = WrapMode.Once;
@@ -93,8 +93,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SetPlaybackPoisition () {
-            var clip = new AnimationClip ("ClipName");
-            clip.Duration = 1000;
+            var clip = new AnimationClip (100, "ClipName");
             clip.SetPlaybackPoisition (10, 1);
 
             Assert.AreEqual (10, clip.GetPlaybackPosition (1));
@@ -104,8 +103,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SetSpeed () {
-            var clip = new AnimationClip ("ClipName");
-            clip.Duration = 1000;
+            var clip = new AnimationClip (100, "ClipName");
             clip.SetPlaybackPoisition (10, 1);
             clip.SetSpeed (2, 1);
 
@@ -114,8 +112,28 @@ namespace DD.UnitTest {
             Assert.AreEqual (14, clip.GetPlaybackPosition (3));
         }
 
+        [TestMethod]
+        public void Test_Play () {
+            var clip = new AnimationClip (100, "ClipName");
+            Assert.AreEqual (false, clip.IsPlaying);
+
+            clip.Play ();
+
+            Assert.AreEqual (true, clip.IsPlaying);
+        }
+
+        [TestMethod]
+        public void Test_Stop () {
+            var clip = new AnimationClip (100, "ClipName");
+            Assert.AreEqual (false, clip.IsPlaying);
+
+            clip.Play ();
+            clip.Stop ();
+
+            Assert.AreEqual (false, clip.IsPlaying);
 
 
+        }
 
     }
 }

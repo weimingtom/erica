@@ -579,6 +579,9 @@ namespace DD {
         /// <typeparam name="T">コンポーネント型</typeparam>
         /// <returns></returns>
         public T GetComponent<T> () where T : Component {
+            if (this == null) {
+                return null;
+            }
             return (from comp in components
                     where comp is T
                     select (T)comp).FirstOrDefault ();

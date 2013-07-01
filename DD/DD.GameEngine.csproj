@@ -103,11 +103,10 @@
     <Compile Include="Physics\Physics2D.cs" />
     <Compile Include="Physics\PhysicsMaterial.cs" />
     <Compile Include="Physics\SphereCollider.cs" />
+    <Compile Include="GridBoard.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
     <Compile Include="TiledMapComposer.cs" />
-    <Compile Include="TiledMapLayer.cs" />
-    <Compile Include="TiledMapObjectGroup.cs" />
     <Compile Include="Transformable.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="Vector3.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="SoundPlayer.cs" />
     <Compile Include="StateMachine.cs" />
     <Compile Include="Texture.cs" />
-    <Compile Include="TiledTexture.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Sprite.cs" />

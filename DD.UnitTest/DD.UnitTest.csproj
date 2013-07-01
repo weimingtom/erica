@@ -72,6 +72,7 @@
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
     <Compile Include="TestColor.cs" />
+    <Compile Include="TestGridBoard.cs" />
     <Compile Include="TestInputReceiver.cs" />
     <Compile Include="TestKeyAlias.cs" />
     <Compile Include="TestLabel.cs" />
@@ -89,8 +90,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="TestTiledMapComposer.cs" />
-    <Compile Include="TestTiledMapLayer.cs" />
-    <Compile Include="TestTiledMapObjectGroup.cs" />
     <Compile Include="TestTransformable.cs" />
     <Compile Include="TestVector3.cs" />
     <Compile Include="TestRectangle.cs" />
@@ -99,13 +98,12 @@
     <Compile Include="TestLine.cs" />
     <Compile Include="TestLineReader.cs" />
     <Compile Include="TestNode.cs" />
-    <Compile Include="TestResourceManager.cs" />
+    <Compile Include="TestResource.cs" />
     <Compile Include="TestDirector.cs" />
     <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestSoundPlayer.cs" />
     <Compile Include="TestStateMachine.cs" />
     <Compile Include="TestTexture.cs" />
-    <Compile Include="TestTiledTexture.cs" />
     <Compile Include="TestTimeCounter.cs" />
     <Compile Include="TestWorld.cs" />
     <Compile Include="TestSprite.cs" />

@@ -8,13 +8,13 @@ using System.IO;
 
 namespace DD {
     /// <summary>
-    /// Tiled マップ合成 コンポーネント
+    /// タイル マップ生成 コンポーネント
     /// </summary>
     /// <remarks>
     /// Tiled Map Editor の TMX ファイルをパースして、
     /// DDの2Dマップとして構築するコンポーネントです。
-    /// 構築が終わると複数のレイヤー（タイルマップ、オブジェクト、背景画像）ノードと、
-    /// さらにその下に Width * Height 個のタイル ノードを構築します。
+    /// 構築が終わると子ノードとして複数のレイヤー ノード（タイルマップ、オブジェクト、背景画像）と、
+    /// タイル マップのさらにその下に Width * Height 個のタイル ノードを構築します。
     /// </remarks>
     public class TiledMapComposer : Component {
 
@@ -180,7 +180,7 @@ namespace DD {
                 throw new NotImplementedException ("Sorry, Orthogonal only!");
             }
 
-            /// マップ情報
+            // マップ情報
             this.Node.Name = fileName;
             this.orientaion = map.Orientation.ToString ();
             this.width = map.Width;
@@ -190,6 +190,9 @@ namespace DD {
             this.mapLayers.Clear ();
             this.objLayers.Clear ();
             this.imgLayers.Clear ();
+            foreach (var prop in map.Properties) {
+                this.Node.UserData.Add (prop.Key, prop.Value);
+            }
 
             var texIds = new Dictionary<string, string>();
 
@@ -214,6 +217,14 @@ namespace DD {
                 var layerNode = new Node (layer.Name);
                 layerNode.Visibility = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
+                foreach (var prop in layer.Properties) {
+                    layerNode.UserData.Add (prop.Key, prop.Value);
+                }
+                var layerComp = new GridBoard (width, height);
+                layerComp.TileWidth = tileWidth;
+                layerComp.TileHeight = tileHeight;
+                layerNode.Attach (layerComp);
+
 
                 foreach (var tile in layer.Tiles) {
                     var x = tile.X;
@@ -238,6 +249,7 @@ namespace DD {
                         tileNode.Attach (spr);
 
                         layerNode.AddChild (tileNode);
+                        layerComp[y, x] = tileNode;
                     }
                 }
 
@@ -250,6 +262,9 @@ namespace DD {
                 var layerNode = new Node (layer.Name);
                 layerNode.Visibility = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
+                foreach (var prop in layer.Properties) {
+                    layerNode.UserData.Add (prop.Key, prop.Value);
+                }
 
                 foreach (var obj in layer.Objects) {
                     var objNode = new Node ();
@@ -285,6 +300,9 @@ namespace DD {
                 var layerNode = new Node (layer.Name);
                 layerNode.Visibility = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
+                foreach (var prop in layer.Properties) {
+                    layerNode.UserData.Add (prop.Key, prop.Value);
+                }
 
                 var src = layer.Image.Source;
                 if (src != null) {
@@ -306,7 +324,7 @@ namespace DD {
         /// プロパティに値を代入
         /// </summary>
         /// <remarks>
-        /// 文字列で表された値を確実に値に直す方法はない。
+        /// 文字列で表された値を確実に値に戻す方法はない。
         /// 実装は bool, int, float と文字列のみのパースだが、これで十分実用的。
         /// </remarks>
         /// <param name="obj">オブジェクト</param>
@@ -336,9 +354,15 @@ namespace DD {
         /// <summary>
         /// レイヤー（ノード）の取得
         /// </summary>
+        /// <remarks>
+        /// レイヤー（3種類共通）を取得します。
+        /// </remarks>
         /// <param name="index">レイヤー番号</param>
         /// <returns>ノード</returns>
         public Node GetLayer (int index) {
+            if (index < 0 || index > LayerCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
             return mapLayers[index];
         }
 

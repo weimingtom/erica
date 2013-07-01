@@ -83,19 +83,27 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このノードにアタッチされたローカルのインプット レシーバー <see cref="InputReceiver"/> または、それが存在しない場合は
-        /// <see cref="World"/> にアタッチされたグローバルのインプット レシーバー  <see cref="InputReceiver"/> を返します。
+        /// <see cref="World"/> のインプット レシーバー  <see cref="InputReceiver"/> を返します。
         /// <see cref="World"/> クラスは必ずデフォルトのインプット レシーバーを1つ保持しています。
         /// </remarks>
         public InputReceiver Input {
             get {
-                var input = GetComponent<InputReceiver> ();
-                if (input != null) {
-                    return input;
-                }
-                if (!IsAttached || !IsUnderWorld) {
-                    throw new InvalidOperationException ("This component is not under World");
-                }
-                return World.GetComponent<InputReceiver> ();
+                return GetComponent<InputReceiver>() ?? World.InputReceiver;
+            }
+        }
+
+        /// <summary>
+        /// アニメーション コントローラー
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルのアニメーション コントローラー <see cref="AnimationController"/> または、それが存在しない場合は
+        /// <see cref="World"/> のアニメーション コントローラー  <see cref="AnimationController"/> を返します。
+        /// <see cref="World"/> クラスは必ずデフォルトのアニメーション コントローラーを1つ保持しています。
+        /// 
+        /// </remarks>
+        public AnimationController Animation {
+            get {
+                return GetComponent<AnimationController> () ?? World.AnimationController;
             }
         }
 

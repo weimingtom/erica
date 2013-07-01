@@ -216,7 +216,8 @@ namespace DD {
         /// 初回のみ <see cref="Bitmap"/> からテクスチャーをロードし、リソース管理に組み入れます。
         /// 2回目以降は同一のオブジェクトが返ります。
         /// </remarks>
-        /// <param name="name"><see cref="Bitmap"/> オブジェクト</param>
+        /// <param name="bitmap">ビットマップ オブジェクト</param>
+        /// <param name="name">テクスチャー名</param>
         /// <returns>テクスチャー</returns>
         public static Texture GetTexture (Bitmap bitmap, string name) {
             if (!textures.ContainsKey (name)) {
@@ -226,6 +227,16 @@ namespace DD {
             return textures[name];
         }
 
+        /// <summary>
+        /// テクスチャーの取得
+        /// </summary>
+        /// <remarks>
+        /// 初回のみストリーム <paramref name="stream"/> からテクスチャーをロードし、リソース管理に組み入れます。
+        /// 2回目以降は同一のオブジェクトが返ります。
+        /// </remarks>
+        /// <param name="stream">ストリーム</param>
+        /// <param name="name">テクスチャー名</param>
+        /// <returns>テクスチャー</returns>
         public static Texture GetTexture (MemoryStream stream, string name) {
             if (!textures.ContainsKey (name)) {
                 textures.Add (name, new Texture (stream, name));
@@ -233,22 +244,6 @@ namespace DD {
 
             return textures[name];
         }
-
-        /// <summary>
-        /// タイル テクスチャーの取得
-        /// </summary>
-        /// <param name="name">テクスチャー ファイル名</param>
-        /// <param name="rows">縦方向のタイルの個数</param>
-        /// <param name="columns">横方向のタイルの個数</param>
-        /// <param name="tileCount">有効なタイル数</param>
-        /// <returns></returns>
-        //public static TiledTexture GetTiledTexture (string name, int rows, int columns, int tileCount) {
-        //    if (!textures.ContainsKey (name)) {
-        //        textures.Add (name, new TiledTexture (textureDirectory + name, rows, columns, tileCount));
-        //    }
-        //    return textures[name] as TiledTexture;
-        //}
-
 
         /// <summary>
         /// ラインの取得

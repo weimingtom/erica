@@ -17,7 +17,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// [最小値,最大値]へのクランプ
+        /// [最小値, 最大値]へのクランプ
         /// </summary>
         /// <param name="value">クランプする値</param>
         /// <param name="min">最小値</param>
@@ -26,5 +26,17 @@ namespace DD {
         public static float Clamp (float value, float min, float max) {
             return Math.Max (min, Math.Min (value, max));
         }
+
+        /// <summary>
+        /// [最小値, 最大値]へのクランプ
+        /// </summary>
+        /// <param name="value">クランプする値</param>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値</param>
+        /// <returns></returns>
+        public static int Clamp (int value, int min, int max) {
+            return Math.Max (min, Math.Min (value, max));
+        }
+    
     }
 }

@@ -32,11 +32,17 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// スクリプト名は単なる識別用の文字列でエンジン内部では使用しません。
+        /// <see cref="World"/> オブジェクトはデフォルトで2つのコンポーネントを持っています。
+        /// <list type="bullet">
+        ///   <item>InputReciver</item>
+        ///   <item>AnimationController</item>
+        /// </list>
         /// </remarks>
         /// <param name="name">シーン名</param>
         public World (string name) : base(name) {
             this.director = null;
             this.Attach (new InputReceiver ());
+            this.Attach (new AnimationController ());
         }
         #endregion
 
@@ -58,6 +64,14 @@ namespace DD {
         public InputReceiver InputReceiver {
             get { return GetComponent<InputReceiver> (); }
         }
+
+        /// <summary>
+        /// デフォルトのアニメーション コントローラー
+        /// </summary>
+        public AnimationController AnimationController {
+            get { return GetComponent<AnimationController> (); }
+        }
+
         #endregion
 
         #region Method

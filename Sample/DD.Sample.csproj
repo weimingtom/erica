@@ -68,6 +68,9 @@
     <Reference Include="sfmlnet-window-2">
       <HintPath>..\DD\libs\sfmlnet-window-2.dll</HintPath>
     </Reference>
+    <Reference Include="Stateless">
+      <HintPath>..\packages\Stateless.2.4.0\lib\Stateless.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -80,10 +83,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyComponent.cs" />
+    <Compile Include="MyCharacter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="TiledMapSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\Program.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="TiledMapSample\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhysicsSample\UpdraftComponent.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -108,6 +113,7 @@
     <None Include="media\Konatu.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -126,6 +132,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Brick-1024x64.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Character-Anne.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Character-Gelato.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Check%28Yellow%29.png">
