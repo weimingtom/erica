@@ -371,7 +371,6 @@ namespace DD {
         #region Override
         /// <inheritdoc/>
         public override void OnAttached () {
-            Node.SetBoundingBox (0, 0, width, height);
         }
 
         #endregion

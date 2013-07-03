@@ -87,9 +87,9 @@
     <Compile Include="AnimationTrack.cs" />
     <Compile Include="InputReceiver.cs" />
     <Compile Include="KeyAlias.cs" />
-    <Compile Include="Physics\BoxCollider.cs" />
+    <Compile Include="Physics\BoxCollisionShape.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
-    <Compile Include="Physics\Collider.cs" />
+    <Compile Include="Physics\PhysicsBody.cs" />
     <Compile Include="Physics\CollisionShape.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="Physics\Enums.cs" />
     <Compile Include="Physics\Physics2D.cs" />
     <Compile Include="Physics\PhysicsMaterial.cs" />
-    <Compile Include="Physics\SphereCollider.cs" />
+    <Compile Include="Physics\SphereCollisionShape.cs" />
     <Compile Include="GridBoard.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />

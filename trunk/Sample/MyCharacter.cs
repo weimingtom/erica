@@ -3,9 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stateless;
+using DD.Physics;
+
 
 namespace DD.Sample {
     public class MyCharacterComponent : Component {
+
+        public float Speed {
+            get;
+            set;
+        }
+
+        public bool IsGrounded {
+            get;
+            set;
+        }
+
         enum State {
             Down,
             Up,
@@ -23,9 +36,13 @@ namespace DD.Sample {
         StateMachine<State, Trigger> sm;
 
         public MyCharacterComponent () {
+            this.Speed = 1.0f;
+            this.IsGrounded = false;
         }
 
         public void Init () {
+            Node.DrawPriority = -1;
+
             var spr = GetComponent<Sprite> ();
 
             var track1 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
@@ -60,8 +77,8 @@ namespace DD.Sample {
             Animation.AddClip (clip2);
             Animation.AddClip (clip3);
             Animation.AddClip (clip4);
-            
-            
+
+
             sm = new StateMachine<State, Trigger> (State.Down);
             clip1.Play ();
 
@@ -105,9 +122,11 @@ namespace DD.Sample {
                 Init ();
                 onlyOnce = true;
             }
-            var label = World.Find (n => n.Name == "Label").GetComponent<Label>();
-            if (label != null) {
-                label.Text = "Keys = " + String.Join(", ", Input.Keys);
+            var label = World.Find (n => n.Name == "Label").GetComponent<Label> ();
+
+            var colMap = World.Find (n => n.Name == "Collision");
+            if (colMap == null) {
+                throw new InvalidOperationException ("Collsion Map is not found");
             }
 
             var x = 0;
@@ -115,17 +134,39 @@ namespace DD.Sample {
 
             foreach (var key in Input.Keys) {
                 switch (key) {
-                    case KeyCode.DownArrow : { y = y + 2; sm.Fire (Trigger.Down) ; break; }
-                    case KeyCode.UpArrow   : { y = y - 2; sm.Fire (Trigger.Up)   ; break; }
-                    case KeyCode.RightArrow: { x = x + 2; sm.Fire (Trigger.Right); break; }
-                    case KeyCode.LeftArrow : { x = x - 2; sm.Fire (Trigger.Left) ; break; }
+                    case KeyCode.DownArrow: { y = y + 1; sm.Fire (Trigger.Down); break; }
+                    case KeyCode.UpArrow: { y = y - 1; sm.Fire (Trigger.Up); break; }
+                    case KeyCode.RightArrow: { x = x + 1; sm.Fire (Trigger.Right); break; }
+                    case KeyCode.LeftArrow: { x = x - 1; sm.Fire (Trigger.Left); break; }
                 }
             }
-            var pos = Node.Translation;
-            var v = new Vector3 (x, y, 0);
-            if (v.Length2 > 0) {
-                pos += v.Normalize () * 4;
+            if (IsGrounded == false) {
+                y = y + 1;
+            }
 
+            var v = new Vector3 (x, y, 0);
+            if (v.Length2 == 0) {
+                return;
+            }
+            
+            v = v.Normalize() * Speed;
+ 
+            var mycol = GetComponent<CollisionShape> ();
+            var next =  Matrix4x4.CreateFromTranslation (v.X, v.Y, 0) *  mycol.Node.GlobalTransform;
+
+            var hit = (from n in colMap.Downwards
+                       let col = n.GetComponent<CollisionShape> ()
+                       where col != null
+                       where Physics2D.Collide (mycol, next, col, col.Node.GlobalTransform)
+                       select n).FirstOrDefault();
+            if (hit == null) {
+                this.IsGrounded = false;
+                label.Text = "Collided = False";
+                Node.Translate(v.X, v.Y, 0);
+            }
+            else {
+                this.IsGrounded = true;
+                label.Text = "Collided = True";
             }
 
         }

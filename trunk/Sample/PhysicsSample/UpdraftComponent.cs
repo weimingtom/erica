@@ -12,7 +12,7 @@ namespace DD.Sample.PhysicsSample {
         }
 
         public override void OnUpdate (long msec) {
-            var col = GetComponent<Collider> ();
+            var col = GetComponent<PhysicsBody> ();
 
             foreach (var c in col.Collisions) {
                 Console.WriteLine ("Apply force to {0}", c.Collidee.Node.Name);

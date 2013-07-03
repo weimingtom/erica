@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyCharacter.cs" />
+    <Compile Include="MyWorld.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="TiledMapSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\MyComponent.cs" />

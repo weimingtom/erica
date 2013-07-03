@@ -147,7 +147,6 @@ namespace DD {
 
         /// <inheritdoc/>
         public override void OnAttached () {
-            Node.SetBoundingBox (0, 0, width, height);
         }
 
         /// <inheritdoc/>

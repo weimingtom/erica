@@ -381,7 +381,7 @@ namespace DD {
         /// </summary>
         /// <param name="translation">平行移動成分</param>
         /// <param name="rotation">回転成分</param>
-        /// <param name="scale">スケーリング成分</param>
+        /// <param name="scale">伸縮成分</param>
         /// <returns>分解できれば true, そうでなければ false</returns>
         public bool Decompress (out Vector3 translation, out Quaternion rotation, out Vector3 scale) {
             var m = this;
@@ -405,6 +405,20 @@ namespace DD {
             scale = new Vector3 (sx, sy, sz);
 
             return true;
+        }
+
+        /// <summary>
+        /// 4x4の行列をTRS成分に分解
+        /// </summary>
+        /// <param name="translation">平行移動成分</param>
+        /// <param name="rotation">回転成分</param>
+        /// <param name="scale">伸縮成分</param>
+        /// <returns>分解できれば true, そうでなければ false</returns>
+        public bool Decompress (out Vector3 translation, out Matrix3x3 rotation, out Vector3 scale) {
+            Quaternion q;
+            var done = Decompress (out translation, out q, out scale);
+            rotation = q.Matrix3x3;
+            return done;
         }
 
         /// <summary>

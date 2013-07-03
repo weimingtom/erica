@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DD {
      /// <summary>
-    /// ベクトル構造体
+    /// 2次元ベクトル構造体
     /// </summary>
     /// <remarks>
     /// 2次元の座標(x,y)を表します。

@@ -37,6 +37,18 @@ namespace DD {
         public static int Clamp (int value, int min, int max) {
             return Math.Max (min, Math.Min (value, max));
         }
-    
+
+        /// <summary>
+        /// AとBのスワップ
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        public static void Swap<T> (ref T a, ref T b) {
+            T tmp;
+            tmp = a;
+            a = b;
+            b = tmp;
+        }
     }
 }

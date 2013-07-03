@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DD {
     /// <summary>
-    /// ベクトル構造体
+    /// 3次元ベクトル構造体
     /// </summary>
     /// <remarks>
     /// 3次元の座標(x,y,z)を表します。
@@ -98,6 +98,13 @@ namespace DD {
                     default: throw new IndexOutOfRangeException ("Index is out of range");
                 }
             }
+        }
+
+        /// <summary>
+        /// ゼロ ベクトル
+        /// </summary>
+        public static Vector3 Zero {
+            get { return new Vector3 (0, 0, 0); }
         }
 
         /// <summary>

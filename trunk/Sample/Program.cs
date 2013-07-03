@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using DD.Physics;
 
 namespace DD.Sample {
     class Program {
@@ -14,12 +15,16 @@ namespace DD.Sample {
 
         private static Node CreateMyCharacter () {
             var spr = new Sprite (new Texture ("media/Character-Gelato.png"), 24, 32);
+            var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
+            col.Offset = new Vector3 (spr.Width / 2, spr.Height / 2, 0);
 
             var cmp = new MyCharacterComponent ();
             var node = new Node ();
             node.Attach (spr);
             node.Attach (cmp);
-            node.SetTranslation (100, 100, 0);
+            node.Attach (col);
+
+            node.SetTranslation (100, 400, 0);
 
             return node;
         }
@@ -29,18 +34,21 @@ namespace DD.Sample {
             var node = new Node ("Label");
 
             node.Attach (label);
-            node.SetTranslation (50, 100, 0);
+            node.SetTranslation (50, 50, 0);
 
             return node;
         }
 
         private static Node CreateWalls () {
-            var spr = new Sprite (new Texture ("media/Rectangle-160x40.png"));
-            var node = new Node ();
-            node.Attach (spr);
-            node.SetTranslation (200, 150, 0);
-            node.SetBoundingBox (0, 0, spr.Width, spr.Height);
+            var spr = new Sprite (new Texture ("media/Rectangle-160x40.png"), 800, 40);
+            var col = new BoxCollisionShape (spr.Width/2, spr.Height/2, 0);
+            col.Offset = new Vector3 (spr.Width / 2, spr.Height / 2, 0);
 
+            var node = new Node ("Collision");
+            node.Attach (spr);
+            node.Attach (col);
+            node.SetTranslation (0, 560, 0);
+            
             return node;
         }
 
@@ -56,7 +64,6 @@ namespace DD.Sample {
             var node4 = CreateWalls ();
 
 
-
             // ----------------------------------------
 
             var wld = new DD.World ("First Script");
@@ -64,6 +71,8 @@ namespace DD.Sample {
             wld.AddChild (node2);
             wld.AddChild (node3);
             wld.AddChild (node4);
+
+            wld.Attach (new MyWorld ());
 
             var director = new Director ();
             director.PushScript (wld);

@@ -21,7 +21,6 @@ namespace DD {
         Node parent;
         List<Node> children;
         List<Component> components;
-        Rectangle bbox;
         bool visible;
         bool clickable;
         sbyte drawPriority;
@@ -46,7 +45,6 @@ namespace DD {
         public Node (string name)
             : base () {
             this.name = name;
-            this.bbox = new Rectangle ();
             this.visible = true;
             this.clickable = true;
              this.parent = null;
@@ -112,20 +110,6 @@ namespace DD {
                 this.opacity = value;
             }
         }
-
-        /// <summary>
-        /// バウンディング ボックス
-        /// </summary>
-        /// <remarks>
-        /// このノードのバウンディング ボックス（ローカル座標系）を返します。
-        /// バウンディング ボックスはノードのクリック領域として利用されます。
-        /// </remarks>
-        public Rectangle BoundingBox {
-            get { return bbox; }
-            set { SetBoundingBox (value.X, value.Y, value.Width, value.Height); }
-        }
-
-
 
         /// <summary>
         /// 表示フラグ
@@ -587,21 +571,7 @@ namespace DD {
                     select (T)comp).FirstOrDefault ();
         }
 
-        /// <summary>
-        /// バウンディング ボックスの変更
-        /// </summary>
-        /// <param name="x">ボックスの左上のX座標</param>
-        /// <param name="y">ボックスの左上のY座標</param>
-        /// <param name="width">ボックスの幅</param>
-        /// <param name="height">ボックスの高さ</param>
-        public void SetBoundingBox (float x, float y, float width, float height) {
-            if (width < 0 || height < 0) {
-                throw new ArgumentException ("Width or Hegiht is invalid");
-            }
-            this.bbox = new Rectangle (x, y, width, height);
-        }
-
-        /// <summary>
+         /// <summary>
         /// 表示優先度の変更
         /// </summary>
         /// 表示優先度を変更します。デフォルトは 0 で -127 が一番優先度が高く、128が一番低いです。

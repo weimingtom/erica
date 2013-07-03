@@ -270,7 +270,7 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_Decompress () {
+        public void Test_Decompress_1 () {
             var t = Matrix4x4.CreateFromTranslation (1, 2, 3);
             var r = Matrix4x4.CreateRotation (45, 0, 0, 1);
             var s = Matrix4x4.CreateFromScale (1, 2, 3);
@@ -284,6 +284,28 @@ namespace DD.UnitTest {
 
             var expectedT = new Vector3 (1, 2, 3);
             var expectedR = new Quaternion (45, 0, 0, 1);
+            var expectedS = new Vector3 (1, 2, 3);
+
+            Assert.AreEqual (expectedT, outT);
+            Assert.AreEqual (expectedR, outR);
+            Assert.AreEqual (expectedS, outS);
+        }
+
+        [TestMethod]
+        public void Test_Decompress_2 () {
+            var t = Matrix4x4.CreateFromTranslation (1, 2, 3);
+            var r = Matrix4x4.CreateRotation (45, 0, 0, 1);
+            var s = Matrix4x4.CreateFromScale (1, 2, 3);
+            var trs = t * r * s;
+
+            Vector3 outT;
+            Matrix3x3 outR;
+            Vector3 outS;
+
+            trs.Decompress (out outT, out outR, out outS);
+
+            var expectedT = new Vector3 (1, 2, 3);
+            var expectedR = new Quaternion (45, 0, 0, 1).Matrix3x3;
             var expectedS = new Vector3 (1, 2, 3);
 
             Assert.AreEqual (expectedT, outT);

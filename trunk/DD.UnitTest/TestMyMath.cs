@@ -21,5 +21,17 @@ namespace DD.UnitTest {
             Assert.AreEqual (15, MyMath.Clamp (15, 10, 20));
             Assert.AreEqual (20, MyMath.Clamp (25, 10, 20));
         }
+
+        [TestMethod]
+        public void Test_Swap () {
+            var a = 100;
+            var b = 200;
+            MyMath.Swap (ref a, ref b);
+
+            Assert.AreEqual (200, a);
+            Assert.AreEqual (100, b);
+
+        }
+
     }
 }

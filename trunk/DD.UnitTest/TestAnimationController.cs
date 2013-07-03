@@ -55,9 +55,10 @@ namespace DD.UnitTest {
             track.AddKeyframe (1, 1.0f);
             track.AddKeyframe (2, 2.0f);
 
-            var clip = new AnimationClip (100, "TestClip");
+            var clip = new AnimationClip (3, "TestClip");
             clip.WrapMode = WrapMode.Once;
             clip.Duration = 3;
+            clip.Play ();
 
             var target = new MyDummyTarget ();
 
@@ -81,9 +82,9 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Float_Loop () {
 
-            var clip = new AnimationClip (100, "TestClip");
+            var clip = new AnimationClip (3, "TestClip");
             clip.WrapMode = WrapMode.Loop;
-            clip.Duration = 3;
+            clip.Play();
 
             var track = new AnimationTrack ("Speed", InterpolationType.Step);
             track.AddKeyframe (1, 1.0f);
@@ -92,9 +93,10 @@ namespace DD.UnitTest {
             var target = new MyDummyTarget ();
 
             clip.AddTrack (target, track);
-
+            
             var anim = new AnimationController ();
             anim.AddClip (clip);
+            
 
             Assert.AreEqual (0.0f, target.Speed);
 
@@ -111,9 +113,10 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Point_Once () {
 
-            var clip = new AnimationClip (100, "TestClip");
+            var clip = new AnimationClip (3, "TestClip");
             clip.WrapMode = WrapMode.Once;
             clip.Duration = 3;
+            clip.Play ();
 
             var track = new AnimationTrack ("Point", InterpolationType.Step);
             track.AddKeyframe (1, new Vector3 (1, 2, 0));
@@ -145,9 +148,10 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_OnAnimate_Point_Loop () {
 
-            var clip = new AnimationClip (100, "TestClip");
+            var clip = new AnimationClip (3, "TestClip");
             clip.WrapMode = WrapMode.Loop;
             clip.Duration = 3;
+            clip.Play ();
 
             var track = new AnimationTrack ("Point", InterpolationType.Step);
             track.AddKeyframe (1, new Vector3 (1, 2, 0));
