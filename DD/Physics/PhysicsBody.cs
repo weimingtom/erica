@@ -21,12 +21,12 @@ namespace DD.Physics {
     /// コライダーは制御方法の違いで (1) ダイナミック, (2) スタティック, (3) キネマティックの3種類があります。
     /// これとは別にトリガー モードと呼ばれる物理作用無しで衝突のみを判定する場合があります。
     /// </remarks>
-    public class Collider : Component {
+    public class PhysicsBody : Component {
 
         #region Field
-        Body body;
         CollisionShape shape;
         PhysicsMaterial mat;
+        Body body;
         int hash;
         uint mask;
         #endregion
@@ -38,7 +38,7 @@ namespace DD.Physics {
         /// <remarks>
         /// デフォルトはスタティック オブジェクト。
         /// </remarks>
-        public Collider () {
+        public PhysicsBody () {
             var wld = Physics2D.GetInstance ().GetWorld () as FarseerPhysics.Dynamics.World;
             if (wld == null) {
                 throw new InvalidOperationException ("Physics world is not created");
@@ -149,7 +149,6 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// このコライダー コンポーネントを（一時的に）有効化または無効化します。
-        /// ボディ作成前は必ず <c>false</c> が返ります。
         /// </remarks>
         public bool IsEnabled {
             get { return body.Enabled; }
@@ -174,6 +173,9 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// このコライダーが重力の影響を受けるかどうかを取得、設定します。
+        /// <note>
+        /// 現在 Farseer ではなぜか機能しません。どうするかは未定です。
+        /// </note>
         /// </remarks>
         public bool IsGravitational {
             get { return !body.IgnoreGravity; }
@@ -185,7 +187,6 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// このコライダーが回転を固定するかどうかを取得、設定します。
-        /// ゲームにとって回転固定は必須です。
         /// </remarks>
         public bool IsFixedRotation {
             get { return body.FixedRotation; }
@@ -246,8 +247,8 @@ namespace DD.Physics {
                 if (value < 0) {
                     throw new ArgumentException ("Mass is invalid");
                 }
-                body.Mass = value;
-                body.ResetMassData ();
+                this.body.Mass = value;
+                this.body.ResetMassData ();
             }
         }
 
@@ -322,7 +323,7 @@ namespace DD.Physics {
                     XnaVector2 normal;               // A --> B
                     edge.Contact.GetWorldManifold (out normal, out points);
 
-                    var collidee = ((edge.Contact.FixtureA.UserData != this) ? edge.Contact.FixtureA.UserData : edge.Contact.FixtureB.UserData) as Collider;
+                    var collidee = ((edge.Contact.FixtureA.UserData != this) ? edge.Contact.FixtureA.UserData : edge.Contact.FixtureB.UserData) as PhysicsBody;
 
                     // DDでは法線は衝突相手から自分を向く方と定義しているので
                     // Bが衝突相手だった場合は反転が必要
@@ -366,9 +367,10 @@ namespace DD.Physics {
             if (shape == null) {
                 throw new ArgumentNullException ("Shape is null");
             }
+            var p2d = Physics2D.GetInstance ();
 
             this.shape = shape;
-            this.body.CreateFixture (shape.CreateShape (), this);
+            this.body.CreateFixture (shape.CreateShapeBody (p2d.PPM), this);
 
             // コリジョン イベントは Body ではなく Fixture にセットされるので、
             // 形状を定義した後にセットする必要がある。
@@ -465,7 +467,7 @@ namespace DD.Physics {
         private bool CollisionEnterEventHandler (Fixture fixtureA, Fixture fixtureB, Contact contact) {
             var phy = Physics2D.GetInstance ();
 
-            var collidee = ((contact.FixtureA.UserData != this) ? contact.FixtureA.UserData : contact.FixtureB.UserData) as Collider;
+            var collidee = ((contact.FixtureA.UserData != this) ? contact.FixtureA.UserData : contact.FixtureB.UserData) as PhysicsBody;
 
             if (((this.CollisionMask & collidee.GroupID) == 0) || ((collidee.CollisionMask & this.GroupID) == 0)) {
                 return false;
@@ -516,7 +518,7 @@ namespace DD.Physics {
         /// <param name="fixtureA">フィクスチャーA</param>
         /// <param name="fixtureB">フィクスチャーB</param>
         private void CollisionExitEventHandler (Fixture fixtureA, Fixture fixtureB) {
-            var collidee = ((fixtureA.UserData != this) ? fixtureA.UserData : fixtureB.UserData) as Collider;
+            var collidee = ((fixtureA.UserData != this) ? fixtureA.UserData : fixtureB.UserData) as PhysicsBody;
             foreach (var comp in Node.Components) {
                 comp.OnCollisionExit (collidee);
             }

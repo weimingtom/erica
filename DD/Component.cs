@@ -246,7 +246,7 @@ namespace DD {
         /// <remarks>
         /// 物理エンジンのコリジョン消失処理を行う仮想関数のエントリーポイント。
         /// </remarks>
-        public virtual void OnCollisionExit (Physics.Collider collider) {
+        public virtual void OnCollisionExit (Physics.PhysicsBody collider) {
         }
 
         /// <summary>

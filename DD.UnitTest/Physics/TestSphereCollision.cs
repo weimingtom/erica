@@ -10,9 +10,21 @@ namespace DD.UnitTest.Physics {
     public class TestSphereCollision {
         [TestMethod]
         public void Test_New () {
-            var sph = new SphereCollider (1.0f);
+            var sph = new SphereCollisionShape (1.0f);
 
+            Assert.AreEqual (ShapeType.Sphere, sph.Type);
             Assert.AreEqual (1, sph.Radius);
         }
+
+        [TestMethod]
+        public void Test_CreateShape () {
+            var sph = new SphereCollisionShape (1.0f);
+            sph.Offset = new Vector3 (1, 2, 3);
+
+            Assert.IsNotNull (sph.CreateShapeBody (1.0f));
+            Assert.AreEqual (new Vector3 (1, 2, 3), sph.Offset);
+        }
+
+
     }
 }

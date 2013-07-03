@@ -9,7 +9,7 @@ namespace DD.Physics {
     /// </summary>
     /// <remarks>
     /// 物理特性を保存するマテリアル クラス。
-    /// このマテリアルを <see cref="Collider"/> にセットすると、
+    /// このマテリアルを <see cref="PhysicsBody"/> にセットすると、
     /// 物理オブジェクトとして計算の対象になります。
     /// </remarks>
     public class PhysicsMaterial : Material {

@@ -265,30 +265,6 @@ namespace DD.UnitTest {
             Assert.AreEqual (null, nod1.Find (x => x.UserID == 4));
         }
     
-
-        [TestMethod]
-        public void Test_SetBoundingBox () {
-            var node = new Node ();
-            node.SetBoundingBox (1, 2, 3, 4);
-
-            Assert.AreEqual (1, node.BoundingBox.X);
-            Assert.AreEqual (2, node.BoundingBox.Y);
-            Assert.AreEqual (3, node.BoundingBox.Width);
-            Assert.AreEqual (4, node.BoundingBox.Height);
-            Assert.AreEqual (4, node.BoundingBox.X2);
-            Assert.AreEqual (6, node.BoundingBox.Y2);
-
-            node.BoundingBox = new Rectangle (5, 6, 7, 8);
-
-            Assert.AreEqual (5, node.BoundingBox.X);
-            Assert.AreEqual (6, node.BoundingBox.Y);
-            Assert.AreEqual (7, node.BoundingBox.Width);
-            Assert.AreEqual (8, node.BoundingBox.Height);
-            Assert.AreEqual (12, node.BoundingBox.X2);
-            Assert.AreEqual (14, node.BoundingBox.Y2);
-        }
-
-
         [TestMethod]
         public void Test_GlobalTransform () {
             var nod1 = new Node ();

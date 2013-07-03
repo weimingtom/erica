@@ -245,7 +245,6 @@ namespace DD {
                         
                         var tileNode = new Node (layer.Name + "[" + x + "," + y + "]");
                         tileNode.SetTranslation (x * tileWidth, y * tileHeight, 0);
-                        tileNode.SetBoundingBox (0, 0, tileWidth, tileHeight);
                         tileNode.Attach (spr);
 
                         layerNode.AddChild (tileNode);
@@ -270,8 +269,7 @@ namespace DD {
                     var objNode = new Node ();
                     objNode.Name = obj.Name;
                     objNode.SetTranslation (obj.X, obj.Y, 0);
-                    objNode.SetBoundingBox (0, 0, obj.Width, obj.Height);
-
+             
                     var type = Type.GetType (obj.Type);
                     if (type != null) {
                         var comp = Activator.CreateInstance (type) as Component;

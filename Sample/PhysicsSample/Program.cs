@@ -29,24 +29,24 @@ namespace DD.Sample.PhysicsSample {
             var spr4 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
             spr4.SetOffset (-spr4.Width / 2, -spr4.Height / 2);
 
-            var col1 = new Collider ();
+            var col1 = new PhysicsBody ();
             col1.Type = ColliderType.Static;
-            col1.SetShape (new BoxCollider (spr1.Width, spr1.Height, 0));
+            col1.SetShape (new BoxCollisionShape (spr1.Width, spr1.Height, 0));
             col1.SetMaterial (new PhysicsMaterial ());
        
-            var col2 = new Collider ();
+            var col2 = new PhysicsBody ();
             col2.Type = ColliderType.Static;
-            col2.SetShape (new BoxCollider (spr2.Width, spr2.Height, 0));
+            col2.SetShape (new BoxCollisionShape (spr2.Width, spr2.Height, 0));
             col2.SetMaterial (new PhysicsMaterial ());
        
-            var col3 = new Collider ();
+            var col3 = new PhysicsBody ();
             col3.Type = ColliderType.Static;
-            col3.SetShape (new BoxCollider (spr3.Width, spr3.Height, 0));
+            col3.SetShape (new BoxCollisionShape (spr3.Width, spr3.Height, 0));
             col3.SetMaterial (new PhysicsMaterial ());
        
-            var col4 = new Collider ();
+            var col4 = new PhysicsBody ();
             col4.Type = ColliderType.Static;
-            col4.SetShape (new BoxCollider (spr4.Width, spr4.Height, 0));
+            col4.SetShape (new BoxCollisionShape (spr4.Width, spr4.Height, 0));
             col4.SetMaterial (new PhysicsMaterial ());
        
             var node1 = new Node ("Wall1");
@@ -87,15 +87,15 @@ namespace DD.Sample.PhysicsSample {
             var spr2 = new Sprite (new Texture ("media/Moon.png"));
             spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
 
-            var col1 = new Collider ();
+            var col1 = new PhysicsBody ();
             col1.Type = ColliderType.Dynamic;
-            col1.SetShape (new SphereCollider (spr1.Width / 2));
+            col1.SetShape (new SphereCollisionShape (spr1.Width / 2));
             col1.SetMaterial (new PhysicsMaterial ());
 
 
-            var col2 = new Collider ();
+            var col2 = new PhysicsBody ();
             col2.Type = ColliderType.Dynamic;
-            col2.SetShape (new SphereCollider (spr2.Width / 2));
+            col2.SetShape (new SphereCollisionShape (spr2.Width / 2));
             col2.SetMaterial (new PhysicsMaterial ());
             
             var cmp1 = new MyComponent ();
@@ -103,7 +103,6 @@ namespace DD.Sample.PhysicsSample {
             //var cmp2 = new MyComponent ();
 
             var node1 = new Node ("Ball1");
-            node1.SetBoundingBox (-spr1.Width / 2, -spr1.Height / 2, spr1.Width, spr1.Height);
             node1.Translate (220, 200, 0);
             node1.Attach (spr1);
             node1.Attach (col1);
@@ -112,7 +111,6 @@ namespace DD.Sample.PhysicsSample {
             node1.GroupID = 1;
 
             var node2 = new Node ("Ball2");
-            node2.SetBoundingBox (-spr2.Width / 2, -spr2.Height / 2, spr2.Width, spr2.Height);
             node2.Translate (200, 100, 0);
             node2.Attach (spr2);
             node2.Attach (col2);
@@ -130,9 +128,9 @@ namespace DD.Sample.PhysicsSample {
             var spr = new Sprite(new Texture("media/Arrow.png"));
             spr.SetOffset(-spr.Width/2, -spr.Height/2);
 
-            var col = new Collider ();
+            var col = new PhysicsBody ();
             col.Type = ColliderType.Static;
-            col.SetShape (new BoxCollider (spr.Width*2, 600, 0));
+            col.SetShape (new BoxCollisionShape (spr.Width*2, 600, 0));
             col.SetMaterial (new PhysicsMaterial ());
             col.IsTrigger = true;
 

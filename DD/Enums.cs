@@ -6,6 +6,29 @@ using System.Text;
 namespace DD {
 
     /// <summary>
+    /// シェイプ タイプ
+    /// </summary>
+    public enum ShapeType {
+        /// <summary>
+        /// 未定義（使用しない）
+        /// </summary>
+        Undefined,
+
+        /// <summary>
+        /// 箱形
+        /// </summary>
+        Box,
+
+        /// <summary>
+        /// 球形
+        /// </summary>
+        Sphere,
+    }
+
+
+
+
+    /// <summary>
     /// キー コード
     /// </summary>
     /// <remarks>

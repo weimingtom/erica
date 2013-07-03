@@ -8,6 +8,7 @@ using System.Reflection;
 using SFML.Audio;
 using SFML.Window;
 using SFML.Graphics;
+using DD.Physics;
 
 namespace DD {
     /// <summary>
@@ -121,6 +122,32 @@ namespace DD {
         }
 
         /// <summary>
+        /// スクリーン上の1点を指定してノードの検出
+        /// </summary>
+        /// <remarks>
+        /// スクリーン上の1点（典型的にはマウスの位置）を指定して対象ノード <paramref name="node"/> 以下をピックします。
+        /// ピック対象になるのは <see cref="CollisionShape"/> を保有するノードだけです。
+        /// 結果はピックされたすべてのノードを <see cref="Node.DrawPriority"/> の順番でソートして返します。
+        /// 1ノードもヒットしなかった場合カウント0がかえり<c>null</c> を返す事はありません。
+        /// </remarks>
+        /// <param name="node">ピック対象のノード（これ以下すべて）</param>
+        /// <param name="x">ピックするスクリーン上の点のX（ピクセル座標）</param>
+        /// <param name="y">ピックするスクリーン上の点のY（ピクセル座標）</param>
+        /// <returns></returns>
+        public static IEnumerable<Node> Pick (Node node, float x, float y) {
+            if (node == null) {
+                return new Node[0];
+            }
+            var point = new Vector2 (x, y);
+
+            return from n in node.Downwards
+                   let col = n.GetComponent<CollisionShape> ()
+                   where (col != null) && Physics2D.Contain (col, col.Node.GlobalTransform, point)
+                   orderby n.DrawPriority
+                   select n;
+        }
+
+        /// <summary>
         /// シーンの描画
         /// </summary>
         /// <remarks>
@@ -138,7 +165,7 @@ namespace DD {
 
             // 全ノードの描画
             var nodes = from node in world.Downwards
-                        where node.Upwards.Aggregate(true, (x,y) =>  x & y.Visibility) == true
+                        where node.Upwards.Aggregate (true, (x, y) => x & y.Visibility) == true
                         orderby node.DrawPriority descending
                         select node;
             foreach (var node in nodes) {
@@ -315,27 +342,24 @@ namespace DD {
         /// <param name="sender">ウィンドウ</param>
         /// <param name="clicked">マウス ボタン イベント引数</param>
         private void OnMouseButtonPressedEventHandler (object sender, MouseButtonEventArgs clicked) {
-            foreach (var node in workingScript.Downwards.Reverse ()) {
 
-                this.keyBuffer.Add (clicked.Button.ToDD ());
+            this.keyBuffer.Add (clicked.Button.ToDD ());
 
-                var x = (float)clicked.X;
-                var y = (float)clicked.Y;
-                var z = 0f;
-                node.LocalTransform.Apply (ref x, ref y, ref z);
+            var x = clicked.X;
+            var y = clicked.Y;
 
-                if (node.BoundingBox.Contain (x, y)) {
-                    foreach (var comp in node.Components) {
-                        switch (clicked.Button) {
-                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)x, (int)y); break;
-                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)x, (int)y); break;
-                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)x, (int)y); break;
-                            default: break;
-                        }
-                        continue;
+            var picked = Graphics2D.Pick (workingScript, clicked.X, clicked.Y);
+            foreach (var node in picked) {
+                foreach (var comp in node.Components) {
+                    switch (clicked.Button) {
+                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)x, (int)y); break;
+                        default: break;
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -347,24 +371,21 @@ namespace DD {
 
             this.keyBuffer.Remove (released.Button.ToDD ());
 
-            foreach (var node in workingScript.Downwards.Reverse ()) {
-                var x = (float)released.X;
-                var y = (float)released.Y;
-                var z = 0f;
-                node.LocalTransform.Apply (ref x, ref y, ref z);
-                if (node.BoundingBox.Contain (x, y)) {
-                    foreach (var comp in node.Components) {
-                        switch (released.Button) {
-                            case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)x, (int)y); break;
-                            case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)x, (int)y); break;
-                            case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)x, (int)y); break;
-                            default: break;
-                        }
+            var x = released.X;
+            var y = released.Y;
+            var picked = Graphics2D.Pick (workingScript, released.X, released.Y);
+            foreach (var node in picked) {
+                foreach (var comp in node.Components) {
+                    switch (released.Button) {
+                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)x, (int)y); break;
+                        default: break;
                     }
-                    continue;
                 }
-
             }
+
+
         }
 
         /// <summary>
@@ -376,18 +397,7 @@ namespace DD {
 
             this.mouse = new Vector2 (move.X, move.Y);
 
-            var hit = (Node)null;
-
-            foreach (var node in workingScript.Downwards.Reverse ()) {
-                var x = (float)move.X;
-                var y = (float)move.Y;
-                var z = 0f;
-                node.LocalTransform.Apply (ref x, ref y, ref z);
-                if (node.BoundingBox.Contain (x, y)) {
-                    hit = node;
-                    break;
-                }
-            }
+            var hit = Graphics2D.Pick (workingScript, move.X, move.Y).FirstOrDefault();
 
             if (hit != prevHit) {
                 if (prevHit != null) {

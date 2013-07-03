@@ -18,6 +18,14 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Vector3 () {
+
+            Assert.AreEqual (0f, Vector3.Zero.X);
+            Assert.AreEqual (0f, Vector3.Zero.Y);
+            Assert.AreEqual (0f, Vector3.Zero.Z);
+        }
+
+        [TestMethod]
         public void Test_Indexer () {
             var p = new Vector3 (1, 2, 3);
 

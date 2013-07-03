@@ -10,7 +10,7 @@ namespace DD.UnitTest.Physics {
     public class TestCollider {
         [TestMethod]
         public void Test_New () {
-            var col = new Collider ();
+            var col = new PhysicsBody ();
 
             Assert.AreEqual (true, col.IsStatic);
             Assert.AreEqual (false, col.IsDynamic);
@@ -30,8 +30,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetEnable () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.IsEnabled = false;
@@ -43,8 +43,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetGravitational () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.IsGravitational = false;
@@ -56,8 +56,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetFixRotation () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.IsFixedRotation = false;
@@ -69,8 +69,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetType () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.Type = ColliderType.Kinematic;
@@ -85,8 +85,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetMask () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.CollisionMask = 0x12345678u;
@@ -95,8 +95,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetBullet () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.IsBullet = false;
@@ -108,8 +108,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetTrigger () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
 
             col.IsTrigger = true;
@@ -121,8 +121,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetLinearVelocity () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
             col.Type = ColliderType.Kinematic;
 
@@ -132,8 +132,8 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetAngularVelocity () {
-            var col = new Collider ();
-            col.Shape = new SphereCollider (1.0f);
+            var col = new PhysicsBody ();
+            col.Shape = new SphereCollisionShape (1.0f);
             col.Material = new PhysicsMaterial ();
             col.Type = ColliderType.Kinematic;
 

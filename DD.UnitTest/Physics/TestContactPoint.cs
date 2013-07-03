@@ -10,7 +10,7 @@ namespace DD.UnitTest.Physics {
     public class TestCollision {
         [TestMethod]
         public void Test_New () {
-            var collidee = new Collider ();
+            var collidee = new PhysicsBody ();
             var p = new Vector3 (1, 2, 3);
             var n = new Vector3 (4, 5, 6);
             var col = new Collision (collidee, p, n);

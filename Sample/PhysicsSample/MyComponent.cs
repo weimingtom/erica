@@ -49,7 +49,7 @@ namespace DD.Sample.PhysicsSample {
         }
 
          /// <inheritdoc/>
-        public override void OnCollisionExit (Collider col) {
+        public override void OnCollisionExit (PhysicsBody col) {
             Console.WriteLine (Node.Name + " : Collision Exit");
         }
 

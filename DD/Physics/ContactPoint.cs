@@ -19,10 +19,10 @@ namespace DD.Physics {
         /// メモ：法線はここで正規化した方が良い？
         /// 現状では何もしていない。
         /// </remarks>
-        /// <param name="collidee">衝突した相手（<see cref="Collider"/> オブジェクト）</param>
+        /// <param name="collidee">衝突した相手（<see cref="PhysicsBody"/> オブジェクト）</param>
         /// <param name="point">衝突地点（ローカル座標）</param>
         /// <param name="normal">法線（ローカル座標）</param>
-        internal Collision (Collider collidee, Vector3 point, Vector3 normal)
+        internal Collision (PhysicsBody collidee, Vector3 point, Vector3 normal)
             : this () {
             this.Normal = normal;
             this.Point = point;
@@ -33,9 +33,9 @@ namespace DD.Physics {
         /// 衝突した相手
         /// </summary>
         /// <remarks>
-        /// 衝突の原因になった相手コライダー <see cref="Collider"/> です。
+        /// 衝突の原因になった相手コライダー <see cref="PhysicsBody"/> です。
         /// </remarks>
-        public Collider Collidee { get; private set; }
+        public PhysicsBody Collidee { get; private set; }
 
         /// <summary>
         /// 衝突地点
