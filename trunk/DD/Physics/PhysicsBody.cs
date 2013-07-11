@@ -21,7 +21,7 @@ namespace DD.Physics {
     /// コライダーは制御方法の違いで (1) ダイナミック, (2) スタティック, (3) キネマティックの3種類があります。
     /// これとは別にトリガー モードと呼ばれる物理作用無しで衝突のみを判定する場合があります。
     /// </remarks>
-    public class PhysicsBody : Component {
+    public class PhysicsBody : Component, IDisposable {
 
         #region Field
         CollisionShape shape;
@@ -46,10 +46,11 @@ namespace DD.Physics {
             this.mask = 0xffffffff;
             this.shape = null;
             this.mat = null;
-            this.hash = 0;
+            this.hash = -0x12345678;
 
+            // 本当はアタッチされるタイミングで Box2D.World に追加したいが、
+            // 無理みたいなので・・・
             this.body = new Body (wld, this);
- 
         }
         #endregion
 
@@ -460,16 +461,24 @@ namespace DD.Physics {
         /// <summary>
         /// コリジョン発生イベント ハンドラー
         /// </summary>
-        /// <param name="fixtureA">フィクスチャーA</param>
-        /// <param name="fixtureB">フィクスチャーB</param>
-        /// <param name="contact">(Farseerの)コンタクト情報</param>
+        /// <param name="fixtureA">フィクスチャーA （自分）</param>
+        /// <param name="fixtureB">フィクスチャーB （衝突相手）</param>
+        /// <param name="contact">コンタクト情報</param>
         /// <returns></returns>
         private bool CollisionEnterEventHandler (Fixture fixtureA, Fixture fixtureB, Contact contact) {
             var phy = Physics2D.GetInstance ();
 
-            var collidee = ((contact.FixtureA.UserData != this) ? contact.FixtureA.UserData : contact.FixtureB.UserData) as PhysicsBody;
-
-            if (((this.CollisionMask & collidee.GroupID) == 0) || ((collidee.CollisionMask & this.GroupID) == 0)) {
+            var a = fixtureA.UserData as PhysicsBody;
+            var b = fixtureB.UserData as PhysicsBody;
+            if (a.body == null || b.body == null) {
+                // メモ：
+                // Bodyを Dispose してもただちに無効化されるわけではなく、
+                // 同ステップではイベント ハンドラーも含めてまだ有効。
+                // ここでチェックしてお帰りいただく必要がある。
+                return false;
+            }
+                        
+            if (((a.CollisionMask & b.GroupID) == 0) || ((b.CollisionMask & a.GroupID) == 0)) {
                 return false;
             }
             
@@ -477,18 +486,11 @@ namespace DD.Physics {
             FixedArray2<XnaVector2> points;
             contact.GetWorldManifold (out normal, out points);
 
-            // DDでは法線は衝突相手から自分を向く方と定義しているので
-            // Bが衝突相手だった場合は反転が必要
-            if (collidee == contact.FixtureB.UserData) {
-                normal = -normal;
-            }
-            normal.Normalize ();
-
             var count = contact.Manifold.PointCount;
             if (count == 0 && contact.IsTouching ()) {
-                // センサー（トリガー）モード
+                // センサー（トリガー）モードの時、
                 // count=0 かつ Manifold は未定義
-                var cp = new Collision (collidee, new Vector3 (0, 0, 0), new Vector3 (0, 0, 0));
+                var cp = new Collision (b, new Vector3 (0, 0, 0), new Vector3 (0, 0, 0));
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
@@ -496,7 +498,7 @@ namespace DD.Physics {
             else if (count == 1) {
                 var p = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
                 var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new Collision (collidee, p, n);
+                var cp = new Collision (b, p, n);
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
@@ -504,11 +506,12 @@ namespace DD.Physics {
             else if (count == 2) {
                 var p = new Vector3 ((points[0].X + points[1].X) / 2.0f * phy.PPM, (points[0].Y + points[1].Y) / 2.0f * phy.PPM, 0);
                 var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new Collision (collidee, p, n);
+                var cp = new Collision (b, p, n);
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
             }
+
             return true;
         }
 
@@ -533,13 +536,23 @@ namespace DD.Physics {
 
             UpdateMaterial ();
 
-            var x = body.WorldCenter.X * phy.PPM;
-            var y = body.WorldCenter.Y * phy.PPM;
+            var x = body.GetWorldPoint(XnaVector2.Zero).X * phy.PPM;
+            var y = body.GetWorldPoint (XnaVector2.Zero).Y * phy.PPM;
             var z = 0f;
             var angle = (body.Rotation / (float)Math.PI * 180);
 
             Node.SetGlobalTranslation (x, y, z);
             Node.SetGlobalRotation (angle, 0, 0, 1);
+        }
+
+
+        public void Dispose () {
+            if (body != null) {
+                body.OnCollision -= new OnCollisionEventHandler (CollisionEnterEventHandler);
+                body.OnSeparation -= new OnSeparationEventHandler (CollisionExitEventHandler);
+                body.Dispose ();
+                this.body = null;
+            }
         }
     }
 }

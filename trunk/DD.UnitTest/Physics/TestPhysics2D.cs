@@ -168,6 +168,90 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (false, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
         }
 
+        /// <summary>
+        /// Sphere-Sphere距離のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Distance_1 () {
+            var shape1 = new SphereCollisionShape (1);
+            var shape2 = new SphereCollisionShape (1);
+
+            // overlap            
+            shape2.SetOffset (1, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+
+            // touch          
+            shape2.SetOffset (2, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+
+
+            // sepalate 
+            shape2.SetOffset (3, 0, 0);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+        }
+
+        /// <summary>
+        /// Box-Box距離のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Distance_2 () {
+            var shape1 = new BoxCollisionShape (1,1,1);
+            var shape2 = new BoxCollisionShape (1,1,1);
+
+            // overlap            
+            shape2.SetOffset (1, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+
+            // touch
+            shape2.SetOffset (2, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+
+
+            // sepalate
+            shape2.SetOffset (3, 0, 0);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+        }
+
+        /// <summary>
+        /// 変換行列（平行移動）を伴う距離のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Distance_3 () {
+            var shape1 = new SphereCollisionShape (1);
+            var shape2 = new SphereCollisionShape (1);
+            var tra1 = Matrix4x4.Identity;
+            var tra2 = Matrix4x4.Identity;
+
+            // overlap           
+            tra2 = Matrix4x4.CreateFromTranslation (1, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+
+            // touch          
+            tra2 = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+
+
+            // sepalate 
+            tra2 = Matrix4x4.CreateFromTranslation (3, 0, 0);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+        }
+
+        /// <summary>
+        /// 変換行列（回転）を伴う距離のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Distance_4 () {
+            var shape1 = new SphereCollisionShape (1);
+            var shape2 = new BoxCollisionShape (1,1,1);
+            var tra1 = Matrix4x4.Identity;
+            var tra2 = Matrix4x4.Identity;
+
+            var T = Matrix4x4.CreateFromTranslation (3, 0, 0);
+            var R = Matrix4x4.CreateFromRotation(45, 0,0,1);
+            tra2 = T*R;
+            Assert.AreEqual (0.586f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+
+        }
 
     }
 }

@@ -358,12 +358,15 @@ namespace DD {
         /// <summary>
         /// 回転をあらわす4x4の行列の作成
         /// </summary>
-        /// <param name="angle">回転角度[0,360)</param>
+        /// <param name="angle">回転角度 (in degree)</param>
         /// <param name="ax">回転軸X</param>
         /// <param name="ay">回転軸Y</param>
         /// <param name="az">回転軸Z</param>
         /// <returns></returns>
-        public static Matrix4x4 CreateRotation (float angle, float ax, float ay, float az) {
+        public static Matrix4x4 CreateFromRotation (float angle, float ax, float ay, float az) {
+            if (angle != 0 && (ax == 0 && ay == 0 && az == 0)) {
+                throw new ArgumentException ("Rotation axis is invalid");
+            }
             return CreateFromRotation (new Quaternion (angle, ax, ay, az));
         }
 
@@ -441,6 +444,19 @@ namespace DD {
             x /= w;
             y /= w;
             z /= w;
+        }
+
+        public Vector3 Apply (float x, float y, float z) {
+            Apply (ref x, ref y, ref z);
+            return new Vector3 (x, y, z);
+        }
+
+        public Vector3 ApplyVector (float x, float y, float z) {
+            Vector3 T;
+            Matrix3x3 R;
+            Vector3 S;
+            Decompress (out T, out R, out S);
+            return R * new Vector3 (x, y, z);
         }
 
         /// <inheritdoc/>

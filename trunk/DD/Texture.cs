@@ -89,6 +89,7 @@ namespace DD {
             this.height = (int)this.data.Size.Y;
 
             this.data.Repeated = true;
+
         }
 
         #endregion

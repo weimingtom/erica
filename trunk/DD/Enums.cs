@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DD {
 
+
     /// <summary>
     /// シェイプ タイプ
     /// </summary>

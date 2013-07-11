@@ -229,6 +229,8 @@ namespace DD {
 
         }
 
+
+
         /// <summary>
         /// 2つの行列のかけ算
         /// </summary>

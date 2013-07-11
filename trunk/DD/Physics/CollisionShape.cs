@@ -19,7 +19,6 @@ namespace DD.Physics {
         #region Field
         ShapeType type;
         Vector3 offset;
-        //FarseerPhysics.Collision.Shapes.Shape shape;
         #endregion
 
         /// <summary>

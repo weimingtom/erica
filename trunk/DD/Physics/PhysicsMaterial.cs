@@ -14,6 +14,11 @@ namespace DD.Physics {
     /// </remarks>
     public class PhysicsMaterial : Material {
         #region Field
+        float density;
+        float friction;
+        float restitutionf;
+        float linearDamping;
+        float angulerDamping;
         #endregion
 
         #region Constructor
@@ -36,7 +41,10 @@ namespace DD.Physics {
         /// <remarks>
         /// 現在は 1000 (Kg/m^3) に固定です（=水）。
         /// </remarks>
-        public float Density { get; set; }
+        public float Density {
+            get { return density; }
+            set { this.density = value; }
+        }
 
         /// <summary>
         /// 摩擦係数
@@ -44,7 +52,11 @@ namespace DD.Physics {
         /// <remarks>
         /// [0,1]です。
         /// </remarks>
-        public float Friction { get; set; }
+        public float Friction {
+            get { return friction; }
+            set { this.friction = value; }
+        }
+
 
         /// <summary>
         /// 反発係数
@@ -52,7 +64,10 @@ namespace DD.Physics {
         /// <remarks>
         /// [0,1]です。
         /// </remarks>
-        public float Restitution { get; set; }
+        public float Restitution {
+            get { return restitutionf; }
+            set { this.restitutionf = value; }
+        }
 
         /// <summary>
         /// 速度減衰定数
@@ -61,7 +76,10 @@ namespace DD.Physics {
         /// [0,1]です。
         /// </remarks>
 
-        public float LinearDamping { get; set; }
+        public float LinearDamping {
+            get { return linearDamping; }
+            set { this.linearDamping = value; }
+        }
 
 
         /// <summary>
@@ -70,8 +88,11 @@ namespace DD.Physics {
         /// <remarks>
         /// [0,1]です。
         /// </remarks>
-        public float AngulerDamping { get; set; }
-        
+        public float AngulerDamping {
+            get { return angulerDamping; }
+            set { this.angulerDamping = value; }
+        }
+
         #endregion
 
     }

@@ -17,18 +17,19 @@ namespace DD {
         /// ハッシュ値の取得
         /// </summary>
         /// <remarks>
-        /// すべてのフィールドを元にハッシュ値を計算します。
+        /// すべてのパブリック プロパティを元にハッシュ値を計算します（プライベートおよびフィールド値は考慮しません）。
         /// ハッシュ値はこのオブジェクトが変更されたかどうかを判定するのに使用します。
         /// <see cref="object.GetHashCode"/> とは全く異なる概念です。
         /// リフレクションを使用する比較的遅いメソッドなので、
-        /// 派生クラスはこのメソッドをオーバーライドして独自の実装を提供する事が望ましい。
+        /// 派生クラスはこのメソッドをオーバーライドして独自の実装を提供して下さい。
         /// </remarks>
         /// <returns>ハッシュ値</returns>
         public int GetHashValue () {
             int hash = 0;
             var type = this.GetType();
-            foreach (var field in type.GetFields()) {
-                var value = field.GetValue (this);
+            
+            foreach (var prop in type.GetProperties()) {
+                var value = prop.GetValue (this, null);
                 hash = hash ^ value.GetHashCode ();
             }
             return hash;

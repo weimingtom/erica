@@ -4,16 +4,10 @@ using System.Linq;
 using System.Text;
 using Stateless;
 using DD.Physics;
-using DD;
 
-namespace DD.Sample {
+
+namespace DD.PlatformSample {
     public class MyCharacterComponent : Component {
-
-        StateMachine<State, Trigger> sm;
-        SoundClip jumpSound;
-        int miss;
-        int invincibleTime;
-
 
         public float Speed {
             get;
@@ -41,33 +35,15 @@ namespace DD.Sample {
             Down,
             Up,
             Right,
-            Left,
+            Left
         }
 
+        StateMachine<State, Trigger> sm;
 
         public MyCharacterComponent () {
             this.Speed = 4.0f;
             this.IsGrounded = false;
             this.gravitationalVelocity = new Vector3 (0, 1, 0);
-            this.jumpSound = new SoundClip ("media/Jump.ogg");
-        }
-
-        public void Hit () {
-            if (invincibleTime > 0) {
-                return;
-            }
-
-            this.invincibleTime = 30;
-            miss += 1;
-            var label = World.Find (x => x.Name == "Label").GetComponent<Label> (3);
-            label.Text = "Miss : " + miss;
-
-            var node = MyPopupNumber.CreateMyPopupNumber ("MISS!", -5);
-            node.Translate (-10, -5, 0);
-            Node.AddChild (node);
-
-            var clip = Resource.GetSoundClip ("media/Cancel.ogg", false);
-            clip.Play ();
         }
 
         public void Init () {
@@ -143,7 +119,6 @@ namespace DD.Sample {
                 .Ignore (Trigger.Left)
                 .OnExit (x => clip4.Stop ())
                 .OnEntry (x => clip4.Play ());
-
         }
 
         bool onlyOnce;
@@ -154,11 +129,9 @@ namespace DD.Sample {
                 onlyOnce = true;
                 this.gravitationalVelocity = new Vector3 (0, 1, 0);
             }
-            this.invincibleTime += -1;
-
             var label1 = World.Find (n => n.Name == "Label").GetComponent<Label> (0);
             var label2 = World.Find (n => n.Name == "Label").GetComponent<Label> (1);
-            var map = World.Find (n => n.Name == "Platform");
+            var map = World.Find (n => n.Name == "Collision");
             var body = GetComponent<CollisionShape> (0);
             var foot = GetComponent<CollisionShape> (1);
             var footTra = foot.Node.GlobalTransform;
@@ -171,7 +144,7 @@ namespace DD.Sample {
                            let col = n.GetComponent<CollisionShape> ()
                            let colTra = n.GlobalTransform
                            where col != null && Physics2D.Collide (foot, footTra, col, colTra)
-                           let colRight = colTra.ApplyVector (1, 0, 0)
+                           let colRight = colTra.ApplyVector(1,0,0)
                            select new { n, right = colRight }).FirstOrDefault ();
                 if (hit != null) {
                     label2.Text = "Hit: right = " + hit.right;
@@ -198,11 +171,8 @@ namespace DD.Sample {
                             break;
                         }
                     case KeyCode.Space: {
-                            if (Input.GetKeyDown (KeyCode.Space)) {
-                                this.IsGrounded = false;
-                                this.gravitationalVelocity = new Vector3 (0, -11, 0);
-                                jumpSound.Play ();
-                            }
+                            this.IsGrounded = false;
+                            this.gravitationalVelocity = new Vector3 (0, -10, 0);
                             break;
                         }
                 }
@@ -211,7 +181,6 @@ namespace DD.Sample {
                 x *= 3;
             }
 
-            // ユーザーによる操作
             var v = x * right * Speed;
             if (v.Length2 > 0) {
                 var currTra = Node.GlobalTransform;
@@ -235,7 +204,6 @@ namespace DD.Sample {
                 }
             }
 
-            // 重力による落下
             v = gravitationalVelocity;
             if (true) {
                 var currTra = Node.GlobalTransform;

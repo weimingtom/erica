@@ -42,7 +42,7 @@ namespace DD {
             this.height = height;
             this.texs = new List<Texture> ();
             this.active = null;
-            this.offset = new Vector2(0, 0);
+            this.offset = new Vector2 (0, 0);
             this.color = Color.White;
             this.texOffset = new Vector2 (0, 0);
         }
@@ -60,9 +60,9 @@ namespace DD {
             }
             this.width = texture.Width;
             this.height = texture.Height;
-            this.texs = new List<Texture> () {texture};
+            this.texs = new List<Texture> () { texture };
             this.active = texture;
-            this.offset = new Vector2(0,0);
+            this.offset = new Vector2 (0, 0);
             this.color = Color.White;
             this.texOffset = new Vector2 (0, 0);
         }
@@ -77,7 +77,8 @@ namespace DD {
         /// <param name="texture">テクスチャー</param>
         /// <param name="width">幅（ピクセル数）</param>
         /// <param name="height">高さ（ピクセル数）</param>
-        public Sprite (Texture texture, int width, int height) : this(texture) {
+        public Sprite (Texture texture, int width, int height)
+            : this (texture) {
             if (width < 0 || height < 0) {
                 throw new ArgumentException ("Size is invalid");
             }
@@ -88,6 +89,7 @@ namespace DD {
         #endregion
 
         #region Property
+
         /// <summary>
         /// 現在アクティブなテクスチャー番号
         /// </summary>
@@ -138,7 +140,7 @@ namespace DD {
         /// スプライトの幅（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// このスプライトが描画されるときの幅（ピクセルス数）です。
+        /// このスプライトが描画されるときの幅（ピクセル数）です。
         /// 変更はできません。
         /// </remarks>
         public int Width {
@@ -146,10 +148,10 @@ namespace DD {
         }
 
         /// <summary>
-        /// 画像の高さ（ピクセル数）
+        /// スプライトの高さ（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// このスプライトが描画されるときの高さ（ピクセルス数）です。
+        /// このスプライトが描画されるときの高さ（ピクセル数）です。
         /// 変更はできません。
         /// </remarks>
         public int Height {

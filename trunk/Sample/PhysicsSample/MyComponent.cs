@@ -29,9 +29,6 @@ namespace DD.Sample.PhysicsSample {
             this.chime = new SoundClip ("media/PinPon.wav");
           }
 
-        public override void OnUpdate (long msec) {
-        }
-
         /// <inheritdoc/>
         public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
             if (button == MouseButton.Left) {
@@ -51,6 +48,16 @@ namespace DD.Sample.PhysicsSample {
          /// <inheritdoc/>
         public override void OnCollisionExit (PhysicsBody col) {
             Console.WriteLine (Node.Name + " : Collision Exit");
+        }
+
+        public override void OnUpdate (long msec) {
+            var label = World.Find (x => x.Name == "Labels").GetComponent<Label>(0);
+
+            var col = GetComponent<PhysicsBody> ();
+
+            var num = col.Collisions.Count ();
+
+            label.Text = "Col num = " + num;
         }
 
 
