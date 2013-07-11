@@ -71,7 +71,7 @@ namespace DD {
         /// <returns>正規化済みのベクトル</returns>
         public Vector3 Normalize () {
             if (Length == 0) {
-                throw new ArithmeticException ("Divied by 0");
+                 throw new ArithmeticException ("Divied by 0");
             }
             return new Vector3 (X / Length, Y / Length, Z / Length);
         }
@@ -198,7 +198,7 @@ namespace DD {
 
         /// <inheritdoc/>
         public override string ToString () {
-            return String.Format ("({0},{1},{2})", X, Y, Z);
+            return String.Format ("({0:F3},{1:F3},{2:F3})", X, Y, Z);
         }
 
         /// <inheritdoc/>

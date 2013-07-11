@@ -571,6 +571,28 @@ namespace DD {
                     select (T)comp).FirstOrDefault ();
         }
 
+        /// <summary>
+        /// コンポーネントの取得
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされているコンポーネントからインデックス <paramref name="index"/> 番目の指定の型 <typeparamref name="T"/> の物を返します。
+        /// 見つからない場合は <c>null</c> が返ります。
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        /// <param name="index">インデックス番号</param>
+        /// <returns></returns>
+        public T GetComponent<T> (int index) where T : Component {
+            if (index < 0) {
+                throw new ArgumentException ("Index is out of range");
+            }
+            if (this == null) {
+                return null;
+            }
+            return (from comp in components
+                    where comp is T
+                    select (T)comp).Skip(index).FirstOrDefault ();
+        }
+
          /// <summary>
         /// 表示優先度の変更
         /// </summary>

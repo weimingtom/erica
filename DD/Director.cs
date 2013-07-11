@@ -149,7 +149,7 @@ namespace DD {
                 return;
             }
             foreach (var node in CurrentScript.Downwards) {
-                foreach (var comp in node.Components) {
+                foreach (var comp in node.Components.ToArray()) {
                     comp.OnUpdate (msec);
                 }
             }

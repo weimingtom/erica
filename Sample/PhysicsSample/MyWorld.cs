@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DD.Sample {
-    class MyWorld : Component {
+namespace DD.Sample.PhysicsSample
+{
+	public class MyWorld : Component {
+        #region Field
         Node picked;
         Vector2 delta;
+        #endregion
 
         public override void OnAttached () {
             this.picked = null;
@@ -25,15 +28,15 @@ namespace DD.Sample {
                     this.delta = pos - new Vector2 (node.GlobalX, node.GlobalY);
                 }
             }
-            if (Input.GetKeyUp(KeyCode.Mouse0)) {
+            if (Input.GetKeyUp (KeyCode.Mouse0)) {
                 this.picked = null;
             }
 
             if (picked != null) {
                 var t = pos - delta;
-                picked.Translation = new Vector3(t.X, t.Y, 0);
+                picked.Translation = new Vector3 (t.X, t.Y, 0);
             }
-            
+
             base.OnUpdate (msec);
         }
     }

@@ -223,10 +223,14 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_GetComponent () {
             var node = new Node ();
-            var comp = new Component ();
-            node.Attach (comp);
+            var comp1 = new Component ();
+            var comp2 = new Component ();
+            node.Attach (comp1);
+            node.Attach (comp2);
 
-            Assert.AreEqual (comp, node.GetComponent<Component> ());
+            Assert.AreEqual (comp1, node.GetComponent<Component> ());
+            Assert.AreEqual (comp1, node.GetComponent<Component> (0));
+            Assert.AreEqual (comp2, node.GetComponent<Component> (1));
         }
 
         [TestMethod]

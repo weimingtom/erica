@@ -11,6 +11,9 @@ namespace DD.UnitTest {
             public new T GetComponent<T> () where T:Component{
                 return base.GetComponent<T> ();
             }
+            public new T GetComponent<T> (int index) where T : Component {
+                return base.GetComponent<T> (index);
+            }
             public new Node GetNode (Func<Node, bool> pred) {
                 return base.GetNode (pred);
             }
@@ -98,12 +101,15 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_GetComponent () {
-            var comp = new MyComponent ();
+            var comp1 = new MyComponent ();
+            var comp2 = new MyComponent ();
             var node = new Node ();
-            node.Attach (comp);
+            node.Attach (comp1);
+            node.Attach (comp2);
 
-            Assert.AreEqual(comp, comp.GetComponent<MyComponent> ());
-
+            Assert.AreEqual(comp1, comp1.GetComponent<MyComponent> ());
+            Assert.AreEqual (comp1, comp1.GetComponent<MyComponent> (0));
+            Assert.AreEqual (comp2, comp1.GetComponent<MyComponent> (1));
         }
 
         [TestMethod]

@@ -246,7 +246,7 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_RotationMatrix_1 () {
-            var mat = Matrix4x4.CreateRotation (45, 0, 0, 1);
+            var mat = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
             var s = (float)Math.Sin (45 * Math.PI / 180.0f);
             var c = (float)Math.Cos (45 * Math.PI / 180.0f);
             var expected = new Matrix4x4 (c, -s, 0, 0,
@@ -272,7 +272,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Decompress_1 () {
             var t = Matrix4x4.CreateFromTranslation (1, 2, 3);
-            var r = Matrix4x4.CreateRotation (45, 0, 0, 1);
+            var r = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
             var s = Matrix4x4.CreateFromScale (1, 2, 3);
             var trs = t * r * s;
 
@@ -294,7 +294,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Decompress_2 () {
             var t = Matrix4x4.CreateFromTranslation (1, 2, 3);
-            var r = Matrix4x4.CreateRotation (45, 0, 0, 1);
+            var r = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
             var s = Matrix4x4.CreateFromScale (1, 2, 3);
             var trs = t * r * s;
 

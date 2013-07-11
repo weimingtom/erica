@@ -151,6 +151,26 @@ namespace DD {
         }
 
         /// <summary>
+        /// コンポーネントの検索
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたコンポーネントの中からインデックス <paramref name="index"/> 番目の指定の型 <typeparamref name="T"/> のコンポーネントを取得します。
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        ///  <param name="index">インデックス番号</param>
+        /// <returns></returns>
+        protected T GetComponent<T> (int index) where T : Component {
+            if (index < 0) {
+                throw new ArgumentException ("Index is out of range");
+            }
+            if (node == null) {
+                return null;
+            }
+
+            return node.GetComponent<T> (index);
+        }
+
+        /// <summary>
         /// ノードの検索
         /// </summary>
         /// <remarks>
@@ -176,6 +196,20 @@ namespace DD {
         /// <returns>ノード</returns>
         protected Node GetNode (Func<Node, bool> pred) {
             return World.Find (pred);
+        }
+
+        protected void Destroy (Node node) {
+            if (node == null) {
+                return;
+            }
+
+            foreach (var cmp in node.Components.ToArray ()) {
+                node.Detach(cmp);
+                if (cmp is IDisposable) {
+                    ((IDisposable)cmp).Dispose ();
+                }
+            }
+            node.Parent.RemoveChild (node);
         }
 
         /// <summary>

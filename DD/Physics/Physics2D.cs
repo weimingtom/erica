@@ -241,6 +241,53 @@ namespace DD.Physics {
             return Collide(shapeA, matA, shapeB, matB, out col);
         }
 
+        /// <summary>
+        /// 2物体の最短距離の測定
+        /// </summary>
+        /// <remarks>
+        /// 2つのコリジョン形状の最短距離を求めます。
+        /// 2つの物体がオーバーラップしていた場合は一律 0 が帰り、負の値が変える事はありません。
+        /// </remarks>
+        /// <param name="shapeA">コリジョン形状A</param>
+        /// <param name="matA">変換行列A</param>
+        /// <param name="shapeB">コリジョン形状B</param>
+        /// <param name="matB">変換行列B</param>
+        /// <returns>距離</returns>
+        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+
+            DistanceOutput output;
+            SimplexCache cache;
+            DistanceInput input = new DistanceInput ();
+            DistanceProxy proxyA = new DistanceProxy ();
+            DistanceProxy proxyB = new DistanceProxy ();
+
+            proxyA.Set (shapeA.CreateShapeBody (1), 0);
+            proxyB.Set (shapeB.CreateShapeBody (1), 0);
+
+            input.ProxyA = proxyA;
+            input.ProxyB = proxyB;
+            input.UseRadii = true;
+            
+            Vector3 T;
+            Matrix3x3 M;
+            Vector3 S;
+            (matA ?? Matrix4x4.Identity).Decompress(out T, out M, out S);
+
+            var posA = new XnaVector2 (T.X, T.Y);
+            var rotA = new Mat22 (M[0], M[1], M[3], M[4]);
+            input.TransformA = new Transform (ref posA, ref rotA);
+
+            (matB ?? Matrix4x4.Identity).Decompress (out T, out M, out S);
+
+            var posB = new XnaVector2 (T.X, T.Y);
+            var rotB = new Mat22 (M[0], M[1], M[3], M[4]);
+            input.TransformB = new Transform (ref posB, ref rotB);
+            
+            FarseerPhysics.Collision.Distance.ComputeDistance (out output, out cache, input);
+
+            return output.Distance;
+        }
+
 
         /// <summary>
         /// コリジョン形状と1点の検出
