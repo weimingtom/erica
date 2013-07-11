@@ -40,10 +40,10 @@ namespace DD.UnitTest {
             var clip = new AnimationClip (100, "ClipName");
             var track1 = new AnimationTrack ("PropName",  InterpolationType.Linear);
             var track2 = new AnimationTrack ("PropName", InterpolationType.Linear);
-            var dummy = new Node ();
+            var target = new Node ();
 
-            clip.AddTrack (dummy, track1);
-            clip.AddTrack (dummy, track2);
+            clip.AddTrack (target, track1);
+            clip.AddTrack (target, track2);
 
             Assert.AreEqual (2, clip.TrackCount);
             Assert.AreEqual (2, clip.Tracks.Count());
@@ -54,6 +54,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, clip.TrackCount);
             Assert.AreEqual (0, clip.Tracks.Count ());
         }
+
 
         [TestMethod]
         public void Test_SetDuration() {

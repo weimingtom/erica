@@ -21,13 +21,15 @@ namespace DD {
         Node parent;
         List<Node> children;
         List<Component> components;
-        bool visible;
-        bool clickable;
-        sbyte drawPriority;
         uint groupID;
-        int userID;
         Dictionary<string, object> userData;
         float opacity;
+        bool drawable;
+        bool updatable;
+        bool animatable;
+        bool collidable;
+        sbyte drawPriority;
+        sbyte updatePriority;
         #endregion
 
         #region Constructor
@@ -44,17 +46,20 @@ namespace DD {
         /// <param name="name">ノード名</param>
         public Node (string name)
             : base () {
-            this.name = name;
-            this.visible = true;
-            this.clickable = true;
-             this.parent = null;
+            this.name = name ?? "";
+            this.drawable = true;
+            this.updatable = true;
+            this.animatable = true;
+            this.collidable = true;
+            this.parent = null;
             this.children = new List<Node> ();
             this.components = new List<Component> ();
             this.drawPriority = 0;
+            this.updatePriority = 0;
             this.groupID = 0xffffffffu;
-            this.userID = 0;
             this.userData = new Dictionary<string, object> ();
             this.opacity = 1f;
+
         }
         #endregion
 
@@ -64,15 +69,7 @@ namespace DD {
         /// </summary>
         public string Name {
             get { return name; }
-            set { this.name = value; }
-        }
-
-        /// <summary>
-        /// ユーザーID
-        /// </summary>
-        public int UserID {
-            get { return userID; }
-            set { this.userID = value; }
+            set { this.name = value ?? ""; }
         }
 
         /// <summary>
@@ -99,7 +96,7 @@ namespace DD {
         /// 不透明度
         /// </summary>
         /// <remarks>
-        /// ノード全体の不透明度
+        /// ノードの不透明度
         /// </remarks>
         public float Opacity {
             get { return opacity; }
@@ -112,15 +109,50 @@ namespace DD {
         }
 
         /// <summary>
-        /// 表示フラグ
+        /// 表示可能フラグ
         /// </summary>
         /// <remarks>
-        /// このフラグが <c>true</c> の時は表示されます。
+        /// このフラグが <c>true</c> のノードは表示されます。
         /// </remarks>
-        public bool Visibility {
-            get { return visible; }
-            set { this.visible = value; }
+        public bool Drawable {
+            get { return drawable; }
+            set { this.drawable = value; }
         }
+
+        /// <summary>
+        /// 更新可能フラグ
+        /// </summary>
+        /// <remarks>
+        /// このフラグが <c>true</c> のノードは更新されます。
+        /// </remarks>
+        public bool Updatable {
+            get { return updatable; }
+            set { this.updatable = value; }
+        }
+
+        /// <summary>
+        /// アニメート可能フラグ
+        /// </summary>
+        /// <remarks>
+        /// このフラグが <c>true</c> のノードはアニメートされます。
+        /// </remarks>
+        public bool Animatable {
+            get { return animatable; }
+            set { this.animatable = value; }
+        }
+
+        /// <summary>
+        /// 衝突可能フラグ
+        /// </summary>
+        /// <remarks>
+        /// このフラグが <c>true</c> のノードは衝突判定があります。
+        /// 現在このプロパティは機能しません。
+        /// </remarks>
+        public bool Collidable {
+            get { return collidable; }
+            set { this.collidable = value; }
+        }
+
 
         /// <summary>
         /// 表示優先度
@@ -131,18 +163,19 @@ namespace DD {
         /// </remarks>
         public sbyte DrawPriority {
             get { return drawPriority; }
-            set { SetDrawPriority (value); }
+            set { this.drawPriority = value; }
         }
 
         /// <summary>
-        /// クリック可能フラグ
+        /// 更新優先度
         /// </summary>
         /// <remarks>
-        /// このフラグが <c>true</c> の時は表示されます。
+        /// このノードの更新優先度 (-127～128) を取得・設定するプロパティ。
+        /// デフォルトは 0 で -127 が一番優先度が高く最初に更新されます。
         /// </remarks>
-        public bool Clickable {
-            get { return clickable; }
-            set { this.clickable = value; }
+        public sbyte UpdatePriority {
+            get { return updatePriority; }
+            set { this.updatePriority = value; }
         }
 
         /// <summary>
@@ -383,7 +416,7 @@ namespace DD {
             Quaternion R;
             Vector3 S;
             var P = ParentTransform;
-            var G = Matrix4x4.CreateFromTranslation(tx,ty,tz);
+            var G = Matrix4x4.CreateFromTranslation (tx, ty, tz);
             (P * G).Decompress (out T, out R, out S);
 
             SetTranslation (T.X, T.Y, T.Z);
@@ -401,7 +434,7 @@ namespace DD {
             Quaternion R;
             Vector3 S;
             var P = ParentTransform;
-            var G = Matrix4x4.CreateFromRotation(rot);
+            var G = Matrix4x4.CreateFromRotation (rot);
             (P * G).Decompress (out T, out R, out S);
 
             SetRotation (R);
@@ -437,7 +470,7 @@ namespace DD {
             Quaternion R;
             Vector3 S;
             var P = ParentTransform;
-            var G = Matrix4x4.CreateFromScale(sx,sy,sz);
+            var G = Matrix4x4.CreateFromScale (sx, sy, sz);
             (P * G).Decompress (out T, out R, out S);
 
             SetScale (S.X, S.Y, S.Z);
@@ -463,7 +496,7 @@ namespace DD {
                 throw new ArgumentException ("Component has already attached to another node.");
             }
             this.components.Add (comp);
-            comp.SetNode (this);
+            comp.Node = this;
             comp.OnAttached ();
         }
 
@@ -483,7 +516,8 @@ namespace DD {
                 return;
             }
             comp.OnDetached ();
-            comp.SetNode (null);
+            comp.Node = null;
+            comp.IsUpdateInitCalled = false;
             this.components.Remove (comp);
         }
 
@@ -524,16 +558,16 @@ namespace DD {
         /// ノードの検索
         /// </summary>
         /// <remarks>
-        /// 指定のユーザーIDのノードを下方向から検索します。
-        /// 一致するIDのノードが2つ以上あった場合は、どれが返るかは未定義です。
+        /// 指定の名前のノードを下方向から検索します。
+        /// 一致する名前のノードが2つ以上あった場合は、どれが返るかは未定義です。
         /// 見つからない場合は <c>null</c> が返ります。
         /// </remarks>
-        /// <param name="userID">検索したいユーザーID</param>
+        /// <param name="name">検索したいノード名</param>
         /// <returns></returns>
-        public Node Find (int userID) {
+        public Node Find (string name) {
             return (from node in Downwards
-                    where node.userID == userID
-                    select node).FirstOrDefault();
+                    where node.Name == (name ?? "")
+                    select node).FirstOrDefault ();
         }
 
         /// <summary>
@@ -548,7 +582,7 @@ namespace DD {
         /// <returns></returns>
         public Node Find (Func<Node, bool> pred) {
             return (from node in Downwards
-                    where pred(node) == true
+                    where pred (node) == true
                     select node).FirstOrDefault ();
         }
 
@@ -590,16 +624,7 @@ namespace DD {
             }
             return (from comp in components
                     where comp is T
-                    select (T)comp).Skip(index).FirstOrDefault ();
-        }
-
-         /// <summary>
-        /// 表示優先度の変更
-        /// </summary>
-        /// 表示優先度を変更します。デフォルトは 0 で -127 が一番優先度が高く、128が一番低いです。
-        /// <param name="priority">優先度[-127,128]</param>
-        public void SetDrawPriority (sbyte priority) {
-            this.drawPriority = priority;
+                    select (T)comp).Skip (index).FirstOrDefault ();
         }
 
         /// <summary>

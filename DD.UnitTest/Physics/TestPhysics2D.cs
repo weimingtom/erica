@@ -169,6 +169,44 @@ namespace DD.UnitTest.Physics {
         }
 
         /// <summary>
+        /// 変換行列を暗黙的に取得するテスト
+        /// </summary>
+        /// <remarks>
+        /// 変換行列を渡すのを省略してノードの変換行列を暗黙的に使用するテスト
+        /// </remarks>
+        [TestMethod]
+        public void Test_Collide_6 () {
+            var shape1 = new SphereCollisionShape (1);
+            var shape2 = new BoxCollisionShape (1, 1, 1);
+            var node1 = new Node ();
+            var node2 = new Node ();
+           
+            Collision col;
+
+            Assert.AreEqual (true, Physics2D.Collide (shape1, shape2, out col));
+            Assert.AreEqual (new Vector3 (0, -0.005f, 0), col.Point);
+            Assert.AreEqual (new Vector3 (0, -1.000f, 0), col.Normal);
+
+            
+            node1.Attach (shape1);
+            node2.Attach (shape2);
+
+ 
+            node2.SetTranslation (1, 0, 0);            
+            Assert.AreEqual (true, Physics2D.Collide (shape1, shape2, out col));
+            Assert.AreEqual (new Vector3 (0.495f, 0, 0), col.Point);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), col.Normal);
+
+            node2.SetTranslation (2, 0, 0);
+            Assert.AreEqual (true, Physics2D.Collide (shape1, shape2, out col));
+            Assert.AreEqual (new Vector3 (0.995f, 0, 0), col.Point);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), col.Normal);
+
+            node2.SetTranslation (3, 0, 0);
+            Assert.AreEqual (false, Physics2D.Collide (shape1, shape2, out col));
+        }
+
+        /// <summary>
         /// Sphere-Sphere距離のテスト
         /// </summary>
         [TestMethod]

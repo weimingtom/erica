@@ -183,8 +183,7 @@ namespace DD.Sample {
             }
 
             var x = 0;
-            var y = 0;
-
+       
             foreach (var key in Input.Keys) {
                 switch (key) {
                     case KeyCode.RightArrow: {

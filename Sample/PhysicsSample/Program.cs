@@ -210,10 +210,9 @@ namespace DD.Sample.PhysicsSample {
            // wld.AddChild (node4);
             wld.AddChild (node5);
 
-            var director = new Director ();
-            director.PushScript (wld);
+            var alive = true;
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
-                director.Exit ();
+                alive = false;
             };
 
             Console.WriteLine ("Start of Main Loop");
@@ -223,15 +222,15 @@ namespace DD.Sample.PhysicsSample {
             var watch = new Stopwatch ();
             watch.Start ();
             
-            while (director.IsAlive) {
+            while (alive) {
                 var msec = watch.ElapsedMilliseconds;
 
-                p2d.Step (director.CurrentScript, msec);
+                p2d.Step (wld, msec);
 
-                director.Animate (msec);
-                director.Update (msec);
-                g2d.Dispatch (director.CurrentScript);
-                g2d.Draw (director.CurrentScript);
+                wld.Animate (msec);
+                wld.Update (msec);
+                g2d.Dispatch (wld);
+                g2d.Draw (wld);
 
             }
 

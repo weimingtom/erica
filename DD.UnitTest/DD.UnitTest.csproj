@@ -104,7 +104,6 @@
     <Compile Include="TestLineReader.cs" />
     <Compile Include="TestNode.cs" />
     <Compile Include="TestResource.cs" />
-    <Compile Include="TestDirector.cs" />
     <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestSoundPlayer.cs" />
     <Compile Include="TestStateMachine.cs" />

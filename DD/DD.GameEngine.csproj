@@ -113,7 +113,6 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Component.cs" />
-    <Compile Include="Director.cs" />
     <Compile Include="FPSCounter.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

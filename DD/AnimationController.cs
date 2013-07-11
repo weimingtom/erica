@@ -26,8 +26,8 @@ namespace DD {
         /// <summary>
         /// クリップ個数
         /// </summary>
-        public int ClipCount{
-            get{return clips.Count();}
+        public int ClipCount {
+            get { return clips.Count (); }
         }
 
         /// <summary>
@@ -46,10 +46,10 @@ namespace DD {
         /// <param name="name">クリップの名前</param>
         /// <returns></returns>
         public AnimationClip this[string name] {
-            get { 
+            get {
                 return (from x in clips
-                             where x.Name == name
-                             select x).FirstOrDefault();
+                        where x.Name == name
+                        select x).FirstOrDefault ();
             }
         }
 
@@ -65,7 +65,7 @@ namespace DD {
         /// クリップの削除
         /// </summary>
         /// <param name="clip">アニメーション クリップ</param>
-        public void RemoveClip            (AnimationClip clip) {
+        public void RemoveClip (AnimationClip clip) {
 
             clips.Remove (clip);
         }
@@ -77,22 +77,26 @@ namespace DD {
         /// <returns></returns>
         public AnimationClip GetClip (int index) {
             if (index < 0 || index > ClipCount - 1) {
-                 throw new IndexOutOfRangeException("Index is out of range");
+                throw new IndexOutOfRangeException ("Index is out of range");
             }
             return clips[index];
         }
 
         /// <inheritdoc/>
         public override void OnAnimate (long msec) {
-            foreach (var clip in clips.Where(x=>x.IsPlaying)) {
+
+            foreach (var clip in clips.Where (x => x.IsPlaying)) {
                 var pos = clip.GetPlaybackPosition (msec);
                 foreach (var track in clip.Tracks) {
-                    var target = track.Item1;
+                    var target = track.Item1.Target;
+                    var alive = track.Item1.IsAlive;
                     var source = track.Item2;
-                    var propInfo = target.GetType ().GetProperty (source.TargetProperty);
-                    if (propInfo != null) {
-                        var value = source.Sample (pos);
-                        propInfo.SetValue (target, value, null);
+                    if (alive) {
+                        var propInfo = target.GetType ().GetProperty (source.TargetProperty);
+                        if (propInfo != null) {
+                            var value = source.Sample (pos);
+                            propInfo.SetValue (target, value, null);
+                        }
                     }
                 }
             }

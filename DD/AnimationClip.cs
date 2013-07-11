@@ -8,8 +8,15 @@ namespace DD {
     /// アニメーション クリップ クラス
     /// </summary>
     /// <remarks>
-    /// アニメーションクリップは“走る”、“歩く”などの一連の動作を表すアニメーションの基本単位です。
+    /// アニメーション クリップは“走る”、“歩く”などの一連の動作を表すアニメーションの基本単位です。
     /// 原則としてアニメーションに対する操作はこのクリップ単位で行います。
+    /// 書き換え対象のオブジェクトは”弱い参照”によって参照されます。従ってここ以外の参照がすべて無くなるとGCの対象になります。
+    /// 対象が削除済みのオブジェクトの場合はクリップは何もせず無視します（エラーにはなりません）。
+    /// クリップ自体はそのまま残ります。
+    /// <note>
+    /// ターゲット オブジェクトが解放済みかどうか簡単に調べられるメソッドが必要なような、別にいらないような。
+    /// 今でも GetTrack() で弱い参照込みで取得して調べられるが・・・
+    /// </note>
     /// </remarks>
     public class AnimationClip {
         /// <summary>
@@ -34,7 +41,7 @@ namespace DD {
         float worldRefTime;
         float speed;
         WrapMode wrapMode;
-        List<Tuple<object, AnimationTrack>> tracks;
+        List<Tuple<WeakReference, AnimationTrack>> tracks;
         #endregion
 
         #region Constructor
@@ -53,7 +60,7 @@ namespace DD {
             this.localRefTime = 0;
             this.worldRefTime = 0;
             this.speed = 1;
-            this.tracks = new List<Tuple<object, AnimationTrack>> ();
+            this.tracks = new List<Tuple<WeakReference, AnimationTrack>> ();
             this.wrapMode = WrapMode.Loop;
             this.state = State.Stopped;
         }
@@ -125,7 +132,7 @@ namespace DD {
         /// <summary>
         /// すべてのトラックを列挙する列挙子
         /// </summary>
-        public IEnumerable<Tuple<object, AnimationTrack>> Tracks {
+        public IEnumerable<Tuple<WeakReference, AnimationTrack>> Tracks {
             get { return tracks; }
         }
         #endregion
@@ -166,7 +173,7 @@ namespace DD {
             if (track == null) {
                 throw new ArgumentNullException ("Track is null");
             }
-            this.tracks.Add (Tuple.Create (target, track));
+            this.tracks.Add (Tuple.Create (new WeakReference (target), track));
         }
 
         /// <summary>
@@ -186,7 +193,7 @@ namespace DD {
         /// </summary>
         /// <param name="index">トラック番号</param>
         /// <returns></returns>
-        public Tuple<object, AnimationTrack> GetTrack (int index) {
+        public Tuple<WeakReference, AnimationTrack> GetTrack (int index) {
             if (index < 0 || index > TrackCount - 1) {
                 throw new IndexOutOfRangeException ("Index is out of range");
             }
@@ -252,6 +259,11 @@ namespace DD {
                 }
                 return (int)pos;
             }
+        }
+
+        /// <inheritdoc/>
+        public override string ToString () {
+            return Name;
         }
 
         #endregion

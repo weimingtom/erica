@@ -166,8 +166,8 @@ namespace DD.Physics {
                 throw new ArgumentNullException ("Shapes are null");
             }
 
-            
-            var mani = new Manifold();
+
+            var mani = new Manifold ();
             Vector3 T;
             Matrix3x3 R;
             Vector3 S;
@@ -177,7 +177,7 @@ namespace DD.Physics {
             var posA = new XnaVector2 (T.X, T.Y);
             var rotA = new Mat22 (R[0], R[1], R[3], R[4]);
             var traA = new Transform (ref posA, ref rotA);
-            
+
             (matB ?? Matrix4x4.Identity).Decompress (out T, out R, out S);
             var shpB = shapeB.CreateShapeBody (1.0f);
             var posB = new XnaVector2 (T.X, T.Y);
@@ -204,7 +204,7 @@ namespace DD.Physics {
 
             switch (mani.PointCount) {
                 case 0: {
-                    col = new Collision (null, Vector3.Zero, Vector3.Zero);
+                        col = new Collision (null, Vector3.Zero, Vector3.Zero);
                         return false;
                     }
                 case 1: {
@@ -225,7 +225,7 @@ namespace DD.Physics {
             }
         }
 
-      /// <summary>
+        /// <summary>
         /// 2物体の衝突の検出
         /// </summary>
         /// <remarks>
@@ -238,8 +238,41 @@ namespace DD.Physics {
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
         public static bool Collide (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
             Collision col;
-            return Collide(shapeA, matA, shapeB, matB, out col);
+            return Collide (shapeA, matA, shapeB, matB, out col);
         }
+
+        /// <summary>
+        /// 2物体の衝突の検出
+        /// </summary>
+        /// <remarks>
+        /// 2物体の衝突を検出します。変換行列は自動的に <see cref="Node.GlobalTransform"/> を取得して使用します。
+        /// </remarks>
+        /// <param name="shapeA">コリジョン形状A</param>
+        /// <param name="shapeB">コリジョン形状B</param>
+        /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
+        public static bool Collide (CollisionShape shapeA, CollisionShape shapeB, out Collision col) {
+            if(shapeA == null || shapeB == null){
+                throw new ArgumentNullException("Shapes are null");
+            }
+            var matA = (shapeA.Node == null) ? Matrix4x4.Identity : shapeA.Node.GlobalTransform;
+            var matB = (shapeB.Node == null) ? Matrix4x4.Identity : shapeB.Node.GlobalTransform;
+            return Collide (shapeA, matA, shapeB, matB, out col);
+        }
+
+        /// <summary>
+        /// 2物体の衝突の検出
+        /// </summary>
+        /// <remarks>
+        /// 2物体の衝突を検出します。衝突地点の情報を受け取らない事を除き同名の関数と等価です。
+        /// </remarks>
+        /// <param name="shapeA">コリジョン形状A</param>
+        /// <param name="shapeB">コリジョン形状B</param>
+        /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
+        public static bool Collide (CollisionShape shapeA, CollisionShape shapeB) {
+            Collision col;
+            return Collide (shapeA, shapeB, out col);
+        }
+
 
         /// <summary>
         /// 2物体の最短距離の測定
@@ -267,11 +300,11 @@ namespace DD.Physics {
             input.ProxyA = proxyA;
             input.ProxyB = proxyB;
             input.UseRadii = true;
-            
+
             Vector3 T;
             Matrix3x3 M;
             Vector3 S;
-            (matA ?? Matrix4x4.Identity).Decompress(out T, out M, out S);
+            (matA ?? Matrix4x4.Identity).Decompress (out T, out M, out S);
 
             var posA = new XnaVector2 (T.X, T.Y);
             var rotA = new Mat22 (M[0], M[1], M[3], M[4]);
@@ -282,7 +315,7 @@ namespace DD.Physics {
             var posB = new XnaVector2 (T.X, T.Y);
             var rotB = new Mat22 (M[0], M[1], M[3], M[4]);
             input.TransformB = new Transform (ref posB, ref rotB);
-            
+
             FarseerPhysics.Collision.Distance.ComputeDistance (out output, out cache, input);
 
             return output.Distance;
@@ -311,7 +344,7 @@ namespace DD.Physics {
             var rotA = new Mat22 (R[0], R[1], R[3], R[4]);
             var traA = new Transform (ref posA, ref rotA);
 
-            var posB = new XnaVector2(point.X, point.Y);
+            var posB = new XnaVector2 (point.X, point.Y);
 
             return shpA.TestPoint (ref traA, ref posB);
         }
@@ -361,7 +394,6 @@ namespace DD.Physics {
 
             float dt = (msec - prev) / 1000f;
             wld.Step (dt);
-
 
             foreach (var node in ddworld.Downwards) {
                 foreach (var comp in node.Components) {

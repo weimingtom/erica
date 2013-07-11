@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestAnimationController {
 
-        public class MyDummyTarget {
+        public class MyTarget {
             public float Speed { get; set; }
             public Vector3 Point { get; set; }
         }
@@ -50,6 +50,44 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_RemoveClip () {
+
+
+        }
+        
+        /// <summary>
+        /// 対象オブジェクトが弱い参照である事のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_WeakReferenceTrack () {
+            var target = new MyTarget ();
+            var track = new AnimationTrack ("Speed", InterpolationType.Linear);
+            track.AddKeyframe (0, 100.0f);
+            track.AddKeyframe (100, 100.0f);
+
+            var clip = new AnimationClip (100, "Clip");
+            clip.AddTrack (target, track);
+          
+            var anim = new AnimationController ();
+            anim.AddClip (clip);
+
+            // ターゲットの解放
+            target = null;
+            GC.Collect ();
+
+            Assert.AreEqual (1, clip.TrackCount);
+            Assert.AreEqual (false, clip.GetTrack (0).Item1.IsAlive);
+
+            // 解放済みのターゲットを含むアニメーションの実行。
+            // エラーが起きてはならない
+            anim.OnAnimate (0);
+
+        }
+
+
+
+
+        [TestMethod]
         public void Test_OnAnimate_Float_Once () {
             var track = new AnimationTrack ("Speed", InterpolationType.Step);
             track.AddKeyframe (1, 1.0f);
@@ -60,7 +98,7 @@ namespace DD.UnitTest {
             clip.Duration = 3;
             clip.Play ();
 
-            var target = new MyDummyTarget ();
+            var target = new MyTarget ();
 
             clip.AddTrack (target, track);
 
@@ -90,7 +128,7 @@ namespace DD.UnitTest {
             track.AddKeyframe (1, 1.0f);
             track.AddKeyframe (2, 2.0f);
 
-            var target = new MyDummyTarget ();
+            var target = new MyTarget ();
 
             clip.AddTrack (target, track);
             
@@ -122,7 +160,7 @@ namespace DD.UnitTest {
             track.AddKeyframe (1, new Vector3 (1, 2, 0));
             track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
-            var target = new MyDummyTarget ();
+            var target = new MyTarget ();
 
             clip.AddTrack (target, track);
 
@@ -157,7 +195,7 @@ namespace DD.UnitTest {
             track.AddKeyframe (1, new Vector3 (1, 2, 0));
             track.AddKeyframe (2, new Vector3 (2, 3, 0));
 
-            var target = new MyDummyTarget ();
+            var target = new MyTarget ();
 
             clip.AddTrack (target, track);
 

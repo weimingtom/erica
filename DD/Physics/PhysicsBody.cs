@@ -545,7 +545,7 @@ namespace DD.Physics {
             Node.SetGlobalRotation (angle, 0, 0, 1);
         }
 
-
+        /// <inheritdoc/>
         public void Dispose () {
             if (body != null) {
                 body.OnCollision -= new OnCollisionEventHandler (CollisionEnterEventHandler);

@@ -29,8 +29,8 @@ namespace DD.Sample.TiledMap {
         public override void OnUpdate (long msec) {
 
             if (Input != null) {
-                var label1 = Node.Root.Find (1).GetComponent (0) as Label;
-                var label2 = Node.Root.Find (1).GetComponent (1) as Label;
+                var label1 = Node.Root.Find ("Label").GetComponent (0) as Label;
+                var label2 = Node.Root.Find ("Label").GetComponent (1) as Label;
                 var nx = this.x;
                 var ny = this.y;
 
