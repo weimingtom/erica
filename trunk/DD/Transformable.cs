@@ -14,10 +14,10 @@ namespace DD {
     /// </remarks>
     public abstract class Transformable {
         #region Field
-        float tx;
+        float tx;   // Vector3で良かった・・・
         float ty;
         float tz;
-        float sx;
+        float sx;   // Vector3で良かった・・・
         float sy;
         float sz;
         Quaternion rot;
@@ -112,6 +112,19 @@ namespace DD {
                 var R = Matrix4x4.CreateFromRotation (rot);
                 var S = Matrix4x4.CreateFromScale (sx, sy, sz);
                 return T * R * S;
+            }
+            set {
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+                value.Decompress (out T, out R, out S);
+                this.tx = T.X;
+                this.ty = T.Y;
+                this.tz = T.Z;
+                this.rot = R;
+                this.sx = S.X;
+                this.sy = S.Y;
+                this.sz = S.Z;
             }
         }
         #endregion

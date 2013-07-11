@@ -215,7 +215,7 @@ namespace DD {
             // タイル レイヤー
             foreach (var layer in map.Layers) {
                 var layerNode = new Node (layer.Name);
-                layerNode.Visibility = layer.Visible;
+                layerNode.Drawable = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
                 foreach (var prop in layer.Properties) {
                     layerNode.UserData.Add (prop.Key, prop.Value);
@@ -259,7 +259,7 @@ namespace DD {
             // オブジェクト レイヤー
             foreach (var layer in map.ObjectGroups) {
                 var layerNode = new Node (layer.Name);
-                layerNode.Visibility = layer.Visible;
+                layerNode.Drawable = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
                 foreach (var prop in layer.Properties) {
                     layerNode.UserData.Add (prop.Key, prop.Value);
@@ -296,7 +296,7 @@ namespace DD {
             // 画像レイヤー
             foreach (var layer in map.ImageLayers) {
                 var layerNode = new Node (layer.Name);
-                layerNode.Visibility = layer.Visible;
+                layerNode.Drawable = layer.Visible;
                 layerNode.Opacity = (float)layer.Opacity;
                 foreach (var prop in layer.Properties) {
                     layerNode.UserData.Add (prop.Key, prop.Value);

@@ -186,11 +186,10 @@ namespace DD.Sample {
             wld.AddChild (node7);
 
             // ----------------------------------------
+            var active = true;
 
-            var director = new Director ();
-            director.PushScript (wld);
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
-                director.Exit ();
+                active = false;
             };
 
             Console.WriteLine ("Start of Main Loop");
@@ -200,17 +199,16 @@ namespace DD.Sample {
             var watch = new Stopwatch ();
             watch.Start ();
 
-            while (director.IsAlive) {
+            while (active) {
                 var msec = watch.ElapsedMilliseconds;
-
-                // Console.WriteLine ("Step in : " + msec);
 
                 p2d.Step (wld, msec);
 
-                director.Animate (msec);
-                director.Update (msec);
-                g2d.Dispatch (director.CurrentScript);
-                g2d.Draw (director.CurrentScript);
+                wld.Animate (msec);
+                wld.Update (msec);
+
+                g2d.Dispatch (wld);
+                g2d.Draw (wld);
 
             }
 

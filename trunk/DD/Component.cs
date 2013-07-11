@@ -13,6 +13,7 @@ namespace DD {
     public class Component {
         #region Field
         Node node;
+        bool updateInitIsCalled;
         #endregion
 
 
@@ -22,6 +23,7 @@ namespace DD {
         /// </summary>
         public Component () {
             this.node = null;
+            this.IsUpdateInitCalled = false;
         }
         #endregion
 
@@ -31,6 +33,25 @@ namespace DD {
         /// </summary>
         public Node Node {
             get { return node; }
+            internal set { this.node = value; }
+        }
+
+        /// <summary>
+        /// UpdateInit()が呼ばれた事があるかどうかのフラグ
+        /// </summary>
+        public bool IsUpdateInitCalled {
+            get { return updateInitIsCalled; }
+            set { this.updateInitIsCalled = value; }
+        }
+
+        /// <summary>
+        /// ノード名
+        /// </summary>
+        /// <remarks>
+        /// アタッチ前は "null" が返ります。
+        /// </remarks>
+        public string NodeName {
+            get { return (node == null) ? "null" : node.Name; }
         }
 
         /// <summary>
@@ -45,21 +66,6 @@ namespace DD {
                     return null;
                 }
                 return node.Root as World;
-            }
-        }
-
-        /// <summary>
-        /// ユーザーID
-        /// </summary>
-        /// <remarks>
-        /// ノードのユーザーIDを返すプロパティです。
-        /// </remarks>
-        public int UserID {
-            get {
-                if (node == null) {
-                    throw new InvalidOperationException ("This component is not attached");
-                }
-                return node.UserID;
             }
         }
 
@@ -79,7 +85,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// インプット レシーバー
+        /// 標準のインプット レシーバー
         /// </summary>
         /// <remarks>
         /// このノードにアタッチされたローカルのインプット レシーバー <see cref="InputReceiver"/> または、それが存在しない場合は
@@ -93,7 +99,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// アニメーション コントローラー
+        /// 標準のアニメーション コントローラー
         /// </summary>
         /// <remarks>
         /// このノードにアタッチされたローカルのアニメーション コントローラー <see cref="AnimationController"/> または、それが存在しない場合は
@@ -106,6 +112,22 @@ namespace DD {
                 return GetComponent<AnimationController> () ?? World.AnimationController;
             }
         }
+
+        /// <summary>
+        /// 標準のサウンド プレイヤー
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルのサウンド プレイヤー <see cref="SoundPlayer"/> または、それが存在しない場合は
+        /// <see cref="World"/> のサウンド プレイヤー  <see cref="SoundPlayer"/> を返します。
+        /// <see cref="World"/> クラスは必ずデフォルトのサウンド プレイヤーを1つ保持しています。
+        /// 
+        /// </remarks>
+        public SoundPlayer Sound {
+            get {
+                return GetComponent<SoundPlayer> () ?? World.SoundPlayer;
+            }
+        }
+
 
         /// <summary>
         /// このコンポーネントがアタッチ済みかどうかを確認するプロパティ
@@ -125,14 +147,6 @@ namespace DD {
 
 
         #region Method
-        /// <summary>
-        /// 親ノードの変更
-        /// </summary>
-        /// <param name="node">ノード</param>
-        internal void SetNode (Node node) {
-            this.node = node;
-        }
-
         /// <summary>
         /// コンポーネントの検索
         /// </summary>
@@ -174,21 +188,21 @@ namespace DD {
         /// ノードの検索
         /// </summary>
         /// <remarks>
-        /// シーンの全ノードから指定のユーザーIDのノードを検索します。
-        /// 同一のIDを持ったノードが2つ以上存在する場合、どのノードが返るかは未定義です。
+        /// シーン全体から指定の名前のノードを検索します。
+        /// 同一の名前を持ったノードが2つ以上存在する場合、どのノードが返るかは未定義です。
         /// 見つからない場合は <c>null</c> を返します。
         /// </remarks>
-        /// <param name="userID">検索したいノードのユーザーID</param>
+        /// <param name="name">検索したいノードの名前</param>
         /// <returns>ノード</returns>
-        protected Node GetNode (int userID) {
-            return World.Find (userID);
+        protected Node GetNode (string name) {
+            return World.Find (name);
         }
 
         /// <summary>
         /// ノードの検索
         /// </summary>
         /// <remarks>
-        /// シーンの全ノードから指定の条件式 <paramref name="pred"/> を満たすノードを検索します。
+        /// シーン全体から指定の条件式 <paramref name="pred"/> を満たすノードを検索します。
         /// 条件式を満たすノードが2つ以上存在する場合、どのノードが返るかは未定義です。
         /// 見つからない場合は <c>null</c> を返します。
         /// </remarks>
@@ -198,6 +212,15 @@ namespace DD {
             return World.Find (pred);
         }
 
+        /// <summary>
+        /// ノードの削除
+        /// </summary>
+        /// <remarks>
+        /// 指定のノードをシーンから取り外し削除します。
+        /// ノードはこのメソッドを使って削除するのが一番安全です。
+        /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
+        /// </remarks>
+        /// <param name="node">ノード</param>
         protected void Destroy (Node node) {
             if (node == null) {
                 return;
@@ -209,7 +232,26 @@ namespace DD {
                     ((IDisposable)cmp).Dispose ();
                 }
             }
-            node.Parent.RemoveChild (node);
+            if (node.Parent != null) {
+                node.Parent.RemoveChild (node);
+            }
+        }
+
+        /// <summary>
+        /// ノードの削除
+        /// </summary>
+        /// <remarks>
+        /// 指定のノードをシーンから取り外し削除します。
+        /// ノードはこのメソッドを使って削除するのが一番安全です。
+        /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
+        /// </remarks>
+        /// <param name="node">ノード</param>
+        protected void Destroy (Component comp) {
+            if (comp == null || comp.Node == null) {
+                return;
+            }
+
+            Destroy(comp.Node);
         }
 
         /// <summary>
@@ -239,6 +281,17 @@ namespace DD {
         /// 通常ユーザーがこれを使用する事はありません。
         /// </remarks>
         public virtual void OnDispatch () {
+        }
+
+        /// <summary>
+        /// 更新処理前の初期化エントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// 通常の <see cref="OnUpdate"/> が呼ばれるタイミングで一度だけ呼ばれます。
+        /// 1回だけ同一フレームで <see cref="OnUpdateInit"/> と <see cref="OnUpdate"/> の両方が呼ばれます。
+        /// </remarks>
+        /// <param name="msec"></param>
+        public virtual void OnUpdateInit (long msec) {
         }
 
         /// <summary>

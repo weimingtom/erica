@@ -16,14 +16,17 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.X);
             Assert.AreEqual (0, node.Y);
             Assert.AreEqual (null, node.Parent);
-            Assert.AreEqual (true, node.Visibility);
-            Assert.AreEqual (true, node.Clickable);
+            Assert.AreEqual (true, node.Drawable);
+            Assert.AreEqual (true, node.Updatable);
+            Assert.AreEqual (true, node.Animatable);
+            Assert.AreEqual (true, node.Collidable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
-            Assert.AreEqual (0, node.UserID);
             Assert.AreEqual (0xffffffffu, node.GroupID);
-            Assert.AreEqual (1f, node.Opacity);
+            Assert.AreEqual (1.0f, node.Opacity);
             Assert.AreEqual (0, node.UserData.Count ());
+            Assert.AreEqual (0, node.DrawPriority);
+            Assert.AreEqual (0, node.UpdatePriority);
         }
 
         [TestMethod]
@@ -34,14 +37,6 @@ namespace DD.UnitTest {
 
             node.Name = "Name2";
             Assert.AreEqual ("Name2", node.Name);
-        }
-
-        [TestMethod]
-        public void Test_UserID () {
-            var node = new Node ("Node");
-
-            node.UserID = 0x12345678;
-            Assert.AreEqual (0x12345678, node.UserID);
         }
 
         [TestMethod]
@@ -61,25 +56,69 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Visibility () {
+        public void Test_Drawable () {
             var node = new Node ("Node");
 
-            node.Visibility = false;
-            Assert.AreEqual (false, node.Visibility);
+            node.Drawable = false;
+            Assert.AreEqual (false, node.Drawable);
 
-            node.Visibility = true;
-            Assert.AreEqual (true, node.Visibility);
+            node.Drawable = true;
+            Assert.AreEqual (true, node.Drawable);
         }
-        
+
         [TestMethod]
-        public void Test_Clickable () {
+        public void Test_Updatable () {
             var node = new Node ("Node");
 
-            node.Clickable = false;
-            Assert.AreEqual (false, node.Clickable);
+            node.Updatable = false;
+            Assert.AreEqual (false, node.Updatable);
 
-            node.Clickable = true;
-            Assert.AreEqual (true, node.Clickable);
+            node.Updatable = true;
+            Assert.AreEqual (true, node.Updatable);
+        }
+
+        [TestMethod]
+        public void Test_Animatable () {
+            var node = new Node ("Node");
+
+            node.Animatable = false;
+            Assert.AreEqual (false, node.Animatable);
+
+            node.Animatable = true;
+            Assert.AreEqual (true, node.Animatable);
+        }
+
+        [TestMethod]
+        public void Test_Collidable () {
+            var node = new Node ("Node");
+
+            node.Collidable = false;
+            Assert.AreEqual (false, node.Collidable);
+
+            node.Collidable = true;
+            Assert.AreEqual (true, node.Collidable);
+        }
+
+        [TestMethod]
+        public void Test_DrawPriority () {
+            var node = new Node ("Node");
+
+            node.DrawPriority = 1;
+            Assert.AreEqual (1, node.DrawPriority);
+
+            node.DrawPriority = -1;
+            Assert.AreEqual (-1, node.DrawPriority);
+        }
+
+        [TestMethod]
+        public void Test_UpdatePriority () {
+            var node = new Node ("Node");
+
+            node.UpdatePriority = 1;
+            Assert.AreEqual (1, node.UpdatePriority);
+
+            node.UpdatePriority = -1;
+            Assert.AreEqual (-1, node.UpdatePriority);
         }
 
         [TestMethod]
@@ -91,7 +130,6 @@ namespace DD.UnitTest {
             Assert.AreEqual (1, (int)node.UserData["Key1"]);
             Assert.AreEqual (2, (int)node.UserData["Key2"]);
         }
-
 
 
         [TestMethod]
@@ -234,39 +272,31 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Find_UserID () {
+        public void Test_Find_by_Name () {
             var nod1 = new Node ("Node1");
             var nod2 = new Node ("Node2");
             var nod3 = new Node ("Node3");
             nod1.AddChild (nod2);
             nod1.AddChild (nod3);
 
-            nod1.UserID = 1;
-            nod2.UserID = 2;
-            nod3.UserID = 3;
-
-            Assert.AreEqual (nod1, nod1.Find (1));
-            Assert.AreEqual (nod2, nod1.Find (2));
-            Assert.AreEqual (nod3, nod1.Find (3));
-            Assert.AreEqual (null, nod1.Find (4));
+            Assert.AreEqual (nod1, nod1.Find ("Node1"));
+            Assert.AreEqual (nod2, nod1.Find ("Node2"));
+            Assert.AreEqual (nod3, nod1.Find ("Node3"));
+            Assert.AreEqual (null, nod1.Find ("Node4"));
         }
 
         [TestMethod]
-        public void Test_Find_Predicate () {
+        public void Test_Find_by_Predicate () {
             var nod1 = new Node ("Node1");
             var nod2 = new Node ("Node2");
             var nod3 = new Node ("Node3");
             nod1.AddChild (nod2);
             nod1.AddChild (nod3);
 
-            nod1.UserID = 1;
-            nod2.UserID = 2;
-            nod3.UserID = 3;
-
-            Assert.AreEqual (nod1, nod1.Find (x => x.UserID == 1));
-            Assert.AreEqual (nod2, nod1.Find (x => x.UserID == 2));
-            Assert.AreEqual (nod3, nod1.Find (x => x.UserID == 3));
-            Assert.AreEqual (null, nod1.Find (x => x.UserID == 4));
+            Assert.AreEqual (nod1, nod1.Find (x => x.Name == "Node1"));
+            Assert.AreEqual (nod2, nod1.Find (x => x.Name == "Node2"));
+            Assert.AreEqual (nod3, nod1.Find (x => x.Name == "Node3"));
+            Assert.AreEqual (null, nod1.Find (x => x.Name == "Node4"));
         }
     
         [TestMethod]

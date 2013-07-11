@@ -154,9 +154,8 @@ namespace DD.PlatformSample {
                     label2.Text = "Hit: None";
                 }
             }
-
-            var x = 0;
-            var y = 0;
+            
+            int x = 0;
 
             foreach (var key in Input.Keys) {
                 switch (key) {

@@ -53,7 +53,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Transform () {
+        public void Test_Transform_Get () {
             var tr = (Transformable)new Node ();
 
             var T = new Vector3 (1, 2, 3);
@@ -68,6 +68,25 @@ namespace DD.UnitTest {
                       Matrix4x4.CreateFromScale (1, 2, 3);
 
             Assert.AreEqual (TRS, tr.Transform);
+        }
+
+        [TestMethod]
+        public void Test_Transform_Set () {
+            var tr = (Transformable)new Node ();
+
+            var T = new Vector3 (1, 2, 3);
+            var R = new Quaternion (45, 0, 0, 1);
+            var S = new Vector3 (1, 2, 3);
+
+            var TRS = Matrix4x4.CreateFromTranslation (1, 2, 3) *
+                      Matrix4x4.CreateFromRotation (R) *
+                      Matrix4x4.CreateFromScale (1, 2, 3);
+
+            tr.Transform = TRS;
+
+            Assert.AreEqual (T, tr.Translation);
+            Assert.AreEqual (R, tr.Rotation);
+            Assert.AreEqual (S, tr.Scale);
         }
 
     }

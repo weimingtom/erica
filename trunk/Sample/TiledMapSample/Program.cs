@@ -44,8 +44,7 @@ namespace DD.Sample.TiledMap {
             label1.SetOffset (0, 0);
             label2.SetOffset (0, 16);
 
-            var node = new Node ();
-            node.UserID = 1;
+            var node = new Node ("Label");
             node.SetTranslation (10, 32, 0);
             node.Attach (label1);
             node.Attach(label2);
@@ -80,12 +79,11 @@ namespace DD.Sample.TiledMap {
             wld.AddChild (node2);
             wld.AddChild (node3);
             wld.AddChild (node4);
-      
 
-            var director = new Director ();
-            director.PushScript (wld);
+
+            var alive = true;
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
-                director.Exit ();
+                alive = false;
             };
 
             Console.WriteLine ("Start of Main Loop");
@@ -95,13 +93,13 @@ namespace DD.Sample.TiledMap {
             var watch = new Stopwatch ();
             watch.Start ();
 
-            while (director.IsAlive) {
+            while (alive) {
                 var msec = watch.ElapsedMilliseconds;
 
-                director.Animate (msec);
-                director.Update (msec);
-                g2d.Dispatch (director.CurrentScript);
-                g2d.Draw (director.CurrentScript);
+                wld.Animate (msec);
+                wld.Update (msec);
+                g2d.Dispatch (wld);
+                g2d.Draw (wld);
 
             }
 
