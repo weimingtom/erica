@@ -9,6 +9,7 @@ namespace DD.UnitTest {
     public class TestComponent {
         class MyComponent : Component, IDisposable  {
             public bool IsDisposed { get; private set; }
+            public bool IsDestroyed { get; private set; }
             public new T GetComponent<T> () where T : Component {
                 return base.GetComponent<T> ();
             }
@@ -26,6 +27,9 @@ namespace DD.UnitTest {
             }
             public void Dispose () {
                 this.IsDisposed = true;
+            }
+            public override void OnDestroyed () {
+                this.IsDestroyed = true;   
             }
         }
 
@@ -198,6 +202,8 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (true, comp1.IsDisposed);
             Assert.AreEqual (true, comp2.IsDisposed);
+            Assert.AreEqual (true, comp1.IsDestroyed);
+            Assert.AreEqual (true, comp2.IsDestroyed);
         }
 
         [TestMethod]
@@ -218,6 +224,8 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (true, comp1.IsDisposed);
             Assert.AreEqual (true, comp2.IsDisposed);
+            Assert.AreEqual (true, comp1.IsDestroyed);
+            Assert.AreEqual (true, comp2.IsDestroyed);
         }
 
     }

@@ -88,6 +88,19 @@ namespace DD {
         }
 
         /// <summary>
+        /// Vector2からVector3への昇格
+        /// </summary>
+        /// <remarks>
+        /// Z要素は0で埋められます。
+        /// </remarks>
+        /// <param name="v">2次元ベクトル</param>
+        /// <returns></returns>
+        public static explicit operator Vector3 (Vector2 v) {
+            return new Vector3 (v.X, v.Y, 0);
+        }
+
+
+        /// <summary>
         /// ベクトルとfloatのかけ算
         /// </summary>
         /// <param name="v">ベクトル</param>

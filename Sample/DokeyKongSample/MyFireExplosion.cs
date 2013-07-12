@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DD.Sample {
+namespace DD.Sample.DonkeyKongSample {
     public class MyFireExplosion : Component{
         AnimationClip clip;
         bool onlyOnce;

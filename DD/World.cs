@@ -82,7 +82,8 @@ namespace DD {
         /// 現在はワールドの関数だが、ディレクターを作成してそちらに移動する事を考えている。
         /// </note>
         /// <param name="msec">現在時刻 (msec)</param>
-        public void Animate (long msec) {
+        /// <param name="dtime">デルタタイム (msec)</param>
+        public void Animate (long msec, long dtime) {
 
             var nodes = from node in Downwards
                         where node.Upwards.Aggregate (true, (x, y) => x & y.Animatable) == true
@@ -90,7 +91,7 @@ namespace DD {
 
             foreach (var node in nodes) {
                 foreach (var comp in node.Components) {
-                    comp.OnAnimate (msec);
+                    comp.OnAnimate (msec, dtime);
                 }
             }
         }

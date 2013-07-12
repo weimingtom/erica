@@ -5,7 +5,7 @@ using System.Text;
 using DD.Physics;
 
 
-namespace DD.Sample {
+namespace DD.Sample.DonkeyKongSample {
     public class MyDeadBox : Component {
 
         public override void OnCollisionEnter (Collision cp) {

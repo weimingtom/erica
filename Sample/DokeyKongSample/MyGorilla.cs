@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DD.Physics;
 
-namespace DD.Sample {
+namespace DD.Sample.DonkeyKongSample {
     public class MyGorilla : Component {
         long prevTime;
         long interval;

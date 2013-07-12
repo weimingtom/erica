@@ -13,10 +13,11 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (100, clip.Duration);
             Assert.AreEqual ("ClipName", clip.Name);
-            Assert.AreEqual (0, clip.TrackCount);
             Assert.AreEqual (1, clip.Speed);
             Assert.AreEqual (WrapMode.Loop, clip.WrapMode);
             Assert.AreEqual (false, clip.IsPlaying);
+            Assert.AreEqual (0, clip.TrackCount);
+            Assert.AreEqual (0, clip.EventCount);
         }
 
         [TestMethod]
@@ -55,6 +56,39 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, clip.Tracks.Count ());
         }
 
+        [TestMethod]
+        public void Test_AddEvent () {
+            var clip = new AnimationClip (100, "Clip");
+            var count = 0;
+            var args1 = new EventArgs ();
+            var args2 = new EventArgs ();
+            clip.AddEvent (0, (x, y) => count++, args1);
+            clip.AddEvent (1, (x, y) => count++, args2);
+
+            Assert.AreEqual (2, clip.EventCount);
+            Assert.AreEqual (2, clip.Events.Count ());
+
+            Assert.AreEqual (0, clip.GetEvent (0).Position);
+            Assert.AreEqual (1, clip.GetEvent (1).Position);
+            Assert.AreEqual (args1, clip.GetEvent (0).Args);
+            Assert.AreEqual (args2, clip.GetEvent (1).Args);
+        }
+
+        [TestMethod]
+        public void Test_RemoveEvent () {
+            var clip = new AnimationClip (100, "Clip");
+            var count = 0;
+            var args1 = new EventArgs ();
+            var args2 = new EventArgs ();
+            clip.AddEvent (0, (x, y) => count++, args1);
+            clip.AddEvent (1, (x, y) => count++, args2);
+
+            clip.RemoveEvent (0);
+            clip.RemoveEvent (0);
+
+            Assert.AreEqual (0, clip.EventCount);
+            Assert.AreEqual (0, clip.Events.Count ());
+        }
 
         [TestMethod]
         public void Test_SetDuration() {

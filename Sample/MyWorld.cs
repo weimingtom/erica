@@ -4,37 +4,36 @@ using System.Linq;
 using System.Text;
 
 namespace DD.Sample {
-    class MyWorld : Component {
-        Node picked;
-        Vector2 delta;
+    public class MyWorld : Component{
 
-        public override void OnAttached () {
-            this.picked = null;
-            this.delta = new Vector2 (0, 0);
+        public MyWorld () {
+
+        }
+
+        public static World Create () {
+            var spr = new Sprite (new Texture ("media/DarkGalaxy.jpg"));
+            var cmp = new MyWorld ();
+
+            var node = new World ("First Script");
+            node.Attach (spr);
+            node.Attach (cmp);
+            node.DrawPriority = 127;
+
+            return node;
         }
 
         public override void OnUpdate (long msec) {
-
             var g2d = Graphics2D.GetInstance ();
-            var pos = g2d.GetMousePosition ();
 
             if (Input.GetKeyDown (KeyCode.Mouse0)) {
-                var node = Graphics2D.Pick (World, pos.X, pos.Y).FirstOrDefault ();
-                if (node != null) {
-                    this.picked = node;
-                    this.delta = pos - new Vector2 (node.GlobalX, node.GlobalY);
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.Mouse0)) {
-                this.picked = null;
-            }
+                var pos = g2d.GetMousePosition ();
 
-            if (picked != null) {
-                var t = pos - delta;
-                picked.Translation = new Vector3(t.X, t.Y, 0);
+                var node = new Node ();
+                var comp = new MyPopupNumber ();
+                node.Attach (comp);
+                node.Translation = new Vector3 (pos.X, pos.Y, 0);
+                Node.AddChild (node);
             }
-            
-            base.OnUpdate (msec);
         }
     }
 }

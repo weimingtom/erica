@@ -52,7 +52,7 @@ namespace DD.Sample.TiledMap {
             return node;
         }
 
-        static void Main2 (string[] args) {
+        static void Main (string[] args) {
             var g2d = DD.Graphics2D.GetInstance ();
             g2d.CreateWindow (800, 600, "こんにちは、世界");
 
@@ -96,7 +96,7 @@ namespace DD.Sample.TiledMap {
             while (alive) {
                 var msec = watch.ElapsedMilliseconds;
 
-                wld.Animate (msec);
+                wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
                 g2d.Draw (wld);

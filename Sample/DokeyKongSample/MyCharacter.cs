@@ -6,7 +6,7 @@ using Stateless;
 using DD.Physics;
 using DD;
 
-namespace DD.Sample {
+namespace DD.Sample.DonkeyKongSample {
     public class MyCharacterComponent : Component {
 
         StateMachine<State, Trigger> sm;

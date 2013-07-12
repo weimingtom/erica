@@ -446,11 +446,28 @@ namespace DD {
             z /= w;
         }
 
+        /// <summary>
+        /// 座標変換
+        /// </summary>
+        /// <param name="x">座標のX成分</param>
+        /// <param name="y">座標のY成分</param>
+        /// <param name="z">座標のZ成分</param>
+        /// <returns></returns>
         public Vector3 Apply (float x, float y, float z) {
             Apply (ref x, ref y, ref z);
             return new Vector3 (x, y, z);
         }
 
+        /// <summary>
+        /// ベクトルの変換
+        /// </summary>
+        /// <remarks>
+        /// ベクトルの変換は行列の回転成分のみを使用します。
+        /// </remarks>
+        /// <param name="x">ベクトルのX成分</param>
+        /// <param name="y">ベクトルのY成分</param>
+        /// <param name="z">ベクトルのZ成分</param>
+        /// <returns></returns>
         public Vector3 ApplyVector (float x, float y, float z) {
             Vector3 T;
             Matrix3x3 R;
