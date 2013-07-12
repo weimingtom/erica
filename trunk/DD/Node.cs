@@ -651,7 +651,22 @@ namespace DD {
             return components[index];
         }
 
+        // 微妙すぎるのでコメントアウト
+        // 悩む
+        /*
+        public Node Instanciate<T> (Vector3 pos, Vector3 norm) where T : Component, new () {
+            var node = new Node ();
+            AddChild (node);
+            node.Translation = pos;
 
+            var comp = new T ();
+            node.Attach (comp);
+
+            comp.OnInit ();
+
+            return node;
+        }
+        */
 
 
 

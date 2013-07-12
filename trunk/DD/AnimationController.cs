@@ -58,6 +58,9 @@ namespace DD {
         /// </summary>
         /// <param name="clip">アニメーション クリップ</param>
         public void AddClip (AnimationClip clip) {
+            if (clip == null) {
+                throw new ArgumentNullException ("Clip is null");
+            }
             clips.Add (clip);
         }
 
@@ -83,10 +86,12 @@ namespace DD {
         }
 
         /// <inheritdoc/>
-        public override void OnAnimate (long msec) {
+        public override void OnAnimate (long msec, long dtime) {
 
-            foreach (var clip in clips.Where (x => x.IsPlaying)) {
+            foreach (var clip in clips.Where (x => x.IsPlaying).ToArray()) {
                 var pos = clip.GetPlaybackPosition (msec);
+                
+                // 値の書き換え
                 foreach (var track in clip.Tracks) {
                     var target = track.Item1.Target;
                     var alive = track.Item1.IsAlive;
@@ -98,6 +103,18 @@ namespace DD {
                             propInfo.SetValue (target, value, null);
                         }
                     }
+                }
+
+                var evStart = clip.GetPlaybackPosition (msec - dtime);
+                var evEnd = clip.GetPlaybackPosition (msec);
+
+                // イベントの発行
+                var events = from x in clip.Events
+                             let ev = x.Position
+                             where ev >= evStart && ev <= evEnd
+                             select x;
+                foreach (var ev in events) {
+                    ev.Handler (clip, ev.Args);
                 }
             }
         }

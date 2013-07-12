@@ -4,43 +4,52 @@ using System.Linq;
 using System.Text;
 
 namespace DD.Sample {
-    public class MyPopupNumber : Component {
-        Label label;
-        float y;
-        float dy;
-        int count;
+    public class MyPopupNumber : Component{
 
-        public static Node CreateMyPopupNumber (string number, int dy) {
-            var label = new Label (number);
-            var comp = new MyPopupNumber ();
-            comp.label = label;
-            comp.y = 5;
-            comp.dy = dy;
-
-            var node = new Node ();
-            node.Attach (label);
-            node.Attach (comp);
-
-            node.DrawPriority = -1;
-
-            return node;
+        public MyPopupNumber () {
         }
+
+        public Label Label {
+            get;
+            set;
+        }
+
+        public override void OnAttached () {
+            var label = new Label ("こんにちは、世界");
+            Node.Attach (label);
+        }
+
+        public override void OnUpdateInit (long msec) {
+            var snd = new SoundClip ("media/PinPon.wav");
+            snd.Volume = 0.2f;
+
+            var track = new AnimationTrack ("Translation", InterpolationType.Linear);
+            var pos = Node.Translation;
+            track.AddKeyframe (0, new Vector3 (pos.X, pos.Y, 0));
+            track.AddKeyframe (3000, new Vector3 (pos.X, pos.Y-100, 0));
+
+            var clip = new AnimationClip (3000);
+            clip.Play ();
+            clip.WrapMode = WrapMode.Loop;
+            clip.SetPlaybackPoisition (0, msec);
+
+            clip.AddTrack (Node, track);
+            clip.AddEvent (10, (sender, args) => snd.Play (), null);
+            clip.AddEvent (2900, (sender, args) => {
+                Animation.RemoveClip (clip);
+                Destroy (this);
+            }, null);
+
+            Animation.AddClip (clip);
+        }
+
+        public override void OnDestroyed () {
+            Console.WriteLine ("Destroyed");
+        }
+
 
         public override void OnUpdate (long msec) {
-            y += dy;
-            dy += 0.3f;
-            count += 1;
 
-            if (dy > 0) {
-                dy = 0;
-            }
-            if (count > 20) {
-                Destroy (Node);
-            }
-
-            label.SetOffset (0, y);
         }
-
-
     }
 }

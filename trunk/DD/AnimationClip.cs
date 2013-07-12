@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
+
+
     /// <summary>
     /// アニメーション クリップ クラス
     /// </summary>
@@ -42,7 +44,66 @@ namespace DD {
         float speed;
         WrapMode wrapMode;
         List<Tuple<WeakReference, AnimationTrack>> tracks;
+        List<AnimationEvent> events;
         #endregion
+
+        /// <summary>
+        /// イベント数
+        /// </summary>
+        /// <remarks>
+        /// このクリップに設定されているイベント数
+        /// </remarks>
+        public int EventCount {
+            get { return events.Count (); }
+        }
+
+        /// <summary>
+        /// すべてのイベントを列強する列挙子
+        /// </summary>
+        public IEnumerable<AnimationEvent> Events {
+            get { return events; }
+        }
+
+        /// <summary>
+        /// イベントの取得
+        /// </summary>
+        /// <param name="index">イベント インデックス</param>
+        /// <returns></returns>
+        public AnimationEvent GetEvent (int index) {
+            if (index < 0 || index > EventCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            return events[index];
+        }
+
+        /// <summary>
+        /// イベントの追加
+        /// </summary>
+        /// <param name="position">ローカルポジション (msec)</param>
+        /// <param name="handler">イベントで呼び出される関数</param>
+        /// <param name="args">関数に渡される引数</param>
+        public void AddEvent (int position, AnimationEventHandler handler, EventArgs args) {
+            if (position < 0 || position > duration) {
+                throw new ArgumentException ("Position is invalid");
+            }
+            if (handler == null) {
+                throw new ArgumentNullException ("Handler is null");
+            }
+            
+            this.events.Add (new AnimationEvent (position, handler, args));
+            events.Sort ();
+        }
+
+        /// <summary>
+        /// イベントの削除
+        /// </summary>
+        /// <param name="index">インデックス</param>
+        public void RemoveEvent (int index) {
+            if (index < 0 || index > EventCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            this.events.RemoveAt (index);
+        }
 
         #region Constructor
         /// <summary>
@@ -60,9 +121,10 @@ namespace DD {
             this.localRefTime = 0;
             this.worldRefTime = 0;
             this.speed = 1;
-            this.tracks = new List<Tuple<WeakReference, AnimationTrack>> ();
             this.wrapMode = WrapMode.Loop;
             this.state = State.Stopped;
+            this.tracks = new List<Tuple<WeakReference, AnimationTrack>> ();
+            this.events = new List<AnimationEvent>();
         }
 
         /// <summary>

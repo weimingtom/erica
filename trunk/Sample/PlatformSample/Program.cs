@@ -114,7 +114,7 @@ namespace DD.PlatformSample {
             while (alive) {
                 var msec = watch.ElapsedMilliseconds;
 
-                wld.Animate (msec);
+                wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
                 g2d.Draw (wld);

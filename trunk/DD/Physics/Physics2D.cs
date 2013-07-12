@@ -249,6 +249,7 @@ namespace DD.Physics {
         /// </remarks>
         /// <param name="shapeA">コリジョン形状A</param>
         /// <param name="shapeB">コリジョン形状B</param>
+        /// <param name="col">結果を受け取るコリジョン構造体</param>
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
         public static bool Collide (CollisionShape shapeA, CollisionShape shapeB, out Collision col) {
             if(shapeA == null || shapeB == null){

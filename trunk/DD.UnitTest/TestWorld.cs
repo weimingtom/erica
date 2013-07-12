@@ -12,7 +12,7 @@ namespace DD.UnitTest {
             public int Animated { get; private set; }
             public int Updated { get; private set; }
             public int OnUpdateInited { get; private set; }
-            public override void OnAnimate (long msec) {
+            public override void OnAnimate (long msec, long dtime) {
                 this.Animated += 1;
             }
             public override void OnUpdateInit (long msec) {
@@ -44,13 +44,13 @@ namespace DD.UnitTest {
             wld.Attach (cmp1);
             nod.Attach (cmp2);
 
-            wld.Animate (0);
+            wld.Animate (0, 0);
 
             Assert.AreEqual (1, cmp1.Animated);
             Assert.AreEqual (1, cmp2.Animated);
 
             nod.Animatable = false;
-            wld.Animate (0);
+            wld.Animate (0, 0);
 
             Assert.AreEqual (2, cmp1.Animated);
             Assert.AreEqual (1, cmp2.Animated);

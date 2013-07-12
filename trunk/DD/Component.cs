@@ -228,6 +228,7 @@ namespace DD {
 
             foreach (var cmp in node.Components.ToArray ()) {
                 node.Detach(cmp);
+                cmp.OnDestroyed ();
                 if (cmp is IDisposable) {
                     ((IDisposable)cmp).Dispose ();
                 }
@@ -245,7 +246,7 @@ namespace DD {
         /// ノードはこのメソッドを使って削除するのが一番安全です。
         /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
         /// </remarks>
-        /// <param name="node">ノード</param>
+        /// <param name="comp">コンポーネント</param>
         protected void Destroy (Component comp) {
             if (comp == null || comp.Node == null) {
                 return;
@@ -281,6 +282,12 @@ namespace DD {
         /// 通常ユーザーがこれを使用する事はありません。
         /// </remarks>
         public virtual void OnDispatch () {
+        }
+
+        public virtual void OnInit () {
+        }
+
+        public virtual void OnDestroyed () {
         }
 
         /// <summary>
@@ -439,8 +446,9 @@ namespace DD {
         /// 通常はユーザーがこの仮想関数をオーバーライドする必要はありません。
         /// この仮想関数の適切な実装を提供するのはエンジン側の責任です。
         /// </remarks>
-        /// <param name="msec">ワールド時刻(msec)</param>
-        public virtual void OnAnimate (long msec) {
+        /// <param name="msec">ワールド時刻 (msec)</param>
+        /// <param name="dtime">デルタ タイム (msec)</param>
+        public virtual void OnAnimate (long msec, long dtime) {
 
         }
 

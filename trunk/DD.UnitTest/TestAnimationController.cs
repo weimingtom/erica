@@ -7,10 +7,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestAnimationController {
-
-        public class MyTarget {
+        private class MyTarget {
             public float Speed { get; set; }
             public Vector3 Point { get; set; }
+        }
+        private class MyEventArgs : EventArgs{
+            public MyEventArgs (int value){
+                this.Value = value;
+            }
+            public int Value { get; set; }
         }
 
         [TestMethod]
@@ -80,7 +85,7 @@ namespace DD.UnitTest {
 
             // 解放済みのターゲットを含むアニメーションの実行。
             // エラーが起きてはならない
-            anim.OnAnimate (0);
+            anim.OnAnimate (0, 0);
 
         }
 
@@ -107,13 +112,13 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (0.0f, target.Speed);
 
-            anim.OnAnimate (1);
+            anim.OnAnimate (1, 0);
             Assert.AreEqual (1.0f, target.Speed);
 
-            anim.OnAnimate (2);
+            anim.OnAnimate (2, 0);
             Assert.AreEqual (2.0f, target.Speed);
 
-            anim.OnAnimate (3);
+            anim.OnAnimate (3, 0);
             Assert.AreEqual (2.0f, target.Speed);
         }
 
@@ -138,13 +143,13 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (0.0f, target.Speed);
 
-            anim.OnAnimate (1);
+            anim.OnAnimate (1, 0);
             Assert.AreEqual (1.0f, target.Speed);
 
-            anim.OnAnimate (2);
+            anim.OnAnimate (2, 0);
             Assert.AreEqual (2.0f, target.Speed);
 
-            anim.OnAnimate (3);
+            anim.OnAnimate (3, 0);
             Assert.AreEqual (1.0f, target.Speed);    // 折り返し
         }
 
@@ -170,15 +175,15 @@ namespace DD.UnitTest {
             Assert.AreEqual (0f, target.Point.X, 0.0001f);
             Assert.AreEqual (0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (1);
+            anim.OnAnimate (1, 0);
             Assert.AreEqual (1.0f, target.Point.X, 0.0001f);
             Assert.AreEqual (2.0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (2);
+            anim.OnAnimate (2, 0);
             Assert.AreEqual (2.0f, target.Point.X, 0.0001f);
             Assert.AreEqual (3.0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (3);
+            anim.OnAnimate (3, 0);
             Assert.AreEqual (2.0f, target.Point.X, 0.0001f);
             Assert.AreEqual (3.0f, target.Point.Y, 0.0001f);
         }
@@ -205,17 +210,118 @@ namespace DD.UnitTest {
             Assert.AreEqual (0f, target.Point.X, 0.0001f);
             Assert.AreEqual (0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (1);
+            anim.OnAnimate (1, 0);
             Assert.AreEqual (1.0f, target.Point.X, 0.0001f);
             Assert.AreEqual (2.0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (2);
+            anim.OnAnimate (2, 0);
             Assert.AreEqual (2.0f, target.Point.X, 0.0001f);
             Assert.AreEqual (3.0f, target.Point.Y, 0.0001f);
 
-            anim.OnAnimate (3);
+            anim.OnAnimate (3, 0);
             Assert.AreEqual (1.0f, target.Point.X, 0.0001f);   // 折り返し
             Assert.AreEqual (2.0f, target.Point.Y, 0.0001f);   // 折り返し
+        }
+
+        /// <summary>
+        /// アニメーション イベントのハンドラー呼び出しのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_OnAnimate_Event_Handler () {
+            var clip = new AnimationClip (100, "TestClip");
+            clip.WrapMode = WrapMode.Once;
+            clip.Play ();
+
+            var count = 0;
+            clip.AddEvent (0, (x, y) => count = 1, null);
+            clip.AddEvent (50, (x, y) => count = 2, null);
+            clip.AddEvent (100, (x, y) => count = 3, null);
+
+            var anim = new AnimationController ();
+            anim.AddClip (clip);
+
+            anim.OnAnimate (0, 0);
+            Assert.AreEqual (1, count);
+
+            anim.OnAnimate (50, 0);
+            Assert.AreEqual (2, count);
+
+            anim.OnAnimate (100, 0);
+            Assert.AreEqual (3, count);
+        }
+
+        /// <summary>
+        /// アニメーション イベントの引数のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_OnAnimate_Event_Args () {
+            var clip = new AnimationClip (100, "TestClip");
+            clip.WrapMode = WrapMode.Once;
+            clip.Play ();
+
+            var args1 = new MyEventArgs (1);
+            var args2 = new MyEventArgs (2);
+            var args3 = new MyEventArgs (3);
+
+            var count = 0;
+            clip.AddEvent (0, (sender, args) => count = ((MyEventArgs)args).Value, args1);
+            clip.AddEvent (50, (sender, args) => count = ((MyEventArgs)args).Value, args2);
+            clip.AddEvent (100, (sender, args) => count = ((MyEventArgs)args).Value, args3);
+
+            var anim = new AnimationController ();
+            anim.AddClip (clip);
+
+            anim.OnAnimate (0, 0);
+            Assert.AreEqual (1, count);
+
+            anim.OnAnimate (50, 0);
+            Assert.AreEqual (2, count);
+
+            anim.OnAnimate (100, 0);
+            Assert.AreEqual (3, count);
+        }
+
+        /// <summary>
+        /// アニメーション イベントの複雑なテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_OnAnimate_Event_2 () {
+            var clip = new AnimationClip (100, "TestClip");
+            clip.WrapMode = WrapMode.Once;
+            clip.Play ();
+
+            var args1 = new MyEventArgs (1);
+            var args2 = new MyEventArgs (2);
+            var args3 = new MyEventArgs (3);
+
+            var count = 0;
+            clip.AddEvent (0, (sender, args) => count = 1, null);
+            clip.AddEvent (50, (sender, args) => count = 2, null);
+            clip.AddEvent (100, (sender, args) => count += 1, null);
+            clip.AddEvent (100, (sender, args) => count += 1, null);
+
+            var anim = new AnimationController ();
+            anim.AddClip (clip);
+
+            // 停止中のクリップはイベントを発火しない
+            clip.Stop ();
+            anim.OnAnimate (0, 0);
+            Assert.AreEqual (0, count);
+
+            clip.Play ();
+            
+            // 逆再生中の dtime は逆方向
+            // clip.SetSpeed (-1, 50);
+            // anim.OnAnimate (40, 10);
+            // Assert.AreEqual (2, count);
+
+            count = 0;
+            clip.Speed = 1;
+
+            // 同じポジションで重複したイベントは両方発火
+            anim.OnAnimate (100, 0);
+            Assert.AreEqual (2, count);
+
         }
     }
 

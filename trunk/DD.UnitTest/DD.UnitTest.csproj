@@ -96,6 +96,7 @@
     <Compile Include="Setup.cs" />
     <Compile Include="TestTiledMapComposer.cs" />
     <Compile Include="TestTransformable.cs" />
+    <Compile Include="TestVector2.cs" />
     <Compile Include="TestVector3.cs" />
     <Compile Include="TestRectangle.cs" />
     <Compile Include="TestButton.cs" />

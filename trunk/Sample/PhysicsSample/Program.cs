@@ -227,7 +227,7 @@ namespace DD.Sample.PhysicsSample {
 
                 p2d.Step (wld, msec);
 
-                wld.Animate (msec);
+                wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
                 g2d.Draw (wld);

@@ -93,7 +93,7 @@ namespace DD.UnitTest {
             var a = new Vector3 (1, 2, 3.00001f);
             var b = new Vector3 (1, 2, 3.00002f);
 
-            Assert.IsTrue (a.Equals (b));   // 誤差を許容する
+            Assert.IsTrue (a.Equals (b));   // 誤差を許容する比較
             Assert.IsFalse (a == b);        // 厳密な比較
             Assert.AreNotEqual (a.GetHashCode (), b.GetHashCode ()); // ハッシュは厳密な比較を基準
         }
