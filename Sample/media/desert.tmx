@@ -6,14 +6,14 @@
  <imagelayer name="Background" width="40" height="40" visible="0">
   <image source="DarkGalaxy.jpg"/>
  </imagelayer>
- <layer name="Collision" width="40" height="40" visible="0">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OsQkAIAxFwWyQ/be1tRGUFAa9g98l8CLgXTmtI301+mr01eir+akvN3Zyu/rVd6cPAACAvgY3uSQMABkAAA==
-  </data>
- </layer>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Y2QrCMBBFo31wA+sCrlirdd/q/3+dIzZUhtAmMRlH6cPBBlJyvDO2g5EQIvJIFwiBnudzbLgp/JYMvH4lv2dWI2AMTBj4qKgBdSBA3j7OmgIzA+ZAC2gDHYIsVsDagMSj36HAbwOcgO0X/YrySzTzpPDbMfS7Iy/sdxGv/r8S++Gew+uyvHBfuvBT/Q4OKD95XeaHc3WV3x6tpY9pfr7riz0xx6x+upwd+DUymiJ/FxURaO6TLD70C0U+X8jvWkRHc5/qPhu/scjniz4wKGGouU91n8/eoyYW6jmHk2dM6GMzm1F43bJPnWfn+/sncXS+Ljp+T6d7tpfSL2Xoh/uam59Nfd/nCyq/1MAPZ8ktP1WtOftR5mczm1H6/QsxA4dfAWfF7b/BqsYVFZ/xABSXR5cAGQAA
+   H4sIAAAAAAAAC+2Y2wqCQBCGt7roBBUFHcksOx99/6drpA1lWGx2dacpvPhQQdzPf0YdDJRSgUd6QB8YeF7HhbvBb1Xgep0cJORXxMNEktUYmABTgX4JNaAONJC3D78ZMLdgAbT1dbse7h2zBjYWRB79jjl+W+AM7L7ol5dfRMyTw28v0C9GXtjvql79f2P2wz2Hjz/lhfuyDD/Tc3BE+b33P/nhXMvK74CO3z62+fmuL/bEnHT9qFxK8GtqWir9flC2CXUCy4J+fZXOF7Z+Nrj6TVQ6X1DWyfoNLRg5+lF7j5tQmeccSZ4ho4/LbMbhdddbyrsz+/2JSlqfCsUvcYr1uZx+D4F+uK+l+bnUNztfcPk9LPxwltLyM9Vash9nfi6zGaffvxAKcPgVcFZF/g1WNa6okMcTJODMFAAZAAA=
+  </data>
+ </layer>
+ <layer name="Collision" width="40" height="40" opacity="0.41">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3OwQnAMBADQZei/qtMAyG+R0A2zIDQd9fiL/nYCdIO2Eg7YCPtAACulOG3ZPgtGQwAAADePFaa27YAGQAA
   </data>
  </layer>
  <objectgroup name="Objects" width="40" height="40" visible="0"/>

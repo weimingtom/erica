@@ -22,7 +22,7 @@ namespace DD.PlatformSample {
                 var node = Graphics2D.Pick (World, pos.X, pos.Y).FirstOrDefault ();
                 if (node != null) {
                     this.picked = node;
-                    this.delta = pos - new Vector2 (node.GlobalX, node.GlobalY);
+                    this.delta = pos - new Vector2 (node.Point.X, node.Point.Y);
                 }
             }
             if (Input.GetKeyUp(KeyCode.Mouse0)) {

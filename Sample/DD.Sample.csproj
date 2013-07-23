@@ -98,9 +98,10 @@
     <Compile Include="DokeyKongSample\Program.cs" />
     <Compile Include="MyPopupNumber.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TiledMapSample\MyComponent.cs" />
+    <Compile Include="TiledMapSample\MyCharacter.cs" />
     <Compile Include="PhysicsSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\Program.cs" />
+    <Compile Include="TiledMapSample\MyTiledMap.cs" />
     <Compile Include="TiledMapSample\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhysicsSample\UpdraftComponent.cs" />

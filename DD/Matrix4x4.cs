@@ -11,7 +11,7 @@ namespace DD {
     /// 一般的な4x4行列を表します。
     /// </remarks>
     public struct Matrix4x4 : IEquatable<Matrix4x4> {
-
+  
         #region Constructor
         /// <summary>
         /// コンストラクター
@@ -248,32 +248,32 @@ namespace DD {
         /// 逆行列の計算
         /// </summary>
         /// <remarks>
-        ///この行列の逆行列を計算します。計算不可能（<see cref="Determinant"/> = 0）な時例外が発生します。
+        /// この行列の逆行列を計算します。計算不可能（<see cref="Determinant"/> = 0）な時例外が発生します。
+        /// このメソッドは計算結果をキャッシュし、2回目以降は高速に動作します。
         /// </remarks>
         /// <returns></returns>
         public Matrix4x4 Inverse () {
-            var det = Determinant;
-            if (det == 0) {
-                throw new ArithmeticException ("Can't invert this matrix");
-            }
-            var m = new Matrix4x4 ();
-            m.M00 = 1 / det * (M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 - M13 * M22 * M31);
-            m.M01 = 1 / det * (M01 * M23 * M32 + M02 * M21 * M33 + M03 * M22 * M31 - M01 * M22 * M33 - M02 * M23 * M31 - M03 * M21 * M32);
-            m.M02 = 1 / det * (M01 * M12 * M33 + M02 * M13 * M31 + M03 * M11 * M32 - M01 * M13 * M32 - M02 * M11 * M33 - M03 * M12 * M31);
-            m.M03 = 1 / det * (M01 * M13 * M22 + M02 * M11 * M23 + M03 * M12 * M21 - M01 * M12 * M23 - M02 * M13 * M21 - M03 * M11 * M22);
-            m.M10 = 1 / det * (M10 * M23 * M32 + M12 * M20 * M33 + M13 * M22 * M30 - M10 * M22 * M33 - M12 * M23 * M30 - M13 * M20 * M32);
-            m.M11 = 1 / det * (M00 * M22 * M33 + M02 * M23 * M30 + M03 * M20 * M32 - M00 * M23 * M32 - M02 * M20 * M33 - M03 * M22 * M30);
-            m.M12 = 1 / det * (M00 * M13 * M32 + M02 * M10 * M33 + M03 * M12 * M30 - M00 * M12 * M33 - M02 * M13 * M30 - M03 * M10 * M32);
-            m.M13 = 1 / det * (M00 * M12 * M23 + M02 * M13 * M20 + M03 * M10 * M22 - M00 * M13 * M22 - M02 * M10 * M23 - M03 * M12 * M20);
-            m.M20 = 1 / det * (M10 * M21 * M33 + M11 * M23 * M30 + M13 * M20 * M31 - M10 * M23 * M31 - M11 * M20 * M33 - M13 * M21 * M30);
-            m.M21 = 1 / det * (M00 * M23 * M31 + M01 * M20 * M33 + M03 * M21 * M30 - M00 * M21 * M33 - M01 * M23 * M30 - M03 * M20 * M30);
-            m.M22 = 1 / det * (M00 * M11 * M33 + M01 * M13 * M30 + M03 * M10 * M31 - M00 * M13 * M31 - M01 * M10 * M33 - M03 * M11 * M30);
-            m.M23 = 1 / det * (M00 * M13 * M21 + M01 * M10 * M23 + M03 * M11 * M20 - M00 * M11 * M23 - M01 * M13 * M20 - M03 * M10 * M21);
-            m.M30 = 1 / det * (M10 * M22 * M31 + M11 * M20 * M32 + M12 * M21 * M30 - M10 * M21 * M32 - M11 * M22 * M30 - M12 * M20 * M31);
-            m.M31 = 1 / det * (M00 * M21 * M32 + M01 * M22 * M30 + M02 * M20 * M31 - M00 * M22 * M31 - M01 * M20 * M32 - M02 * M21 * M30);
-            m.M32 = 1 / det * (M00 * M12 * M31 + M01 * M10 * M32 + M02 * M11 * M30 - M00 * M11 * M32 - M01 * M12 * M30 - M02 * M10 * M31);
-            m.M33 = 1 / det * (M00 * M11 * M22 + M01 * M12 * M20 + M02 * M10 * M21 - M00 * M12 * M21 - M01 * M10 * M22 - M02 * M11 * M20);
-
+                var det = Determinant;
+                if (det == 0) {
+                    throw new ArithmeticException ("Can't invert this matrix");
+                }
+                var m = new Matrix4x4 ();
+                m.M00 = 1 / det * (M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 - M13 * M22 * M31);
+                m.M01 = 1 / det * (M01 * M23 * M32 + M02 * M21 * M33 + M03 * M22 * M31 - M01 * M22 * M33 - M02 * M23 * M31 - M03 * M21 * M32);
+                m.M02 = 1 / det * (M01 * M12 * M33 + M02 * M13 * M31 + M03 * M11 * M32 - M01 * M13 * M32 - M02 * M11 * M33 - M03 * M12 * M31);
+                m.M03 = 1 / det * (M01 * M13 * M22 + M02 * M11 * M23 + M03 * M12 * M21 - M01 * M12 * M23 - M02 * M13 * M21 - M03 * M11 * M22);
+                m.M10 = 1 / det * (M10 * M23 * M32 + M12 * M20 * M33 + M13 * M22 * M30 - M10 * M22 * M33 - M12 * M23 * M30 - M13 * M20 * M32);
+                m.M11 = 1 / det * (M00 * M22 * M33 + M02 * M23 * M30 + M03 * M20 * M32 - M00 * M23 * M32 - M02 * M20 * M33 - M03 * M22 * M30);
+                m.M12 = 1 / det * (M00 * M13 * M32 + M02 * M10 * M33 + M03 * M12 * M30 - M00 * M12 * M33 - M02 * M13 * M30 - M03 * M10 * M32);
+                m.M13 = 1 / det * (M00 * M12 * M23 + M02 * M13 * M20 + M03 * M10 * M22 - M00 * M13 * M22 - M02 * M10 * M23 - M03 * M12 * M20);
+                m.M20 = 1 / det * (M10 * M21 * M33 + M11 * M23 * M30 + M13 * M20 * M31 - M10 * M23 * M31 - M11 * M20 * M33 - M13 * M21 * M30);
+                m.M21 = 1 / det * (M00 * M23 * M31 + M01 * M20 * M33 + M03 * M21 * M30 - M00 * M21 * M33 - M01 * M23 * M30 - M03 * M20 * M30);
+                m.M22 = 1 / det * (M00 * M11 * M33 + M01 * M13 * M30 + M03 * M10 * M31 - M00 * M13 * M31 - M01 * M10 * M33 - M03 * M11 * M30);
+                m.M23 = 1 / det * (M00 * M13 * M21 + M01 * M10 * M23 + M03 * M11 * M20 - M00 * M11 * M23 - M01 * M13 * M20 - M03 * M10 * M21);
+                m.M30 = 1 / det * (M10 * M22 * M31 + M11 * M20 * M32 + M12 * M21 * M30 - M10 * M21 * M32 - M11 * M22 * M30 - M12 * M20 * M31);
+                m.M31 = 1 / det * (M00 * M21 * M32 + M01 * M22 * M30 + M02 * M20 * M31 - M00 * M22 * M31 - M01 * M20 * M32 - M02 * M21 * M30);
+                m.M32 = 1 / det * (M00 * M12 * M31 + M01 * M10 * M32 + M02 * M11 * M30 - M00 * M11 * M32 - M01 * M12 * M30 - M02 * M10 * M31);
+                m.M33 = 1 / det * (M00 * M11 * M22 + M01 * M12 * M20 + M02 * M10 * M21 - M00 * M12 * M21 - M01 * M10 * M22 - M02 * M11 * M20);
             return m;
         }
 

@@ -220,11 +220,10 @@ namespace DD {
                 foreach (var prop in layer.Properties) {
                     layerNode.UserData.Add (prop.Key, prop.Value);
                 }
-                var layerComp = new GridBoard (width, height);
+                var layerComp = new GridMap (width, height);
                 layerComp.TileWidth = tileWidth;
                 layerComp.TileHeight = tileHeight;
                 layerNode.Attach (layerComp);
-
 
                 foreach (var tile in layer.Tiles) {
                     var x = tile.X;

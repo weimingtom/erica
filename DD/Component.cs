@@ -287,6 +287,13 @@ namespace DD {
         public virtual void OnInit () {
         }
 
+        /// <summary>
+        /// ノードの削除のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Destroy"/> メソッドでノードを破棄した時に一度だけ呼ばれます。
+        /// このエントリーポイントが最後のカスタマイズ ポイントです。
+        /// </remarks>
         public virtual void OnDestroyed () {
         }
 
