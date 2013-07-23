@@ -274,6 +274,11 @@ namespace DD.Physics {
             return Collide (shapeA, shapeB, out col);
         }
 
+        [Obsolete ("誰も使ってないので廃止します")]
+        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+            ClosestPoints cp;
+            return Distance (shapeA, matA, shapeB, matB, out cp);
+        }
 
         /// <summary>
         /// 2物体の最短距離の測定
@@ -281,13 +286,17 @@ namespace DD.Physics {
         /// <remarks>
         /// 2つのコリジョン形状の最短距離を求めます。
         /// 2つの物体がオーバーラップしていた場合は一律 0 が帰り、負の値が変える事はありません。
+        /// <note>
+        /// 必要性が感じられないので削除予定。使用禁止。
+        /// </note>
         /// </remarks>
         /// <param name="shapeA">コリジョン形状A</param>
         /// <param name="matA">変換行列A</param>
         /// <param name="shapeB">コリジョン形状B</param>
         /// <param name="matB">変換行列B</param>
         /// <returns>距離</returns>
-        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+        [Obsolete("誰も使ってないので廃止します")]
+        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB, out ClosestPoints cp) {
 
             DistanceOutput output;
             SimplexCache cache;
@@ -319,6 +328,10 @@ namespace DD.Physics {
 
             FarseerPhysics.Collision.Distance.ComputeDistance (out output, out cache, input);
 
+            var pointA = new Vector3(output.PointA.X, output.PointA.Y, 0);
+            var pointB = new Vector3 (output.PointB.X, output.PointB.Y, 0);
+            cp = new ClosestPoints (pointA, pointB);
+
             return output.Distance;
         }
 
@@ -349,6 +362,72 @@ namespace DD.Physics {
 
             return shpA.TestPoint (ref traA, ref posB);
         }
+
+        public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray, out RayIntersection rayOut) {
+            FarseerPhysics.Collision.RayCastInput input;
+            FarseerPhysics.Collision.RayCastOutput output;
+            input.Point1 = Convert (ray.PointA);
+            input.Point2 = Convert (ray.PointB);
+            input.MaxFraction = ray.Fraction;
+
+            var shpA = Convert (shapeA);
+            var traA = Convert (matA ?? Matrix4x4.Identity);
+
+            var hit = shpA.RayCast (out output, ref input, ref traA, 0);
+            if (hit) {
+                var normal = Convert (output.Normal);
+                var frac = output.Fraction;
+                rayOut = new RayIntersection (true, shapeA.Node, normal, frac, ray);
+            }
+            else {
+                rayOut = new RayIntersection ();
+            }
+
+            return hit;
+        }
+
+        public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray) {
+            RayIntersection output;
+            return RayCast (shapeA, matA, ray, out output);
+        }
+
+        public static bool RayCast (CollisionShape shapeA, Ray ray, out RayIntersection output) {
+            var matA = shapeA.Node.Transform;
+            return RayCast (shapeA, matA, ray, out output);
+        }
+
+        public static bool RayCast (CollisionShape shapeA, Ray ray) {
+            RayIntersection output;
+            var matA = shapeA.Node.Transform;
+            return RayCast (shapeA, matA, ray, out output);
+        }
+
+
+        private static Shape Convert (CollisionShape shape) {
+            return shape.CreateShapeBody (1.0f);
+        }
+
+        private static Transform Convert (Matrix4x4 mat) {
+            Vector3 T;
+            Matrix3x3 R;
+            Vector3 S;
+
+            mat.Decompress (out T, out R, out S);
+            var posA = new XnaVector2 (T.X, T.Y);
+            var rotA = new Mat22 (R[0], R[1], R[3], R[4]);
+
+            return new Transform (ref posA, ref rotA);
+        }
+
+        private static XnaVector2 Convert (Vector3 v) {
+            return new XnaVector2 (v.X, v.Y);
+        }
+
+        private static Vector3 Convert (XnaVector2 v) {
+            return new Vector3 (v.X, v.Y, 0);
+        }
+
+
 
         /// <summary>
         /// 物理エンジンを1ステップ進める

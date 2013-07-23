@@ -371,7 +371,7 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_GlobalXYZ () {
+        public void Test_Point () {
             var nod1 = new Node ();
             var nod2 = new Node ();
             var nod3 = new Node ();
@@ -380,15 +380,15 @@ namespace DD.UnitTest {
             nod1.AddChild (nod2);
             nod2.AddChild (nod3);
 
-            Vector3 point;
-            Quaternion rotation;
-            Vector3 scale;
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
 
-            nod3.GlobalTransform.Decompress (out point, out rotation, out scale);
+            nod3.GlobalTransform.Decompress (out T, out R, out S);
 
-            Assert.AreEqual (point.X, nod3.GlobalX);
-            Assert.AreEqual (point.Y, nod3.GlobalY);
-            Assert.AreEqual (point.Z, nod3.GlobalZ);
+            Assert.AreEqual (T.X, nod3.Point.X);
+            Assert.AreEqual (T.Y, nod3.Point.Y);
+            Assert.AreEqual (T.Z, nod3.Point.Z);
         }
 
 

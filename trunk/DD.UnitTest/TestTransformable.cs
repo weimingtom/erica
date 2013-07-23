@@ -55,38 +55,60 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Transform_Get () {
             var tr = (Transformable)new Node ();
+            tr.Translation = new Vector3 (1, 2, 3);
+            tr.Rotation = new Quaternion (45, 0, 0, 1);
+            tr.Scale = new Vector3 (1, 2, 3);            
 
-            var T = new Vector3 (1, 2, 3);
-            var R = new Quaternion (45, 0, 0, 1);
-            var S = new Vector3 (1, 2, 3);            
-            tr.Translation = T;
-            tr.Rotation = R;
-            tr.Scale = S;
+            var expected = Matrix4x4.CreateFromTranslation (1, 2, 3) * 
+                           Matrix4x4.CreateFromRotation (45, 0, 0, 1) * 
+                           Matrix4x4.CreateFromScale (1, 2, 3);
 
-            var TRS = Matrix4x4.CreateFromTranslation (1, 2, 3) * 
-                      Matrix4x4.CreateFromRotation (R) * 
-                      Matrix4x4.CreateFromScale (1, 2, 3);
-
-            Assert.AreEqual (TRS, tr.Transform);
+            Assert.AreEqual (expected, tr.Transform);
         }
 
         [TestMethod]
         public void Test_Transform_Set () {
             var tr = (Transformable)new Node ();
 
+            tr.Transform = Matrix4x4.CreateFromTranslation (1, 2, 3) *
+                           Matrix4x4.CreateFromRotation (45, 0,0,1) *
+                           Matrix4x4.CreateFromScale (1, 2, 3);
+
             var T = new Vector3 (1, 2, 3);
             var R = new Quaternion (45, 0, 0, 1);
             var S = new Vector3 (1, 2, 3);
 
-            var TRS = Matrix4x4.CreateFromTranslation (1, 2, 3) *
-                      Matrix4x4.CreateFromRotation (R) *
-                      Matrix4x4.CreateFromScale (1, 2, 3);
-
-            tr.Transform = TRS;
-
             Assert.AreEqual (T, tr.Translation);
             Assert.AreEqual (R, tr.Rotation);
             Assert.AreEqual (S, tr.Scale);
+        }
+
+        [TestMethod]
+        public void Test_Transform_Cache () {
+            var tr = (Transformable)new Node ();
+            tr.Translation = new Vector3 (1, 2, 3);
+            tr.Rotation = new Quaternion (45, 0, 0, 1);
+            tr.Scale = new Vector3 (1, 2, 3);
+
+            var expected = Matrix4x4.CreateFromTranslation (1, 2, 3) *
+                      Matrix4x4.CreateFromRotation (45, 0,0,1) *
+                      Matrix4x4.CreateFromScale (1, 2, 3);
+
+            // 2回目はキャッシュから
+            Assert.AreEqual (expected, tr.Transform);
+            Assert.AreEqual (expected, tr.Transform);
+
+            // 変更するとキャッシュが無効化される
+            tr.Translation = new Vector3 (2, 3, 4);
+            tr.Rotation = new Quaternion (90, 0, 0, 1);
+            tr.Scale = new Vector3 (2, 3, 4);
+          
+            expected = Matrix4x4.CreateFromTranslation (2, 3, 4) *
+                       Matrix4x4.CreateFromRotation (90, 0,0,1) *
+                       Matrix4x4.CreateFromScale (2, 3, 4);
+
+            Assert.AreEqual (expected, tr.Transform);
+            Assert.AreEqual (expected, tr.Transform);
         }
 
     }

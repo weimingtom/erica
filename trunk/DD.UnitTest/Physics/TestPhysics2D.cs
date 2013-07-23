@@ -206,48 +206,282 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (false, Physics2D.Collide (shape1, shape2, out col));
         }
 
+        [TestMethod]
+        public void Test_Contain_1 () {
+            var shape = new SphereCollisionShape (1);
+
+            Assert.AreEqual(true, Physics2D.Contain(shape, null, new Vector2(0,0)));
+            Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (1,1)));
+            Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (-1, -1)));
+        }
+
+        [TestMethod]
+        public void Test_Contain_2 () {
+            var shape = new SphereCollisionShape (1);
+
+            var tra = Matrix4x4.CreateFromTranslation (0, 0, 0);
+            Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+
+            tra = Matrix4x4.CreateFromTranslation (1, 0, 0);
+            Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+
+            tra = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            Assert.AreEqual (false, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+        }
+
+        [TestMethod]
+        public void Test_Contain_3 () {
+            var shape = new BoxCollisionShape (1, 1, 1);
+
+            Assert.AreEqual (true, Physics2D.Contain (shape, null, new Vector2 (0, 0)));
+            Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (2, 2)));
+            Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (-2, -2)));
+        }
+
+        [TestMethod]
+        public void Test_Contain_4 () {
+            var shape = new BoxCollisionShape (1, 1, 1);
+
+            var tra = Matrix4x4.CreateFromTranslation (0, 0, 0);
+            Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+
+            tra = Matrix4x4.CreateFromTranslation (1, 0, 0);
+            Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+
+            tra = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            Assert.AreEqual (false, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
+        }
+
+        /// <summary>
+        /// Sphereのレイキャストのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_RayCast_1 () {
+            
+            var shape = new SphereCollisionShape(1.0f);
+            RayIntersection output;
+
+            var ray = new Ray (new Vector3 (10, 0, 0), new Vector3 (9, 0, 0), 10);
+            var hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (1, 0, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (0, 10, 0), new Vector3 (0, 9, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (0, 1, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (-10, 0, 0), new Vector3 (-9, 0, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (0, -10, 0), new Vector3 (0, -9, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (0, -1, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+        }
+
+        /// <summary>
+        /// Sphereのレイキャストのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_RayCast_2 () {
+
+            var shape = new BoxCollisionShape (1,1,1);
+            RayIntersection output;
+
+            var ray = new Ray (new Vector3 (10, 0, 0), new Vector3 (9, 0, 0), 10);
+            var hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (1, 0, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (0, 10, 0), new Vector3 (0, 9, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (0, 1, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (-10, 0, 0), new Vector3 (-9, 0, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+
+            ray = new Ray (new Vector3 (0, -10, 0), new Vector3 (0, -9, 0), 10);
+            hit = Physics2D.RayCast (shape, null, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (0, -1, 0), output.Normal);
+            Assert.AreEqual (9.0f, output.Distance);
+        }
+
+        /// <summary>
+        /// Matrixを外部から与えたレイキャストのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_RayCast_3 () {
+
+            var shape = new SphereCollisionShape (1);
+            RayIntersection output;
+
+            var ray = new Ray (new Vector3 (0, 0, 0), new Vector3 (1, 0, 0), 2);
+
+            var tra = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            var hit = Physics2D.RayCast (shape, tra, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (1.0f, output.Distance);
+
+            tra = Matrix4x4.CreateFromTranslation (3, 0, 0);
+            hit = Physics2D.RayCast (shape, tra, ray, out output);
+            Assert.AreEqual (true, hit);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (2.0f, output.Distance);
+
+            tra = Matrix4x4.CreateFromTranslation (4, 0, 0);
+            hit = Physics2D.RayCast (shape, tra, ray, out output);
+            Assert.AreEqual (false, hit);
+        }
+
+        /// <summary>
+        /// Matrixを省略したレイキャストのテスト
+        /// （Nodeから暗黙的に取得）
+        /// </summary>
+        [TestMethod]
+        public void Test_RayCast_4 () {
+            var shape = new SphereCollisionShape (1);
+            var node = new Node ();
+            node.Attach (shape);
+
+            RayIntersection output;
+
+            var ray = new Ray (new Vector3 (0, 0, 0), new Vector3 (2, 0, 0), 1);
+
+            node.Translation = new Vector3 (2, 0, 0);
+            Assert.AreEqual (true, Physics2D.RayCast (shape, ray, out output));
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (1.0f, output.Distance);
+            Assert.AreEqual (0.5f, output.Fraction);
+
+            node.Translation = new Vector3 (3, 0, 0);
+            Assert.AreEqual (true, Physics2D.RayCast (shape, ray, out output));
+            Assert.AreEqual (new Vector3 (-1, 0, 0), output.Normal);
+            Assert.AreEqual (2.0f, output.Distance);
+            Assert.AreEqual (1.0f, output.Fraction);
+
+            node.Translation = new Vector3 (4, 0, 0);
+            Assert.AreEqual (false, Physics2D.RayCast (shape, ray, out output));
+        }
+
+        /// <summary>
+        /// レイキャストの Fraction / Distance のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_RayCast_5 () {
+
+            var shape = new SphereCollisionShape (1);
+            shape.Offset = new Vector3 (10, 0, 0);
+
+            var ray = new Ray (new Vector3 (0, 0, 0), new Vector3 (2, 0, 0), 10);
+            RayIntersection output;
+
+            Assert.AreEqual (true, Physics2D.RayCast (shape, null, ray, out output));
+            Assert.AreEqual (9.0f, output.Distance);
+            Assert.AreEqual (4.5f, output.Fraction);
+        }
+
+        /// <summary>
+        /// レイキャストのすべての派生シリーズのテスト
+        /// </summary>
+        /// <remarks>
+        /// エラーが出なければそれで良しとする
+        /// </remarks>
+        [TestMethod]
+        public void Test_RayCast_6 () {
+            var node = new Node();
+            var shape = new SphereCollisionShape (1);
+            shape.Offset = new Vector3 (10, 0, 0);
+            node.Attach(shape);
+
+            var ray = new Ray(new Vector3(0,0,0), new Vector3(1,0,0), 10);
+            var tra = node.Transform;
+            RayIntersection output;
+
+            Assert.AreEqual (true, Physics2D.RayCast (shape, tra, ray, out output));
+            Assert.AreEqual (true, Physics2D.RayCast (shape, null, ray, out output));
+            Assert.AreEqual (true, Physics2D.RayCast (shape, tra, ray));
+            Assert.AreEqual (true, Physics2D.RayCast (shape, null, ray));
+
+        }
+
+
         /// <summary>
         /// Sphere-Sphere距離のテスト
         /// </summary>
+        /// <remarks>
+        /// 球にスキン幅はない。
+        /// </remarks>
         [TestMethod]
         public void Test_Distance_1 () {
             var shape1 = new SphereCollisionShape (1);
             var shape2 = new SphereCollisionShape (1);
+            ClosestPoints cp;
 
             // overlap            
             shape2.SetOffset (1, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.001f);
+            Assert.AreEqual (new Vector3(0.5f,0,0), cp.PointA);
+            Assert.AreEqual (new Vector3 (0.5f, 0, 0), cp.PointB);
 
             // touch          
             shape2.SetOffset (2, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointB);
 
 
             // sepalate 
             shape2.SetOffset (3, 0, 0);
-            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (2, 0, 0), cp.PointB);
         }
 
         /// <summary>
         /// Box-Box距離のテスト
         /// </summary>
+        /// <remarks>
+        /// ポリゴンはスキン幅(0.01)の分広がっている事に注意
+        /// </remarks>
         [TestMethod]
         public void Test_Distance_2 () {
             var shape1 = new BoxCollisionShape (1,1,1);
             var shape2 = new BoxCollisionShape (1,1,1);
+            ClosestPoints cp;
 
             // overlap            
             shape2.SetOffset (1, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (0, -1, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (0, -1, 0), cp.PointB);
 
             // touch
             shape2.SetOffset (2, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
-
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (1, -1, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (1, -1, 0), cp.PointB);
 
             // sepalate
+            // スキン幅は0.01
             shape2.SetOffset (3, 0, 0);
-            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null), 0.1f);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, null, shape2, null, out cp), 0.02f);
+            Assert.AreEqual (new Vector3 (1.01f, -1, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (1.99f, -1, 0), cp.PointB);
         }
 
         /// <summary>
@@ -259,19 +493,25 @@ namespace DD.UnitTest.Physics {
             var shape2 = new SphereCollisionShape (1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
+            ClosestPoints cp;
 
             // overlap           
             tra2 = Matrix4x4.CreateFromTranslation (1, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (0.5f, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (0.5f, 0, 0), cp.PointB);
 
             // touch          
             tra2 = Matrix4x4.CreateFromTranslation (2, 0, 0);
-            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
-
+            Assert.AreEqual (0.0f, Physics2D.Distance (shape1, tra1, shape2, tra2, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointB);
 
             // sepalate 
             tra2 = Matrix4x4.CreateFromTranslation (3, 0, 0);
-            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
+            Assert.AreEqual (1.0f, Physics2D.Distance (shape1, tra1, shape2, tra2, out cp), 0.001f);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (2, 0, 0), cp.PointB);
         }
 
         /// <summary>
@@ -283,12 +523,14 @@ namespace DD.UnitTest.Physics {
             var shape2 = new BoxCollisionShape (1,1,1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
+            ClosestPoints cp;
 
             var T = Matrix4x4.CreateFromTranslation (3, 0, 0);
             var R = Matrix4x4.CreateFromRotation(45, 0,0,1);
             tra2 = T*R;
-            Assert.AreEqual (0.586f, Physics2D.Distance (shape1, tra1, shape2, tra2), 0.1f);
-
+            Assert.AreEqual (0.576f, Physics2D.Distance (shape1, tra1, shape2, tra2, out cp), 0.01f);
+            Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
+            Assert.AreEqual (new Vector3 (1.5758f, 0, 0), cp.PointB);
         }
 
     }

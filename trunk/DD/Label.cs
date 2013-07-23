@@ -161,14 +161,15 @@ namespace DD {
 
             if (style.HasFlag (DD.CharacterStyle.Shadow)) {
                 var txt2 = new Text (text, font, (uint)charSize);
-                txt2.Position = new Vector2f (Node.GlobalX + offset.X + shadowOffset, Node.GlobalY + offset.Y+shadowOffset);
+                txt2.Position = new Vector2f (Node.Point.X + offset.X + shadowOffset,
+                                              Node.Point.Y + offset.Y + shadowOffset);
                 txt2.Color = Color.Black.ToSFML ();
                 txt2.Style = style.ToSFML ();
                 win.Draw (txt2);
             }
 
             var txt = new Text (text, font, (uint)charSize);
-            txt.Position = new Vector2f (Node.GlobalX + offset.X, Node.GlobalY + offset.Y);
+            txt.Position = new Vector2f (Node.Point.X + offset.X, Node.Point.Y + offset.Y);
             txt.Color = color.ToSFML ();
             txt.Style = style.ToSFML ();
             win.Draw (txt);

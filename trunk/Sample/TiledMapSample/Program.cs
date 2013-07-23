@@ -4,37 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace DD.Sample.TiledMap {
+namespace DD.Sample.TiledMapSample {
     public static class Program {
 
          private static Node CreateFPSCounter () {
             var node = new Node ();
             node.Attach (new FPSCounter ());
-            return node;
-        }
-
-        private static Node CreateTiledMap () {
-            var cmp = new TiledMapComposer ();
-            var node = new Node ();
-            node.Attach (cmp);
-
-            cmp.LoadFromFile ("media/desert.tmx");
-
-            return node;
-        }
-
-        private static Node CreateMyCharacter () {
-
-            var cmp = new MyComponent ();
-
-            var spr = new Sprite (new Texture("media/Earth.png"));
-
-            var node = new Node ();
-            node.DrawPriority = -1;
-
-            node.Attach (cmp);
-            node.Attach (spr);
-
             return node;
         }
 
@@ -48,6 +23,7 @@ namespace DD.Sample.TiledMap {
             node.SetTranslation (10, 32, 0);
             node.Attach (label1);
             node.Attach(label2);
+            node.DrawPriority = -2;
 
             return node;
         }
@@ -57,20 +33,17 @@ namespace DD.Sample.TiledMap {
             g2d.CreateWindow (800, 600, "こんにちは、世界");
 
             // ----------------------------------------
-                  
+           
             var node2 = CreateFPSCounter();
             var node3 = CreateLabel ();
-            var node4 = CreateTiledMap ();
-            var node5 = CreateMyCharacter ();
+            var node4 = MyTiledMap.Create ("media/desert.tmx");
+            var node5 = MyCharacter.Create ();
+
+            var mychar = node5.GetComponent<MyCharacter> ();
+            mychar.Map = node4.Find (x => x.Name == "Ground");
+            mychar.CollisionMap = node4.Find (x => x.Name == "Collision");
 
             node4.AddChild (node5);
-
-            var my = node5.GetComponent<MyComponent> ();
-            var map = node4.Find (x => x.Name == "Ground").GetComponent<GridBoard> ();
-            var coll = node4.Find (x => x.Name == "Collision").GetComponent<GridBoard> ();
-            my.Map = map;
-            my.Collision = coll;
-
 
             // ----------------------------------------
 
@@ -88,7 +61,7 @@ namespace DD.Sample.TiledMap {
 
             Console.WriteLine ("Start of Main Loop");
 
-            //g2d.SetFrameRateLimit (30);
+            g2d.SetFrameRateLimit (30);
 
             var watch = new Stopwatch ();
             watch.Start ();

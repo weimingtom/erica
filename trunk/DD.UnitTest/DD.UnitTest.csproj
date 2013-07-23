@@ -76,6 +76,7 @@
     <Compile Include="Physics\TestSphereCollision.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
+    <Compile Include="TestClosestPoints.cs" />
     <Compile Include="TestColor.cs" />
     <Compile Include="TestGridBoard.cs" />
     <Compile Include="TestInputReceiver.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="TestMatrix4x4.cs" />
     <Compile Include="TestMyMath.cs" />
     <Compile Include="TestQuaternion.cs" />
+    <Compile Include="TestRayCast.cs" />
     <Compile Include="TestSaveDataContainer.cs" />
     <Compile Include="TestAnimationClip.cs" />
     <Compile Include="TestAnimationController.cs" />

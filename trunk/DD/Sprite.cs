@@ -318,7 +318,11 @@ namespace DD {
             spr.TextureRect = new IntRect ((int)texOffset.X, (int)texOffset.Y, width, height);
             
             spr.Origin = new Vector2f (-offset.X, -offset.Y);
-            spr.Color = color.ToSFML ();
+
+            var col = color;
+            col.A = (byte)(255*Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity));
+            
+            spr.Color = col.ToSFML ();
 
             var win = window as RenderWindow;
             win.Draw (spr);

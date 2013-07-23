@@ -12,7 +12,7 @@ namespace DD {
     /// 将棋盤やチェス盤のような2次元格子状のノードの集合を管理するコンポーネントです。
     /// 
     /// </remarks>
-    public class GridBoard : Component {
+    public class GridMap : Component {
 
         #region Field
         int width;
@@ -28,7 +28,7 @@ namespace DD {
         /// </summary>
         /// <param name="width">X方向のタイルの総数</param>
         /// <param name="height">Y方向のタイルの総数</param>
-        public GridBoard (int width, int height) {
+        public GridMap (int width, int height) {
             if (width < 0 || height < 0) {
                 throw new ArgumentException ("Grid Size is invalid");
             }

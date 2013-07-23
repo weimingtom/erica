@@ -30,6 +30,7 @@ namespace DD {
         bool collidable;
         sbyte drawPriority;
         sbyte updatePriority;
+        Matrix4x4? matrix;      // = Cache of GlobalTransform
         #endregion
 
         #region Constructor
@@ -58,7 +59,8 @@ namespace DD {
             this.updatePriority = 0;
             this.groupID = 0xffffffffu;
             this.userData = new Dictionary<string, object> ();
-            this.opacity = 1f;
+            this.opacity = 1.0f;
+            this.matrix = null;
 
         }
         #endregion
@@ -275,8 +277,16 @@ namespace DD {
         /// <summary>
         /// このノードのローカル座標系からグローバル座標系への複合変換行列
         /// </summary>
+        /// <remarks>
+        /// このプロパティは計算結果をキャッシュし、2回目以降は高速に動作します。
+        /// </remarks>
         public Matrix4x4 GlobalTransform {
-            get { return Upwards.Aggregate (Matrix4x4.Identity, (t, node) => node.Transform * t); }
+            get {
+                if (matrix == null) {
+                    this.matrix = Upwards.Aggregate (Matrix4x4.Identity, (t, node) => node.Transform * t);
+                }
+                return matrix.Value;
+            }
         }
 
         /// <summary>
@@ -294,74 +304,11 @@ namespace DD {
         }
 
         /// <summary>
-        /// グローバル座標系での位置X
+        /// 位置（ワールド座標系）
         /// </summary>
         /// <remarks>
-        /// このプロパティは利便性のために実装されています。
-        /// <see cref="GlobalTransform"/> の平行移動成分のXと同じです。
         /// </remarks>
-        public float GlobalX {
-            get {
-                Vector3 point;
-                Quaternion rotation;
-                Vector3 scale;
-                GlobalTransform.Decompress (out point, out rotation, out scale);
-                return point.X;
-            }
-        }
-
-        /// <summary>
-        /// グローバル座標系での位置Y
-        /// </summary>
-        /// <remarks>
-        /// このプロパティは利便性のために実装されています。
-        /// <see cref="GlobalTransform"/> の平行移動成分のYと同じです。
-        /// </remarks>
-        public float GlobalY {
-            get {
-                Vector3 point;
-                Quaternion rotation;
-                Vector3 scale;
-                GlobalTransform.Decompress (out point, out rotation, out scale);
-                return point.Y;
-            }
-        }
-
-        /// <summary>
-        /// グローバル座標系での位置Z
-        /// </summary>
-        /// <remarks>
-        /// このプロパティは利便性のために実装されています。
-        /// <see cref="GlobalTransform"/> の平行移動成分のYと同じです。
-        /// </remarks>
-        public float GlobalZ {
-            get {
-                Vector3 point;
-                Quaternion rotation;
-                Vector3 scale;
-                GlobalTransform.Decompress (out point, out rotation, out scale);
-                return point.Z;
-            }
-        }
-
-
-        /*
-        /// <summary>
-        /// グローバル座標系での座標位置
-        /// </summary>
-        /// <remarks>
-        /// このプロパティは <see cref="GlobalTranslation"/> と等価です。
-        /// </remarks>
-        public Vector3 GlobalPoint {
-            get {
-                return GlobalTranslation;
-            }
-        }
-
-        /// <summary>
-        /// グローバル座標系での平行移動要素
-        /// </summary>
-        public Vector3 GlobalTranslation {
+        public Vector3 Point {
             get {
                 Vector3 T;
                 Quaternion R;
@@ -371,36 +318,21 @@ namespace DD {
             }
         }
 
-        /// <summary>
-        /// グローバル座標系での回転要素
-        /// </summary>
-        public Quaternion GlobalRotation {
-            get {
-                Vector3 T;
-                Quaternion R;
-                Vector3 S;
-                GlobalTransform.Decompress (out T, out R, out S);
-                return R;
-            }
-        }
 
-        /// <summary>
-        /// グローバル座標系でのスケール要素
-        /// </summary>
-        public Vector3 GlobalScale {
-            get {
-                Vector3 T;
-                Quaternion R;
-                Vector3 S;
-                GlobalTransform.Decompress (out T, out R, out S);
-                return S;
-            }
-        }
-        */
 
         #endregion
 
         #region Method
+        
+        /// <inheritdoc/>
+        public override void InvalidateTransformCache () {
+            foreach (var node in Downwards) {
+                node.matrix = null;
+            }
+            base.InvalidateTransformCache ();
+        }
+
+
         /// <summary>
         /// 平行移動量の変更（グローバル座標）
         /// </summary>

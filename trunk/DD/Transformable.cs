@@ -17,10 +17,11 @@ namespace DD {
         float tx;   // Vector3で良かった・・・
         float ty;
         float tz;
+        Quaternion rot;
         float sx;   // Vector3で良かった・・・
         float sy;
         float sz;
-        Quaternion rot;
+        Matrix4x4? matrix;
         #endregion
 
         #region Constructor
@@ -35,6 +36,7 @@ namespace DD {
             this.sy = 1;
             this.sz = 1;
             this.rot = Quaternion.Identity;
+            this.matrix = null;
         }
         #endregion
 
@@ -44,7 +46,6 @@ namespace DD {
         /// </summary>
         public float X {
             get { return tx; }
-            set { this.tx = value; }
         }
 
         /// <summary>
@@ -52,7 +53,6 @@ namespace DD {
         /// </summary>
         public float Y {
             get { return ty; }
-            set { this.ty = value; }
         }
 
         /// <summary>
@@ -60,7 +60,6 @@ namespace DD {
         /// </summary>
         public float Z {
             get { return tz; }
-            set { this.tz = value; }
         }
 
         /// <summary>
@@ -71,17 +70,7 @@ namespace DD {
             set { SetTranslation (value.X, value.Y, value.Z); }
         }
 
-        /// <summary>
-        /// 位置（ローカル座標系）
-        /// </summary>
-        /// <remarks>
-        /// このプロパティは <see cref="Translation"/> の別名です。
-        /// どちらか使いやすい方を使用してください。
-        /// </remarks>
-        public Vector3 Point {
-            get { return Translation; }
-            set { this.Translation = value; }
-        }
+
 
         /// <summary>
         /// スケール成分（ローカル座標系）
@@ -105,13 +94,17 @@ namespace DD {
         /// <remarks>
         /// このプロパティは T:平行移動、R：回転、S:スケール を1つの  <see cref="Matrix4x4"/> 型の複合変換行列にしたものです。
         /// この行列はローカル座標系から1つ上の親ノードの座標系に変換します。
+        /// このプロパティは計算結果をキャッシュし、2回目以降は高速に動作します。
         /// </remarks>
         public Matrix4x4 Transform {
             get {
-                var T = Matrix4x4.CreateFromTranslation (tx, ty, tz);
-                var R = Matrix4x4.CreateFromRotation (rot);
-                var S = Matrix4x4.CreateFromScale (sx, sy, sz);
-                return T * R * S;
+                if (matrix == null) {
+                    var T = Matrix4x4.CreateFromTranslation (tx, ty, tz);
+                    var R = Matrix4x4.CreateFromRotation (rot);
+                    var S = Matrix4x4.CreateFromScale (sx, sy, sz);
+                    this.matrix = T * R * S;
+                }
+                return matrix.Value;
             }
             set {
                 Vector3 T;
@@ -125,6 +118,7 @@ namespace DD {
                 this.sx = S.X;
                 this.sy = S.Y;
                 this.sz = S.Z;
+                this.matrix = value;
             }
         }
         #endregion
@@ -132,6 +126,20 @@ namespace DD {
 
         #region Method
 
+        /// <summary>
+        /// 変換行列キャッシュの破棄
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Transformable"/> および <see cref="Node"/> は高速化のために一度計算した変換行列をキャッシュして再利用します。
+        /// このメソッドはキャッシュを破棄し次回取得する際に再計算させます。
+        /// ユーザーがこのメソッドを呼ぶ必要はありません。
+        /// <note type="implement">
+        /// このメソッドをオーバーライドした場合、かならずオーバーライドされた基底クラスのメソッドを呼び出してください。
+        /// </note>
+        /// </remarks>
+        public virtual void InvalidateTransformCache () {
+            this.matrix = null;
+        }
 
         /// <summary>
         /// 平行移動量の変更（ローカル座標）
@@ -146,6 +154,8 @@ namespace DD {
             this.tx = tx;
             this.ty = ty;
             this.tz = tz;
+
+            InvalidateTransformCache ();
         }
 
         /// <summary>
@@ -164,6 +174,8 @@ namespace DD {
                 throw new ArgumentException ("Rotation Axis is invalid");
             }
             this.rot = new Quaternion (angle, ax, ay, az);
+            
+            InvalidateTransformCache ();
         }
 
         /// <summary>
@@ -176,6 +188,8 @@ namespace DD {
             }
 
             this.rot = rot;
+
+            InvalidateTransformCache ();
         }
 
         /// <summary>
@@ -188,6 +202,8 @@ namespace DD {
             this.sx = sx;
             this.sy = sy;
             this.sz = sz;
+
+            InvalidateTransformCache ();
         }
         
         /// <summary>
@@ -203,6 +219,8 @@ namespace DD {
             this.tx += x;
             this.ty += y;
             this.tz += z;
+        
+            InvalidateTransformCache ();
         }
 
         /// <summary>
@@ -216,7 +234,9 @@ namespace DD {
         /// <param name="ay">回転軸Y</param>
         /// <param name="az">回転軸Z</param>
         public void Rotate (float angle, float ax, float ay, float az) {
-            Rotate (new Quaternion (angle, ax, ay, az));
+            this.rot = new Quaternion (angle, ax, ay, az) * this.rot;
+
+            InvalidateTransformCache ();
         }
 
         /// <summary>
@@ -228,6 +248,8 @@ namespace DD {
         /// <param name="q">回転を表すクォータニオン</param>
         public void Rotate (Quaternion q) {
             this.rot = q * this.rot;
+        
+            InvalidateTransformCache ();
         }
 
 
@@ -247,6 +269,8 @@ namespace DD {
             this.sx *= sx;
             this.sy *= sy;
             this.sz *= sz;
+        
+            InvalidateTransformCache ();
         }
 
         #endregion
