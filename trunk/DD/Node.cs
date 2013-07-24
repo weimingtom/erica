@@ -332,6 +332,17 @@ namespace DD {
             base.InvalidateTransformCache ();
         }
 
+        /// <summary>
+        /// コンポーネントの識別
+        /// </summary>
+        /// <remarks>
+        /// このノードが指定のコンポーネント型 <typeref name="T"/> をアタッチされている時 <c>true</c> を返します。
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        /// <returns></returns>
+        public bool Is<T> () where T : Component {
+            return GetComponent<T> () != null;
+        }
 
         /// <summary>
         /// 平行移動量の変更（グローバル座標）

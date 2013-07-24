@@ -86,6 +86,7 @@
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="ClosestPoints.cs" />
     <Compile Include="InputReceiver.cs" />
     <Compile Include="KeyAlias.cs" />

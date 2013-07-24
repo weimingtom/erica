@@ -284,14 +284,11 @@ namespace DD {
         public virtual void OnDispatch () {
         }
 
-        public virtual void OnInit () {
-        }
-
         /// <summary>
         /// ノードの削除のエントリーポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="Destroy"/> メソッドでノードを破棄した時に一度だけ呼ばれます。
+        /// <see cref="Destroy(Node)"/> メソッドでノードを破棄した時に一度だけ呼ばれます。
         /// このエントリーポイントが最後のカスタマイズ ポイントです。
         /// </remarks>
         public virtual void OnDestroyed () {
@@ -464,11 +461,11 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 描画処理を行う仮想関数のエントリーポイント。
-        /// 通常はユーザーがこの仮想関数をオーバーライドする必要はありません。
-        /// この仮想関数の適切な実装を提供するのはエンジン側の責任です。
+        /// ユーザー定義のコンポーネントで描画時に追加の処理を行いたい時に、この仮想関数をオーバーライドします。
         /// </remarks>
         /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
-        public virtual void OnDraw (object window) {
+        /// <param name="args">任意の引数</param>
+        public virtual void OnDraw (object window, EventArgs args) {
 
         }
 

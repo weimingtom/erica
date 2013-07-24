@@ -5,6 +5,31 @@ using System.Text;
 
 namespace DD {
 
+    /// <summary>
+    /// カメラの投影方式
+    /// </summary>
+    public enum ProjectionType {
+
+        /// <summary>
+        /// 未定義
+        /// </summary>
+        Undefined,
+
+        /// <summary>
+        /// 平行投影
+        /// </summary>
+        Parallel,
+
+        /// <summary>
+        /// 透視投影
+        /// </summary>
+        Projection,
+
+        /// <summary>
+        /// 2Dスクリーン投影
+        /// </summary>
+        Screen
+    }
 
     /// <summary>
     /// シェイプ タイプ

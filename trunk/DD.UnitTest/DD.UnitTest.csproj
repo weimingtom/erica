@@ -74,8 +74,10 @@
     <Compile Include="Physics\TestPhysics2D.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
     <Compile Include="Physics\TestSphereCollision.cs" />
+    <Compile Include="SFML\TestCamera.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
+    <Compile Include="TestCamera.cs" />
     <Compile Include="TestClosestPoints.cs" />
     <Compile Include="TestColor.cs" />
     <Compile Include="TestGridBoard.cs" />

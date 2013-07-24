@@ -155,7 +155,7 @@ namespace DD {
         }
 
         /// <inheritdoc/>
-        public override void OnDraw (object window) {
+        public override void OnDraw (object window, EventArgs args) {
             var win = (RenderWindow)window;
             var font = Resource.GetDefaultFont ();
 
@@ -168,10 +168,26 @@ namespace DD {
                 win.Draw (txt2);
             }
 
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            Node.GlobalTransform.Decompress (out T, out R, out S);
+
+            // クォータニオンの性質上(0,0,1)軸まわりの回転か、
+            // (0,0,-1)軸まわりの回転のどちらかが返ってくる（両者は等価）。
+            // SFMLは(0,0,1)軸まわりの回転角で指定するので(0,0,-1)軸の時は反転が必要。
+            var angle = R.Angle;
+            if (R.Axis.Z < 0) {
+                angle *= -1;
+            }
+ 
             var txt = new Text (text, font, (uint)charSize);
-            txt.Position = new Vector2f (Node.Point.X + offset.X, Node.Point.Y + offset.Y);
+            txt.Position = new Vector2f (T.X + offset.X, T.Y + offset.Y);
+            txt.Scale = new Vector2f (S.X, S.Y);
+            txt.Rotation = angle;
             txt.Color = color.ToSFML ();
             txt.Style = style.ToSFML ();
+            
             win.Draw (txt);
         }
 

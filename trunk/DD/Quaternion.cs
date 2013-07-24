@@ -161,7 +161,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// このクォータニオンと等価なAngle-Axis形式の回転角度
+        /// このクォータニオンと等価なAngle-Axis形式の回転角度 (in degree)
         /// </summary>
         /// <remarks>
         /// Angle-Axis形式で表したこのクォータニオンの回転角度を返します。

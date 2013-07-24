@@ -21,7 +21,7 @@ namespace DD {
         /// <param name="width">矩形領域の幅（ピクセル）</param>
         /// <param name="height">矩形領域の高さ（ピクセル）</param>
         public Rectangle (float x, float y, float width, float height) : this() {
-            if (width <= 0 || height <= 0) {
+            if (width < 0 || height < 0) {
                 throw new ArgumentException ("Rectangle is invalid");
             }
             this.X = x;
@@ -35,7 +35,7 @@ namespace DD {
         /// </summary>
         public float X {
             get;
-            set;
+            private set;
         }
 
         /// <summary>

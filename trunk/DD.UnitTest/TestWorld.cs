@@ -28,9 +28,23 @@ namespace DD.UnitTest {
             var wld = new World ("World");
 
             Assert.AreEqual ("World", wld.Name);
+            Assert.AreEqual (null, wld.ActiveCamera);
             Assert.IsNotNull (wld.InputReceiver);
             Assert.IsNotNull (wld.AnimationController);
             Assert.IsNotNull (wld.SoundPlayer);
+        }
+
+        [TestMethod]
+        public void Test_ActiveCamera () {
+            var cam = new Camera ();
+            var node = new Node ();
+            node.Attach (cam);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.ActiveCamera = node;
+            Assert.AreEqual (node, wld.ActiveCamera);
         }
 
         [TestMethod]

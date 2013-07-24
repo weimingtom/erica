@@ -230,7 +230,7 @@ namespace DD.Sample.PhysicsSample {
                 wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
-                g2d.Draw (wld);
+                g2d.Draw (wld, null);
 
             }
 

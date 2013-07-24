@@ -224,7 +224,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// ノードの回転
+        /// ノードの回転 (in degree)
         /// </summary>
         /// <remarks>
         /// 現在セットされている回転にさらに、引数で指定された回転を加えます。
@@ -240,7 +240,7 @@ namespace DD {
         }
 
         /// <summary>
-        /// ノードの回転
+        /// ノードの回転 (in degree)
         /// </summary>
         /// <remarks>
         /// 現在セットされている回転にさらに、引数で指定された回転を加えます。

@@ -141,7 +141,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このスプライトが描画されるときの幅（ピクセル数）です。
-        /// 変更はできません。
+        /// 後から変更はできません。
         /// </remarks>
         public int Width {
             get { return width; }
@@ -152,7 +152,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このスプライトが描画されるときの高さ（ピクセル数）です。
-        /// 変更はできません。
+        /// 後から変更はできません。
         /// </remarks>
         public int Height {
             get { return height; }
@@ -290,7 +290,7 @@ namespace DD {
 
 
         /// <inheritdoc/>
-        public override void OnDraw (object window) {
+        public override void OnDraw (object window, EventArgs args) {
             if (active == null) {
                 return;
             }
@@ -319,8 +319,8 @@ namespace DD {
             
             spr.Origin = new Vector2f (-offset.X, -offset.Y);
 
-            var col = color;
-            col.A = (byte)(255*Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity));
+            var opacity = Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity);
+            var col = new Color(color.R, color.G, color.B, (byte)(color.A*opacity));
             
             spr.Color = col.ToSFML ();
 
