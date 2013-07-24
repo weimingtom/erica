@@ -376,7 +376,7 @@ namespace DD {
         #endregion
 
         /// <inheritdoc/>
-        public override void OnDraw (object window) {
+        public override void OnDraw (object window, EventArgs args) {
             var win = window as RenderWindow;
             var words = lines[index].Words.Substring (0, tick.Count);
             var font = Resource.GetDefaultFont ();

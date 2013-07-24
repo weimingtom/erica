@@ -17,6 +17,7 @@ namespace DD {
     /// <seealso cref="Node"/>
     public class World : Node {
         #region Field
+        Node activeCamera;
         #endregion
 
         #region Constructor
@@ -42,6 +43,8 @@ namespace DD {
         /// <param name="name">シーン名</param>
         public World (string name)
             : base (name) {
+                this.activeCamera = null;
+
             this.Attach (new InputReceiver ());
             this.Attach (new AnimationController ());
             this.Attach (new SoundPlayer ());
@@ -49,6 +52,24 @@ namespace DD {
         #endregion
 
         #region Property
+
+        /// <summary>
+        /// 現在アクティブなカメラ ノード
+        /// </summary>
+        /// <remarks>
+        /// エンジンはシーン グラフの中から指定された1つのカメラを選んで描画します。
+        /// 描画に使用されるカメラをアクティブなカメラと呼びます。
+        /// 省略された時はデフォルトの設定で描画されます。
+        /// </remarks>
+        public Node ActiveCamera {
+            get { return activeCamera; }
+            set {
+                if (!value.Is<Camera> ()) {
+                    throw new ArgumentException ("Node is not Camera");
+                }
+                this.activeCamera = value;
+            }
+        }
 
         /// <summary>
         /// デフォルトのインプット レシーバー

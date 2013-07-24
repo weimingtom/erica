@@ -58,7 +58,6 @@ namespace DD.UnitTest {
         public void Test_Operator () {
             var a = new Vector2 (1, 2);
             var b = new Vector2 (3, 4);
-            var f = 2.0f;
 
             Assert.AreEqual (new Vector2 (4, 6), a + b);
             Assert.AreEqual (new Vector2 (-2, -2), a - b);

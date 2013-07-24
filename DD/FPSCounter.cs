@@ -68,7 +68,7 @@ namespace DD {
         }
 
         /// <inheritdoc/>
-        public override void OnDraw (object window) {
+        public override void OnDraw (object window, EventArgs args) {
             var win = window as RenderWindow;
             var txt = new Text (fps.ToString () + " fps", font);
             txt.CharacterSize = 16;

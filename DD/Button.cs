@@ -150,7 +150,7 @@ namespace DD {
         }
 
         /// <inheritdoc/>
-        public override void OnDraw (object window) {
+        public override void OnDraw (object window, EventArgs args) {
             if (normal == null) {
                 return;
             }

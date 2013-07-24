@@ -121,6 +121,26 @@ namespace DD {
             get { return new Color (0,0,0,255); }
         }
 
+        /// <summary>
+        /// 赤
+        /// </summary>
+        public static Color Red {
+            get { return new Color (255, 0, 0, 255); }
+        }
+
+        /// <summary>
+        /// 緑
+        /// </summary>
+        public static Color Green {
+            get { return new Color (0, 255, 0, 255); }
+        }
+
+        /// <summary>
+        /// 青
+        /// </summary>
+        public static Color Blue {
+            get { return new Color (0, 0, 255, 255); }
+        }
 
         /// <inheritdoc/>
         public override bool Equals (object obj) {

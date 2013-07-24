@@ -151,17 +151,21 @@ namespace DD {
         /// シーンの描画
         /// </summary>
         /// <remarks>
-        /// 指定のシーンを描画します。
-        /// ノードは <see cref="Node.Drawable"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
+        /// 指定のシーン <paramref name="world"/> を描画します。追加で任意のイベント引数 <paramref name="args"/> を渡す事が可能です。
+        /// この引数はエンジン側では使用しません。
+        /// 描画されるノードは <see cref="Node.Drawable"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
         /// <param name="world">シーン</param>
-        public void Draw (World world) {
+        /// <param name="args">任意の引数</param>
+        public void Draw (World world, EventArgs args, bool finish = true) {
             if (world == null || !win.IsOpen ()) {
                 return;
             }
 
-            // スクリーンのクリア
-            win.Clear (SFML.Graphics.Color.Blue);
+            if (world.ActiveCamera != null) {
+                var cam = world.ActiveCamera.GetComponent<Camera> ();
+                cam.SetupCamera (win);
+            }
 
             // 全ノードの描画
             var nodes = from node in world.Downwards
@@ -170,12 +174,14 @@ namespace DD {
                         select node;
             foreach (var node in nodes) {
                 foreach (var comp in node.Components) {
-                    comp.OnDraw (win);
+                    comp.OnDraw (win, args);
                 }
             }
 
             // 表示
-            win.Display ();
+            if (finish) {
+                win.Display ();
+            }
         }
 
 
@@ -343,6 +349,8 @@ namespace DD {
         /// <param name="clicked">マウス ボタン イベント引数</param>
         private void OnMouseButtonPressedEventHandler (object sender, MouseButtonEventArgs clicked) {
 
+            this.mouse = new Vector2(clicked.X, clicked.Y);
+
             this.keyBuffer.Add (clicked.Button.ToDD ());
 
             var x = clicked.X;
@@ -395,7 +403,6 @@ namespace DD {
         /// <param name="move">マウス移動引数</param>
         private void OnMouseMovedEventHandler (object sender, MouseMoveEventArgs move) {
 
-            this.mouse = new Vector2 (move.X, move.Y);
 
             var hit = Graphics2D.Pick (workingScript, move.X, move.Y).FirstOrDefault();
 

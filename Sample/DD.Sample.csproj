@@ -55,6 +55,9 @@
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>DD.Sample.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics">
       <HintPath>..\DD\libs\FarseerPhysics.dll</HintPath>
@@ -91,13 +94,19 @@
     <Compile Include="DokeyKongSample\MyGorilla.cs" />
     <Compile Include="DokeyKongSample\MyPopupNumber.cs" />
     <Compile Include="DokeyKongSample\MyWorld.cs" />
-    <Compile Include="MyWorld.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ScrollSample\MyCamera1.cs" />
+    <Compile Include="ScrollSample\MyCharacter.cs" />
+    <Compile Include="ScrollSample\MyDrawArgs.cs" />
+    <Compile Include="ScrollSample\MyHUD.cs" />
+    <Compile Include="ScrollSample\MyCamera2.cs" />
+    <Compile Include="ScrollSample\MyWorld.cs" />
     <Compile Include="PlatformSample\MyCharacter.cs" />
     <Compile Include="PlatformSample\MyWorld.cs" />
     <Compile Include="PlatformSample\Program.cs" />
     <Compile Include="DokeyKongSample\Program.cs" />
-    <Compile Include="MyPopupNumber.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ScrollSample\MyPopupNumber.cs" />
+    <Compile Include="ScrollSample\Program.cs" />
     <Compile Include="TiledMapSample\MyCharacter.cs" />
     <Compile Include="PhysicsSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\Program.cs" />
@@ -236,6 +245,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\tmw_desert_spacing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Vanity.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\White.png">

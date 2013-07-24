@@ -274,7 +274,22 @@ namespace DD.Physics {
             return Collide (shapeA, shapeB, out col);
         }
 
-        [Obsolete ("誰も使ってないので廃止します")]
+        //[Obsolete ("誰も使ってないので廃止します")]
+        /// <summary>
+        /// 2物体の最短距離の測定
+        /// </summary>
+        /// <remarks>
+        /// 2つのコリジョン形状の最短距離を求めます。
+        /// 2つの物体がオーバーラップしていた場合は一律 0 が帰り、負の値が変える事はありません。
+        /// <note>
+        /// 必要性が感じられないので削除予定。使用禁止。
+        /// </note>
+        /// </remarks>
+        /// <param name="shapeA">コリジョン形状A</param>
+        /// <param name="matA">変換行列A</param>
+        /// <param name="shapeB">コリジョン形状B</param>
+        /// <param name="matB">変換行列B</param>
+        /// <returns></returns>
         public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
             ClosestPoints cp;
             return Distance (shapeA, matA, shapeB, matB, out cp);
@@ -294,6 +309,7 @@ namespace DD.Physics {
         /// <param name="matA">変換行列A</param>
         /// <param name="shapeB">コリジョン形状B</param>
         /// <param name="matB">変換行列B</param>
+        /// <param name="cp">結果の再近接地点情報を受け取る</param>
         /// <returns>距離</returns>
         [Obsolete("誰も使ってないので廃止します")]
         public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB, out ClosestPoints cp) {
@@ -363,6 +379,17 @@ namespace DD.Physics {
             return shpA.TestPoint (ref traA, ref posB);
         }
 
+        /// <summary>
+        /// レイキャストによる交差判定
+        /// </summary>
+        /// <remarks>
+        /// レイと物体の交差判定を行い、衝突結果を受け取ります。
+        /// </remarks>
+        /// <param name="shapeA">形状A</param>
+        /// <param name="matA">変換行列A</param>
+        /// <param name="ray">レイ</param>
+        /// <param name="rayOut">結果を受け取る <see cref="RayIntersection"/> オブジェクト</param>
+        /// <returns>レイと物体が交差したら<c>true</c>, そうでなければ <c>false</c>.</returns>
         public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray, out RayIntersection rayOut) {
             FarseerPhysics.Collision.RayCastInput input;
             FarseerPhysics.Collision.RayCastOutput output;
@@ -386,16 +413,50 @@ namespace DD.Physics {
             return hit;
         }
 
+        /// <summary>
+        /// レイキャストによる交差判定
+        /// </summary>
+        /// <remarks>
+        /// レイと物体の交差判定を行います。衝突情報を受け取ります。
+        /// </remarks>
+        /// <param name="shapeA">形状A</param>
+        /// <param name="matA">変換行列A</param>
+        /// <param name="ray">レイ</param>
+        /// <returns></returns>
         public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray) {
             RayIntersection output;
             return RayCast (shapeA, matA, ray, out output);
         }
 
+        /// <summary>
+        /// レイキャストによる交差判定
+        /// </summary>
+        /// <remarks>
+        /// レイと物体の交差判定を行います。衝突情報を受け取ります。
+        /// 変換行列はアタッチされたノードの物を暗黙的に使用します。
+        /// </remarks>
+        /// <param name="shapeA">形状A</param>
+        /// <param name="ray">レイ</param>
+        /// <param name="output">結果を受け取る <see cref="RayIntersection"/> 構造体</param>
+        /// <returns></returns>
         public static bool RayCast (CollisionShape shapeA, Ray ray, out RayIntersection output) {
+            if (shapeA.Node == null) {
+                throw new ArgumentException ("ShapeA is not attached");
+            }
             var matA = shapeA.Node.Transform;
             return RayCast (shapeA, matA, ray, out output);
         }
 
+        /// <summary>
+        /// レイキャストによる交差判定
+        /// </summary>
+        /// <remarks>
+        /// レイと物体の交差判定を行います。衝突情報を受け取りません。
+        /// 変換行列はアタッチされたノードの物を暗黙的に使用します。
+        /// </remarks>
+        /// <param name="shapeA">形状A</param>
+        /// <param name="ray">レイ</param>
+        /// <returns></returns>
         public static bool RayCast (CollisionShape shapeA, Ray ray) {
             RayIntersection output;
             var matA = shapeA.Node.Transform;

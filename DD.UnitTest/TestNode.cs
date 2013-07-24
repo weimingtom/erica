@@ -259,6 +259,17 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_IsComponent () {
+            var node = new Node ();
+            var comp = new Sprite (16, 16);
+            node.Attach (comp);
+
+            Assert.AreEqual (true, node.Is<Sprite> ());
+            Assert.AreEqual (false, node.Is<Camera> ());
+        }
+
+
+        [TestMethod]
         public void Test_GetComponent () {
             var node = new Node ();
             var comp1 = new Component ();
