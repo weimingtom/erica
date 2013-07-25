@@ -22,7 +22,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, node.Collidable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
-            Assert.AreEqual (0xffffffffu, node.GroupID);
+            Assert.AreEqual (0x0000ffffu, node.GroupID);
             Assert.AreEqual (1.0f, node.Opacity);
             Assert.AreEqual (0, node.UserData.Count ());
             Assert.AreEqual (0, node.DrawPriority);
@@ -37,6 +37,14 @@ namespace DD.UnitTest {
 
             node.Name = "Name2";
             Assert.AreEqual ("Name2", node.Name);
+        }
+
+        [TestMethod]
+        public void Test_UniqueID () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+
+            Assert.AreNotEqual (node2.UniqueID, node1.UniqueID);
         }
 
         [TestMethod]
@@ -397,9 +405,9 @@ namespace DD.UnitTest {
 
             nod3.GlobalTransform.Decompress (out T, out R, out S);
 
-            Assert.AreEqual (T.X, nod3.Point.X);
-            Assert.AreEqual (T.Y, nod3.Point.Y);
-            Assert.AreEqual (T.Z, nod3.Point.Z);
+            Assert.AreEqual (T.X, nod3.Position.X);
+            Assert.AreEqual (T.Y, nod3.Position.Y);
+            Assert.AreEqual (T.Z, nod3.Position.Z);
         }
 
 

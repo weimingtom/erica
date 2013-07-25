@@ -30,7 +30,7 @@ namespace DD.Sample.PhysicsSample {
           }
 
         /// <inheritdoc/>
-        public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
+        public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
             if (button == MouseButton.Left) {
                 Console.WriteLine(Node.Name + " : Left Clicked " + i++);
              }

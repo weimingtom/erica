@@ -130,9 +130,9 @@ namespace DD {
         /// 結果はピックされたすべてのノードを <see cref="Node.DrawPriority"/> の順番でソートして返します。
         /// 1ノードもヒットしなかった場合カウント0がかえり<c>null</c> を返す事はありません。
         /// </remarks>
-        /// <param name="node">ピック対象のノード（これ以下すべて）</param>
-        /// <param name="x">ピックするスクリーン上の点のX（ピクセル座標）</param>
-        /// <param name="y">ピックするスクリーン上の点のY（ピクセル座標）</param>
+        /// <param name="node">ピック対象のノード（これ以下のノードすべてが対象）</param>
+        /// <param name="x">ピックする点のX座標（ワールド座標）</param>
+        /// <param name="y">ピックする点のY座標（ワールド座標）</param>
         /// <returns></returns>
         public static IEnumerable<Node> Pick (Node node, float x, float y) {
             if (node == null) {
@@ -157,19 +157,34 @@ namespace DD {
         /// </remarks>
         /// <param name="world">シーン</param>
         /// <param name="args">任意の引数</param>
+        /// <param name="finish">描画の終了</param>
         public void Draw (World world, EventArgs args, bool finish = true) {
             if (world == null || !win.IsOpen ()) {
                 return;
             }
 
+            var id = 0x0000ffffu;
             if (world.ActiveCamera != null) {
                 var cam = world.ActiveCamera.GetComponent<Camera> ();
-                cam.SetupCamera (win);
+                cam.SetupView (win);
+                cam.SetupClear (win);
+                id = cam.GroupID;
+            }
+
+            // 全ノードの描画プレ処理
+            var preDraws = from node in world.Downwards
+                           orderby node.DrawPriority descending
+                           select node;
+            foreach (var node in preDraws) {
+                foreach (var comp in node.Components) {
+                    comp.OnPreDraw (win);
+                }
             }
 
             // 全ノードの描画
             var nodes = from node in world.Downwards
                         where node.Upwards.Aggregate (true, (x, y) => x & y.Drawable) == true
+                        where (node.GroupID & id) != 0
                         orderby node.DrawPriority descending
                         select node;
             foreach (var node in nodes) {
@@ -349,25 +364,23 @@ namespace DD {
         /// <param name="clicked">マウス ボタン イベント引数</param>
         private void OnMouseButtonPressedEventHandler (object sender, MouseButtonEventArgs clicked) {
 
-            this.mouse = new Vector2(clicked.X, clicked.Y);
+            var btn = clicked.Button.ToDD ();
+            var pos = win.MapPixelToCoords (new Vector2i (clicked.X, clicked.Y)).ToDD ();
+            
+            this.keyBuffer.Add (btn);
+            this.mouse = pos;
 
-            this.keyBuffer.Add (clicked.Button.ToDD ());
-
-            var x = clicked.X;
-            var y = clicked.Y;
-
-            var picked = Graphics2D.Pick (workingScript, clicked.X, clicked.Y);
+            var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
             foreach (var node in picked) {
                 foreach (var comp in node.Components) {
                     switch (clicked.Button) {
-                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)x, (int)y); break;
-                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)x, (int)y); break;
-                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
+                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)pos.X, (int)pos.Y); break;
+                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)pos.X, (int)pos.Y); break;
                         default: break;
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -377,17 +390,19 @@ namespace DD {
         /// <param name="released">マウス ボタン イベント引数</param>
         private void OnMouseButtonReleasedEventHandler (object sender, MouseButtonEventArgs released) {
 
-            this.keyBuffer.Remove (released.Button.ToDD ());
+            var btn = released.Button.ToDD ();
+            var pos = win.MapPixelToCoords (new Vector2i (released.X, released.Y)).ToDD ();
 
-            var x = released.X;
-            var y = released.Y;
-            var picked = Graphics2D.Pick (workingScript, released.X, released.Y);
+            this.keyBuffer.Remove (btn);
+            this.mouse = pos;
+
+            var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
             foreach (var node in picked) {
                 foreach (var comp in node.Components) {
                     switch (released.Button) {
-                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)x, (int)y); break;
-                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)x, (int)y); break;
-                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)x, (int)y); break;
+                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
+                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)pos.X, (int)pos.Y); break;
+                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)pos.X, (int)pos.Y); break;
                         default: break;
                     }
                 }
@@ -399,30 +414,27 @@ namespace DD {
         /// <summary>
         /// マウス移動を処理するハンドラー
         /// </summary>
+        /// <remarks>
+        /// 一番手前のノードのみ処理される。
+        /// </remarks>
         /// <param name="sender">ウィンドウ</param>
-        /// <param name="move">マウス移動引数</param>
-        private void OnMouseMovedEventHandler (object sender, MouseMoveEventArgs move) {
+        /// <param name="moved">マウス移動引数</param>
+        private void OnMouseMovedEventHandler (object sender, MouseMoveEventArgs moved) {
 
+            var pos = win.MapPixelToCoords (new Vector2i (moved.X, moved.Y)).ToDD ();
 
-            var hit = Graphics2D.Pick (workingScript, move.X, move.Y).FirstOrDefault();
+            this.mouse = pos;
 
+            var hit = Graphics2D.Pick (workingScript, pos.X, pos.Y).FirstOrDefault();
             if (hit != prevHit) {
                 if (prevHit != null) {
-                    var x = (float)move.X;
-                    var y = (float)move.Y;
-                    var z = 0f;
-                    prevHit.LocalTransform.Apply (ref x, ref y, ref z);
                     foreach (var comp in prevHit.Components) {
-                        comp.OnMouseFocusOut (MouseButton.Left, (int)x, (int)y);
+                        comp.OnMouseFocusOut ((int)pos.X, (int)pos.Y);
                     }
                 }
                 if (hit != null) {
-                    var x = (float)move.X;
-                    var y = (float)move.Y;
-                    var z = 0f;
-                    hit.LocalTransform.Apply (ref x, ref y, ref z);
                     foreach (var comp in hit.Components) {
-                        comp.OnMouseFocusIn (MouseButton.Left, (int)x, (int)y);
+                        comp.OnMouseFocusIn ((int)pos.X, (int)pos.Y);
                     }
                 }
                 this.prevHit = hit;

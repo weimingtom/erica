@@ -57,7 +57,7 @@ namespace DD {
             this.components = new List<Component> ();
             this.drawPriority = 0;
             this.updatePriority = 0;
-            this.groupID = 0xffffffffu;
+            this.groupID = 0x0000ffffu;
             this.userData = new Dictionary<string, object> ();
             this.opacity = 1.0f;
             this.matrix = null;
@@ -75,8 +75,20 @@ namespace DD {
         }
 
         /// <summary>
+        /// ユニークID
+        /// </summary>
+        public int UniqueID {
+            get { return GetHashCode (); }
+
+        }
+
+        /// <summary>
         /// グループID
         /// </summary>
+        /// <remarks>
+        /// デフォルト値は 0x0000ffff です。
+        /// レンダリングや衝突判定で使用されます。
+        /// </remarks>
         public uint GroupID {
             get { return groupID; }
             set { this.groupID = value; }
@@ -308,7 +320,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// </remarks>
-        public Vector3 Point {
+        public Vector3 Position {
             get {
                 Vector3 T;
                 Quaternion R;

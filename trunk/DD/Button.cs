@@ -4,28 +4,35 @@ using System.Linq;
 using System.Text;
 using SFML.Graphics;
 using SFML.Window;
+using Stateless;
 
 namespace DD {
     /// <summary>
     /// ボタン コンポーネント
     /// </summary>
     /// <remarks>
-    /// クリック可能なボタンを表示するコンポーネントです。
-    /// フォーカスが移った時に画像を差し替える事が可能です。
+    /// クリック可能なプッシュ ボタンまたはトグル ボタンを実装するコンポーネントです。
     /// ボタン状態には「通常」「通常（フォーカス）」「押下」「押下（フォーカス）」の4つが存在します。
-    /// 通常状態のテクスチャーの指定は必須です。
-    /// 指定しない場合は単に描画しません（豆腐の方が良いか？）。
+    /// 通常状態と押された状態の2つのテクスチャー指定は必須です。
+    /// ボタンが機能するためには同じノードに <see cref="DD.Physics.CollisionShape"/> コンポーネントが必要です。
     /// </remarks>
     public class Button : Component {
+
+        private enum ButtonTrigger {
+            Press,
+            Release,
+            FocusIn,
+            FocusOut,
+        }
+
         #region Field
-        int width;
-        int height;
+        ButtonType type;
         Texture normal;
-        Texture normal2;
+        Texture focusedNormal;
         Texture pressed;
-        Texture pressed2;
-        ButtonState state;
-        Dictionary<Texture, string> names;
+        Texture focusedPressed;
+        Texture current;
+        Stateless.StateMachine<ButtonState, ButtonTrigger> sm;
         #endregion
 
         #region Constructor
@@ -34,176 +41,214 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 指定のサイズの <see cref="Button"/> オブジェクトを作成します。
+        /// ボタンはプッシュ ボタンかトグル ボタンを選択可能です。
         /// </remarks>
-        /// <param name="width">ボタンの幅</param>
-        /// <param name="height">ボタンの高さ</param>
-        public Button (int width, int height) {
-            if (width <= 0 || height <= 0) {
-                throw new ArgumentException ("Width or Height is invalid");
-            }
-            this.width = width;
-            this.height = height;
+        /// <param name="type">ボタン種別</param>
+        public Button (ButtonType type) {
+            this.type = type;
             this.normal = null;
-            this.normal2 = null;
+            this.focusedNormal = null;
             this.pressed = null;
-            this.pressed2 = null;
-            this.state = ButtonState.Normal;
-            this.names = new Dictionary<Texture, string> ();
+            this.focusedPressed = null;
+            this.current = normal;
+            this.sm = new StateMachine<ButtonState, ButtonTrigger> (ButtonState.Normal);
+            switch (type) {
+                case ButtonType.Push: {
+                        this.sm.Configure (ButtonState.Normal)
+                                    .Permit (ButtonTrigger.Press, ButtonState.Pressed)
+                                    .Permit (ButtonTrigger.FocusIn, ButtonState.FocusedNormal)
+                                    .Ignore (ButtonTrigger.Release)
+                                    .Ignore (ButtonTrigger.FocusOut)
+                                    .OnEntry (x => this.current = normal);
+                        this.sm.Configure (ButtonState.FocusedNormal)
+                                      .Permit (ButtonTrigger.Press, ButtonState.FocusedPressed)
+                                      .Permit (ButtonTrigger.FocusOut, ButtonState.Normal)
+                                      .Ignore (ButtonTrigger.Release)
+                                    .OnEntry (x => this.current = focusedNormal ?? normal);
+                        this.sm.Configure (ButtonState.Pressed)
+                                    .Permit (ButtonTrigger.Release, ButtonState.Normal)
+                                    .Permit (ButtonTrigger.FocusIn, ButtonState.FocusedPressed)
+                                    .Ignore (ButtonTrigger.Press)
+                                    .Ignore (ButtonTrigger.FocusOut)
+                                    .OnEntry (x => this.current = pressed);
+                        this.sm.Configure (ButtonState.FocusedPressed)
+                                    .Permit (ButtonTrigger.Release, ButtonState.FocusedNormal)
+                                    .Permit (ButtonTrigger.FocusOut, ButtonState.Pressed)
+                                    .Ignore (ButtonTrigger.Press)
+                                    .Ignore (ButtonTrigger.FocusIn)
+                                    .OnEntry (x => this.current = focusedPressed ?? pressed);
+                        break;
+                    }
+                case ButtonType.Toggle: {
+                        this.sm.Configure (ButtonState.Normal)
+                                    .Permit (ButtonTrigger.Press, ButtonState.Pressed)
+                                    .Permit (ButtonTrigger.FocusIn, ButtonState.FocusedNormal)
+                                    .Ignore (ButtonTrigger.Release)
+                                    .Ignore (ButtonTrigger.FocusOut)
+                                    .OnEntry (x => this.current = normal);
+                        this.sm.Configure (ButtonState.FocusedNormal)
+                                      .Permit (ButtonTrigger.Press, ButtonState.FocusedPressed)
+                                      .Permit (ButtonTrigger.FocusOut, ButtonState.Normal)
+                                      .Ignore (ButtonTrigger.Release)
+                                    .OnEntry (x => this.current = focusedNormal ?? normal);
+                        this.sm.Configure (ButtonState.Pressed)
+                                    .Ignore (ButtonTrigger.Release)
+                                    .Permit (ButtonTrigger.FocusIn, ButtonState.FocusedPressed)
+                                    .Permit (ButtonTrigger.Press, ButtonState.Normal)
+                                    .Ignore (ButtonTrigger.FocusOut)
+                                    .OnEntry (x => this.current = pressed);
+                        this.sm.Configure (ButtonState.FocusedPressed)
+                                    .Ignore (ButtonTrigger.Release)
+                                    .Permit (ButtonTrigger.FocusOut, ButtonState.Pressed)
+                                    .Permit (ButtonTrigger.Press, ButtonState.FocusedNormal)
+                                    .Ignore (ButtonTrigger.FocusIn)
+                                    .OnEntry (x => this.current = focusedPressed ?? pressed);
+                        break;
+                    }
+                default: throw new NotImplementedException ("Sorry");
+            }
         }
 
-        /// <summary>
-        /// コンストラクター
-        /// </summary>
-        /// <remarks>
-        /// テクスチャーファイルをロードし、それと同じサイズの<see cref="Button"/> オブジェクトを作成ます。
-        /// </remarks>
-        /// <param name="texFileName">テクスチャーファイル名</param>
-        public Button (string texFileName) : this(1, 1) {
-            if (texFileName == null || texFileName == "") {
-                throw new ArgumentNullException ("Texture is null");
-            }
-            LoadTexutre (ButtonState.Normal, texFileName);
-            this.width = normal.Width;
-            this.height = normal.Height;
-        }
         #endregion
 
         #region Propety
 
         /// <summary>
+        /// ボタン種別
+        /// </summary>
+        public ButtonType Type {
+            get { return type; }
+        }
+
+        /// <summary>
         /// ボタン状態
         /// </summary>
         public ButtonState State {
-            get { return state; }
-            set { this.state = value; }
+            get { return sm.State; }
+        }
+
+        /// <summary>
+        /// 押されている状態
+        /// </summary>
+        public bool IsPressed {
+            get { return (sm.State == ButtonState.Pressed || sm.State == ButtonState.FocusedPressed); }
+        }
+
+        /// <summary>
+        /// フォーカスがあっている状態
+        /// </summary>
+        public bool IsFocused {
+            get { return (sm.State == ButtonState.FocusedNormal || sm.State == ButtonState.FocusedPressed); }
+        }
+
+        /// <summary>
+        /// 押されていないボタン画像
+        /// </summary>
+        /// <remarks>
+        /// 必須です。
+        /// </remarks>
+        public Texture Normal {
+            get { return normal; }
+            set {
+                this.normal = value;
+                if (current == null) {
+                    this.current = normal;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 押されたボタン画像（フォーカスあり）
+        /// </summary>
+        /// <remarks>
+        /// フォーカス時に画像を変更する必要がない場合は <c>null</c> のままにしてください。
+        /// </remarks>
+        public Texture FocusedNormal {
+            get { return focusedNormal; }
+            set { this.focusedNormal = value; }
         }
 
 
         /// <summary>
-        /// ボタンの幅（ピクセル数）
+        /// 押されたボタン画像
         /// </summary>
-        public int Width {
-            get { return width; }
+        /// <remarks>
+        /// 必須です。
+        /// </remarks>
+        public Texture Pressed {
+            get { return pressed; }
+            set { this.pressed = value; }
         }
 
         /// <summary>
-        /// ボタンの高さ（ピクセル数）
+        /// 押されたボタン画像（フォーカスあり）
         /// </summary>
-        public int Height {
-            get { return height; }
-        }
-
-        /// <summary>
-        /// ボタン画像（通常状態）
-        /// </summary>
-        public string Normal {
-            get { return (normal != null) ?names[normal] : null; }
-        }
-
-        /// <summary>
-        /// ボタン画像（通常状態、フォーカスあり）
-        /// </summary>
-        public string Focused {
-            get { return (normal2 != null) ? names[normal2] : null; }
-        }
-
-
-        /// <summary>
-        /// ボタン画像（押された状態）
-        /// </summary>
-        public string Pressed {
-            get { return (pressed != null) ? names[pressed] : null; }
-        }
-
-        /// <summary>
-        /// ボタン画像（押された状態、フォーカスあり）
-        /// </summary>
-        public string PressedFocused {
-            get { return (pressed2 != null) ? names[pressed2] : null; }
+        /// <remarks>
+        /// フォーカス時に画像を変更する必要がない場合は <c>null</c> のままにしてください。
+        /// </remarks>
+        public Texture FocusedPressed {
+            get { return focusedPressed; }
+            set { this.focusedPressed = value; }
         }
 
         #endregion
 
         #region Method
-        /// <summary>
-        /// テクスチャーのロード
-        /// </summary>
-        /// <param name="state">ボタン状態</param>
-        /// <param name="fileName">テクスチャー ファイル名</param>
-        public void LoadTexutre (ButtonState state, string fileName) {
-            if (fileName == null || fileName == "") {
-                throw new ArgumentNullException ("Name is null");
-            }
-            var tex = Resource.GetTexture (fileName);
-            switch (state) {
-                case ButtonState.Normal: this.normal = tex; break;
-                case ButtonState.Focused: this.normal2 = tex; break;
-                case ButtonState.Pressed: this.pressed = tex; break;
-                case ButtonState.PressedFocused: this.pressed2 = tex; break;
-                default: throw new NotImplementedException ("Sorry");
-            }
-            this.names.Add (tex, fileName);
-        }
 
-        /// <inheritdoc/>
-        public override void OnAttached () {
-        }
 
         /// <inheritdoc/>
         public override void OnDraw (object window, EventArgs args) {
-            if (normal == null) {
+            if (current == null) {
                 return;
             }
 
             var win = window as RenderWindow;
-            var spr = new SFML.Graphics.Sprite ();
-            switch (state) {
-                case ButtonState.Normal: spr.Texture = normal.Data; break;
-                case ButtonState.Focused: spr.Texture = (normal2 != null) ? normal2.Data : normal.Data; break;
-                case ButtonState.Pressed: spr.Texture = (pressed != null) ? pressed.Data : normal.Data; break;
-                case ButtonState.PressedFocused: spr.Texture = (pressed2 != null) ? pressed2.Data :
-                                                    (pressed != null) ? pressed.Data : normal.Data; break;
-                default: throw new NotImplementedException ("Sorry");
+            var spr = new SFML.Graphics.Sprite (current.Data);
+
+            Vector3 point;
+            Quaternion rotation;
+            Vector3 scale;
+            Node.GlobalTransform.Decompress (out point, out rotation, out scale);
+
+            // クォータニオンは指定したのと等価な軸が反対で回転角度[0,180]の回転で返ってくる事がある
+            // ここで回転軸(0,0,-1)のものを(0,0,1)に変換する必要がある
+            var angle = rotation.Angle;
+            var axis = rotation.Axis;
+            var dot = Vector3.Dot (axis, new Vector3 (0, 0, 1));
+            if (dot < 0) {
+                angle = 360 - angle;
+                axis = -axis;
             }
-            spr.Position = new Vector2f (Node.Point.X, Node.Point.Y);
+
+            spr.Position = new Vector2f (point.X, point.Y);
+            spr.Scale = new Vector2f (scale.X, scale.Y);
+            spr.Rotation = angle;
+
             win.Draw (spr);
         }
 
         /// <inheritdoc/>
-        public override void OnMouseButtonPressed (MouseButton button, int x, int y) {
-            Console.WriteLine ("Clicked");
-            switch (state) {
-                case ButtonState.Normal: this.state = ButtonState.Pressed; break;
-                case ButtonState.Focused: this.state = ButtonState.PressedFocused; break;
-                case ButtonState.Pressed: this.state = ButtonState.Normal; break;
-                case ButtonState.PressedFocused: this.state = ButtonState.Focused; break;
-                default: throw new NotImplementedException ("Sorry");
-            }
+        public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
+            // Console.WriteLine ("Clicked");
+            sm.Fire (ButtonTrigger.Press);
         }
 
         /// <inheritdoc/>
-        public override void OnMouseButtonReleased (MouseButton button, int x, int y) {
-            Console.WriteLine ("Released");
+        public override void OnMouseButtonReleased (MouseButton button, float x, float y) {
+            //Console.WriteLine ("Released");
+            sm.Fire (ButtonTrigger.Release);
         }
 
         /// <inheritdoc/>
-        public override void OnMouseFocusIn (MouseButton button, int x, int y) {
-            Console.WriteLine ("Entered");
-            switch (state) {
-                case ButtonState.Normal: this.state = ButtonState.Focused; break;
-                case ButtonState.Pressed: this.state = ButtonState.PressedFocused; break;
-                default: break;
-            }
+        public override void OnMouseFocusIn (float x, float y) {
+            //Console.WriteLine ("Focus In");
+            sm.Fire (ButtonTrigger.FocusIn);
         }
 
         /// <inheritdoc/>
-        public override void OnMouseFocusOut (MouseButton button, int x, int y) {
-            Console.WriteLine ("Left");
-            switch (state) {
-                case ButtonState.Focused: this.state = ButtonState.Normal; break;
-                case ButtonState.PressedFocused: this.state = ButtonState.Pressed; break;
-                default: break;
-            }
+        public override void OnMouseFocusOut (float x, float y) {
+            //Console.WriteLine ("Focus Out");
+            sm.Fire (ButtonTrigger.FocusOut);
         }
         #endregion
 

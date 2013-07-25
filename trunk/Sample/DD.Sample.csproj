@@ -94,6 +94,10 @@
     <Compile Include="DokeyKongSample\MyGorilla.cs" />
     <Compile Include="DokeyKongSample\MyPopupNumber.cs" />
     <Compile Include="DokeyKongSample\MyWorld.cs" />
+    <Compile Include="GUISample\MyCamera.cs" />
+    <Compile Include="GUISample\MyButton.cs" />
+    <Compile Include="GUISample\MyWorld.cs" />
+    <Compile Include="GUISample\Program.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ScrollSample\MyCamera1.cs" />
     <Compile Include="ScrollSample\MyCharacter.cs" />
@@ -107,9 +111,13 @@
     <Compile Include="DokeyKongSample\Program.cs" />
     <Compile Include="ScrollSample\MyPopupNumber.cs" />
     <Compile Include="ScrollSample\Program.cs" />
+    <Compile Include="TiledMapSample\MyCabbage.cs" />
+    <Compile Include="TiledMapSample\MyCamera1.cs" />
+    <Compile Include="TiledMapSample\MyCamera2.cs" />
     <Compile Include="TiledMapSample\MyCharacter.cs" />
     <Compile Include="PhysicsSample\MyComponent.cs" />
     <Compile Include="PhysicsSample\Program.cs" />
+    <Compile Include="TiledMapSample\MyPopup.cs" />
     <Compile Include="TiledMapSample\MyTiledMap.cs" />
     <Compile Include="TiledMapSample\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -242,6 +250,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\System7.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\TiledMapBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\tmw_desert_spacing.png">

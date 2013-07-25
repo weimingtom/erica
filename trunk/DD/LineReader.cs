@@ -381,7 +381,7 @@ namespace DD {
             var words = lines[index].Words.Substring (0, tick.Count);
             var font = Resource.GetDefaultFont ();
             var txt = new Text (words, font);
-            txt.Position = new Vector2f (Node.Point.X, Node.Point.Y);
+            txt.Position = new Vector2f (Node.Position.X, Node.Position.Y);
             txt.CharacterSize = (uint)charSize;
             txt.Color = color.ToSFML ();
             win.Draw (txt);

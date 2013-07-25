@@ -391,12 +391,12 @@ namespace DD {
         /// <remarks>
         /// マウス ボタンのクリック イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
-        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// マウスの位置 (X,Y) はワールド座標系です。
         /// </remarks>
         /// <param name="button">マウスボタン</param>
-        /// <param name="x">マウスのX座標（ノード座標系）</param>
-        /// <param name="y">マウスのY座標（ノード座標系）</param>
-        public virtual void OnMouseButtonPressed (MouseButton button, int x, int y) {
+        /// <param name="x">マウスのX座標（ワールド座標系）</param>
+        /// <param name="y">マウスのY座標（ワールド座標系）</param>
+        public virtual void OnMouseButtonPressed (MouseButton button, float x, float y) {
         }
 
 
@@ -406,12 +406,12 @@ namespace DD {
         /// <remarks>
         /// マウス ボタンのリリース イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
-        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// マウス位置 (X,Y) はワールド座標系です。
         /// </remarks>
         /// <param name="button">マウスボタン</param>
-        /// <param name="x">マウスのX座標（ノード座標系）</param>
-        /// <param name="y">マウスのY座標（ノード座標系）</param>
-        public virtual void OnMouseButtonReleased (MouseButton button, int x, int y) {
+        /// <param name="x">マウスのX座標（ワールド座標系）</param>
+        /// <param name="y">マウスのY座標（ワールド座標系）</param>
+        public virtual void OnMouseButtonReleased (MouseButton button, float x, float y) {
         }
 
         /// <summary>
@@ -420,12 +420,11 @@ namespace DD {
         /// <remarks>
         /// マウス ボタンのフォーカス イン イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
-        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// マウス位置(X,Y)はワールド座標系です。
         /// </remarks>
-        /// <param name="button">マウス ボタン</param>
-        /// <param name="x">マウスのX座標（ノード座標系）</param>
-        /// <param name="y">マウスのY座標（ノード座標系）</param>
-        public virtual void OnMouseFocusIn (MouseButton button, int x, int y) {
+        /// <param name="x">マウスのX座標（ワールド座標系）</param>
+        /// <param name="y">マウスのY座標（ワールド座標系）</param>
+        public virtual void OnMouseFocusIn (float x, float y) {
         }
 
         /// <summary>
@@ -434,12 +433,11 @@ namespace DD {
         /// <remarks>
         /// マウス ボタンのフォーカス アウト イベント処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
-        /// 座標位置(X,Y)はノードのローカル座標系です。
+        /// マウス位置(X,Y)はワールド座標系です。
         /// </remarks>
-        /// <param name="button">マウス ボタン</param>
-        /// <param name="x">マウスのX座標（ノード座標系）</param>
-        /// <param name="y">マウスのY座標（ノード座標系）</param>
-        public virtual void OnMouseFocusOut (MouseButton button, int x, int y) {
+        /// <param name="x">マウスのX座標（ワールド座標系）</param>
+        /// <param name="y">マウスのY座標（ワールド座標系）</param>
+        public virtual void OnMouseFocusOut (float x, float y) {
         }
 
         /// <summary>
@@ -454,6 +452,19 @@ namespace DD {
         /// <param name="dtime">デルタ タイム (msec)</param>
         public virtual void OnAnimate (long msec, long dtime) {
 
+        }
+
+
+        /// <summary>
+        /// 描画前処理
+        /// </summary>
+        /// <remarks>
+        /// 描画の前に処理を行う仮想関数のエントリーポイント。
+        /// 描画される前に追加の処理を行いたい時に、この仮想関数をオーバーライドします。
+        /// この前処理は <see cref="DD.Node.Drawable"/> の値に関わらず常に呼び出されます。
+        /// </remarks>
+        /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
+        public virtual void OnPreDraw (object window) {
         }
 
         /// <summary>

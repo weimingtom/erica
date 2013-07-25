@@ -35,6 +35,18 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Property () {
+            var wld = new World ();
+            wld.SetProperty ("Prop1", 0);
+            wld.SetProperty ("Prop1", 1);
+
+            Assert.AreEqual (1, wld.GetProperty<int> ("Prop1"));
+            Assert.AreEqual (0, wld.GetProperty<int> ("Prop2"));    // not found
+            Assert.AreEqual (1, wld.GetProperty<int> ("Prop2", 1)); // not found
+
+        }
+
+        [TestMethod]
         public void Test_ActiveCamera () {
             var cam = new Camera ();
             var node = new Node ();

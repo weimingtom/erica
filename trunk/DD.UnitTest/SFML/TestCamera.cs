@@ -20,7 +20,7 @@ namespace DD.UnitTest {
             var node = new Node ();
             node.Attach (cam);
 
-            cam.SetupCamera (win);
+            cam.SetupView (win);
 
             var view = win.GetView ();
 
