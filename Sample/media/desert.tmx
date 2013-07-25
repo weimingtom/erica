@@ -3,18 +3,23 @@
  <tileset firstgid="1" name="Desert" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
- <imagelayer name="Background" width="40" height="40" visible="0">
-  <image source="DarkGalaxy.jpg"/>
+ <imagelayer name="Background" width="40" height="40">
+  <image source="TiledMapBackground.png"/>
  </imagelayer>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2Y2wqCQBCGt7roBBUFHcksOx99/6drpA1lWGx2dacpvPhQQdzPf0YdDJRSgUd6QB8YeF7HhbvBb1Xgep0cJORXxMNEktUYmABTgX4JNaAONJC3D78ZMLdgAbT1dbse7h2zBjYWRB79jjl+W+AM7L7ol5dfRMyTw28v0C9GXtjvql79f2P2wz2Hjz/lhfuyDD/Tc3BE+b33P/nhXMvK74CO3z62+fmuL/bEnHT9qFxK8GtqWir9flC2CXUCy4J+fZXOF7Z+Nrj6TVQ6X1DWyfoNLRg5+lF7j5tQmeccSZ4ho4/LbMbhdddbyrsz+/2JSlqfCsUvcYr1uZx+D4F+uK+l+bnUNztfcPk9LPxwltLyM9Vash9nfi6zGaffvxAKcPgVcFZF/g1WNa6okMcTJODMFAAZAAA=
+   H4sIAAAAAAAAC+3WyQ6CMBCA4VEPbom4JOISCYoe3Hj/x3MSS9o0oG1py5T08IWb/A6ETgYAmUMLlKCl4/uYKC33zX6gML82HU22KEU7on0DNEQjD317dNBwRFP2u3MH/112RhcNRUd9V/RAN6J9heI8Y1993wu+7/+baF8T+b2k1ifPlVpf18/3zp6fqqeFvjEzAX5+NF1F1bn1z6llXwJ8v9Dpq+aiyrQvBb5f6OxXK7TWsDHsoyon0ECp0WQ389FVsqvKt1M8fwpL91el0ifuHbGvf33ifkGxr26WsS+MPpPdzGdfX+QEGkIR6qxC7Y4i3z7MS7gRABkAAA==
   </data>
  </layer>
  <layer name="Collision" width="40" height="40" opacity="0.41">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OwQnAMBADQZei/qtMAyG+R0A2zIDQd9fiL/nYCdIO2Eg7YCPtAACulOG3ZPgtGQwAAADePFaa27YAGQAA
+   H4sIAAAAAAAAC+3OsQkAMRADQZei/qt0B3eJQf8wA0LpnsMrGfYFaQcs0g5YpB0AwC9l+bYs35ZhAAAAMLmTLrobABkAAA==
   </data>
  </layer>
- <objectgroup name="Objects" width="40" height="40" visible="0"/>
+ <objectgroup name="Objects" width="40" height="40"/>
+ <layer name="Cabbage" width="40" height="40">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2YOwqAMBBEcxM7tTP3P52kEMKSwnzYmQ3zOiWyj8kUiymJmgMtEIioWUX13okbLbAJJ1qgQU6cXrZzDB1sOZR3dX7oLC/z/Pmszs/O8f5eiFEYu9fac9g82XzEHBkw8+k46+U32mtEfij+7DU9d7sSj3uYmcHWk7ILsjlZGPZ9ERf9NxJiL16/g6n2ABkAAA==
+  </data>
+ </layer>
 </map>

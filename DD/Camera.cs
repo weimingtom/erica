@@ -177,6 +177,14 @@ namespace DD {
             this.viewport = new Rectangle (x, y, width, height);
         }
 
+        internal void SetupClear (object window) {
+            var win = window as RenderWindow;
+            
+            if (clear) {
+                win.Clear (clearColor.ToSFML ());
+            }
+        }
+
         /// <summary>
         /// カメラのセットアップ
         /// </summary>
@@ -184,18 +192,12 @@ namespace DD {
         /// カメラだけは一番はじめに処理しないといけないので OnDraw() には書けない。
         /// </remarks>
         /// <param name="window">ウィンドウ</param>
-        internal void SetupCamera (object window) {
+        internal void SetupView (object window) {
             if (!IsAttached) {
                 throw new InvalidOperationException ("Camera must be attached to node");
             }
             var win = window as RenderWindow;
             
-            // Move to OnDraw()?
-            // 画面のクリア
-            if (clear) {
-                win.Clear (clearColor.ToSFML ());
-            }
-
             Vector3 T;
             Quaternion R;
             Vector3 S;

@@ -174,5 +174,13 @@ namespace DD {
                 default: throw new NotImplementedException ("Sorry");
             }
         }
+
+        /// <summary>
+        /// SFMLの<see cref="SFML.Window.Vector2f"/> 型をDDの <see cref="DD.Vector2"/> 型に変換
+        /// </summary>
+        /// <param name="v">ベクトル</param>
+        public static DD.Vector2 ToDD (this SFML.Window.Vector2f v) {
+            return new Vector2 (v.X, v.Y);
+        }
     }
 }

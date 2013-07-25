@@ -9,6 +9,7 @@ namespace DD.Sample.TiledMapSample {
         public float Speed { get; set; }
         public Node Map { get; set; }
         public Node CollisionMap { get; set; }
+        public Sprite Sprite { get; set; }
 
         public MyCharacter () {
             this.Speed = 10;
@@ -16,16 +17,24 @@ namespace DD.Sample.TiledMapSample {
 
         public static Node Create () {
             var cmp = new MyCharacter ();
-            var spr = new Sprite (new Texture ("media/Character-Gelato.png"), 24, 32);
+            var spr = new Sprite (24, 32);
+            spr.AddTexture(new Texture ("media/Character-Gelato.png"));
+            spr.AddTexture (new Texture ("media/image128x128(Cyan).png"));
+
             var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
             col.Offset = new Vector3 (spr.Width / 2, spr.Height / 2, 0);
-            var node = new Node ();
-            node.Attach (spr);
+
+            var node = new Node ("MyCharacter");
             node.Attach (cmp);
+            node.Attach (spr);
             node.Attach (col);
             node.DrawPriority = -1;
+            node.Translate (150, 120, 0);
 
-            
+            node.GroupID = 0xffffffffu;
+
+            cmp.Sprite = spr;
+
             return node;
 
         }
@@ -33,15 +42,14 @@ namespace DD.Sample.TiledMapSample {
         public override void OnAttached () {
         }
 
-
         private void Move (Vector3 v) {
             var label1 = World.Find ("Label").GetComponent<Label> (0);
             var label2 = World.Find ("Label").GetComponent<Label> (1);
 
-            var pointA = new Vector3 (Node.Point.X, Node.Point.Y, 0);
-            var pointB = new Vector3 (Node.Point.X + 24, Node.Point.Y, 0);
-            var pointC = new Vector3 (Node.Point.X, Node.Point.Y + 32, 0);
-            var pointD = new Vector3 (Node.Point.X + 24, Node.Point.Y + 32, 0);
+            var pointA = new Vector3 (Node.Position.X, Node.Position.Y, 0);
+            var pointB = new Vector3 (Node.Position.X + 24, Node.Position.Y, 0);
+            var pointC = new Vector3 (Node.Position.X, Node.Position.Y + 32, 0);
+            var pointD = new Vector3 (Node.Position.X + 24, Node.Position.Y + 32, 0);
             var rayA = new Ray (pointA, pointA + v, 1f);
             var rayB = new Ray (pointB, pointB + v, 1f);
             var rayC = new Ray (pointC, pointC + v, 1f);
@@ -81,8 +89,8 @@ namespace DD.Sample.TiledMapSample {
 
         public override void OnUpdate (long msec) {
             var label1 = World.Find ("Label").GetComponent<Label> (0);
-            var label2 = World.Find ("Label").GetComponent<Label>(1);
-            label2.Text = Node.Translation.ToString();
+            var label2 = World.Find ("Label").GetComponent<Label> (1);
+            label2.Text = Node.Translation.ToString ();
 
             var dx = 0;
             var dy = 0;
@@ -102,8 +110,23 @@ namespace DD.Sample.TiledMapSample {
             if (dy != 0) {
                 Move (new Vector3 (0, dy, 0) * Speed);
             }
-            
-           
+
+
         }
+
+        public override void OnPreDraw (object window) {
+            var pass = World.GetProperty<int> ("Pass");
+
+            if (pass == 1) {
+                Sprite.ActiveTextureIndex = 0;
+            }
+            if (pass == 2) {
+                Sprite.ActiveTextureIndex = 1;
+            }
+        }
+
+
+
     }
+
 }

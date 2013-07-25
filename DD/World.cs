@@ -18,6 +18,7 @@ namespace DD {
     public class World : Node {
         #region Field
         Node activeCamera;
+        Dictionary<string, object> prop;
         #endregion
 
         #region Constructor
@@ -44,6 +45,7 @@ namespace DD {
         public World (string name)
             : base (name) {
                 this.activeCamera = null;
+                this.prop = new Dictionary<string, object> ();
 
             this.Attach (new InputReceiver ());
             this.Attach (new AnimationController ());
@@ -64,12 +66,27 @@ namespace DD {
         public Node ActiveCamera {
             get { return activeCamera; }
             set {
-                if (!value.Is<Camera> ()) {
-                    throw new ArgumentException ("Node is not Camera");
+                var cam = value.GetComponent<Camera> ();
+                if (cam == null) {
+                    throw new ArgumentException ("Node has no Camera");
                 }
                 this.activeCamera = value;
+
+                // Viewの変更をここで行わないと
+                // ピクセルとワールド座標の対応（mapPixelToCoord()）が正しい値を返さなくなる
+                var g2d = Graphics2D.GetInstance ();
+                var win = g2d.GetWindow ();
+                cam.SetupView (win);
             }
         }
+
+        /// <summary>
+        /// グローバル プロパティの取得
+        /// </summary>
+        public Dictionary<string, object> Properties {
+            get { return prop; }
+        }
+
 
         /// <summary>
         /// デフォルトのインプット レシーバー
@@ -95,6 +112,60 @@ namespace DD {
         #endregion
 
         #region Method
+
+        /// <summary>
+        /// グローバル プロパティの設定
+        /// </summary>
+        /// <remarks>
+        /// 登録済みの名前の場合、新しい値で置き換えます。
+        /// </remarks>
+        /// <typeparam name="T">プロパティ値の型</typeparam>
+        /// <param name="name">プロパティの名前</param>
+        /// <param name="value">プロパティの値</param>
+        public void SetProperty<T> (string name, T value) {
+            if (name == null || name == "") {
+                throw new ArgumentNullException ("Name is null");
+            }
+            this.prop[name] = value;
+        }
+
+        /// <summary>
+        /// グローバル プロパティの取得
+        /// </summary>
+        /// <remarks>
+        /// 指定の名前のプロパティが見つからなかった場合、基底のデフォルト値を返します。
+        /// </remarks>
+        /// <typeparam name="T">プロパティの型</typeparam>
+        /// <param name="name">プロパティの名前</param>
+        /// <returns></returns>
+        public T GetProperty<T> (string name) {
+            if (name == null || name == "") {
+                throw new ArgumentNullException ("Name is null");
+            }
+            object value;
+            prop.TryGetValue (name, out value);
+            return (T)(value ?? default (T));
+        }
+
+        /// <summary>
+        /// グローバル プロパティの取得
+        /// </summary>
+        /// <remarks>
+        /// 指定の名前のプロパティが見つからなかった場合、ユーザー指定のデフォルト値を返します。
+        /// </remarks>
+        /// <typeparam name="T">プロパティの型</typeparam>
+        /// <param name="name">プロパティの名前</param>
+        /// <param name="defaultValue">デフォルト値</param>
+        /// <returns></returns>
+        public T GetProperty<T> (string name, T defaultValue) {
+            if (name == null || name == "") {
+                throw new ArgumentNullException ("Name is null");
+            }
+            if (!prop.ContainsKey (name)) {
+                return defaultValue;
+            }
+            return (T)prop[name];
+        }
 
         /// <summary>
         /// アニメートの実行

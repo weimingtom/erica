@@ -66,12 +66,16 @@ namespace DD {
         /// すでに登録済みのクリップは無視します。
         /// </remarks>
         /// <param name="clip">クリップ</param>
-        public void AddClip (SoundClip clip) {
+        /// <param name="playNow">今すぐ再生を始めるフラグ</param>
+        public void AddClip (SoundClip clip, bool playNow = false) {
             if (clip == null) {
                 throw new ArgumentNullException ("Clip is null");
             }
             if (clips.Contains (clip)) {
                 return;
+            }
+            if (playNow) {
+                clip.Play ();
             }
             this.clips.Add (clip);
         }

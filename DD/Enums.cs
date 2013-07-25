@@ -4,6 +4,45 @@ using System.Linq;
 using System.Text;
 
 namespace DD {
+    /// <summary>
+    /// ボタン状態
+    /// </summary>
+    public enum ButtonState {
+        /// <summary>
+        /// 標準状態
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// 標準状態（フォーカスあり）
+        /// </summary>
+        FocusedNormal,
+
+        /// <summary>
+        /// 押された状態
+        /// </summary>
+        Pressed,
+
+        /// <summary>
+        /// 押された状態（フォーカスあり）
+        /// </summary>
+        FocusedPressed
+    }
+
+    /// <summary>
+    /// ボタン種別
+    /// </summary>
+    public enum ButtonType {
+        /// <summary>
+        /// プッシュ式
+        /// </summary>
+        Push,
+
+        /// <summary>
+        /// トグル式
+        /// </summary>
+        Toggle
+    }
 
     /// <summary>
     /// カメラの投影方式
@@ -827,6 +866,7 @@ namespace DD {
         Middle,
     }
 
+    /*
     /// <summary>
     /// ボタン状態
     /// </summary>
@@ -852,6 +892,7 @@ namespace DD {
         PressedFocused,
 
     }
+    */
 
     /// <summary>
     /// 補完方法

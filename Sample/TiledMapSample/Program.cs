@@ -28,7 +28,7 @@ namespace DD.Sample.TiledMapSample {
             return node;
         }
 
-        static void MainTiledMapSample (string[] args) {
+        public static void Main (string[] args) {
             var g2d = DD.Graphics2D.GetInstance ();
             g2d.CreateWindow (800, 600, "こんにちは、世界");
 
@@ -38,10 +38,12 @@ namespace DD.Sample.TiledMapSample {
             var node3 = CreateLabel ();
             var node4 = MyTiledMap.Create ("media/desert.tmx");
             var node5 = MyCharacter.Create ();
+            var cam1 = MyCamera1.Create ();
+            var cam2 = MyCamera2.Create ();
 
             var mychar = node5.GetComponent<MyCharacter> ();
-            mychar.Map = node4.Find (x => x.Name == "Ground");
-            mychar.CollisionMap = node4.Find (x => x.Name == "Collision");
+            mychar.Map = node4.Find ("Ground");
+            mychar.CollisionMap = node4.Find ("Collision");
 
             node4.AddChild (node5);
 
@@ -52,7 +54,10 @@ namespace DD.Sample.TiledMapSample {
             wld.AddChild (node2);
             wld.AddChild (node3);
             wld.AddChild (node4);
-
+            wld.AddChild (cam2);
+            
+            node5.AddChild (cam1);
+            wld.ActiveCamera = cam1;
 
             var alive = true;
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {
@@ -69,11 +74,17 @@ namespace DD.Sample.TiledMapSample {
             while (alive) {
                 var msec = watch.ElapsedMilliseconds;
 
+                wld.Properties ["Pass"] = 1;
+                wld.ActiveCamera = cam1;
+
                 wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
-                g2d.Draw (wld, null);
+                g2d.Draw (wld, null, false);
 
+                wld.Properties ["Pass"] = 2;
+                wld.ActiveCamera = cam2;
+                g2d.Draw (wld, null, true);
             }
 
             Console.WriteLine ("End of Game");

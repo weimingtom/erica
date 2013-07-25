@@ -161,8 +161,8 @@ namespace DD {
 
             if (style.HasFlag (DD.CharacterStyle.Shadow)) {
                 var txt2 = new Text (text, font, (uint)charSize);
-                txt2.Position = new Vector2f (Node.Point.X + offset.X + shadowOffset,
-                                              Node.Point.Y + offset.Y + shadowOffset);
+                txt2.Position = new Vector2f (Node.Position.X + offset.X + shadowOffset,
+                                              Node.Position.Y + offset.Y + shadowOffset);
                 txt2.Color = Color.Black.ToSFML ();
                 txt2.Style = style.ToSFML ();
                 win.Draw (txt2);

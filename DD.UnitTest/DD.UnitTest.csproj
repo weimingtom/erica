@@ -111,7 +111,6 @@
     <Compile Include="TestResource.cs" />
     <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestSoundPlayer.cs" />
-    <Compile Include="TestStateMachine.cs" />
     <Compile Include="TestTexture.cs" />
     <Compile Include="TestTimeCounter.cs" />
     <Compile Include="TestWorld.cs" />

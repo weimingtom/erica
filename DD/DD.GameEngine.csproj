@@ -63,6 +63,9 @@
     <Reference Include="Sprache">
       <HintPath>libs\Sprache.dll</HintPath>
     </Reference>
+    <Reference Include="Stateless">
+      <HintPath>libs\Stateless.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -133,7 +136,6 @@
     <Compile Include="SFML\Extentions.cs" />
     <Compile Include="SoundClip.cs" />
     <Compile Include="SoundPlayer.cs" />
-    <Compile Include="StateMachine.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="World.cs" />
