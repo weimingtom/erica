@@ -42,7 +42,7 @@ namespace DD.Sample.GUISample {
                 wld.Update (msec);
                 g2d.Dispatch (wld);
 
-                g2d.Draw (wld, null);
+                g2d.Draw (wld);
             }
 
             Console.WriteLine ("End of Game");

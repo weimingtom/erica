@@ -12,7 +12,8 @@ namespace DD.UnitTest.Physics {
         public void Test_New () {
             var box = new BoxCollisionShape (1, 2, 3);
 
-            Assert.AreEqual (DD.ShapeType.Box, box.Type);
+            Assert.AreEqual (DD.ShapeType.Polygon, box.Type);
+            Assert.AreEqual (true, box.IsPolygon);
             Assert.AreEqual (2, box.Width);
             Assert.AreEqual (4, box.Height);
             Assert.AreEqual (6, box.Depth);

@@ -156,9 +156,8 @@ namespace DD {
         /// 描画されるノードは <see cref="Node.Drawable"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
         /// <param name="world">シーン</param>
-        /// <param name="args">任意の引数</param>
         /// <param name="finish">描画の終了</param>
-        public void Draw (World world, EventArgs args, bool finish = true) {
+        public void Draw (World world, bool finish = true) {
             if (world == null || !win.IsOpen ()) {
                 return;
             }
@@ -189,7 +188,7 @@ namespace DD {
                         select node;
             foreach (var node in nodes) {
                 foreach (var comp in node.Components) {
-                    comp.OnDraw (win, args);
+                    comp.OnDraw (win);
                 }
             }
 

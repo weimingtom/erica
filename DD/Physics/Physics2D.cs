@@ -184,18 +184,18 @@ namespace DD.Physics {
             var rotB = new Mat22 (R[0], R[1], R[3], R[4]);
             var traB = new Transform (ref posB, ref rotB);
 
-            if (shapeA is BoxCollisionShape && shapeB is BoxCollisionShape) {
+            if (shapeA.IsPolygon && shapeB.IsPolygon) {
                 FarseerPhysics.Collision.Collision.CollidePolygons (ref mani, (PolygonShape)shpA, ref traA, (PolygonShape)shpB, ref traB);
             }
-            if (shapeA is BoxCollisionShape && shapeB is SphereCollisionShape) {
+            if (shapeA.IsPolygon && shapeB.IsCircle) {
                 FarseerPhysics.Collision.Collision.CollidePolygonAndCircle (ref mani, (PolygonShape)shpA, ref traA, (CircleShape)shpB, ref traB);
             }
-            if (shapeA is SphereCollisionShape && shapeB is BoxCollisionShape) {
+            if (shapeA.IsCircle && shapeB.IsPolygon) {
                 MyMath.Swap (ref shpA, ref shpB);
                 MyMath.Swap (ref traA, ref traB);
                 FarseerPhysics.Collision.Collision.CollidePolygonAndCircle (ref mani, (PolygonShape)shpA, ref traA, (CircleShape)shpB, ref traB);
             }
-            if (shapeA is SphereCollisionShape && shapeB is SphereCollisionShape) {
+            if (shapeA.IsCircle && shapeB.IsCircle) {
                 FarseerPhysics.Collision.Collision.CollideCircles (ref mani, (CircleShape)shpA, ref traA, (CircleShape)shpB, ref traB);
             }
 

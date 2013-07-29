@@ -206,6 +206,60 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (false, Physics2D.Collide (shape1, shape2, out col));
         }
 
+        /// <summary>
+        /// Sphere-Rhombusコリジョン検出のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Collide_7 () {
+            var shape1 = new SphereCollisionShape (1);
+            var shape2 = new RhombusCollisionShape (1, 1);
+            var tra1 = Matrix4x4.Identity;
+            var tra2 = Matrix4x4.Identity;
+
+            Collision col;
+
+            tra2 = Matrix4x4.CreateFromTranslation (1, 0, 0);
+            Assert.AreEqual (true, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+            Assert.AreEqual (new Vector3 (0.35f, -0.35f, 0), col.Point);
+            Assert.AreEqual (new Vector3 (-0.707106769f, 0.707106769f, 0), col.Normal);
+
+            tra2 = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            Assert.AreEqual (true, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+            Assert.AreEqual (new Vector3 (0.995f, 0, 0), col.Point);
+            Assert.AreEqual (new Vector3 (-1, 0, 0), col.Normal);
+
+            tra2 = Matrix4x4.CreateFromTranslation (3, 0, 0);
+            Assert.AreEqual (false, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+        }
+
+        /// <summary>
+        /// Box-Rhombusコリジョン検出のテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_Collide_8 () {
+            var shape1 = new BoxCollisionShape (1, 1, 1);
+            var shape2 = new RhombusCollisionShape (1, 1);
+            var tra1 = Matrix4x4.Identity;
+            var tra2 = Matrix4x4.Identity;
+
+            Collision col;
+
+            tra2 = Matrix4x4.CreateFromTranslation (1, 0, 0);
+            Assert.AreEqual (true, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+            Assert.AreEqual (new Vector3 (0.75f, 0.5f, 0), col.Point);
+            Assert.AreEqual (new Vector3 (1, 0, 0), col.Normal);
+
+            tra2 = Matrix4x4.CreateFromTranslation (2, 0, 0);
+            Assert.AreEqual (true, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+            Assert.AreEqual (new Vector3 (1, 0, 0), col.Point);
+            Assert.AreEqual (new Vector3 (1, 0, 0), col.Normal);
+
+            tra2 = Matrix4x4.CreateFromTranslation (3, 0, 0);
+            Assert.AreEqual (false, Physics2D.Collide (shape1, tra1, shape2, tra2, out col));
+        }
+
+
+
         [TestMethod]
         public void Test_Contain_1 () {
             var shape = new SphereCollisionShape (1);

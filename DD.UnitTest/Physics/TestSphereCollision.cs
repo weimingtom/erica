@@ -13,6 +13,7 @@ namespace DD.UnitTest.Physics {
             var sph = new SphereCollisionShape (1.0f);
 
             Assert.AreEqual (ShapeType.Sphere, sph.Type);
+            Assert.AreEqual (true, sph.IsCircle);
             Assert.AreEqual (1, sph.Radius);
         }
 

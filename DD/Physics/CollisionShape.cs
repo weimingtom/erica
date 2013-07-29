@@ -36,6 +36,14 @@ namespace DD.Physics {
             get { return type; }
         }
 
+        public bool IsPolygon {
+            get { return type == ShapeType.Polygon; }
+        }
+
+        public bool IsCircle {
+            get { return type == ShapeType.Sphere; }
+        }
+
         /// <summary>
         /// オフセット
         /// </summary>

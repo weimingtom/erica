@@ -44,7 +44,7 @@ namespace DD.Sample.ScrollSample {
             }
         }
 
-        public override void OnDraw (object window, EventArgs args) {
+        public override void OnDraw (object window) {
 
             Console.WriteLine("T = " + Node.Position );
 

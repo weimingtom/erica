@@ -113,8 +113,8 @@ namespace DD {
         /// <paramref name="name"/> はこのクリップを識別しやすいようにユーザーが自由に決められる名前です。
         /// エンジン側では使用しません。
         /// </remarks>
-        /// <param name="name">このクリップの名前</param>
         /// <param name="duration">クリップの長さ（msec）</param>
+        /// <param name="name">このクリップの名前</param>
         public AnimationClip (int duration, string name) {
             this.name = name ?? "";
             this.duration = duration;
@@ -130,6 +130,7 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
+        /// <param name="duration">クリップの長さ（msec）</param>
         public AnimationClip (int duration)
             : this (duration, "") {
         }
