@@ -80,14 +80,18 @@ namespace DD {
         Undefined,
 
         /// <summary>
-        /// 箱形
+        /// 多角形
         /// </summary>
-        Box,
+        /// <remarks>
+        /// 多角形は方形（<see cref="BoxCollisionShape"/>）と菱形（<see cref="RhombusCollisionShape"/>）の両方が該当します。
+        /// </remarks>
+        Polygon,
 
         /// <summary>
         /// 球形
         /// </summary>
         Sphere,
+
     }
 
 

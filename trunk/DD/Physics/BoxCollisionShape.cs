@@ -36,7 +36,7 @@ namespace DD.Physics {
         /// <param name="halfWidth">幅の半分（ピクセル数）</param>
         /// <param name="halfHeight">高さの半分（ピクセル数）</param>
         /// <param name="halfDepth">奥行きの半分（ピクセル数）</param>
-        public BoxCollisionShape (float halfWidth, int halfHeight, int halfDepth) : base(ShapeType.Box) {
+        public BoxCollisionShape (float halfWidth, int halfHeight, int halfDepth) : base(ShapeType.Polygon) {
             if (halfWidth < 0 || halfHeight < 0 || halfDepth < 0) {
                 throw new ArgumentException ("Size is invalid");
             }

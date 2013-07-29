@@ -37,7 +37,6 @@ namespace DD.Sample.ScrollSample {
 
             g2d.SetFrameRateLimit (60);
 
-            var myargs = new MyDrawArgs ();
             var watch = new Stopwatch ();
             watch.Start ();
 
@@ -45,11 +44,10 @@ namespace DD.Sample.ScrollSample {
                 var msec = watch.ElapsedMilliseconds;
 
                 wld.ActiveCamera = cam1;
-               
 
+                wld.SetProperty ("Pass", 1);
                 
-                myargs.RenderPass = 0;
-                g2d.Draw (wld, myargs, false);
+                g2d.Draw (wld, false);
 
                 // Draw() の後でないと view が切り替わらない
                 wld.Animate (msec, 33);
@@ -58,8 +56,8 @@ namespace DD.Sample.ScrollSample {
 
                 wld.ActiveCamera = cam2;
 
-                myargs.RenderPass = 1;
-                g2d.Draw (wld, myargs, true);
+                wld.SetProperty ("Pass", 2);
+                g2d.Draw (wld, true);
 
             }
 

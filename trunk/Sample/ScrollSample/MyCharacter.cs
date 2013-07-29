@@ -60,8 +60,8 @@ namespace DD.Sample.ScrollSample {
         
         }
 
-        public override void OnDraw (object window, EventArgs args) {
-            var pass = ((MyDrawArgs)args).RenderPass;
+        public override void OnDraw (object window) {
+            var pass = World.GetProperty("Pass", 1);
 
             if (pass == 0) {
                 Sprite.ActiveTextureIndex = 0;

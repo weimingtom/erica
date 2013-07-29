@@ -45,20 +45,15 @@ namespace DD.Sample.TiledMapSample {
             return node;
         }
 
-        public override void OnPreDraw (object window) {
-            /*
-            var pass = World.GetProperty ("Pass", 1);
+        public override void OnUpdate (long msec) {
 
-            var gnd = Node.Find ("Ground");
-            if (pass == 1) {
-                gnd.Drawable = true;
-            }else{
-                gnd.Drawable = false;
+            var cabMap = Node.Find ("Cabbage");
+            if (cabMap != null && cabMap.Downwards.Count () == 1) {
+                var node = MyGameClear.Create ();
+                node.SetTranslation (300, 120, 0);
+                World.ActiveCamera.AddChild (node);
+                Destroy (cabMap);
             }
-             * */
-        }
-
-        public override void OnDraw (object window, EventArgs args) {
         
         }
     }

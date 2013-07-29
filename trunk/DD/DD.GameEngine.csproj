@@ -109,6 +109,7 @@
     <Compile Include="Physics\Physics2D.cs" />
     <Compile Include="Physics\PhysicsMaterial.cs" />
     <Compile Include="Physics\RayCast.cs" />
+    <Compile Include="Physics\RhombusCollisionShape.cs" />
     <Compile Include="Physics\SphereCollisionShape.cs" />
     <Compile Include="GridBoard.cs" />
     <Compile Include="Quaternion.cs" />

@@ -80,11 +80,11 @@ namespace DD.Sample.TiledMapSample {
                 wld.Animate (msec, 0);
                 wld.Update (msec);
                 g2d.Dispatch (wld);
-                g2d.Draw (wld, null, false);
+                g2d.Draw (wld, false);
 
                 wld.Properties ["Pass"] = 2;
                 wld.ActiveCamera = cam2;
-                g2d.Draw (wld, null, true);
+                g2d.Draw (wld, true);
             }
 
             Console.WriteLine ("End of Game");

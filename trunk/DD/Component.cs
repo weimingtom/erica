@@ -476,7 +476,7 @@ namespace DD {
         /// </remarks>
         /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
         /// <param name="args">任意の引数</param>
-        public virtual void OnDraw (object window, EventArgs args) {
+        public virtual void OnDraw (object window) {
 
         }
 

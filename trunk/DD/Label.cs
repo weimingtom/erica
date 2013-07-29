@@ -155,7 +155,7 @@ namespace DD {
         }
 
         /// <inheritdoc/>
-        public override void OnDraw (object window, EventArgs args) {
+        public override void OnDraw (object window) {
             var win = (RenderWindow)window;
             var font = Resource.GetDefaultFont ();
 
