@@ -96,9 +96,43 @@
     <Compile Include="DokeyKongSample\MyWorld.cs" />
     <Compile Include="GUISample\MyCamera.cs" />
     <Compile Include="GUISample\MyButton.cs" />
+    <Compile Include="GUISample\MyMouseSelector.cs" />
+    <Compile Include="GUISample\MyTarget.cs" />
     <Compile Include="GUISample\MyWorld.cs" />
     <Compile Include="GUISample\Program.cs" />
+    <Compile Include="IsometricSample\MyCamera.cs" />
+    <Compile Include="IsometricSample\MyCharacter.cs" />
+    <Compile Include="IsometricSample\MyClicker.cs" />
+    <Compile Include="IsometricSample\MyLabels.cs" />
+    <Compile Include="IsometricSample\MyMap.cs" />
+    <Compile Include="IsometricSample\MyWorld.cs" />
+    <Compile Include="IsometricSample\Program.cs" />
+    <Compile Include="PhysicsSample\MyRhombus.cs" />
+    <Compile Include="PhysicsSample\MySphere.cs" />
+    <Compile Include="PhysicsSample\MyWalls.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="RTSSample\Enum.cs" />
+    <Compile Include="RTSSample\MyBackground.cs" />
+    <Compile Include="RTSSample\MyBalloon.cs" />
+    <Compile Include="RTSSample\MyBGM.cs" />
+    <Compile Include="RTSSample\MyBigExplosion.cs" />
+    <Compile Include="RTSSample\MyCamera.cs" />
+    <Compile Include="RTSSample\MyContinuousTrack.cs" />
+    <Compile Include="RTSSample\MyEnemyAI.cs" />
+    <Compile Include="RTSSample\MyExplosion.cs" />
+    <Compile Include="RTSSample\MyController.cs" />
+    <Compile Include="RTSSample\MyGameClear.cs" />
+    <Compile Include="RTSSample\MyHpBar.cs" />
+    <Compile Include="RTSSample\MyLineSegment.cs" />
+    <Compile Include="RTSSample\MyMarker.cs" />
+    <Compile Include="RTSSample\MyMouseSelector.cs" />
+    <Compile Include="RTSSample\MyProjectile.cs" />
+    <Compile Include="RTSSample\MyRader.cs" />
+    <Compile Include="RTSSample\MyTank.cs" />
+    <Compile Include="RTSSample\MyTurret.cs" />
+    <Compile Include="RTSSample\MyCharacter.cs" />
+    <Compile Include="RTSSample\MyCard.cs" />
+    <Compile Include="RTSSample\Program.cs" />
     <Compile Include="ScrollSample\MyCamera1.cs" />
     <Compile Include="ScrollSample\MyCharacter.cs" />
     <Compile Include="ScrollSample\MyDrawArgs.cs" />
@@ -111,6 +145,8 @@
     <Compile Include="DokeyKongSample\Program.cs" />
     <Compile Include="ScrollSample\MyPopupNumber.cs" />
     <Compile Include="ScrollSample\Program.cs" />
+    <Compile Include="SimpleSample\MyComponent.cs" />
+    <Compile Include="SimpleSample\Program.cs" />
     <Compile Include="TiledMapSample\MyCabbage.cs" />
     <Compile Include="TiledMapSample\MyCamera1.cs" />
     <Compile Include="TiledMapSample\MyCamera2.cs" />
@@ -139,6 +175,12 @@
     <None Include="media\desert.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="media\GlassLand.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="media\GlassWater.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="media\Konatu.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -154,6 +196,51 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="media\0000_さとうささら_一機、撃破.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\0001_さとうささら_撃てーーー.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\0002_さとうささら_敵機殲滅を確認しました.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Background-Glass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Balloon-128x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\BGM-BattleScene.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\BigExplosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Character-Ako.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Character-Bko.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Character-Cko.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Sound-Explosion-1.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Sound-Explosion-2.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Face-Ako.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Face-Bko.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Face-Cko.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\FakeShadow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -173,7 +260,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Brick-1024x64.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Cancel.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -185,7 +272,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Check%28Yellow%29.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\cute_image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -211,6 +298,12 @@
     <Content Include="media\Gorilla.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="media\grassland.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\grass_and_water.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\HelloMiku.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -229,7 +322,28 @@
     <Content Include="media\image128x128%28Red%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="media\isometric-foot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\isometric-man-ne.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\isometric-man-nw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\isometric-man-se.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\isometric-man-sw.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\Jump.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\MedicalIconDark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\MedicalIconLight.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Moon.png">
@@ -244,16 +358,64 @@
     <Content Include="media\PinPon.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="media\Projectile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\Rectangle-160x40.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="media\Shot.wav">
+    <Content Include="media\Rhombus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Sound-Shot.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Sound-LoopNoise.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\System41.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\System7.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Hotchkiss%28Body%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Hotchkiss%28Turret%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Hotchkiss.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Panther%28Body%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Panther%28Turret%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-Panther.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-PanzerIV%28Body%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-PanzerIV%28Turret%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-PanzerIV.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-T34%28Body%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-T34%28Turret%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tank-T34.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Tanks.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\TiledMapBackground.png">

@@ -15,6 +15,14 @@ namespace DD {
     /// DDの2Dマップとして構築するコンポーネントです。
     /// 構築が終わると子ノードとして複数のレイヤー ノード（タイルマップ、オブジェクト、背景画像）と、
     /// タイル マップのさらにその下に Width * Height 個のタイル ノードを構築します。
+    /// <note>
+    /// クォーター ビュー ("isometric") のゲームの場合、通常では1タイルの大きさは 横:縦 = 2:1 (角度26.5°) が使用される（整数倍が一番きれいに表示できる。その上の1：3は扁平すぎる）。
+    /// 特に1タイル = 64ピクセル x 32ピクセル がよく使用される。
+    /// この時タイル画像のタイル1枚の大きさはそれと同じである必要はなく、デザイナーさんは 64ピクセル x 64ピクセル で作る事が多い（ように思う）。
+    /// 実装する時にタイルとタイル画像の違いに注意せよ > 俺
+    /// またコリジョン形状は"Orgthogonal","Isometric"の両方で箱形コリジョンを使用する。
+    /// "Isometric"の時もゲームロジックはすべて2Dで計算し、最終的な描画のみを2.5Dで表現する事に注意。
+    /// </note>
     /// </remarks>
     public class TiledMapComposer : Component {
 
@@ -159,12 +167,35 @@ namespace DD {
         #endregion
 
         #region Method
+
+        /// <summary>
+        /// 直交座標系の等角投影座標系への変換
+        /// </summary>
+        /// <remarks>
+        /// 2Dの直交座標系（orthographic）を2.5Dの等角投影系（isometric）に変換します。
+        /// いわゆるクォータービューのゲームはゲームロジックは通常通り2Dで作成し、
+        /// このメソッドで2.5Dの表示位置を計算して、スプライトのオフセットにセットすることで
+        /// 2.5Dで表示可能です。
+        /// </remarks>
+        /// <param name="or">直交座標系（ピクセル）</param>
+        /// <returns></returns>
+        public Vector3 OrthogonalToIsometric (Vector3 or) {
+            var x = -or.X / 2 - or.Y * tileWidth / (2 * tileHeight);
+            var y = or.X * tileHeight / (2 * tileWidth) - or.Y / 2;
+            return new Vector3 (x, y, 0);
+        }
+
         /// <summary>
         /// TMXファイルのロードと構築
         /// </summary>
         /// <remarks>
         /// Tiled Map Editor の TMX 形式のマップ ファイルを読み込んで、
         /// このノードの下に再構築します。
+        /// <note>
+        /// "Orthogonal"でも"Isometric"でもノード位置はまったく同じ。
+        /// "Isometric"の場合マップが菱形になるようにスプライトのオフセットが設定される。
+        /// コリジョンなどは"Orthogonal"と同一の物を使うべし。
+        /// </note>
         /// </remarks>
         /// <param name="fileName">マップ ファイル名</param>
         /// <returns></returns>
@@ -176,8 +207,8 @@ namespace DD {
             if (map == null) {
                 return false;
             }
-            if (map.Orientation != TmxMap.OrientationType.Orthogonal) {
-                throw new NotImplementedException ("Sorry, Orthogonal only!");
+            if (!(map.Orientation == TmxMap.OrientationType.Orthogonal || map.Orientation == TmxMap.OrientationType.Isometric)) {
+                throw new NotImplementedException ("Sorry, Orthogonal or Isometric only!");
             }
 
             // マップ情報
@@ -194,21 +225,21 @@ namespace DD {
                 this.Node.UserData.Add (prop.Key, prop.Value);
             }
 
-            var texIds = new Dictionary<string, string>();
+            var texIds = new Dictionary<string, string> ();
 
             // 使用するタイル セットのロード
             foreach (var tileset in map.Tilesets) {
+                var data = tileset.Image.Data;
+                if (data != null) {
+                    // 現在のところ画像埋め込み型（data != null）には対応していません。
+                    // （そもそもエディターが対応してないので作れない）
+                    // data は GZipStream または ZlibStream 。両方とも stream から派生してるのがめんどくさそう。
+                    throw new NotImplementedException ("Sorry, Embedded image is not implemented");
+                }
                 var src = tileset.Image.Source;
                 if (src != null) {
                     Resource.GetTexture (src);
                     texIds.Add (tileset.Name, src);
-                }
-                var data = tileset.Image.Data;
-                if (data != null) {
-                    // 現在のところ画像埋め込み型（data != null）には対応していません。
-                    // （そもそもエディターが対応してないので・・・）
-                    // data は GZipStream または ZlibStream 。両方とも stream から派生してるのが嫌らしい。
-                    throw new NotImplementedException ("Sorry, Embedded image is not implemented");
                 }
             }
 
@@ -226,25 +257,31 @@ namespace DD {
                 layerNode.Attach (layerComp);
 
                 foreach (var tile in layer.Tiles) {
-                    var x = tile.X;
+                    var x = tile.X;       // マップ座標系（タイル単位）
                     var y = tile.Y;
                     var gid = tile.Gid;
                     if (gid != 0) {
                         var tileset = map.Tilesets.Last (t => t.FirstGid <= gid);
                         var id = gid - tileset.FirstGid;
                         var tex = Resource.GetTexture (texIds[tileset.Name]);
-                        var line = (tex.Width - tileset.Margin * 2 + tileset.Spacing) / (tileWidth + tileset.Spacing);
-                        var ix = id % line;
-                        var iy = id / line;
-                        var tx = tileset.TileOffset.X + tileset.Margin + (tileWidth + tileset.Spacing) * ix;
-                        var ty = tileset.TileOffset.Y + tileset.Margin + (tileHeight + tileset.Spacing) * iy;
-                        
-                        var spr = new Sprite (tex,  tileWidth, tileHeight);
-                        spr.SetTextureOffset (tx, ty);
-                        
+                        var hTileNum = (tex.Width - tileset.Margin * 2 + tileset.Spacing) / (tileset.TileWidth + tileset.Spacing);
+                        var ix = id % hTileNum;
+                        var iy = id / hTileNum;
+                        var tx = tileset.TileOffset.X + tileset.Margin + (tileset.TileWidth + tileset.Spacing) * ix;
+                        var ty = tileset.TileOffset.Y + tileset.Margin + (tileset.TileHeight + tileset.Spacing) * iy;
+
                         var tileNode = new Node (layer.Name + "[" + x + "," + y + "]");
-                        tileNode.SetTranslation (x * tileWidth, y * tileHeight, 0);
+                        tileNode.Translation = new Vector3 (x * TileWidth, y * TileHeight, 0);
+
+                        var spr = new Sprite (tex, tileset.TileWidth, tileset.TileHeight);
+                        spr.SetTextureOffset (tx, ty);
+                        if (orientaion == "Isometric") {
+                            var sx = -x * TileWidth / 2 - y * TileWidth / 2; // -TileWidth / 2;
+                            var sy = x * TileHeight / 2 - y * TileHeight / 2;
+                            spr.SetOffset (sx, sy);
+                        }
                         tileNode.Attach (spr);
+
 
                         layerNode.AddChild (tileNode);
                         layerComp[y, x] = tileNode;
@@ -268,7 +305,7 @@ namespace DD {
                     var objNode = new Node ();
                     objNode.Name = obj.Name;
                     objNode.SetTranslation (obj.X, obj.Y, 0);
-             
+
                     var type = Type.GetType (obj.Type);
                     if (type != null) {
                         var comp = Activator.CreateInstance (type) as Component;

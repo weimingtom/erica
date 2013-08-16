@@ -121,6 +121,10 @@ namespace DD {
             get { return new Color (0,0,0,255); }
         }
 
+        public static Color Gray {
+            get { return new Color (127, 127, 127, 255); }
+        }
+
         /// <summary>
         /// 赤
         /// </summary>
@@ -140,6 +144,13 @@ namespace DD {
         /// </summary>
         public static Color Blue {
             get { return new Color (0, 0, 255, 255); }
+        }
+
+        /// <summary>
+        /// 水色
+        /// </summary>
+        public static Color Cyan {
+            get { return new Color (0, 255, 255, 255); }
         }
 
         /// <inheritdoc/>

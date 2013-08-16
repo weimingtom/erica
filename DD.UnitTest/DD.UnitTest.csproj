@@ -78,6 +78,7 @@
     <Compile Include="SFML\TestCamera.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
+    <Compile Include="TestBar.cs" />
     <Compile Include="TestCamera.cs" />
     <Compile Include="TestClosestPoints.cs" />
     <Compile Include="TestColor.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="TestInputReceiver.cs" />
     <Compile Include="TestKeyAlias.cs" />
     <Compile Include="TestLabel.cs" />
+    <Compile Include="TestLineSegment.cs" />
     <Compile Include="TestMaterial.cs" />
     <Compile Include="TestMatrix3x3.cs" />
     <Compile Include="TestMatrix4x4.cs" />

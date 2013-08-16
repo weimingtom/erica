@@ -24,7 +24,7 @@ namespace DD {
 
         #region Constructor
         /// <summary>
-        /// コンストラクター
+        /// オンメモリ又はストリーミングのサウンド クリップ オブジェクトを作成するコンストラクター
         /// </summary>
         /// <remarks>
         /// ストリーミングの再生の有無を指定して <see cref="SoundClip"/> オブジェクトを作成します。
@@ -53,14 +53,14 @@ namespace DD {
         }
 
         /// <summary>
-        /// コンストラクター
+        /// オンメモリ サウンド クリップ オブジェクトを作成するコンストラクター
         /// </summary>
         /// <remarks>
         /// ストリーミング再生を無効にして <see cref="SoundClip"/> オブジェクトを作成します。
         /// データはすべてメモリ上に置かれます。これは効果音などの再生に適しています。
         /// </remarks>
-        /// <param name="name">ファイル名</param>
-        public SoundClip (string name) : this (name, false) {
+        /// <param name="fileName">ファイル名</param>
+        public SoundClip (string fileName) : this (fileName, false) {
         }
         #endregion
 

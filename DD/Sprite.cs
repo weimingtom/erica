@@ -279,6 +279,19 @@ namespace DD {
         }
 
         /// <summary>
+        /// サイズの変更
+        /// </summary>
+        /// <param name="width">スプライトの幅（ピクセル数）</param>
+        /// <param name="height">スプライトの高さ（ピクセル数）</param>
+        public void Resize (int width, int height) {
+            if (width < 0 || height < 0) {
+                throw new ArgumentException ("Size is invalid");
+            }
+            this.width = width;
+            this.height = height;
+        }
+
+        /// <summary>
         /// テクスチャー オフセット（ピクセル数）の変更
         /// </summary>
         /// <param name="x">X方向のオフセット量（ピクセル数）</param>
@@ -291,38 +304,34 @@ namespace DD {
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
-            if (active == null) {
-                return;
-            }
-            var tex = active;
 
-            Vector3 point;
-            Quaternion rotation;
-            Vector3 scale;
-            Node.GlobalTransform.Decompress (out point, out rotation, out scale);
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            Node.GlobalTransform.Decompress (out T, out R, out S);
 
             // クォータニオンは指定したのと等価な軸が反対で回転角度[0,180]の回転で返ってくる事がある
             // ここで回転軸(0,0,-1)のものを(0,0,1)に変換する必要がある
-            var angle = rotation.Angle;
-            var axis = rotation.Axis;
+            var angle = R.Angle;
+            var axis = R.Axis;
             var dot = Vector3.Dot (axis, new Vector3 (0, 0, 1));
             if (dot < 0) {
                 angle = 360 - angle;
                 axis = -axis;
             }
 
-            var spr = new SFML.Graphics.Sprite (tex.Data);
-            spr.Position = new Vector2f (point.X, point.Y);
-            spr.Scale = new Vector2f (scale.X, scale.Y);
-            spr.Rotation = angle;
+            var opacity = Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity);
+
+            var spr = new SFML.Graphics.Sprite ();
+            spr.Texture = (active ?? Resource.GetDefaultTexture ()).Data;
             spr.TextureRect = new IntRect ((int)texOffset.X, (int)texOffset.Y, width, height);
-            
+
+            spr.Position = new Vector2f (T.X, T.Y);
+            spr.Scale = new Vector2f (S.X, S.Y);
+            spr.Rotation = angle;
             spr.Origin = new Vector2f (-offset.X, -offset.Y);
 
-            var opacity = Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity);
-            var col = new Color(color.R, color.G, color.B, (byte)(color.A*opacity));
-            
-            spr.Color = col.ToSFML ();
+            spr.Color = new Color(color.R, color.G, color.B, (byte)(color.A*opacity)).ToSFML ();
 
             var win = window as RenderWindow;
             win.Draw (spr);

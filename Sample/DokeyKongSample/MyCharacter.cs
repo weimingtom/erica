@@ -171,7 +171,7 @@ namespace DD.Sample.DonkeyKongSample {
                            let col = n.GetComponent<CollisionShape> ()
                            let colTra = n.GlobalTransform
                            where col != null && Physics2D.Collide (foot, footTra, col, colTra)
-                           let colRight = colTra.ApplyVector (1, 0, 0)
+                           let colRight = colTra.ApplyDirection (1, 0, 0)
                            select new { n, right = colRight }).FirstOrDefault ();
                 if (hit != null) {
                     label2.Text = "Hit: right = " + hit.right;

@@ -13,6 +13,8 @@ namespace DD.UnitTest {
 
     [TestClass]
     public class TestTiledMapComposer {
+
+
         /*
         // DD.UnitTest.TestTiledMapComposer+MyComponent, DD.UnitTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
         public class MyComponent : Component {
@@ -37,6 +39,11 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, map.MapLayerCount);
             Assert.AreEqual (0, map.ObjectLayerCount);
             Assert.AreEqual (0, map.ImageLayerCount);
+        }
+
+        [TestMethod]
+        public void TestMethod_OrthoToIsometric () {
+
         }
 
         [TestMethod]

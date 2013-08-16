@@ -193,6 +193,24 @@ namespace DD {
         }
 
         /// <summary>
+        /// デフォルト テクスチャーの取得
+        /// </summary>
+        /// <remarks>
+        /// デフォルト テクスチャー（"WhiteTexutre.png", 128x128ピクセル, 白色）を取得します。
+        /// デフォルト テクスチャーはユーザーが用意しなくても常に使用可能です。
+        /// </remarks>
+        /// <returns></returns>
+        public static Texture GetDefaultTexture () {
+            var name = "WhiteTexture.png";
+            if (!textures.ContainsKey (name)) {
+                textures.Add (name, new Texture (Properties.Resources.WhiteTexture, name));
+
+            }
+            return textures[name];
+
+        }
+
+        /// <summary>
         /// テクスチャーの取得
         /// </summary>
         /// <remarks>

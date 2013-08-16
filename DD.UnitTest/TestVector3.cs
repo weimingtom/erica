@@ -8,8 +8,18 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestVector3 {
         [TestMethod]
-        public void Test_New () {
+        public void Test_New_1 () {
             var p = new Vector3 (1, 2, 3);
+
+            Assert.AreEqual (3, p.ComponentCount);
+            Assert.AreEqual (1, p.X);
+            Assert.AreEqual (2, p.Y);
+            Assert.AreEqual (3, p.Z);
+        }
+
+        [TestMethod]
+        public void Test_New_2 () {
+            var p = new Vector3 (new Vector2(1, 2), 3);
 
             Assert.AreEqual (3, p.ComponentCount);
             Assert.AreEqual (1, p.X);
@@ -77,6 +87,43 @@ namespace DD.UnitTest {
             var expected = 14;
 
             Assert.AreEqual (expected, Vector3.Dot(a, b));
+        }
+
+        [TestMethod]
+        public void Test_Angle () {
+            var r = 2.0f;
+            var a = 45 / 180.0f * Math.PI;
+
+            var v0 = new Vector3 (0, 0, 0);
+            var v1 = new Vector3 ((float)(r * Math.Cos (a * 0)), (float)(r * Math.Sin (a * 0)), 0);
+            var v2 = new Vector3 ((float)(r * Math.Cos (a * 1)), (float)(r * Math.Sin (a * 1)), 0);
+            var v3 = new Vector3 ((float)(r * Math.Cos (a * 2)), (float)(r * Math.Sin (a * 2)), 0);
+            var v4 = new Vector3 ((float)(r * Math.Cos (a * 3)), (float)(r * Math.Sin (a * 3)), 0);
+            var v5 = new Vector3 ((float)(r * Math.Cos (a * 4)), (float)(r * Math.Sin (a * 4)), 0);
+            var v6 = new Vector3 ((float)(r * Math.Cos (a * 5)), (float)(r * Math.Sin (a * 5)), 0);
+            var v7 = new Vector3 ((float)(r * Math.Cos (a * 6)), (float)(r * Math.Sin (a * 6)), 0);
+            var v8 = new Vector3 ((float)(r * Math.Cos (a * 7)), (float)(r * Math.Sin (a * 7)), 0);
+
+            Assert.AreEqual (0, Vector3.Angle (v1, v1), 0.0001f);
+            Assert.AreEqual (45, Vector3.Angle (v1, v2), 0.0001f);
+            Assert.AreEqual (90, Vector3.Angle (v1, v3), 0.0001f);
+            Assert.AreEqual (135, Vector3.Angle (v1, v4), 0.0001f);
+            Assert.AreEqual (180, Vector3.Angle (v1, v5), 0.0001f);
+            Assert.AreEqual (135, Vector3.Angle (v1, v6), 0.0001f);
+            Assert.AreEqual (90, Vector3.Angle (v1, v7), 0.0001f);
+            Assert.AreEqual (45, Vector3.Angle (v1, v8), 0.0001f);
+            Assert.AreEqual (0, Vector3.Angle (v1, v1), 0.0001f);
+
+            Assert.AreEqual (0, Vector3.Angle (v1, v1), 0.0001f);
+            Assert.AreEqual (45, Vector3.Angle (v2, v1), 0.0001f);
+            Assert.AreEqual (90, Vector3.Angle (v3, v1), 0.0001f);
+            Assert.AreEqual (135, Vector3.Angle (v4, v1), 0.0001f);
+            Assert.AreEqual (180, Vector3.Angle (v5, v1), 0.0001f);
+            Assert.AreEqual (135, Vector3.Angle (v6, v1), 0.0001f);
+            Assert.AreEqual (90, Vector3.Angle (v7, v1), 0.0001f);
+            Assert.AreEqual (45, Vector3.Angle (v8, v1), 0.0001f);
+            Assert.AreEqual (0, Vector3.Angle (v1, v1), 0.0001f);
+
         }
 
         [TestMethod]

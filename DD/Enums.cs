@@ -83,7 +83,7 @@ namespace DD {
         /// 多角形
         /// </summary>
         /// <remarks>
-        /// 多角形は方形（<see cref="BoxCollisionShape"/>）と菱形（<see cref="RhombusCollisionShape"/>）の両方が該当します。
+        /// 多角形は方形（<see cref="DD.Physics.BoxCollisionShape"/>）と菱形（<see cref="DD.Physics.RhombusCollisionShape"/>）の両方が該当します。
         /// </remarks>
         Polygon,
 

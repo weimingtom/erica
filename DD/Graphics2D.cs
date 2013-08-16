@@ -151,8 +151,7 @@ namespace DD {
         /// シーンの描画
         /// </summary>
         /// <remarks>
-        /// 指定のシーン <paramref name="world"/> を描画します。追加で任意のイベント引数 <paramref name="args"/> を渡す事が可能です。
-        /// この引数はエンジン側では使用しません。
+        /// 指定のシーン <paramref name="world"/> を描画します。
         /// 描画されるノードは <see cref="Node.Drawable"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
         /// <param name="world">シーン</param>
@@ -163,8 +162,13 @@ namespace DD {
             }
 
             var id = 0x0000ffffu;
-            if (world.ActiveCamera != null) {
+            if (world.ActiveCamera == null) {
+                win.Clear (SFML.Graphics.Color.Blue);
+            }else{
                 var cam = world.ActiveCamera.GetComponent<Camera> ();
+                if (cam.Type != ProjectionType.Screen) {
+                    throw new InvalidOperationException ("Camera type is invalid for 2D, type=" + cam.Type);
+                }
                 cam.SetupView (win);
                 cam.SetupClear (win);
                 id = cam.GroupID;
@@ -371,7 +375,7 @@ namespace DD {
 
             var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
             foreach (var node in picked) {
-                foreach (var comp in node.Components) {
+                foreach (var comp in node.Components.ToArray()) {
                     switch (clicked.Button) {
                         case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
                         case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)pos.X, (int)pos.Y); break;
@@ -397,7 +401,7 @@ namespace DD {
 
             var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
             foreach (var node in picked) {
-                foreach (var comp in node.Components) {
+                foreach (var comp in node.Components.ToArray()) {
                     switch (released.Button) {
                         case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
                         case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)pos.X, (int)pos.Y); break;

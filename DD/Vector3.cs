@@ -11,7 +11,7 @@ namespace DD {
     /// 3次元の座標(x,y,z)を表します。
     /// ただし現在の所 z は使用しません。
     /// <note>
-    /// zを消さないのは将来的に3次元に拡張する予定があるため。
+    /// 将来的に3次元に拡張する予定があるため。
     /// </note>
     /// </remarks>
     public struct Vector3 : IEquatable<Vector3> {
@@ -28,6 +28,13 @@ namespace DD {
             this.Y = y;
             this.Z = z;
         }
+
+        public Vector3(Vector2 v, float z) : this(){
+            this.X = v.X;
+            this.Y = v.Y;
+            this.Z = z;
+        }
+       
 
         /// <summary>
         /// X座標
@@ -183,6 +190,35 @@ namespace DD {
         /// <returns>内積値</returns>
         public static float Dot (Vector3 a, Vector3 b) {
             return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        }
+
+        /// <summary>
+        /// 2つのベクトルの角度（度数 [0,180]）
+        /// </summary>
+        /// <remarks>
+        /// 2つのベクトルの角度を度数 (in degree) で返します。
+        /// 戻り値は必ず [0,180] の範囲内です。180度より大きな角度やマイナスの角度は返しません。
+        /// また角度が計算できない場合 NAN を返します。
+        /// ベクトルAをベクトルBへ向けるための回転（クォータニオン）は以下の式を使って求まります。
+        /// <code>
+        ///  var angle = Vector3.Angle (a, b);
+        ///  var cross = Vector3.Cross (a, b);
+        ///  var rot = new Quarnion (angle, cross.X, cross.Y, cross.Z);
+        /// </code>
+        /// <note>
+        /// 角度が計算できない場合って NAN で良いの？
+        /// </note>
+        /// </remarks>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static float Angle (Vector3 a, Vector3 b) {
+            if (a.Length2 == 0 || b.Length2 == 0) {
+                return Single.NaN;
+            }
+            var cos = MyMath.Clamp(Vector3.Dot (a, b) / (a.Length * b.Length), -1, 1);
+            var angle = (float)(Math.Acos(cos) / Math.PI * 180.0);
+            return angle;
         }
 
         /// <summary>
