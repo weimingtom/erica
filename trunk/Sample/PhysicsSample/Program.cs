@@ -14,118 +14,9 @@ using System.Diagnostics;
 
 
 namespace DD.Sample.PhysicsSample {
-    static class PhysicsProgram {
+    static class Program {
 
-        private static Node CreateWalls () {
-            var spr1 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
-            spr1.SetOffset (-spr1.Width / 2, -spr1.Height / 2);
 
-            var spr2 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
-            spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
-
-            var spr3 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
-            spr3.SetOffset (-spr3.Width / 2, -spr3.Height / 2);
-
-            var spr4 = new Sprite (new Texture ("media/Brick-1024x64.jpg"));
-            spr4.SetOffset (-spr4.Width / 2, -spr4.Height / 2);
-
-            var body1 = new PhysicsBody ();
-            body1.Type = ColliderType.Static;
-            body1.SetShape (new BoxCollisionShape (spr1.Width / 2, spr1.Height / 2, 0));
-            body1.SetMaterial (new PhysicsMaterial ());
-       
-            var body2 = new PhysicsBody ();
-            body2.Type = ColliderType.Static;
-            body2.SetShape (new BoxCollisionShape (spr2.Width / 2, spr2.Height / 2, 0));
-            body2.SetMaterial (new PhysicsMaterial ());
-       
-            var body3 = new PhysicsBody ();
-            body3.Type = ColliderType.Static;
-            body3.SetShape (new BoxCollisionShape (spr3.Width / 2, spr3.Height / 2, 0));
-            body3.SetMaterial (new PhysicsMaterial ());
-       
-            var body4 = new PhysicsBody ();
-            body4.Type = ColliderType.Static;
-            body4.SetShape (new BoxCollisionShape (spr4.Width / 2, spr4.Height / 2, 0));
-            body4.SetMaterial (new PhysicsMaterial ());
-       
-            var node1 = new Node ("Wall1");
-            node1.Translate (400, 584, 0);
-            node1.Attach (spr1);
-            node1.Attach (body1);
-
-            var node2 = new Node ("Wall2");
-            node2.Translate (400, 16, 0);
-            node2.Rotate (180, 0, 0, 1);
-            node2.Attach (spr2);
-            node2.Attach (body2);
-
-            var node3 = new Node ("Wall3");
-            node3.Translate (16, 300, 0);
-            node3.Rotate (90, 0, 0, 1);
-            node3.Attach (spr3);
-            node3.Attach (body3);
-
-            var node4 = new Node ("Wall4");
-            node4.Translate (784, 300, 0);
-            node4.Rotate (-90, 0, 0, 1);
-            node4.Attach (spr4);
-            node4.Attach (body4);
-
-            var node = new Node ();
-            node.AddChild (node1);
-            node.AddChild (node2);
-            node.AddChild (node3);
-            node.AddChild (node4);
-            return node;
-        }
-
-        private static Node CreateBalls () {
-            var spr1 = new Sprite (new Texture ("media/Earth.png"));
-            spr1.SetOffset (-spr1.Width / 2, -spr1.Height / 2);
-
-            var spr2 = new Sprite (new Texture ("media/Moon.png"));
-            spr2.SetOffset (-spr2.Width / 2, -spr2.Height / 2);
-
-            var col1 = new SphereCollisionShape (spr1.Width / 2);
-            var body1 = new PhysicsBody ();
-            body1.Type = ColliderType.Dynamic;
-            body1.SetShape (col1);
-            body1.SetMaterial (new PhysicsMaterial ());
-
-            var col2 = new SphereCollisionShape (spr2.Width / 2);
-            var body2 = new PhysicsBody ();
-            body2.Type = ColliderType.Dynamic;
-            body2.SetShape (col2);
-            body2.SetMaterial (new PhysicsMaterial ());
-            
-
-            var cmp1 = new MyComponent ();
-            var cmp2 = new MyComponent ();
-
-            var node1 = new Node ("Ball1");
-            node1.Translate (220, 200, 0);
-            node1.Attach (spr1);
-            node1.Attach (col1);
-            node1.Attach (body1);
-            node1.Attach (cmp1);
-            node1.Rotate (-135, 0, 0, 1);
-            node1.GroupID = 1;
-
-            
-            var node2 = new Node ("Ball2");
-            node2.Translate (200, 100, 0);
-            node2.Attach (spr2);
-            node2.Attach (col2);
-            node2.Attach (body2);
-            node2.Attach (cmp2);
-            
-
-            var node = new Node ();
-            node.AddChild (node1);
-            node.AddChild (node2);
-            return node;
-        }
 
         private static Node CreateUpdraft () {
 
@@ -172,19 +63,8 @@ namespace DD.Sample.PhysicsSample {
             return node;
         }
 
-        static World CreateWorld(){
-            var spr = new Sprite (new Texture ("media/DarkGalaxy.jpg"));
-            var comp = new MyWorld ();
- 
-            var node = new World ("First Script");
-            node.Attach (spr);
-            node.Attach (comp);
-            node.DrawPriority = 127;
 
-            return node;
-        }
-
-        static void PhycsSampleMain (string[] args) {
+        public static void Main (string[] args) {
 
             var g2d = DD.Graphics2D.GetInstance ();
             g2d.CreateWindow (800, 600, "こんにちは、世界");
@@ -195,20 +75,22 @@ namespace DD.Sample.PhysicsSample {
 
             // ----------------------------------------
 
-            var node1 = CreateWalls ();
-            var node2 = CreateBalls ();
+            var node1 = MyWalls.Create ();
+            var node2 = MySphere.Create ("media/earth.png", new Vector3(250, 100, 0), 40);
             var node3 = CreateFPSCounter ();
-            //var node4 = CreateUpdraft ();
+            var node4 = MySphere.Create ("media/moon.png", new Vector3(200, 300, 0), 0);
             var node5 = CreateLabels ();
+            var node6 = MyRhombus.Create ("media/rhombus.png", new Vector3 (230, 200, 0), 0);
             
             // ----------------------------------------
 
-            var wld = CreateWorld ();
+            var wld = MyWorld.Create ();
             wld.AddChild (node1);
             wld.AddChild (node2);
             wld.AddChild (node3);
-           // wld.AddChild (node4);
+            wld.AddChild (node4);
             wld.AddChild (node5);
+            wld.AddChild (node6);
 
             var alive = true;
             g2d.OnClosed += delegate (object sender, EventArgs eventArgs) {

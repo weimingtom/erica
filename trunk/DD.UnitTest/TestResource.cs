@@ -40,6 +40,13 @@ namespace DD.UnitTest {
             Assert.AreSame (tex2, tex1);
         }
 
+        [TestMethod]
+        public void Test_GetDefaultTexture () {
+            var tex1 = Resource.GetDefaultTexture ();
+            var tex2 = Resource.GetDefaultTexture ();
+
+            Assert.AreSame (tex2, tex1);
+        }
 
         [TestMethod]
         public void Test_GetSoundClip () {

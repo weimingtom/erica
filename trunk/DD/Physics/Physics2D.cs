@@ -274,7 +274,6 @@ namespace DD.Physics {
             return Collide (shapeA, shapeB, out col);
         }
 
-        //[Obsolete ("誰も使ってないので廃止します")]
         /// <summary>
         /// 2物体の最短距離の測定
         /// </summary>
@@ -291,6 +290,12 @@ namespace DD.Physics {
         /// <param name="matB">変換行列B</param>
         /// <returns></returns>
         public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+            if (shapeA == null) {
+                Console.WriteLine ("Distance shapeA is null");
+            }
+            if (shapeB == null) {
+                Console.WriteLine ("Distance shapeB is null");
+            }
             ClosestPoints cp;
             return Distance (shapeA, matA, shapeB, matB, out cp);
         }
@@ -311,7 +316,6 @@ namespace DD.Physics {
         /// <param name="matB">変換行列B</param>
         /// <param name="cp">結果の再近接地点情報を受け取る</param>
         /// <returns>距離</returns>
-        [Obsolete("誰も使ってないので廃止します")]
         public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB, out ClosestPoints cp) {
 
             DistanceOutput output;

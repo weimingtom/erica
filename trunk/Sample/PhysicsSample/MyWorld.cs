@@ -16,6 +16,18 @@ namespace DD.Sample.PhysicsSample
             this.delta = new Vector2 (0, 0);
         }
 
+        public static World Create () {
+            var spr = new Sprite (new Texture ("media/DarkGalaxy.jpg"));
+            var cmp = new MyWorld ();
+
+            var wld = new World ("First Script");
+            wld.Attach (spr);
+            wld.Attach (cmp);
+            wld.DrawPriority = 127;
+
+            return wld;
+        }
+
         public override void OnUpdate (long msec) {
 
             var g2d = Graphics2D.GetInstance ();

@@ -63,9 +63,7 @@
     <Reference Include="Sprache">
       <HintPath>libs\Sprache.dll</HintPath>
     </Reference>
-    <Reference Include="Stateless">
-      <HintPath>libs\Stateless.dll</HintPath>
-    </Reference>
+    <Reference Include="Stateless, Version=2.4.0.1, Culture=neutral, PublicKeyToken=93038f0927583c9a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -89,10 +87,12 @@
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="Bar.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ClosestPoints.cs" />
     <Compile Include="InputReceiver.cs" />
     <Compile Include="KeyAlias.cs" />
+    <Compile Include="LineSegment.cs" />
     <Compile Include="Physics\BoxCollisionShape.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
     <Compile Include="Physics\PhysicsBody.cs" />
@@ -114,6 +114,7 @@
     <Compile Include="GridBoard.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
+    <Compile Include="Square.cs" />
     <Compile Include="TiledMapComposer.cs" />
     <Compile Include="Transformable.cs" />
     <Compile Include="Vector2.cs" />
@@ -162,6 +163,8 @@
     <Content Include="libs\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
+    <None Include="Resources\WhiteTexture.png" />
     <None Include="App.config" />
     <None Include="AssemblyKeyFile.snk" />
     <None Include="ClassDiagram1.cd" />

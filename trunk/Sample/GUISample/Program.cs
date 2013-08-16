@@ -15,9 +15,13 @@ namespace DD.Sample.GUISample {
             var wld = MyWorld.Create ();
             var btn = MyButton.Create ();
             var cam = MyCamera.Create ();
+            var spr = MyTarget.Create ();
+            var mouse = MyMouseSelector.Create ();
 
             wld.AddChild (btn);
             wld.AddChild (cam);
+            wld.AddChild (spr);
+            wld.AddChild (mouse);
             wld.ActiveCamera = cam;
 
             // ----------------------------------------

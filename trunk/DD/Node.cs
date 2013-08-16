@@ -283,7 +283,7 @@ namespace DD {
         /// コンポーネントを列挙する列挙子
         /// </summary>
         public IEnumerable<Component> Components {
-            get { return components; }
+            get { return components.ToArray(); }
         }
 
         /// <summary>

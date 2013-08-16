@@ -227,8 +227,8 @@ namespace DD {
             }
 
             foreach (var cmp in node.Components.ToArray ()) {
-                node.Detach(cmp);
                 cmp.OnDestroyed ();
+                node.Detach (cmp);
                 if (cmp is IDisposable) {
                     ((IDisposable)cmp).Dispose ();
                 }
@@ -288,8 +288,11 @@ namespace DD {
         /// ノードの削除のエントリーポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="Destroy(Node)"/> メソッドでノードを破棄した時に一度だけ呼ばれます。
-        /// このエントリーポイントが最後のカスタマイズ ポイントです。
+        /// <see cref="Destroy(Node)"/> メソッドでノードを破棄した場合に一度だけ呼ばれます。
+        /// （注意：Destroyを呼ばずにノードを破棄するとこのエントリーポイントは呼び出されません）
+        /// このエントリー ポイントの呼び出しが終了するまでデタッチ前である事が保証されます。
+        /// 従ってこのエントリーポイントが最後のカスタマイズ ポイントです。
+        /// IDisposableはこの後、デタッチされたのち呼び出されます。
         /// </remarks>
         public virtual void OnDestroyed () {
         }
@@ -475,9 +478,7 @@ namespace DD {
         /// ユーザー定義のコンポーネントで描画時に追加の処理を行いたい時に、この仮想関数をオーバーライドします。
         /// </remarks>
         /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
-        /// <param name="args">任意の引数</param>
         public virtual void OnDraw (object window) {
-
         }
 
         #endregion

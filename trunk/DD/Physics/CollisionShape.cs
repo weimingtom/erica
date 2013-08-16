@@ -19,6 +19,7 @@ namespace DD.Physics {
         #region Field
         ShapeType type;
         Vector3 offset;
+        bool draw;
         #endregion
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace DD.Physics {
         public CollisionShape (ShapeType type) {
             this.type = type;
             this.offset = new Vector3 (0, 0, 0);
+            this.draw = false;
         }
 
         /// <summary>
@@ -36,12 +38,26 @@ namespace DD.Physics {
             get { return type; }
         }
 
+        /// <summary>
+        /// ポリゴン形状
+        /// </summary>
+        /// <remarks>
+        /// ポリゴン（BoxとRhombus）が相当します。
+        /// </remarks>
         public bool IsPolygon {
             get { return type == ShapeType.Polygon; }
         }
 
+        /// <summary>
+        /// 円形状
+        /// </summary>
         public bool IsCircle {
             get { return type == ShapeType.Sphere; }
+        }
+
+        public bool DrawEnabled {
+            get { return draw; }
+            set { this.draw = value; }
         }
 
         /// <summary>

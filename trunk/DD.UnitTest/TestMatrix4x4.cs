@@ -235,7 +235,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestScalingMatrix () {
+        public void Test_ScalingMatrix () {
             var mat = Matrix4x4.CreateFromScale (1, 2, 3);
             var expected = new Matrix4x4 (1, 0, 0, 0,
                                           0, 2, 0, 0,
@@ -320,16 +320,21 @@ namespace DD.UnitTest {
                                    2, 1, 2, 1,
                                    2, 2, 2, 2,
                                    1, 1, 2, 1);
-            var x = 1f;
-            var y = 2f;
-            var z = 3f;
+            Assert.AreEqual(new Vector3(0.9f, 1.1f, 1.4f), m.Apply (1,2,3)); // w=1
+            Assert.AreEqual (new Vector3 (8,10,12), m.Apply (1, 2, 3, 0));   // w=0（W除算を行わない）
+        }
 
-            m.Apply (ref x, ref y, ref z);
+        [TestMethod]
+        public void Test_ApplyVector () {
 
-            Assert.AreEqual (0.9f, x, 0.0001f);
-            Assert.AreEqual (1.1f, y, 0.0001f);
-            Assert.AreEqual (1.4f, z, 0.0001f);
+            var m1 = Matrix4x4.CreateFromScale (1, 2, 1);
+            Assert.AreEqual(new Vector3(1,1,1), m1.ApplyDirection (1, 2, 1));
 
+            var m2 = Matrix4x4.CreateFromTranslation (1, 1, 1);
+            Assert.AreEqual (new Vector3 (1, 2, 1), m2.ApplyDirection (1, 2, 1));
+
+            var m3 = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
+            Assert.AreEqual (new Vector3(-0.7071068f, 2.1213204f, 1), m3.ApplyDirection (1, 2, 1));
         }
 
         [TestMethod]

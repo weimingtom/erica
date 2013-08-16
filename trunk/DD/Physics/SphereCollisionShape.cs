@@ -8,6 +8,8 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
+//using SFML.Graphics;
+using SFML.Window;
 
 
 namespace DD.Physics {
@@ -64,6 +66,43 @@ namespace DD.Physics {
             sph.Position = new XnaVector2 (Offset.X, Offset.Y) / ppm;
             return sph;
        }
-        #endregion
+
+        public override void OnDraw (object window) {
+            if (!DrawEnabled) {
+                return;
+            }
+
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+            Node.GlobalTransform.Decompress (out T, out R, out S);
+
+            // クォータニオンは指定したのと等価な軸が反対で回転角度[0,180]の回転で返ってくる事がある
+            // ここで回転軸(0,0,-1)のものを(0,0,1)に変換する必要がある
+            var angle = R.Angle;
+            var axis = R.Axis;
+            var dot = Vector3.Dot (axis, new Vector3 (0, 0, 1));
+            if (dot < 0) {
+                angle = 360 - angle;
+                axis = -axis;
+            }
+
+            var opacity = Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity);
+
+            var spr = new SFML.Graphics.Sprite ();
+            spr.Texture = Resource.GetDefaultTexture ().Data;
+            spr.TextureRect = new SFML.Graphics.IntRect (0, 0, (int)radius*2, (int)radius*2);
+
+            spr.Position = new Vector2f (T.X, T.Y);
+            spr.Scale = new Vector2f (S.X, S.Y);
+            spr.Rotation = angle;
+            spr.Origin = new Vector2f (radius, radius);
+
+            spr.Color = new Color (255, 255, 255, (byte)(127 * opacity)).ToSFML ();
+
+            var win = window as SFML.Graphics.RenderWindow;
+            win.Draw (spr);
+        }
+       #endregion
     }
 }

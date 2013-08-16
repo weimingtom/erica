@@ -434,6 +434,7 @@ namespace DD {
         /// <param name="x">ベクトルのX成分</param>
         /// <param name="y">ベクトルのY成分</param>
         /// <param name="z">ベクトルのZ成分</param>
+        [Obsolete]
         public void Apply (ref float x, ref float y, ref float z) {
             var v = new Vector3 (x, y, z);
             var m = this;
@@ -449,32 +450,40 @@ namespace DD {
         /// <summary>
         /// 座標変換
         /// </summary>
+        /// <remarks>
+        /// <paramref name="w"/> = 0 の場合は最後のW除算を行いません。
+        /// </remarks>
         /// <param name="x">座標のX成分</param>
         /// <param name="y">座標のY成分</param>
         /// <param name="z">座標のZ成分</param>
+        /// <param name="w">座標のW成分（省略時1）</param>
         /// <returns></returns>
-        public Vector3 Apply (float x, float y, float z) {
-            Apply (ref x, ref y, ref z);
-            return new Vector3 (x, y, z);
+        public Vector3 Apply (float x, float y, float z, float w=1) {
+            var X = this[0] * x + this[1] * y + this[2] * z + this[3] * w;
+            var Y = this[4] * x + this[5] * y + this[6] * z + this[7] * w;
+            var Z = this[8] * x + this[9] * y + this[10] * z + this[11] * w;
+            var W = this[12] * x + this[13] * y + this[14] * z + this[15] * w;
+            return (w != 0) ? new Vector3 (X/W, Y/W, Z/W) : new Vector3(X,Y,Z);
         }
 
         /// <summary>
-        /// ベクトルの変換
+        /// 方向の変換
         /// </summary>
         /// <remarks>
-        /// ベクトルの変換は行列の回転成分のみを使用します。
+        /// 法線などの方向を表すベクトルは、座標変換を行う <see cref="Apply"/> では正しく変換できません。
+        /// （例えばJason GregoryのGame Engine Architectureを参照）
+        /// このメソッドは方向ベクトルを変換行列ではなく変換行列の逆行列の転置行列で変換します。
+        /// （方向ベクトルは同次空間で W=0 で表されることに注意）
+        /// 戻り値は正規化されていません。
         /// </remarks>
         /// <param name="x">ベクトルのX成分</param>
         /// <param name="y">ベクトルのY成分</param>
         /// <param name="z">ベクトルのZ成分</param>
         /// <returns></returns>
-        public Vector3 ApplyVector (float x, float y, float z) {
-            Vector3 T;
-            Matrix3x3 R;
-            Vector3 S;
-            Decompress (out T, out R, out S);
-            return R * new Vector3 (x, y, z);
+        public Vector3 ApplyDirection (float x, float y, float z) {
+            return this.Inverse ().Transpose ().Apply (x, y, z, 0);
         }
+
 
         /// <inheritdoc/>
         public override bool Equals (object obj) {
