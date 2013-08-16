@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Scenario Code="7251BC4B6168E7B2992FA620BD3E1E77">
+  <Sequence Id="">
+    <Scene Id="">
+      <Units>
+        <Unit Version="1.0" Id="" Category="SingerSong" Group="cc4cb8bc-7b62-4f22-95d3-6f174df3fc99" StartTime="00:00:00" Duration="00:00:02">
+          <Song Version="1.02">
+            <Tempo>
+              <Sound Clock="0" Tempo="120" />
+            </Tempo>
+            <Beat>
+              <Time Clock="0" Beats="4" BeatType="4" />
+            </Beat>
+            <Score>
+              <Key Clock="0" Fifths="0" Mode="0" />
+            </Score>
+          </Song>
+        </Unit>
+        <Unit Version="1.1" Id="" Category="TextVocal" Group="c9107caa-8ad0-47f1-966b-180aee0712a8" StartTime="00:00:03" Duration="00:00:02.0750000" Text="敵機殲滅を確認しました" CastId="A">
+          <Direction Volume="0" Speed="1" Tone="0" Alpha="0.55">
+            <Component Name="fine" Value="1.00" />
+            <Component Name="angry" Value="0.00" />
+            <Component Name="sad" Value="0.00" />
+          </Direction>
+          <Phonemes>
+            <Phoneme Data="t" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="i" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="I" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="s" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="N" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="m" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="ts" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="u" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="o" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="a" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="u" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="n" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="i" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="N" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="sh" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="i" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="m" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="a" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="sh" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="I" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="t" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="a" Volume="0" Speed="0" Tone="0" />
+          </Phonemes>
+        </Unit>
+        <Unit Version="1.1" Id="" Category="TextVocal" Group="c9107caa-8ad0-47f1-966b-180aee0712a8" StartTime="00:00:00" Duration="00:00:01.5100000" Text="一機、撃破！！" CastId="A">
+          <Direction Volume="0" Speed="1" Tone="0" Alpha="0.55">
+            <Component Name="fine" Value="1.00" />
+            <Component Name="angry" Value="0.00" />
+            <Component Name="sad" Value="0.00" />
+          </Direction>
+          <Phonemes>
+            <Phoneme Data="i" Volume="0" Speed="-0.0033417628641411179" Tone="0.0017090530395487136" />
+            <Phoneme Data="cl" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="i" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="g" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="k" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="I" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="h" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="a" Volume="0" Speed="0" Tone="0" />
+          </Phonemes>
+        </Unit>
+        <Unit Version="1.1" Id="" Category="TextVocal" Group="c9107caa-8ad0-47f1-966b-180aee0712a8" StartTime="00:00:02" Duration="00:00:00.4400000" Text="撃てーーー！" CastId="A">
+          <Direction Volume="5.92" Speed="1.293704833333986" Tone="0" Alpha="0.55">
+            <Component Name="fine" Value="1.00" />
+            <Component Name="angry" Value="0.00" />
+            <Component Name="sad" Value="0.00" />
+          </Direction>
+          <Phonemes>
+            <Phoneme Data="u" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="t" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+            <Phoneme Data="e" Volume="0" Speed="0" Tone="0" />
+          </Phonemes>
+        </Unit>
+      </Units>
+      <Groups>
+        <Group Version="1.0" Id="c9107caa-8ad0-47f1-966b-180aee0712a8" Category="TextVocal" Name="トーク 1" Color="#FF1E90FF" Volume="0.31578947368421023" Pan="0" IsSolo="false" IsMuted="false" />
+        <Group Version="1.0" Id="cc4cb8bc-7b62-4f22-95d3-6f174df3fc99" Category="SingerSong" Name="ソング 1" Color="#FFFF0000" Volume="0" Pan="0" IsSolo="false" IsMuted="false" />
+      </Groups>
+      <SoundSetting Rhythm="4/4" Tempo="78" />
+    </Scene>
+  </Sequence>
+</Scenario>
