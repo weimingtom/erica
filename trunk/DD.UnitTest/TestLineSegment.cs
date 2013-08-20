@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestLineSegment {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var line = new LineSegment ();
 
             Assert.AreEqual (1.0f, line.Width);
@@ -18,7 +18,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetLineWidth () {
+        public void Test_SetLineWidth () {
             var line = new LineSegment ();
             line.Width = 2.0f;
 
@@ -26,7 +26,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetLineLength () {
+        public void Test_SetLineLength () {
             var line = new LineSegment ();
             line.Length = 2;
             
@@ -34,7 +34,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetColor () {
+        public void Test_SetColor () {
             var line = new LineSegment ();
 
             line.Color = Color.Blue;
@@ -45,7 +45,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetTexture () {
+        public void Test_SetTexture () {
             var line = new LineSegment ();
             var tex = new Texture("abstract7.png");
 

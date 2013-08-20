@@ -19,7 +19,10 @@ namespace DD {
         #region Field
         Node activeCamera;
         Dictionary<string, object> prop;
+        IEnumerable<Node> allNodes;                                           // 全ノードのキャッシュ
+        IOrderedEnumerable<IGrouping<string, Node>> allNodesGroupedByName;    // 全ノードのキャッシュ（名前でグルーピング化）
         #endregion
+
 
         #region Constructor
         /// <summary>
@@ -50,6 +53,11 @@ namespace DD {
             this.Attach (new InputReceiver ());
             this.Attach (new AnimationController ());
             this.Attach (new SoundPlayer ());
+            this.Attach (new PostOffice ());
+
+            // キャッシュ
+            this.allNodes = null;
+            this.allNodesGroupedByName = null;
         }
         #endregion
 
@@ -108,6 +116,32 @@ namespace DD {
         public SoundPlayer SoundPlayer {
             get { return GetComponent<SoundPlayer> (); }
         }
+
+        /// <summary>
+        /// デフォルトの郵便局
+        /// </summary>
+        public PostOffice PostOffice {
+            get { return GetComponent<PostOffice> (); }
+        }
+
+        /// <summary>
+        /// 全ノードを列挙する列挙子（高速）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドはプロパティを <see cref="Node.Downwards"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
+        /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
+        /// </remarks>
+        /// <seealso cref="Node.Downwards"/>
+        public new IEnumerable<Node> Downwards {
+            get {
+                if (allNodes == null) {
+                    StoreNodeCache();
+                }
+                return allNodes;
+            }
+        }
+
 
         #endregion
 
@@ -170,9 +204,6 @@ namespace DD {
         /// <summary>
         /// アニメートの実行
         /// </summary>
-        /// <note>
-        /// 現在はワールドの関数だが、ディレクターを作成してそちらに移動する事を考えている。
-        /// </note>
         /// <param name="msec">現在時刻 (msec)</param>
         /// <param name="dtime">デルタタイム (msec)</param>
         public void Animate (long msec, long dtime) {
@@ -191,12 +222,16 @@ namespace DD {
         /// <summary>
         /// 更新処理の実行
         /// </summary>
-        /// <note>
-        /// 現在はワールドの関数だが、ディレクターを作成してそちらに移動する事を考えている。
-        /// </note>
+        /// <remarks>
+        /// ゲーム ロジックを更新します。
+        /// またこのメソッドに入るタイミングでノード キャッシュを更新します。
+        /// </remarks>
         /// <param name="msec">現在時刻 (msec)</param>
         public void Update (long msec) {
 
+            /// 検索用キャッシュの更新
+            StoreNodeCache ();
+        
             var nodes = from node in Downwards
                         where node.Upwards.Aggregate (true, (x, y) => x & y.Updatable) == true
                         orderby node.UpdatePriority ascending
@@ -214,6 +249,105 @@ namespace DD {
                 }
             }
         }
+
+        /// <summary>
+        /// ノードキャッシュの更新
+        /// </summary>
+        void StoreNodeCache () {
+            this.allNodes = base.Downwards;
+            this.allNodesGroupedByName = from node in allNodes
+                                         group node by node.Name into groupedNode
+                                         orderby groupedNode.Key
+                                         select groupedNode;
+        }
+
+        /// <summary>
+        /// 配達処理の実行
+        /// </summary>
+        /// <remarks>
+        /// ゲームオブジェクト間のメッセージ通信を処理します。
+        /// </remarks>
+        public void Deliver () {
+            var po = GetComponent<PostOffice> ();
+            po.Deliver ();
+        }
+
+        /// <summary>
+        /// ノードの検索（高速）
+        /// </summary>
+        /// このメソッドは <see cref="Node.Find(string)"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
+        /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
+        /// <param name="name">ノード名</param>
+        /// <returns></returns>
+        /// <seealso cref="Node.Find(string)"/>
+        public new Node Find (string name) {
+            if (allNodesGroupedByName == null) {
+                StoreNodeCache ();
+            }
+
+            return (from nodeGroup in allNodesGroupedByName
+                    where nodeGroup.Key == name
+                    from node in nodeGroup
+                    select node).FirstOrDefault ();
+        }
+
+        /// <summary>
+        /// ノードの検索（高速）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドは <see cref="Node.Find(Func<Node,bool>)"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
+        /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
+        /// </remarks>
+        /// <param name="pred">条件式</param>
+        /// <returns></returns>
+        /// <seealso cref="Node.Find(Func<Node,bool>)"/>
+        public Node Find (Func<Node, bool> pred) {
+            return Finds (pred).FirstOrDefault ();
+        }
+
+
+        /// <summary>
+        /// ノードの検索（高速）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドは <see cref="Node.Finds(string)"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
+        /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
+        /// </remarks>
+        /// <param name="name">ノード名</param>
+        /// <returns></returns>
+        /// <seealso cref="Node.Finds(string)"/>
+        public new IEnumerable<Node> Finds (string name) {
+            if (allNodesGroupedByName == null) {
+                StoreNodeCache ();
+            }
+            
+            return from nodeGroup in allNodesGroupedByName
+                    where nodeGroup.Key == name
+                    from node in nodeGroup
+                    select node;
+        }
+
+
+        /// <summary>
+        /// ノードの検索（高速）
+        /// </summary>
+        /// <remarks>
+        /// このメソッドは <see cref="Node.Finds(Func<Node,bool>))"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
+        /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
+        /// </remarks>
+        /// <param name="pred">条件式</param>
+        /// <returns></returns>
+        /// <seealso cref="Node.Finds(Func<Node,bool>)"/>
+        public new IEnumerable<Node> Finds (Func<Node, bool> pred) {
+            return from node in Downwards
+                   where pred (node) == true
+                   select node;
+        }
+
 
         #endregion
     }

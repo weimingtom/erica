@@ -212,7 +212,7 @@ namespace DD {
             }
 
             // マップ情報
-            this.Node.Name = fileName;
+            //this.Node.Name = fileName;
             this.orientaion = map.Orientation.ToString ();
             this.width = map.Width;
             this.height = map.Height;
@@ -302,8 +302,7 @@ namespace DD {
                 }
 
                 foreach (var obj in layer.Objects) {
-                    var objNode = new Node ();
-                    objNode.Name = obj.Name;
+                    var objNode = new Node (obj.Name);
                     objNode.SetTranslation (obj.X, obj.Y, 0);
 
                     var type = Type.GetType (obj.Type);

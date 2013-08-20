@@ -19,6 +19,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, node.Drawable);
             Assert.AreEqual (true, node.Updatable);
             Assert.AreEqual (true, node.Animatable);
+            Assert.AreEqual (true, node.Deliverable);
             Assert.AreEqual (true, node.Collidable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
@@ -27,16 +28,8 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.UserData.Count ());
             Assert.AreEqual (0, node.DrawPriority);
             Assert.AreEqual (0, node.UpdatePriority);
-        }
-
-        [TestMethod]
-        public void Test_Name () {
-            var node = new Node ("Name1");
-
-            Assert.AreEqual ("Name1", node.Name);
-
-            node.Name = "Name2";
-            Assert.AreEqual ("Name2", node.Name);
+            Assert.AreEqual (0, node.MailBoxCount);
+            Assert.AreEqual (0, node.MailBoxs.Count());
         }
 
         [TestMethod]
@@ -97,6 +90,17 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Deliverable () {
+            var node = new Node ("Node");
+
+            node.Deliverable = false;
+            Assert.AreEqual (false, node.Deliverable);
+
+            node.Deliverable = true;
+            Assert.AreEqual (true, node.Deliverable);
+        }
+
+        [TestMethod]
         public void Test_Collidable () {
             var node = new Node ("Node");
 
@@ -142,93 +146,93 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_AddChild () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
 
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
+            node1.AddChild (node2);
+            node1.AddChild (node3);
 
-            Assert.AreEqual (2, nod1.ChildCount);
-            Assert.AreEqual (2, nod1.Children.Count ());
-            Assert.AreEqual (nod2, nod1.GetChild (0));
-            Assert.AreEqual (nod3, nod1.GetChild (1));
+            Assert.AreEqual (2, node1.ChildCount);
+            Assert.AreEqual (2, node1.Children.Count ());
+            Assert.AreEqual (node2, node1.GetChild (0));
+            Assert.AreEqual (node3, node1.GetChild (1));
 
-            Assert.AreEqual (nod1, nod2.Parent);
-            Assert.AreEqual (nod1, nod3.Parent);
+            Assert.AreEqual (node1, node2.Parent);
+            Assert.AreEqual (node1, node3.Parent);
         }
 
         [TestMethod]
         public void Test_RemoveChild () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
 
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
+            node1.AddChild (node2);
+            node1.AddChild (node3);
 
-            Assert.AreEqual (2, nod1.ChildCount);
+            Assert.AreEqual (2, node1.ChildCount);
 
-            nod1.RemoveChild (nod2);
-            nod1.RemoveChild (nod3);
+            node1.RemoveChild (node2);
+            node1.RemoveChild (node3);
 
-            Assert.AreEqual (0, nod1.ChildCount);
+            Assert.AreEqual (0, node1.ChildCount);
         }
 
         [TestMethod]
         public void Test_Downwards () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
-            var nod4 = new Node ("Node4");
-            var nod5 = new Node ("Node5");
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node4");
+            var node5 = new Node ("Node5");
 
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
-            nod2.AddChild (nod4);
-            nod3.AddChild (nod5);
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
 
             // 幅優先
-            var nodes = nod1.Downwards.ToArray ();
+            var nodes = node1.Downwards.ToArray ();
             Assert.AreEqual (5, nodes.Count ());
-            Assert.AreEqual (nod1, nodes[0]);
-            Assert.AreEqual (nod2, nodes[1]);
-            Assert.AreEqual (nod3, nodes[2]);
-            Assert.AreEqual (nod4, nodes[3]);
-            Assert.AreEqual (nod5, nodes[4]);
+            Assert.AreEqual (node1, nodes[0]);
+            Assert.AreEqual (node2, nodes[1]);
+            Assert.AreEqual (node3, nodes[2]);
+            Assert.AreEqual (node4, nodes[3]);
+            Assert.AreEqual (node5, nodes[4]);
         }
 
         [TestMethod]
         public void Test_Upwards () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
-            var nod4 = new Node ("Node4");
-            var nod5 = new Node ("Node5");
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node4");
+            var node5 = new Node ("Node5");
 
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
-            nod2.AddChild (nod4);
-            nod3.AddChild (nod5);
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
 
-            var nodes = nod5.Upwards.ToArray ();
+            var nodes = node5.Upwards.ToArray ();
             Assert.AreEqual (3, nodes.Count ());
-            Assert.AreEqual (nod5, nodes[0]);
-            Assert.AreEqual (nod3, nodes[1]);
-            Assert.AreEqual (nod1, nodes[2]);
+            Assert.AreEqual (node5, nodes[0]);
+            Assert.AreEqual (node3, nodes[1]);
+            Assert.AreEqual (node1, nodes[2]);
         }
 
         [TestMethod]
         public void Test_Root () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
-            Assert.AreEqual (nod1, nod1.Root);
-            Assert.AreEqual (nod1, nod2.Root);
-            Assert.AreEqual (nod1, nod3.Root);
+            Assert.AreEqual (node1, node1.Root);
+            Assert.AreEqual (node1, node2.Root);
+            Assert.AreEqual (node1, node3.Root);
         }
 
 
@@ -292,49 +296,86 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Find_by_Name () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
 
-            Assert.AreEqual (nod1, nod1.Find ("Node1"));
-            Assert.AreEqual (nod2, nod1.Find ("Node2"));
-            Assert.AreEqual (nod3, nod1.Find ("Node3"));
-            Assert.AreEqual (null, nod1.Find ("Node4"));
+            Assert.AreEqual (node1, node1.Find ("Node1"));
+            Assert.AreEqual (node2, node1.Find ("Node2"));
+            Assert.AreEqual (node3, node1.Find ("Node3"));
+            Assert.AreEqual (null, node1.Find ("Node4"));
         }
 
         [TestMethod]
         public void Test_Find_by_Predicate () {
-            var nod1 = new Node ("Node1");
-            var nod2 = new Node ("Node2");
-            var nod3 = new Node ("Node3");
-            nod1.AddChild (nod2);
-            nod1.AddChild (nod3);
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
 
-            Assert.AreEqual (nod1, nod1.Find (x => x.Name == "Node1"));
-            Assert.AreEqual (nod2, nod1.Find (x => x.Name == "Node2"));
-            Assert.AreEqual (nod3, nod1.Find (x => x.Name == "Node3"));
-            Assert.AreEqual (null, nod1.Find (x => x.Name == "Node4"));
+            Assert.AreEqual (node1, node1.Find (x => x.Name == "Node1"));
+            Assert.AreEqual (node2, node1.Find (x => x.Name == "Node2"));
+            Assert.AreEqual (node3, node1.Find (x => x.Name == "Node3"));
+            Assert.AreEqual (null, node1.Find (x => x.Name == "Node4"));
         }
-    
+
+        [TestMethod]
+        public void Test_Finds_by_Name () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node1");
+            var node5 = new Node ("Node1");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
+
+            Assert.AreEqual (3, node1.Finds ("Node1").Count());
+            Assert.AreEqual (1, node1.Finds ("Node2").Count());
+            Assert.AreEqual (1, node1.Finds ("Node3").Count ());
+            Assert.AreEqual (0, node1.Finds ("Node4").Count ());
+        }
+
+        [TestMethod]
+        public void Test_Finds_by_Predicate () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node1");
+            var node5 = new Node ("Node1");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
+
+            Assert.AreEqual (3, node1.Finds (x => x.Name == "Node1").Count());
+            Assert.AreEqual (1, node1.Finds (x => x.Name == "Node2").Count ());
+            Assert.AreEqual (1, node1.Finds (x => x.Name == "Node3").Count ());
+            Assert.AreEqual (0, node1.Finds (x => x.Name == "Node4").Count ());
+        }
+
+
         [TestMethod]
         public void Test_GlobalTransform () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod3.Translation = new Vector3 (2, 2, 2);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node3.Translation = new Vector3 (2, 2, 2);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
             Vector3 translation;
             Quaternion rotation;
             Vector3 scale;
 
-            nod3.GlobalTransform.Decompress (out translation, out rotation, out scale);
+            node3.GlobalTransform.Decompress (out translation, out rotation, out scale);
 
             Assert.AreEqual (new Vector3 (5, 6, 7), translation);
             Assert.AreEqual (Quaternion.Identity, rotation);
@@ -343,21 +384,21 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_LocalTransform () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod3.Translation = new Vector3 (2, 2, 2);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node3.Translation = new Vector3 (2, 2, 2);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
             Vector3 translation;
             Quaternion rotation;
             Vector3 scale;
 
-            nod3.LocalTransform.Decompress (out translation, out rotation, out scale);
+            node3.LocalTransform.Decompress (out translation, out rotation, out scale);
 
             Assert.AreEqual (new Vector3 (-2.5f, -3f, -3.5f), translation);
             Assert.AreEqual (Quaternion.Identity, rotation);
@@ -366,21 +407,21 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_ParentTransform () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod3.Translation = new Vector3 (2, 2, 2);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node3.Translation = new Vector3 (2, 2, 2);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
             Vector3 translation;
             Quaternion rotation;
             Vector3 scale;
 
-            nod3.ParentTransform.Decompress (out translation, out rotation, out scale);
+            node3.ParentTransform.Decompress (out translation, out rotation, out scale);
 
             Assert.AreEqual (new Vector3 (-0.5f, -1.0f, -1.5f), translation);
             Assert.AreEqual (Quaternion.Identity, rotation);
@@ -391,85 +432,85 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Point () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod3.Translation = new Vector3 (2, 2, 2);
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node3.Translation = new Vector3 (2, 2, 2);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
             Vector3 T;
             Quaternion R;
             Vector3 S;
 
-            nod3.GlobalTransform.Decompress (out T, out R, out S);
+            node3.GlobalTransform.Decompress (out T, out R, out S);
 
-            Assert.AreEqual (T.X, nod3.Position.X);
-            Assert.AreEqual (T.Y, nod3.Position.Y);
-            Assert.AreEqual (T.Z, nod3.Position.Z);
+            Assert.AreEqual (T.X, node3.Position.X);
+            Assert.AreEqual (T.Y, node3.Position.Y);
+            Assert.AreEqual (T.Z, node3.Position.Z);
         }
 
 
         [TestMethod]
         public void Test_SetGlobalTranslation () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod3.Translation = new Vector3 (2, 2, 2);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node3.Translation = new Vector3 (2, 2, 2);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
-            // nod3.GlobalTransform = 
+            // node3.GlobalTransform = 
             //   T = (5,6,7)
             //   R = (0,0,0,1)
             //   S = (2,2,2)
 
-            nod3.SetGlobalTranslation (5, 6, 7);
+            node3.SetGlobalTranslation (5, 6, 7);
 
-            Assert.AreEqual (new Vector3 (2, 2, 2), nod3.Translation);
+            Assert.AreEqual (new Vector3 (2, 2, 2), node3.Translation);
         }
 
         [TestMethod]
         public void Test_SetGlobalScale () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod3.Translation = new Vector3 (2, 2, 2);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node3.Translation = new Vector3 (2, 2, 2);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
-            // nod3.GlobalTransform = 
+            // node3.GlobalTransform = 
             //   T = (5,6,7)
             //   R = (0,0,0,1)
             //   S = (2,2,2)
 
-            nod3.SetGlobalScale (2, 2, 2);
+            node3.SetGlobalScale (2, 2, 2);
 
-            Assert.AreEqual (new Vector3 (1, 1, 1), nod3.Scale);
+            Assert.AreEqual (new Vector3 (1, 1, 1), node3.Scale);
         }
 
         [TestMethod]
         public void Test_SetGlobalRotation () {
-            var nod1 = new Node ();
-            var nod2 = new Node ();
-            var nod3 = new Node ();
-            nod2.Translation = new Vector3 (1, 2, 3);
-            nod2.Scale = new Vector3 (2, 2, 2);
-            nod2.Rotation = new Quaternion (45, 0, 0, 1);
-            nod3.Translation = new Vector3 (2, 2, 2);
-            nod3.Rotation = new Quaternion (45, 0, 0, 1);
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            node2.Scale = new Vector3 (2, 2, 2);
+            node2.Rotation = new Quaternion (45, 0, 0, 1);
+            node3.Translation = new Vector3 (2, 2, 2);
+            node3.Rotation = new Quaternion (45, 0, 0, 1);
 
-            nod1.AddChild (nod2);
-            nod2.AddChild (nod3);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
 
-            // nod3.GlobalTransform = 
+            // node3.GlobalTransform = 
             //   T = (1,7.656854,7)
             //   R = (0,0,0.7071068,0.7071068)
             //   S = (2,2,2)
@@ -478,18 +519,44 @@ namespace DD.UnitTest {
             Quaternion R;
             Vector3 S;
 
-            nod3.GlobalTransform.Decompress (out T, out R, out S);
+            node3.GlobalTransform.Decompress (out T, out R, out S);
 
             Debug.WriteLine ("T = " + T);
             Debug.WriteLine ("R = " + R);
             Debug.WriteLine ("S = " + S);
              * */
 
-            nod3.SetGlobalRotation (Quaternion.Set (0, 0, 0.7071068f, 0.7071068f, false));
+            node3.SetGlobalRotation (Quaternion.Set (0, 0, 0.7071068f, 0.7071068f, false));
 
             var expected = new Quaternion (45, 0, 0, 1);
 
-            Assert.AreEqual (expected, nod3.Rotation);
+            Assert.AreEqual (expected, node3.Rotation);
+        }
+
+        [TestMethod]
+        public void Test_AddMailBox () {
+            var node = new Node ("Node1");
+            var action1 = new MailBoxAction ((from, address, letter) => { });
+            var action2 = new MailBoxAction ((from, address, letter) => { });
+            node.AddMailBox ("MyAddress1", action1);
+            node.AddMailBox ("MyAddress2", action2);
+
+            Assert.AreEqual (2, node.MailBoxCount);
+            Assert.AreEqual ("MyAddress1", node.GetMailBox (0).NamePlate);
+            Assert.AreEqual ("MyAddress2", node.GetMailBox (1).NamePlate);
+            Assert.AreEqual (action1, node.GetMailBox (0).Action);
+            Assert.AreEqual (action2, node.GetMailBox (1).Action);
+        }
+
+        [TestMethod]
+        public void Test_RemoveMailBox () {
+            var node = new Node ("Node1");
+            node.AddMailBox ("MyAddress1");
+            node.AddMailBox ("MyAddress2");
+            node.RemoveMailBox ("MyAddress1");
+            node.RemoveMailBox ("MyAddress2");
+
+            Assert.AreEqual (0, node.MailBoxCount);
         }
 
     }

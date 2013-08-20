@@ -115,21 +115,32 @@ namespace DD {
         }
 
         /// <summary>
+        /// 灰色
+        /// </summary>
+        public static Color Gray {
+            get { return new Color (128, 128, 128, 255); }
+        }
+
+        /// <summary>
         /// 黒
         /// </summary>
         public static Color Black {
             get { return new Color (0,0,0,255); }
         }
 
-        public static Color Gray {
-            get { return new Color (127, 127, 127, 255); }
-        }
 
         /// <summary>
         /// 赤
         /// </summary>
         public static Color Red {
             get { return new Color (255, 0, 0, 255); }
+        }
+
+        /// <summary>
+        /// 黄色
+        /// </summary>
+        public static Color Yellow {
+            get { return new Color (255, 255, 0, 255); }
         }
 
         /// <summary>
@@ -152,6 +163,14 @@ namespace DD {
         public static Color Cyan {
             get { return new Color (0, 255, 255, 255); }
         }
+
+        /// <summary>
+        /// 紫
+        /// </summary>
+        public static Color Purple {
+            get { return new Color (255, 0, 255, 255); }
+        }
+
 
         /// <inheritdoc/>
         public override bool Equals (object obj) {

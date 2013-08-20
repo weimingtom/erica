@@ -10,6 +10,10 @@ namespace DD.UnitTest {
         class MyComponent : Component, IDisposable  {
             public bool IsDisposed { get; private set; }
             public bool IsDestroyed { get; private set; }
+            public bool IsMailed { get; private set; }
+            public object Letter { get; private set; }
+            public Node LetterFrom { get; private set; }
+            public string LetterTo { get; private set; }
             public new T GetComponent<T> () where T : Component {
                 return base.GetComponent<T> ();
             }
@@ -25,11 +29,20 @@ namespace DD.UnitTest {
             public new void Destroy (Component comp) {
                 base.Destroy(comp);
             }
+            public new void SendMessage (string address, object letter) {
+                base.SendMessage (address, letter);
+            }
             public void Dispose () {
                 this.IsDisposed = true;
             }
             public override void OnDestroyed () {
                 this.IsDestroyed = true;   
+            }
+            public override void OnMailBox (Node from, string to, object letter) {
+                this.IsMailed = true;
+                this.LetterFrom = from;
+                this.LetterTo = to;
+                this.Letter = letter;
             }
         }
 
@@ -154,6 +167,23 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_PostOffice () {
+            var wld = new World ();
+            var node = new Node ();
+            var po = new PostOffice ();
+            var cmp = new MyComponent ();
+
+            node.Attach (po);
+            node.Attach (cmp);
+
+            Assert.AreEqual (po, cmp.PostOffice);
+
+            wld.AddChild (node);
+
+            Assert.AreNotEqual (wld.PostOffice, cmp.PostOffice);
+        }
+
+        [TestMethod]
         public void Test_GetComponent () {
             var comp1 = new MyComponent ();
             var comp2 = new MyComponent ();
@@ -226,6 +256,37 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, comp2.IsDisposed);
             Assert.AreEqual (true, comp1.IsDestroyed);
             Assert.AreEqual (true, comp2.IsDestroyed);
+        }
+
+        [TestMethod]
+        public void Test_SendMessage () {
+            var cmp1 = new MyComponent ();
+            var cmp2 = new MyComponent ();
+            
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            node1.Attach (cmp1);
+            node2.Attach (cmp2);
+
+            node1.AddMailBox (node1.Name);
+            node2.AddMailBox (node2.Name);
+
+            var wld = new World ();
+            wld.AddChild (node1);
+            wld.AddChild (node2);
+
+            cmp1.SendMessage ("Node2", "1 --> 2");
+            cmp2.SendMessage ("Node1", "2 --> 1");
+
+            wld.Deliver ();
+
+            Assert.AreEqual ("Node1", cmp1.LetterTo);
+            Assert.AreEqual (node2, cmp1.LetterFrom);
+            Assert.AreEqual ("2 --> 1", (string)cmp1.Letter);
+
+            Assert.AreEqual ("Node2", cmp2.LetterTo);
+            Assert.AreEqual (node1, cmp2.LetterFrom);
+            Assert.AreEqual ("1 --> 2", (string)cmp2.Letter);
         }
 
     }

@@ -9,7 +9,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestCameraSFML {
         [TestMethod]
-        public void TestMethod_SetupCamera () {
+        public void Test_SetupCamera () {
             var g2d = Graphics2D.GetInstance ();
             var win = g2d.GetWindow () as RenderWindow;
 

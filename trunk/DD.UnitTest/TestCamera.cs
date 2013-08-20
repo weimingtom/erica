@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestCamera {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var cam = new Camera ();
 
             Assert.AreEqual (ProjectionType.Undefined, cam.Type);
@@ -18,7 +18,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_ClearColor () {
+        public void Test_ClearColor () {
             var cam = new Camera ();
 
             cam.ClearEnabled = false;
@@ -29,7 +29,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetScreen () {
+        public void Test_SetScreen () {
             var cam = new Camera ();
 
             cam.SetScreen (1, 2, 3, 4);
@@ -42,7 +42,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetViewport () {
+        public void Test_SetViewport () {
             var cam = new Camera ();
 
             cam.SetViewport (0.1f, 0.2f, 0.3f, 0.4f);

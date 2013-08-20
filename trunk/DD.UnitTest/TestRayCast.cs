@@ -9,7 +9,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestRayCast {
         [TestMethod]
-        public void TestMethod_New_1 () {
+        public void Test_New_1 () {
             var pointA = new Vector3(0,0,0);
             var pointB = new Vector3(2,0,0);
             var frac = 10f;
@@ -27,7 +27,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_New_2 () {
+        public void Test_New_2 () {
             var node = new Node ();
             var normal = new Vector3 (1,2,3);
             var frac = 10;

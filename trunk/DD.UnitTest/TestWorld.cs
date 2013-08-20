@@ -32,6 +32,7 @@ namespace DD.UnitTest {
             Assert.IsNotNull (wld.InputReceiver);
             Assert.IsNotNull (wld.AnimationController);
             Assert.IsNotNull (wld.SoundPlayer);
+            Assert.IsNotNull (wld.PostOffice);
         }
 
         [TestMethod]
@@ -125,6 +126,203 @@ namespace DD.UnitTest {
             Assert.AreEqual (2, cmp1.Updated);
             Assert.AreEqual (1, cmp2.Updated);
         }
+
+        [TestMethod]
+        public void Test_Deliver () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var received1 = false;
+            var received2 = false;
+            node1.AddMailBox ("All", (from, to, args) => {
+                received1 = true;
+            });
+            node1.AddMailBox ("All", (from, to, args) => {
+                received2 = true;
+            });
+
+            var wld = new World ();
+            wld.AddChild (node1);
+            wld.AddChild (node2);
+
+            wld.PostOffice.Post (node1, "Node2", null);
+            wld.PostOffice.Post (node2, "Node1", null);
+
+            wld.Deliver ();
+
+            Assert.AreEqual (true, received1);
+            Assert.AreEqual (true, received2);
+        }
+
+        [TestMethod]
+        public void Test_Downloads () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node4");
+
+            var wld = new World ();
+
+            wld.AddChild (node1);
+            wld.AddChild (node2);
+            wld.AddChild (node3);
+            Assert.AreEqual (4, wld.Downwards.Count ());
+
+            // Update()するまでは反映されない
+            wld.AddChild (node4);
+            Assert.AreEqual (4, wld.Downwards.Count ());
+
+            wld.Update (0);
+            Assert.AreEqual (5, wld.Downwards.Count ());
+        }
+
+        /// <summary>
+        /// World.Find は Node.Find を置き換える高速版（キャッシュ）が上書き実装されている
+        /// </summary>
+        [TestMethod]
+        public void Test_Find_by_Name () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node4");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+
+            var wld = new World ();
+            wld.AddChild (node1);
+
+            Assert.AreEqual (node1, wld.Find ("Node1"));
+            Assert.AreEqual (node2, wld.Find ("Node2"));
+            Assert.AreEqual (node3, wld.Find ("Node3"));
+            Assert.AreEqual (null, wld.Find ("Node4"));
+
+            // Update()を呼ぶまで更新されない
+            wld.AddChild (node4);
+            Assert.AreEqual (null, wld.Find ("Node4"));
+
+            wld.Update (0);
+            Assert.AreEqual (node4, wld.Find ("Node4"));
+
+        }
+
+        /// <summary>
+        /// World.Finds は Node.Finds を置き換える高速版（キャッシュ）が上書き実装されている
+        /// </summary>
+        [TestMethod]
+        public void Test_Finds_by_Name () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node1");
+            var node5 = new Node ("Node1");
+            var node6 = new Node ("Node6");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
+
+            var wld = new World ();
+            wld.AddChild (node1);
+
+            Assert.AreEqual (3, wld.Finds ("Node1").Count ());
+            Assert.AreEqual (1, wld.Finds ("Node2").Count ());
+            Assert.AreEqual (1, wld.Finds ("Node3").Count ());
+            Assert.AreEqual (0, wld.Finds ("Node4").Count ());
+
+            // Update()を呼ぶまで更新されない
+            wld.AddChild (node6);
+            Assert.AreEqual (0, wld.Finds ("Node6").Count ());
+
+            wld.Update (0);
+            Assert.AreEqual (1, wld.Finds ("Node6").Count ());
+        }
+
+        [TestMethod]
+        public void Test_Find_by_Predicate () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node4");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+
+            var wld = new World ();
+            wld.AddChild (node1);
+
+            Assert.AreEqual (node1, wld.Find (x => x.Name == "Node1"));
+            Assert.AreEqual (node2, wld.Find (x => x.Name == "Node2"));
+            Assert.AreEqual (node3, wld.Find (x => x.Name == "Node3"));
+            Assert.AreEqual (null, wld.Find (x => x.Name == "Node4"));
+
+            // Update()を呼ぶまで更新されない
+            wld.AddChild (node4);
+            Assert.AreEqual (null, wld.Find (x => x.Name == "Node4"));
+
+            wld.Update (0);
+            Assert.AreEqual (node4, wld.Find (x => x.Name == "Node4"));
+        }
+
+        [TestMethod]
+        public void Test_Finds_by_Predicate () {
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var node3 = new Node ("Node3");
+            var node4 = new Node ("Node1");
+            var node5 = new Node ("Node1");
+            var node6 = new Node ("Node6");
+            node1.AddChild (node2);
+            node1.AddChild (node3);
+            node2.AddChild (node4);
+            node3.AddChild (node5);
+
+            var wld = new World ();
+            wld.AddChild (node1);
+
+            Assert.AreEqual (3, wld.Finds (x => x.Name == "Node1").Count());
+            Assert.AreEqual (1, wld.Finds (x => x.Name == "Node2").Count ());
+            Assert.AreEqual (1, wld.Finds (x => x.Name == "Node3").Count ());
+            Assert.AreEqual (0, wld.Finds (x => x.Name == "Node4").Count ());
+
+            // Update()を呼ぶまで更新されない
+            wld.AddChild (node6);
+            Assert.AreEqual (0, wld.Finds (x => x.Name == "Node6").Count ());
+
+            wld.Update (0);
+            Assert.AreEqual (1, wld.Finds (x => x.Name == "Node6").Count ());
+        }
+
+        [TestMethod]
+        public void Test_Deliverable () {
+            var node = new Node ("Node");
+            var wld = new World ();
+            wld.AddChild (node);
+
+            var recved = false;
+            node.AddMailBox (node.Name, (from, address, letter) => {
+                recved = true;
+            });
+
+            
+            node.Deliverable = true;
+            wld.PostOffice.Post (node, "Node", "Hello World");
+            wld.Deliver ();
+
+            Assert.AreEqual (true, recved);
+
+            recved = false;
+
+            node.Deliverable = false;
+            wld.PostOffice.Post (node, "Node", "Hello World");
+            wld.Deliver ();
+
+            Assert.AreEqual (false, recved);
+        }
+
+        [TestMethod]
+        public void Test_Updatable () {
+            // テストしたような、してないような
+
+        }
+
 
     }
 }

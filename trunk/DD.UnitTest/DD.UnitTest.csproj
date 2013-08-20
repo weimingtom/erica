@@ -87,10 +87,13 @@
     <Compile Include="TestKeyAlias.cs" />
     <Compile Include="TestLabel.cs" />
     <Compile Include="TestLineSegment.cs" />
+    <Compile Include="TestMail.cs" />
+    <Compile Include="TestMailBox.cs" />
     <Compile Include="TestMaterial.cs" />
     <Compile Include="TestMatrix3x3.cs" />
     <Compile Include="TestMatrix4x4.cs" />
     <Compile Include="TestMyMath.cs" />
+    <Compile Include="TestPostOffice.cs" />
     <Compile Include="TestQuaternion.cs" />
     <Compile Include="TestRayCast.cs" />
     <Compile Include="TestSaveDataContainer.cs" />

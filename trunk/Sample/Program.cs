@@ -6,7 +6,7 @@ using System.Text;
 namespace DD.Sample {
     public class Program {
         static void Main (string[] args) {
-            DD.Sample.RTSSample.Program.Main(args);
+            DD.Sample.MessageSample.Program.Main(args);
         }
     }
 }

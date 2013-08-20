@@ -107,6 +107,11 @@
     <Compile Include="IsometricSample\MyMap.cs" />
     <Compile Include="IsometricSample\MyWorld.cs" />
     <Compile Include="IsometricSample\Program.cs" />
+    <Compile Include="MessageSample\MyButton.cs" />
+    <Compile Include="MessageSample\MyLetter.cs" />
+    <Compile Include="MessageSample\MyRecver.cs" />
+    <Compile Include="MessageSample\MySender.cs" />
+    <Compile Include="MessageSample\Program.cs" />
     <Compile Include="PhysicsSample\MyRhombus.cs" />
     <Compile Include="PhysicsSample\MySphere.cs" />
     <Compile Include="PhysicsSample\MyWalls.cs" />
