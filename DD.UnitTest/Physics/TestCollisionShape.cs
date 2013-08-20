@@ -9,14 +9,14 @@ namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestCollisionShape {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var shape = new SphereCollisionShape (1);
             
             Assert.AreEqual (Vector3.Zero, shape.Offset);
         }
 
         [TestMethod]
-        public void TestMethod_SetOffset () {
+        public void Test_SetOffset () {
             var shape = new SphereCollisionShape (1);
 
             shape.Offset = new Vector3 (1, 2, 3);
@@ -30,7 +30,7 @@ namespace DD.UnitTest.Physics {
         }
 
         [TestMethod]
-        public void TestMethod_Pick () {
+        public void Test_Pick () {
             var wld = new World ();
 
             var nod1 = new Node ();

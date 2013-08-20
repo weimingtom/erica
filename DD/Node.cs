@@ -23,15 +23,19 @@ namespace DD {
         List<Component> components;
         uint groupID;
         Dictionary<string, object> userData;
+        List<MailBox> mailboxs;
         float opacity;
         bool drawable;
         bool updatable;
         bool animatable;
+        bool deliverable;
         bool collidable;
         sbyte drawPriority;
         sbyte updatePriority;
         Matrix4x4? matrix;      // = Cache of GlobalTransform
         #endregion
+
+        
 
         #region Constructor
         /// <summary>
@@ -44,6 +48,9 @@ namespace DD {
         /// <summary>
         /// コンストラクター
         /// </summary>
+        /// <remarks>
+        /// ノード名が null または "" でないノードはデフォルトでノード名と同名のメールボックスを1つ保有します。
+        /// </remarks>
         /// <param name="name">ノード名</param>
         public Node (string name)
             : base () {
@@ -51,6 +58,7 @@ namespace DD {
             this.drawable = true;
             this.updatable = true;
             this.animatable = true;
+            this.deliverable = true;
             this.collidable = true;
             this.parent = null;
             this.children = new List<Node> ();
@@ -61,22 +69,29 @@ namespace DD {
             this.userData = new Dictionary<string, object> ();
             this.opacity = 1.0f;
             this.matrix = null;
-
+            this.mailboxs = new List<MailBox> ();
         }
         #endregion
+
 
         #region Property
         /// <summary>
         /// ノード名
         /// </summary>
+        /// <remarks>
+        /// ユーザーがノードの識別に使用する名前です。重複する名前のノードがあってもかまいません。
+        /// </remarks>
         public string Name {
             get { return name; }
-            set { this.name = value ?? ""; }
+            //set { this.name = value ?? ""; }
         }
 
         /// <summary>
         /// ユニークID
         /// </summary>
+        /// <remarks>
+        /// ノードはシステムによって必ずユニーク（一意）な事が保障されているIDを付加されます。
+        /// </remarks>
         public int UniqueID {
             get { return GetHashCode (); }
 
@@ -105,6 +120,24 @@ namespace DD {
         public Dictionary<string, object> UserData {
             get { return userData; }
         }
+
+        /// <summary>
+        /// メール ボックスの個数
+        /// </summary>
+        /// <remarks>
+        /// 現在セットされているメール ボックスの個数です。
+        /// </remarks>
+        public int MailBoxCount {
+            get { return mailboxs.Count (); }
+        }
+
+        /// <summary>
+        /// すべてのメール ボックスを列挙する列挙子
+        /// </summary>
+        public IEnumerable<MailBox> MailBoxs {
+            get { return mailboxs; }
+        }
+
 
         /// <summary>
         /// 不透明度
@@ -138,6 +171,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードは更新されます。
+        /// デフォルトは <c>true</c> です。
         /// </remarks>
         public bool Updatable {
             get { return updatable; }
@@ -149,10 +183,23 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードはアニメートされます。
+        /// デフォルトは <c>true</c> です。
         /// </remarks>
         public bool Animatable {
             get { return animatable; }
             set { this.animatable = value; }
+        }
+
+        /// <summary>
+        /// 配達可能フラグ
+        /// </summary>
+        /// <remarks>
+        /// このフラグが <c>true</c> のノードはメールを受信します。
+        /// デフォルトは <c>true</c> です。
+        /// </remarks>
+        public bool Deliverable {
+            get { return deliverable; }
+            set { this.deliverable = value; }
         }
 
         /// <summary>
@@ -283,7 +330,7 @@ namespace DD {
         /// コンポーネントを列挙する列挙子
         /// </summary>
         public IEnumerable<Component> Components {
-            get { return components.ToArray(); }
+            get { return components.ToArray (); }
         }
 
         /// <summary>
@@ -335,7 +382,7 @@ namespace DD {
         #endregion
 
         #region Method
-        
+
         /// <inheritdoc/>
         public override void InvalidateTransformCache () {
             foreach (var node in Downwards) {
@@ -513,32 +560,58 @@ namespace DD {
         /// ノードの検索
         /// </summary>
         /// <remarks>
-        /// 指定の名前のノードを下方向から検索します。
+        /// 指定の名前のノードを下方向から1つだけ検索します。
         /// 一致する名前のノードが2つ以上あった場合は、どれが返るかは未定義です。
         /// 見つからない場合は <c>null</c> が返ります。
         /// </remarks>
-        /// <param name="name">検索したいノード名</param>
+        /// <param name="name">ノード名</param>
         /// <returns></returns>
         public Node Find (string name) {
-            return (from node in Downwards
-                    where node.Name == (name ?? "")
-                    select node).FirstOrDefault ();
+            return Finds (name).FirstOrDefault ();
         }
 
         /// <summary>
         /// ノードの検索
         /// </summary>
         /// <remarks>
-        /// 指定の条件式 <paramref name="pred"/> を満たすノードを下方向から検索します。
+        /// 指定の名前のノードを下方向からすべて検索します。
+        /// 見つからない場合はサイズ 0 の列挙子が返ります。
+        /// </remarks>
+        /// <param name="name">ノード名</param>
+        /// <returns></returns>
+        public IEnumerable<Node> Finds (string name) {
+            return from node in Downwards
+                   where node.Name == (name ?? "")
+                   select node;
+        }
+
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// 指定の条件式 <paramref name="pred"/> を満たすノードを下方向から1つだけ検索します。
         /// 条件に一致するノードが2つ以上あった場合は、どれが返るかは未定義です。
         /// 見つからない場合は <c>null</c> が返ります。
         /// </remarks>
         /// <param name="pred">条件式</param>
         /// <returns></returns>
         public Node Find (Func<Node, bool> pred) {
-            return (from node in Downwards
-                    where pred (node) == true
-                    select node).FirstOrDefault ();
+            return Finds (pred).FirstOrDefault ();
+        }
+
+        /// <summary>
+        /// ノードの検索
+        /// </summary>
+        /// <remarks>
+        /// 指定の条件式 <paramref name="pred"/> を満たすノードを下方向からすべて検索します。
+        /// 見つからない場合はサイズ0の列挙子が返ります。
+        /// </remarks>
+        /// <param name="pred">条件式</param>
+        /// <returns></returns>
+        public IEnumerable<Node> Finds (Func<Node, bool> pred) {
+            return from node in Downwards
+                   where pred (node) == true
+                   select node;
         }
 
         /// <summary>
@@ -605,6 +678,81 @@ namespace DD {
             }
             return components[index];
         }
+
+        /// <summary>
+        /// メールボックスの追加
+        /// </summary>
+        /// <remarks>
+        /// ゲーム オブジェクト間のメッセージ通信を受け取るメールボックスを追加します。
+        /// 宛先 <paramref name="namePlate"/> は任意の文字列で多くの場合はノード名と同じにしますが、必ず同じである必要はありません。
+        /// "All"は予約後で指定するとすべてのメッセージを受信します。
+        /// メールを受信するとアタッチされたすべてのコンポーネントの <see cref="Component.OnMailBox"/> を呼び出します。
+        /// メールボックスは何個でも登録可能です。
+        /// </remarks>
+        /// <param name="namePlate">アドレス（文字列）</param>
+        public void AddMailBox (string namePlate) {
+            if (namePlate == null) {
+                throw new ArgumentNullException ("Name is null");
+            }
+
+            this.mailboxs.Add (new MailBox (namePlate, (from, to, letter) => {
+                foreach (var cmp in Components) {
+                    cmp.OnMailBox (from, to, letter);
+                }
+            }));
+
+        }
+        
+        /// <summary>
+        /// メール ボックスの追加
+        /// </summary>
+        /// <remarks>
+        /// ゲーム オブジェクト間のメッセージ通信を受け取るメールボックスを追加します。
+        /// 宛先 <paramref name="namePlate"/> は任意の文字列で多くの場合はノード名と同じにしますが、必ず同じである必要はありません。
+        /// "All"は予約後で指定するとすべてのメッセージを受信します。
+        /// メールを受信するとユーザー定義のメール アクション <paramref name="action"/> が実行されます。
+        /// メールボックスは何個でも登録可能です。
+        /// </remarks>
+        /// <param name="namePlate">宛先</param>
+        /// <param name="action">メール アクション</param>
+        public void AddMailBox (string namePlate, MailBoxAction action) {
+            if (namePlate == null) {
+                throw new ArgumentNullException ("Name is null");
+            }
+            if (action == null) {
+                throw new ArgumentNullException ("Action is null");
+            }
+            this.mailboxs.Add (new MailBox (namePlate, action));
+        }
+
+
+        /// <summary>
+        /// メール ボックスの削除
+        /// </summary>
+        /// <remarks>
+        /// 指定のアドレスのメール ボックスをすべて削除します。
+        /// </remarks>
+        /// <param name="address">削除したいアドレス</param>
+        /// <returns></returns>
+        public int RemoveMailBox (string address) {
+            return this.mailboxs.RemoveAll (x => x.NamePlate == address);
+        }
+
+        /// <summary>
+        /// メールボックスの取得
+        /// </summary>
+        /// <remarks>
+        /// 指定のインデックスのメール ボックスを取得します。
+        /// </remarks>
+        /// <param name="index">インデックス</param>
+        /// <returns></returns>
+        public MailBox GetMailBox (int index) {
+            if (index < 0 || index > MailBoxCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            return mailboxs[index];
+        }
+
 
         // 微妙すぎるのでコメントアウト
         // 悩む

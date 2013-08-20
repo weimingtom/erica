@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestBar {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var bar = new Bar (1, 2, BarOrientation.Horizontal);
 
             Assert.AreEqual (1, bar.Width);
@@ -17,7 +17,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, bar.MaxValue);
             Assert.AreEqual (0, bar.CurrentValue);
             Assert.AreEqual (1, bar.CurrentRate);
-            Assert.AreEqual (Color.Red, bar.BackgroundColor);
+            Assert.AreEqual (Color.Black, bar.BackgroundColor);
             Assert.AreEqual (Color.Green, bar.ForegroundColor);
             Assert.AreEqual (null, bar.BackgroundTexture);
             Assert.AreEqual (null, bar.ForegroundTexture);
@@ -25,7 +25,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetValue () {
+        public void Test_SetValue () {
             var bar = new Bar (1, 2, BarOrientation.Horizontal);
 
             bar.CurrentValue = 100;
@@ -43,7 +43,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetColor () {
+        public void Test_SetColor () {
             var bar = new Bar (1, 2, BarOrientation.Horizontal);
 
             bar.ForegroundColor = Color.White;
@@ -55,7 +55,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetTexture () {
+        public void Test_SetTexture () {
             var bar = new Bar (1, 2, BarOrientation.Horizontal);
 
             var tex1 = new Texture ("abstract7.png");
@@ -70,7 +70,7 @@ namespace DD.UnitTest {
         }
         
         [TestMethod]
-        public void TestMethod_SetOffset () {
+        public void Test_SetOffset () {
             var bar = new Bar (1, 2, BarOrientation.Horizontal);
 
             bar.Offset = new Vector2 (1, 2);

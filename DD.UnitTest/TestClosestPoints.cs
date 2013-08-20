@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestClosestPoints {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var pointA = new Vector3(1,2,3);
             var pointB = new Vector3(4,5,6);
 

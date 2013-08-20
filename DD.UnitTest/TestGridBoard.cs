@@ -8,7 +8,7 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestGridBoard {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var grid = new GridMap (1, 2);
 
             Assert.AreEqual (1, grid.Width);
@@ -22,7 +22,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetTileSize () {
+        public void Test_SetTileSize () {
             var grid = new GridMap (2, 2);
 
             grid.TileWidth = 1;
@@ -37,7 +37,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_SetTile () {
+        public void Test_SetTile () {
             var grid = new GridMap (2, 2);
 
             grid[0, 0] = new Node ("1");

@@ -28,7 +28,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var map = new TiledMapComposer ();
 
             Assert.AreEqual (0, map.Width);
@@ -42,12 +42,12 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_OrthoToIsometric () {
+        public void Test_OrthoToIsometric () {
 
         }
 
         [TestMethod]
-        public void TestMethod_LoadFromFile () {
+        public void Test_LoadFromFile () {
             var node = new Node ();
             var map = new TiledMapComposer ();
             node.Attach (map);
@@ -66,7 +66,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_Layer () {
+        public void Test_Layer () {
             var node = new Node ();
             var map = new TiledMapComposer ();
             node.Attach (map);
@@ -86,7 +86,7 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void TestMethod_Tile () {
+        public void Test_Tile () {
             var node = new Node ();
             var map = new TiledMapComposer ();
             node.Attach (map);
@@ -108,7 +108,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_ObjectGroup () {
+        public void Test_ObjectGroup () {
             var node = new Node ();
             var map = new TiledMapComposer ();
             node.Attach (map);
@@ -124,7 +124,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void TestMethod_Object () {
+        public void Test_Object () {
             var a = typeof (MyComponent);
             var b = a.AssemblyQualifiedName;
             var c = a.FullName;

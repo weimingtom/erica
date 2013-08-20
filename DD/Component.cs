@@ -16,7 +16,6 @@ namespace DD {
         bool updateInitIsCalled;
         #endregion
 
-
         #region Constructor
         /// <summary>
         /// コンストラクター
@@ -120,12 +119,23 @@ namespace DD {
         /// このノードにアタッチされたローカルのサウンド プレイヤー <see cref="SoundPlayer"/> または、それが存在しない場合は
         /// <see cref="World"/> のサウンド プレイヤー  <see cref="SoundPlayer"/> を返します。
         /// <see cref="World"/> クラスは必ずデフォルトのサウンド プレイヤーを1つ保持しています。
-        /// 
         /// </remarks>
         public SoundPlayer Sound {
             get {
                 return GetComponent<SoundPlayer> () ?? World.SoundPlayer;
             }
+        }
+
+        /// <summary>
+        /// 標準の郵便局（メッセージ通信）
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルの郵便局 <see cref="PostOffice"/> または、それが存在しない場合は
+        /// <see cref="World"/> の郵便局  <see cref="PostOffice"/> を返します。
+        /// <see cref="World"/> オブジェクトは必ずデフォルトの郵便局を1つ保持しています。
+        /// </remarks>
+        public PostOffice PostOffice {
+            get { return GetComponent<PostOffice> () ?? World.PostOffice; }
         }
 
 
@@ -254,6 +264,28 @@ namespace DD {
 
             Destroy(comp.Node);
         }
+
+        /// <summary>
+        /// 他のノードにメッセージを送信
+        /// </summary>
+        /// <remarks>
+        /// 他のノードにメッセージを送信します。
+        /// 送信アドレスはメールボックスに付けられたアドレス（文字列）です。
+        /// "All" は予約後ですべてのメールボックスにメッセージが送信されます。
+        /// </remarks>
+        /// <param name="address">宛先アドレス</param>
+        /// <param name="letter">メッセージ</param>
+        protected void SendMessage (string address, object letter) {
+            if (!IsAttached) {
+                throw new InvalidOperationException ("Component is not attached");
+            }
+            if (!IsUnderWorld) {
+                throw new InvalidOperationException ("Component is not under World");
+            }
+            PostOffice.Post (Node, address, letter);
+        }
+
+
 
         /// <summary>
         /// アタッチ処理後のエントリーポイント
@@ -457,6 +489,20 @@ namespace DD {
 
         }
 
+
+        /// <summary>
+        /// メール ボックスのエントリー ポイント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="World.Deliver"/> フェーズでメール ボックスにメールが送られた時に呼び出される標準のメールボックス アクションです。
+        /// ユーザーが独自のアクションを登録した場合はそちらが呼ばれます。
+        /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
+        /// </remarks>
+        /// <param name="from">送信元ノード</param>
+        /// <param name="address">送信先アドレス</param>
+        /// <param name="letter">通信メッセージ</param>
+        public virtual void OnMailBox (Node from, string address, object letter) {
+        }
 
         /// <summary>
         /// 描画前処理

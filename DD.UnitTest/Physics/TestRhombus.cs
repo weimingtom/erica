@@ -9,7 +9,7 @@ namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestRhombus {
         [TestMethod]
-        public void TestMethod_New () {
+        public void Test_New () {
             var rhm = new RhombusCollisionShape (1, 2);
 
             Assert.AreEqual (ShapeType.Polygon, rhm.Type);

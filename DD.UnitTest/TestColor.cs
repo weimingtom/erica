@@ -27,10 +27,14 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Predefined_Color () {
             Assert.AreEqual (new Color(255,255,255,255), Color.White);
-            Assert.AreEqual (new Color(0,0,0,255), Color.Black);
+            Assert.AreEqual (new Color (128, 128, 128, 255), Color.Gray);
+            Assert.AreEqual (new Color (0, 0, 0, 255), Color.Black);
             Assert.AreEqual (new Color (255, 0, 0, 255), Color.Red);
             Assert.AreEqual (new Color (0, 255, 0, 255), Color.Green);
             Assert.AreEqual (new Color (0, 0, 255, 255), Color.Blue);
+            Assert.AreEqual (new Color (255, 255, 0, 255), Color.Yellow);
+            Assert.AreEqual (new Color (255, 0, 255, 255), Color.Purple);
+            Assert.AreEqual (new Color (0, 255, 255, 255), Color.Cyan);
         }
 
         [TestMethod]
