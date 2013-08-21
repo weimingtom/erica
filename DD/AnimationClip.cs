@@ -208,7 +208,7 @@ namespace DD {
         /// <remarks>
         /// このクリップを再生します。すでに再生中のクリップを再度再生した場合、単にこれを無視します。
         /// </remarks>
-        public void Play () {
+        public  void Play () {
             this.state = State.Playing;
         }
 
@@ -218,7 +218,7 @@ namespace DD {
         /// <remarks>
         /// このクリップの再生を停止します。すでに停止中のクリップを再度停止した場合、単にこれを無視します。
         /// </remarks>
-        public void Stop () {
+        public  void Stop () {
             this.state = State.Stopped;
         }
 

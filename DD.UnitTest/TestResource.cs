@@ -49,11 +49,19 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_GetSoundClip () {
-            var clip1 = Resource.GetSoundClip ("PinPon.wav", false);
-            var clip2 = Resource.GetSoundClip ("PinPon.wav", false);
+        public void Test_GetSoundTrack () {
+            var track1 = Resource.GetSoundTrack ("PinPon.wav");
+            var track2 = Resource.GetSoundTrack ("PinPon.wav");
 
-            Assert.AreSame (clip2, clip1);
+            Assert.AreSame (track2, track1);
+        }
+
+        [TestMethod]
+        public void Test_GetMusicTrack () {
+            var track1 = Resource.GetMusicTrack ("nice_music.ogg");
+            var track2 = Resource.GetMusicTrack ("nice_music.ogg");
+
+            Assert.AreSame (track2, track1);
         }
     }
 }

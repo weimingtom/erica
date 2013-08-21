@@ -87,6 +87,7 @@
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="SoundTrack.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ClosestPoints.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="InputReceiver.cs" />
     <Compile Include="KeyAlias.cs" />
     <Compile Include="LineSegment.cs" />
+    <Compile Include="MusicTrack.cs" />
     <Compile Include="Physics\BoxCollisionShape.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
     <Compile Include="Physics\PhysicsBody.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="PostOffice.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Physics\FarseerExtensions.cs" />
+    <Compile Include="SeTrack.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="TiledMapComposer.cs" />
     <Compile Include="Transformable.cs" />

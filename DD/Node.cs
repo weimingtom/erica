@@ -5,8 +5,6 @@ using System.Text;
 
 namespace DD {
 
-
-
     /// <summary>
     /// ノード クラス
     /// </summary>
@@ -35,6 +33,45 @@ namespace DD {
         Matrix4x4? matrix;      // = Cache of GlobalTransform
         #endregion
 
+        /*
+        List<Clip> clips;
+
+        public  IEnumerable<Clip> Clips {
+            get {return clips;}
+        }
+
+        public int ClipCount {
+            get { return clips.Count (); }
+        }
+
+        public void AddClip (Clip clip) {
+            // クリップの名前はユニークでなければならない
+        }
+
+        public void RemoveClip (int index) {
+        }
+
+        public Clip GetClip (int index) {
+            return clips[index];
+        }
+
+        public Clip GetClip (string name) {
+            return clips.Find (x => x.Name == name);
+        }
+
+        public T GetClip<T> (string name) where T : Clip {
+            return (from clip in clips
+                    where clip is T
+                    where clip.Name == name
+                    select (T)clip).FirstOrDefault();
+        }
+
+        public IEnumerable<T> GetClips<T> () where T : Clip{
+            return from clip in clips
+                   where clip is T
+                   select (T)clip;
+        }
+        */
         
 
         #region Constructor
@@ -70,6 +107,7 @@ namespace DD {
             this.opacity = 1.0f;
             this.matrix = null;
             this.mailboxs = new List<MailBox> ();
+            //this.clips = new List<Clip> ();
         }
         #endregion
 

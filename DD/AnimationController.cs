@@ -57,10 +57,15 @@ namespace DD {
         /// クリップの追加
         /// </summary>
         /// <param name="clip">アニメーション クリップ</param>
-        public void AddClip (AnimationClip clip) {
+        /// <param name="playNow">今すぐ再生を開始するフラグ</param>
+        public void AddClip (AnimationClip clip, bool playNow = false) {
             if (clip == null) {
                 throw new ArgumentNullException ("Clip is null");
             }
+            if (playNow) {
+                clip.Play ();
+            }
+           
             clips.Add (clip);
         }
 

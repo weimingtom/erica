@@ -66,20 +66,21 @@ namespace DD {
         /// キューに保存しているすべての未配達のメールを送信します。
         /// このメソッドが帰るとキューのサイズは0です。
         /// </remarks>
+        /// (*1) foreachの中でメールボックスを削除できるようにするためこの ToArray() は消さないように
         public void Deliver () {
-            var deliveries = from mail in mails
+            var deliveries = (from mail in mails
                             from node in World.Downwards
                             where node.Deliverable == true
                             from mailbox in node.MailBoxs
-                            where mail.To == mailbox.NamePlate || mail.To == "All" || mailbox.NamePlate=="All"
-                            select new {mail, node, mailbox};
+                            where mail.Address == mailbox.NamePlate || mail.Address == "All" || mailbox.NamePlate=="All"
+                            select new {mail, node, mailbox}).ToArray();   // (*1)
 
             foreach (var delivery in deliveries) {
                 var from = delivery.mail.From;
-                var to = delivery.mail.To;
-                var node = delivery.node;
+                var addr = delivery.mail.Address;
+                var to = delivery.node;
                 var letter = delivery.mail.Letter;
-                delivery.mailbox.Action (from, to, letter);
+                delivery.mailbox.Action (from, addr, letter);
             }
 
             this.mails.Clear ();

@@ -25,11 +25,11 @@ namespace DD {
         static string fontDirectory;
         static string textureDirectory;
         static string lineDirectory;
-        static string soundDirectory;
+        static string audioDirectory;
         static Dictionary<string, SFML.Graphics.Font> fonts;
         static Dictionary<string, Texture> textures;
         static Dictionary<string, Line[]> lines;
-        static Dictionary<string, SoundClip> sounds;
+        static Dictionary<string, SoundTrack> audios;
         #endregion
 
         #region Constructor
@@ -43,7 +43,7 @@ namespace DD {
             fonts = new Dictionary<string, SFML.Graphics.Font> ();
             textures = new Dictionary<string, Texture> ();
             lines = new Dictionary<string, Line[]> ();
-            sounds = new Dictionary<string, SoundClip> ();
+            audios = new Dictionary<string, SoundTrack> ();
         }
 
         #endregion
@@ -74,7 +74,7 @@ namespace DD {
         /// サウンド ディレクトリ
         /// </summary>
         public static string SoundDirectory {
-            get { return soundDirectory; }
+            get { return audioDirectory; }
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace DD {
         /// <summary>
         /// キャッシュ済みのすべてのサウンド クリップを列挙する列挙子
         /// </summary>
-        public static IEnumerable<KeyValuePair<string, SoundClip>> SoundClips {
-            get { return sounds; }
+        public static IEnumerable<KeyValuePair<string, SoundTrack>> SoundClips {
+            get { return audios; }
         }
         #endregion
 
@@ -153,8 +153,8 @@ namespace DD {
         /// サウンド ディレクトリーの変更
         /// </summary>
         /// <param name="name">ディレクトリ名</param>
-        public static void SoundClipDirectory (string name) {
-            soundDirectory = name;
+        public static void AudioDirectory (string name) {
+            audioDirectory = name;
         }
 
         /// <summary>
@@ -276,41 +276,40 @@ namespace DD {
         }
 
         /// <summary>
-        /// サウンド クリップの取得
+        /// ミュージック トラックの取得
         /// </summary>
         /// <param name="name">サウンド ファイル名</param>
         /// <param name="streaming">ストリーミング再生</param>
         /// <returns>サウンド クリップ</returns>
-        public static SoundClip GetSoundClip (string name, bool streaming) {
-            if (!sounds.ContainsKey (name)) {
-                sounds.Add (name, new SoundClip(name, streaming));
+        public static MusicTrack GetMusicTrack (string name) {
+            if (!audios.ContainsKey (name)) {
+                audios.Add (name, new MusicTrack(name));
             }
-            return sounds[name];
+            return audios[name] as MusicTrack;
+        }
+
+        public static SoundEffectTrack GetSoundTrack (string name) {
+            if (!audios.ContainsKey (name)) {
+                audios.Add (name, new SoundEffectTrack(name));
+            }
+            return audios[name] as SoundEffectTrack;
         }
 
 
-
-        /// <summary>
-        /// 全リソースの解放
-        /// </summary>
-        public void ReleaseAll () {
+        /// <inheritdoc/>
+        public void Dispose () {
             foreach (var font in fonts) {
                 font.Value.Dispose ();
             }
             foreach (var texture in textures) {
                 texture.Value.Dispose ();
             }
-            foreach (var sound in sounds) {
+            foreach (var sound in audios) {
                 sound.Value.Dispose ();
             }
             fonts.Clear ();
             textures.Clear ();
-            sounds.Clear ();
-        }
-
-        /// <inheritdoc/>
-        public void Dispose () {
-            ReleaseAll();
+            audios.Clear ();
         }
         #endregion
     }

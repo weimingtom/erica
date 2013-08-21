@@ -18,7 +18,7 @@ namespace DD.Sample.DonkeyKongSample {
 
             var hit = Physics2D.Collide (col, tra, mycol, mytra);
             if (hit) {
-                var mycomp = mycol.Node.GetComponent<MyCharacterComponent> ();
+                var mycomp = mycol.Node.GetComponent<MyCharacter> ();
                 mycomp.Hit ();
             }
         }

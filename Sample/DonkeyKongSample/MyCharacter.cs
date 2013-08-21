@@ -7,29 +7,9 @@ using DD.Physics;
 using DD;
 
 namespace DD.Sample.DonkeyKongSample {
-    public class MyCharacterComponent : Component {
+    public class MyCharacter : Component {
 
-        StateMachine<State, Trigger> sm;
-        SoundClip jumpSound;
-        int miss;
-        int invincibleTime;
-
-
-        public float Speed {
-            get;
-            set;
-        }
-
-        public bool IsGrounded {
-            get;
-            set;
-        }
-
-        public Vector3 gravitationalVelocity {
-            get;
-            set;
-        }
-
+        #region InnerClass
         enum State {
             Down,
             Up,
@@ -43,13 +23,90 @@ namespace DD.Sample.DonkeyKongSample {
             Right,
             Left,
         }
+        #endregion
+
+        StateMachine<State, Trigger> sm;
+        int miss;
+        int invincibleTime;
+
+        SoundClip jumpSound;
+        AnimationClip walkUp;
+        AnimationClip walkDown;
+        AnimationClip walkRight;
+        AnimationClip walkLeft;
+
+        public float Speed {            get;            set;        }
+        public bool IsGrounded {            get;            set;        }
+        public Vector3 gravitationalVelocity {            get;            set;        }
 
 
-        public MyCharacterComponent () {
+
+        public MyCharacter () {
             this.Speed = 4.0f;
             this.IsGrounded = false;
             this.gravitationalVelocity = new Vector3 (0, 1, 0);
-            this.jumpSound = new SoundClip ("media/Jump.ogg");
+            this.jumpSound = null;
+            this.walkUp = null;
+            this.walkDown = null;
+            this.walkRight = null;
+            this.walkLeft = null;
+                
+        }
+
+        public static Node Create (Vector3 pos) {
+            var cmp = new MyCharacter ();
+
+            var spr1 = new Sprite (new Texture ("media/Character-Gelato.png"), 24, 32);
+            var spr2 = new Sprite (new Texture ("media/Image128x128(Red).png"), 24, 4);
+            spr2.SetOffset (0, spr1.Height);
+
+            var body = new BoxCollisionShape (spr1.Width / 2, spr1.Height / 2, 0);
+            var foot = new SphereCollisionShape (2);
+            body.SetOffset (spr1.Width / 2, spr1.Height / 2, 0);
+            foot.SetOffset (spr1.Width / 2, spr1.Height + 2, 0);
+
+            var node = new Node ("MyCharacter");
+            node.Attach (spr1);
+            node.Attach (spr2);
+            node.Attach (body);
+            node.Attach (foot);
+            node.Attach (cmp);
+
+            node.DrawPriority = -1;
+            node.Translation = pos;
+
+            cmp.jumpSound = new SoundClip ("JumpSound");
+            cmp.jumpSound.AddTrack (new SoundEffectTrack ("media/Jump.ogg"));
+
+            var track1 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
+            track1.AddKeyframe (0, new Vector2 (0, 64));
+            track1.AddKeyframe (300, new Vector2 (24, 64));
+            track1.AddKeyframe (600, new Vector2 (48, 64));
+            cmp.walkDown = new AnimationClip (900, "MyCharacter.Down");
+            cmp.walkDown.AddTrack (spr1, track1);
+
+            var track2 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
+            track2.AddKeyframe (0, new Vector2 (0, 0));
+            track2.AddKeyframe (300, new Vector2 (24, 0));
+            track2.AddKeyframe (600, new Vector2 (48, 0));
+            cmp.walkUp = new AnimationClip (900, "MyCharacter.Up");
+            cmp.walkUp.AddTrack (spr1, track2);
+
+            var track3 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
+            track3.AddKeyframe (0, new Vector2 (0, 32));
+            track3.AddKeyframe (300, new Vector2 (24, 32));
+            track3.AddKeyframe (600, new Vector2 (48, 32));
+            cmp.walkRight = new AnimationClip (900, "MyCharacter.Right");
+            cmp.walkRight.AddTrack (spr1, track3);
+
+            var track4 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
+            track4.AddKeyframe (0, new Vector2 (0, 96));
+            track4.AddKeyframe (300, new Vector2 (24, 96));
+            track4.AddKeyframe (600, new Vector2 (48, 96));
+            cmp.walkLeft = new AnimationClip (900, "MyCharacter.Left");
+            cmp.walkLeft.AddTrack (spr1, track4);
+
+            return node;
         }
 
         public void Hit () {
@@ -62,103 +119,65 @@ namespace DD.Sample.DonkeyKongSample {
             var label = World.Find (x => x.Name == "Label").GetComponent<Label> (3);
             label.Text = "Miss : " + miss;
 
-            var node = MyPopupNumber.CreateMyPopupNumber ("MISS!", -5);
+            var node = MyPopupNumber.Create ("MISS!", -5);
             node.Translate (-10, -5, 0);
             Node.AddChild (node);
 
-            var clip = Resource.GetSoundClip ("media/Cancel.ogg", false);
+            var clip = Resource.GetSoundTrack ("media/Cancel.ogg");
             clip.Play ();
         }
 
-        public void Init () {
-            Node.DrawPriority = -1;
+        public override void OnUpdateInit (long msec) {
 
-            var spr = GetComponent<Sprite> ();
-
-            var track1 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
-            track1.AddKeyframe (0, new Vector2 (0, 64));
-            track1.AddKeyframe (300, new Vector2 (24, 64));
-            track1.AddKeyframe (600, new Vector2 (48, 64));
-            var clip1 = new AnimationClip (900, "MyCharacter.Down");
-            clip1.AddTrack (spr, track1);
-
-            var track2 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
-            track2.AddKeyframe (0, new Vector2 (0, 0));
-            track2.AddKeyframe (300, new Vector2 (24, 0));
-            track2.AddKeyframe (600, new Vector2 (48, 0));
-            var clip2 = new AnimationClip (900, "MyCharacter.Up");
-            clip2.AddTrack (spr, track2);
-
-            var track3 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
-            track3.AddKeyframe (0, new Vector2 (0, 32));
-            track3.AddKeyframe (300, new Vector2 (24, 32));
-            track3.AddKeyframe (600, new Vector2 (48, 32));
-            var clip3 = new AnimationClip (900, "MyCharacter.Right");
-            clip3.AddTrack (spr, track3);
-
-            var track4 = new AnimationTrack ("TextureOffset", InterpolationType.Step);
-            track4.AddKeyframe (0, new Vector2 (0, 96));
-            track4.AddKeyframe (300, new Vector2 (24, 96));
-            track4.AddKeyframe (600, new Vector2 (48, 96));
-            var clip4 = new AnimationClip (900, "MyCharacter.Left");
-            clip4.AddTrack (spr, track4);
-
-            Animation.AddClip (clip1);
-            Animation.AddClip (clip2);
-            Animation.AddClip (clip3);
-            Animation.AddClip (clip4);
+            Animation.AddClip (walkUp);
+            Animation.AddClip (walkDown);
+            Animation.AddClip (walkRight);
+            Animation.AddClip (walkLeft);
 
 
             sm = new StateMachine<State, Trigger> (State.Down);
-            clip1.Play ();
+            walkDown.Play ();
 
             sm.Configure (State.Down)
                 .Ignore (Trigger.Down)
                 .Permit (Trigger.Up, State.Up)
                 .Permit (Trigger.Right, State.Right)
                 .Permit (Trigger.Left, State.Left)
-                .OnExit (x => clip1.Stop ())
-                .OnEntry (x => clip1.Play ());
+                .OnExit (x => walkDown.Stop ())
+                .OnEntry (x => walkDown.Play ());
 
             sm.Configure (State.Up)
                 .Permit (Trigger.Down, State.Down)
                 .Ignore (Trigger.Up)
                 .Permit (Trigger.Right, State.Right)
                 .Permit (Trigger.Left, State.Left)
-                .OnExit (x => clip2.Stop ())
-                .OnEntry (x => clip2.Play ());
+                .OnExit (x => walkUp.Stop ())
+                .OnEntry (x => walkUp.Play ());
 
             sm.Configure (State.Right)
                 .Permit (Trigger.Down, State.Down)
                 .Permit (Trigger.Up, State.Up)
                 .Ignore (Trigger.Right)
                 .Permit (Trigger.Left, State.Left)
-                .OnExit (x => clip3.Stop ())
-                .OnEntry (x => clip3.Play ());
+                .OnExit (x => walkRight.Stop ())
+                .OnEntry (x => walkRight.Play ());
 
             sm.Configure (State.Left)
                 .Permit (Trigger.Down, State.Down)
                 .Permit (Trigger.Up, State.Up)
                 .Permit (Trigger.Right, State.Right)
                 .Ignore (Trigger.Left)
-                .OnExit (x => clip4.Stop ())
-                .OnEntry (x => clip4.Play ());
+                .OnExit (x => walkLeft.Stop ())
+                .OnEntry (x => walkLeft.Play ());
 
         }
 
-        bool onlyOnce;
-
         public override void OnUpdate (long msec) {
-            if (!onlyOnce) {
-                Init ();
-                onlyOnce = true;
-                this.gravitationalVelocity = new Vector3 (0, 1, 0);
-            }
             this.invincibleTime += -1;
 
-            var label1 = World.Find (n => n.Name == "Label").GetComponent<Label> (0);
-            var label2 = World.Find (n => n.Name == "Label").GetComponent<Label> (1);
-            var map = World.Find (n => n.Name == "Platform");
+            var label1 = World.Find ("Label").GetComponent<Label> (0);
+            var label2 = World.Find ("Label").GetComponent<Label> (1);
+            var map = World.Find ("Platform");
             var body = GetComponent<CollisionShape> (0);
             var foot = GetComponent<CollisionShape> (1);
             var footTra = foot.Node.GlobalTransform;

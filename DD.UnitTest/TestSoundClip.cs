@@ -3,66 +3,82 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DD;
 
 namespace DD.UnitTest {
     [TestClass]
     public class TestSoundClip {
-        /// <summary>
-        /// オンメモリのサウンド クリップ
-        /// SFMLで言うと Sound
-        /// </summary>
         [TestMethod]
-        public void Test_New_1 () {
-            var clip = new SoundClip ("PinPon.wav");
+        public void Test_New () {
+            var clip = new SoundClip ("Sound");
 
-            Assert.AreEqual ("PinPon.wav", clip.Name);
-            Assert.AreEqual (false, clip.Streaming);
-            Assert.AreEqual (false, clip.Loop);
-            Assert.AreEqual (1.0f, clip.Volume);
-            Assert.AreEqual (1520, clip.Duration);
+            Assert.AreEqual("Sound", clip.Name);
+            Assert.AreEqual (0, clip.TrackCount);
+            Assert.AreEqual (0, clip.Tracks.Count ());
+            Assert.AreEqual (1, clip.Volume);
+            Assert.AreEqual (0, clip.Duration);
+            Assert.AreEqual (false, clip.IsPlaying);
         }
 
-        /// <summary>
-        /// ストリーミングのサウンド クリップ
-        /// SFMLで言うと Music
-        /// </summary>
         [TestMethod]
-        public void Test_New_2 () {
-            var clip = new SoundClip ("nice_music.ogg", true);
+        public void Test_AddTrack () {
+            var clip = new SoundClip ("Sound");
+            var track1 = new SoundEffectTrack ("PinPon.wav");
+            var track2 = new MusicTrack ("nice_music.ogg");
+            clip.AddTrack (track1);
+            clip.AddTrack (track2);
 
-            Assert.AreEqual ("nice_music.ogg", clip.Name);
-            Assert.AreEqual (true, clip.Streaming);
-            Assert.AreEqual (true, clip.Loop);
-            Assert.AreEqual (1.0f, clip.Volume);
-            Assert.AreEqual (92891, clip.Duration);
+            Assert.AreEqual (2, clip.TrackCount);
+            Assert.AreEqual (2, clip.Tracks.Count ());
+            Assert.AreEqual (track1, clip.GetTrack (0));
+            Assert.AreEqual (track2, clip.GetTrack (1));
         }
 
+        [TestMethod]
+        public void Test_RemoveTrack () {
+            var clip = new SoundClip ("Sound");
+            var track1 = new SoundEffectTrack ("PinPon.wav");
+            var track2 = new MusicTrack ("nice_music.ogg");
+            clip.AddTrack (track1);
+            clip.AddTrack (track2);
+            clip.RemoveTrack (1);
+            clip.RemoveTrack (0);
+        }
 
         [TestMethod]
-        public void Test_SetLoop () {
-            var clip = new SoundClip ("PinPon.wav");
+        public void Test_Play_and_Stop () {
+            var clip = new SoundClip ("Sound");
+            var track1 = new SoundEffectTrack ("PinPon.wav");
+            var track2 = new MusicTrack ("nice_music.ogg");
+            clip.AddTrack (track1);
+            clip.AddTrack (track2);
 
-            clip.Loop = true;
-            Assert.AreEqual (true, clip.Loop);
+            clip.Play ();
+            Assert.AreEqual (true, clip.IsPlaying);
+            Assert.AreEqual (true, track1.IsPlaying);
+            Assert.AreEqual (true, track2.IsPlaying);
 
-            clip.SetLoop (false);
-            Assert.AreEqual (false, clip.Loop);
+            clip.Stop ();
+            Assert.AreEqual (false, clip.IsPlaying);
+            Assert.AreEqual (false, track1.IsPlaying);
+            Assert.AreEqual (false, track2.IsPlaying);
         }
 
         [TestMethod]
         public void Test_SetVolume () {
-            var clip = new SoundClip ("PinPon.wav");
-            clip.Volume = 0.1f;
 
-            Assert.AreEqual (0.1f, clip.Volume, 0.1f);
-        }
+            var clip = new SoundClip ("Sound");
+            var track1 = new SoundEffectTrack ("PinPon.wav");
+            var track2 = new MusicTrack ("nice_music.ogg");
+            clip.AddTrack (track1);
+            clip.AddTrack (track2);
 
-        [TestMethod]
-        public void Test_Play () {
-            var clip = new SoundClip ("PinPon.wav");
-            clip.Play();
+            clip.Volume = 0.5f;
 
-            Assert.AreEqual (true, clip.IsPlaying);
+            Assert.AreEqual (0.5f, clip.Volume);
+            Assert.AreEqual (0.5f, track1.Volume);
+            Assert.AreEqual (0.5f, track2.Volume);
+
         }
 
 

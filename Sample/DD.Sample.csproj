@@ -86,14 +86,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DokeyKongSample\MyBall.cs" />
-    <Compile Include="DokeyKongSample\MyCharacter.cs" />
-    <Compile Include="DokeyKongSample\MyDeadBox.cs" />
-    <Compile Include="DokeyKongSample\MyFireExplosion.cs" />
-    <Compile Include="DokeyKongSample\MyGameClearBox.cs" />
-    <Compile Include="DokeyKongSample\MyGorilla.cs" />
-    <Compile Include="DokeyKongSample\MyPopupNumber.cs" />
-    <Compile Include="DokeyKongSample\MyWorld.cs" />
+    <Compile Include="AnimationSample\MyFireExplosion.cs" />
+    <Compile Include="AnimationSample\Program.cs" />
+    <Compile Include="DonkeyKongSample\MyBall.cs" />
+    <Compile Include="DonkeyKongSample\MyCharacter.cs" />
+    <Compile Include="DonkeyKongSample\MyDeadBox.cs" />
+    <Compile Include="DonkeyKongSample\MyDebugInfo.cs" />
+    <Compile Include="DonkeyKongSample\MyFireExplosion.cs" />
+    <Compile Include="DonkeyKongSample\MyGameClear.cs" />
+    <Compile Include="DonkeyKongSample\MyGoal.cs" />
+    <Compile Include="DonkeyKongSample\MyGorilla.cs" />
+    <Compile Include="DonkeyKongSample\MyPlatform.cs" />
+    <Compile Include="DonkeyKongSample\MyPopupNumber.cs" />
+    <Compile Include="DonkeyKongSample\MyWorld.cs" />
     <Compile Include="GUISample\MyCamera.cs" />
     <Compile Include="GUISample\MyButton.cs" />
     <Compile Include="GUISample\MyMouseSelector.cs" />
@@ -147,7 +152,7 @@
     <Compile Include="PlatformSample\MyCharacter.cs" />
     <Compile Include="PlatformSample\MyWorld.cs" />
     <Compile Include="PlatformSample\Program.cs" />
-    <Compile Include="DokeyKongSample\Program.cs" />
+    <Compile Include="DonkeyKongSample\Program.cs" />
     <Compile Include="ScrollSample\MyPopupNumber.cs" />
     <Compile Include="ScrollSample\Program.cs" />
     <Compile Include="SimpleSample\MyComponent.cs" />

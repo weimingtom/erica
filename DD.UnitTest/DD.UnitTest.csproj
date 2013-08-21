@@ -78,6 +78,7 @@
     <Compile Include="SFML\TestCamera.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
+    <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestBar.cs" />
     <Compile Include="TestCamera.cs" />
     <Compile Include="TestClosestPoints.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="TestMaterial.cs" />
     <Compile Include="TestMatrix3x3.cs" />
     <Compile Include="TestMatrix4x4.cs" />
+    <Compile Include="TestMusicTrack.cs" />
     <Compile Include="TestMyMath.cs" />
     <Compile Include="TestPostOffice.cs" />
     <Compile Include="TestQuaternion.cs" />
@@ -115,7 +117,7 @@
     <Compile Include="TestLineReader.cs" />
     <Compile Include="TestNode.cs" />
     <Compile Include="TestResource.cs" />
-    <Compile Include="TestSoundClip.cs" />
+    <Compile Include="TestSoundTrack.cs" />
     <Compile Include="TestSoundPlayer.cs" />
     <Compile Include="TestTexture.cs" />
     <Compile Include="TestTimeCounter.cs" />

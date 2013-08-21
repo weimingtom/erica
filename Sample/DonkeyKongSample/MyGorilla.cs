@@ -8,18 +8,33 @@ namespace DD.Sample.DonkeyKongSample {
     public class MyGorilla : Component {
         long prevTime;
         long interval;
-        int index;
+        int ballIndex;
 
         public MyGorilla () {
-            this.index = 0;
+            this.ballIndex = 0;
             this.interval = 1000*5;
             this.prevTime = -interval;
         }
 
-        private Node CreateBall () {
-            var spr = new Sprite (Resource.GetTexture ("media/Earth-32x32.png"), 32, 32);
-            var comp = new MyBall ();
+        public static Node Create (Vector3 pos) {
+            var cmp = new MyGorilla ();
+            
+            var spr = new Sprite (Resource.GetTexture ("media/Gorilla.png"));
+   
+            var node = new Node ("Gorilla");
+            node.Attach (spr);
+            node.Attach (cmp);
+            
+            node.Translation = pos;
 
+            return node;
+        }
+
+        private Node CreateBall (Vector3 pos) {
+            var cmp = new MyBall ();
+            
+            var spr = new Sprite (Resource.GetTexture ("media/Earth-32x32.png"), 32, 32);
+        
             var col = new SphereCollisionShape (16);
             col.SetOffset (col.Radius, col.Radius, 0);
 
@@ -29,20 +44,20 @@ namespace DD.Sample.DonkeyKongSample {
             body.SetMaterial (new PhysicsMaterial ());
             body.ApplyForce (50000, 0, 0);
 
-            var node = new Node ("Ball " + index++);
+            var node = new Node ("Ball " + ballIndex++);
             node.Attach (spr);
-            node.Attach (comp);
+            node.Attach (cmp);
             node.Attach (col);
             node.Attach (body);
             
-            node.SetTranslation (50, 150, 0);
+            node.Translation = pos;
 
             return node;
         }
 
         public override void OnUpdate (long msec) {
             if (msec > prevTime + interval) {
-                var ball = CreateBall ();
+                var ball = CreateBall (new Vector3(50, 150, 0));
                 Node.AddChild(ball);
                 this.prevTime = msec;
             }
