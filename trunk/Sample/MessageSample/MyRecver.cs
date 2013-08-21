@@ -39,7 +39,7 @@ namespace DD.Sample.MessageSample {
         public override void OnMailBox (Node from, string to, object letter) {
             var msg = letter as MyLetter;
 
-            GetComponent<Label> (1).Text = msg.Text;
+            GetComponent<Label> (1).Text = (string)letter;
         }
 
         public override void OnUpdate (long msec) {

@@ -10,7 +10,7 @@ namespace DD.Sample.DonkeyKongSample {
         float dy;
         int count;
 
-        public static Node CreateMyPopupNumber (string number, int dy) {
+        public static Node Create (string number, int dy) {
             var label = new Label (number);
             var comp = new MyPopupNumber ();
             comp.label = label;

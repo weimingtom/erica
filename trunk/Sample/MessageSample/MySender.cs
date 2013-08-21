@@ -65,7 +65,7 @@ namespace DD.Sample.MessageSample {
             Console.WriteLine ("Send to {0} : {1}", address, letter);
            
            GetComponent<Label> (1).Text = letter;
-           SendMessage (address, new MyLetter(letter));
+           SendMessage (address, letter);
     
            this.count += 1;
        }

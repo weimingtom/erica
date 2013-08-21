@@ -18,11 +18,11 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <param name="from">送信元ノード</param>
-        /// <param name="to">送信先アドレス（文字列）</param>
+        /// <param name="address">送信先アドレス（文字列）</param>
         /// <param name="letter">通信内容</param>
-        public Mail (Node from, string to, object letter)
+        public Mail (Node from, string address, object letter)
             : this () {
-            this.To = to;
+            this.Address = address;
             this.From = from;
             this.Letter = letter;
         }
@@ -40,7 +40,7 @@ namespace DD {
         /// ユーザーはメールボックスを任意の受け取りアドレスで何個でも作成可能です。
         /// また同名のアドレスを持つノードが複数存在する場合、すべてのノードに送信されます。
         /// </remarks>
-        public string To { get; private set; }
+        public string Address { get; private set; }
 
         /// <summary>
         /// 通信メッセージ
@@ -52,7 +52,7 @@ namespace DD {
 
         /// <inheritdoc/>
         public override string ToString () {
-            return From.ToString() + " --> " + To;
+            return From.ToString() + " --> " + Address;
         }
     }
 

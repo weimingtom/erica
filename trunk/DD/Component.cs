@@ -47,7 +47,7 @@ namespace DD {
         /// ノード名
         /// </summary>
         /// <remarks>
-        /// アタッチ前は "null" が返ります。
+        /// アタッチ前は文字列の "null" が返ります。
         /// </remarks>
         public string NodeName {
             get { return (node == null) ? "null" : node.Name; }

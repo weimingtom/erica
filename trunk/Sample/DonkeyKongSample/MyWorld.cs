@@ -8,6 +8,27 @@ namespace DD.Sample.DonkeyKongSample {
         Node picked;
         Vector2 delta;
 
+        public static World Create () {
+            var cmp = new MyWorld ();
+
+            var spr = new Sprite (new Texture ("media/DarkGalaxy.jpg"));
+
+            var clip = new SoundClip ();
+            clip.AddTrack (new MusicTrack ("media/BGM(Field04).ogg"));
+            clip.Play ();
+            clip.Volume = 0.3f;
+
+            var wld = new World ("First Script");
+            wld.Attach (cmp);
+            wld.Attach (spr);
+            wld.UserData.Add (clip.Name, clip);
+
+            wld.DrawPriority = 127;
+
+            return wld;
+
+        }
+
         public override void OnAttached () {
             this.picked = null;
             this.delta = new Vector2 (0, 0);

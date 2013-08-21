@@ -14,8 +14,8 @@ namespace DD.Sample.RTSSample {
         public MyController (MyTank tank) {
             this.tank = tank;
             this.TargetMarker = null;
-            this.noise = new SoundClip("media/Sound-LoopNoise.wav");
-            noise.Loop = true;
+            this.noise = new SoundClip("Noise");
+            noise.AddTrack(new SoundEffectTrack("media/Sound-LoopNoise.wav"));
         }
 
         public void MoveForward () {

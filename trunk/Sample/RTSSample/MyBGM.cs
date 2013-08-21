@@ -9,7 +9,8 @@ namespace DD.Sample.RTSSample {
         }
 
         public static Node Create () {
-            var clip = new SoundClip ("media/BGM-BattleScene.ogg", true);
+            var clip = new SoundClip ("BattleScene");
+            clip.AddTrack(new MusicTrack("media/BGM-BattleScene.ogg"));
             clip.Play ();
             clip.Volume = 0.5f;
 

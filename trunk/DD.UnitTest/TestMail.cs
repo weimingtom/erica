@@ -13,7 +13,7 @@ namespace DD.UnitTest {
             var mail = new Mail (from, "Node2", "Hello World");
 
             Assert.AreEqual (from, mail.From);
-            Assert.AreEqual ("Node2", mail.To);
+            Assert.AreEqual ("Node2", mail.Address);
             Assert.AreEqual ("Hello World", mail.Letter);
         }
     }

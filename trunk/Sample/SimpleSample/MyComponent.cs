@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DD.Physics;
 
 namespace DD.Sample.SimpleSample {
     public class MyComponent : Component {
-        AnimationClip clip;
 
         public MyComponent () {
         }
@@ -14,51 +14,41 @@ namespace DD.Sample.SimpleSample {
 
             var cmp = new MyComponent ();
 
-            var spr = new Sprite (256, 128);
-            spr.AddTexture (Resource.GetTexture ("media/BigExplosion.png"));
-            spr.SetTextureOffset (0, 0);
-            //spr.SetOffset (-128, -64);
+            var clip = new SoundClip ("Sound");
+            clip.AddTrack (new MusicTrack ("media/BGM(Field04).ogg"));
+            clip.AddTrack (new SoundEffectTrack ("media/PinPon.wav"));
 
-            var track = new AnimationTrack ("TextureOffset", InterpolationType.Step);
-            track.AddKeyframe (0, new Vector2 (0, 0));
-            track.AddKeyframe (200, new Vector2 (256, 0));
-            track.AddKeyframe (400, new Vector2 (512, 0));
-            track.AddKeyframe (600, new Vector2 (0, 128));
-            track.AddKeyframe (800, new Vector2 (256, 128));
-            track.AddKeyframe (1000, new Vector2 (512, 128));
-            track.AddKeyframe (1200, new Vector2 (0, 256));
-            track.AddKeyframe (1400, new Vector2 (256, 256));
-            track.AddKeyframe (1600, new Vector2 (512, 256));
-            track.AddKeyframe (1800, new Vector2 (0, 384));
-            track.AddKeyframe (2000, new Vector2 (256, 384));
-            track.AddKeyframe (2200, new Vector2 (512, 384));
+            var spr = new Sprite (64, 64);
+            spr.Color = Color.Red;
 
-            cmp.clip = new AnimationClip (2400, "Fire-Animation");
-            cmp.clip.AddTrack (spr, track);
-
-            var sqr = new Square (256, 128, 10);
-            sqr.LineWidth = 10;
+            var col = new BoxCollisionShape (32, 32, 0);
+            col.SetOffset (32, 32, 0);
 
             var node = new Node ();
             node.Attach (cmp);
             node.Attach (spr);
-            node.Attach (sqr);
+            node.Attach (col);
+            node.UserData.Add (clip.Name, clip);
 
             return node;
         }
 
         public override void OnUpdateInit (long msec) {
-            clip.WrapMode = WrapMode.Once;
+            var clip = Node.UserData["Sound"] as SoundClip;
             clip.Play ();
-            clip.Speed = 0.5f;
-
-            Animation.AddClip (clip);
-
-            Node.Translate (100, 100, 0);
-            Node.Rotate (30, 0, 0, 1);
         }
+
 
         public override void OnUpdate (long msec) {
         }
+
+        public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
+            var clip = Node.UserData["Sound"] as SoundClip;
+            //clip.Stop ();
+            clip.Play ();
+
+        }
+    
+    
     }
 }
