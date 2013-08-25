@@ -97,10 +97,10 @@
     <Compile Include="KeyAlias.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="MusicTrack.cs" />
-    <Compile Include="Physics\BoxCollisionShape.cs" />
+    <Compile Include="BoxCollision.cs" />
     <Compile Include="Physics\ContactPoint.cs" />
     <Compile Include="Physics\PhysicsBody.cs" />
-    <Compile Include="Physics\CollisionShape.cs" />
+    <Compile Include="Collision.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Keyframe.cs" />
@@ -113,8 +113,7 @@
     <Compile Include="Physics\Physics2D.cs" />
     <Compile Include="Physics\PhysicsMaterial.cs" />
     <Compile Include="Physics\RayCast.cs" />
-    <Compile Include="Physics\RhombusCollisionShape.cs" />
-    <Compile Include="Physics\SphereCollisionShape.cs" />
+    <Compile Include="SphereCollision.cs" />
     <Compile Include="GridBoard.cs" />
     <Compile Include="PostOffice.cs" />
     <Compile Include="Quaternion.cs" />

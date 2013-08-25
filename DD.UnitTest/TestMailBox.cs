@@ -10,11 +10,27 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_New () {
-            var action = new MailBoxAction ((from, address, letter) => { });
-            var mbox = new MailBox ("Node1", action);
+            var mbox = new MailBox ("Address");
 
-            Assert.AreEqual ("Node1", mbox.NamePlate);
-            Assert.AreEqual (action, mbox.Action);
+            Assert.AreEqual ("Address", mbox.Address);
+        }
+
+        [TestMethod]
+        public void Test_Action () {
+            var mbox = new MailBox ("Address");
+            var recv = 0;
+
+            mbox.Action += new MailBoxAction ((from, adress, letter) => {
+                recv += 1;
+            }); 
+            mbox.Action += new MailBoxAction ((from, adress, letter) => {
+                recv += 1;
+            });
+            
+            // 登録済みアクションの起動
+            mbox.OnMailBox (null, "address", null);
+
+            Assert.AreEqual (2, recv);
         }
     }
 }

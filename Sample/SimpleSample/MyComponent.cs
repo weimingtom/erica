@@ -21,7 +21,7 @@ namespace DD.Sample.SimpleSample {
             var spr = new Sprite (64, 64);
             spr.Color = Color.Red;
 
-            var col = new BoxCollisionShape (32, 32, 0);
+            var col = new BoxCollision (32, 32, 0);
             col.SetOffset (32, 32, 0);
 
             var node = new Node ();

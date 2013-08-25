@@ -8,6 +8,7 @@ using DD.Physics;
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestCollision {
+        /*
         [TestMethod]
         public void Test_New () {
             var collidee = new PhysicsBody ();
@@ -19,5 +20,6 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (p, col.Point);
             Assert.AreEqual (n, col.Normal);
         }
+         * */
     }
 }

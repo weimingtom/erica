@@ -23,13 +23,14 @@ namespace DD.Sample.MessageSample {
             label2.Text = "None";
             label2.SetOffset (0, -24);
 
+            var mbox = new MailBox (name);
+
             var node = new Node (name);
             node.Attach (cmp);
             node.Attach (spr);
             node.Attach (label1);
             node.Attach (label2);
-
-            node.AddMailBox (name);
+            node.Attach (mbox);
 
             node.Translation = pos;
 

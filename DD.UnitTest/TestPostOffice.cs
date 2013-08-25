@@ -42,15 +42,17 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Deliver () {
             var node = new Node ("Node1");
-
+            var mbox = new MailBox ("Node1");
+            node.Attach (mbox);
+            
             var received = false;
 
-            node.AddMailBox (node.Name, (from, address, letter) => {
+            mbox.Action += (from, address, letter) => {
                 received = true;
                 Assert.AreEqual (node, from);
                 Assert.AreEqual ("Node1", address);
                 Assert.AreEqual ("Hello World", (string)letter);
-            });
+            };
 
             var wld = new World ();
             wld.AddChild (node);
@@ -63,8 +65,12 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Deliver_to_All () {
-            var node1 = new Node ("node1");
-            var node2 = new Node ("node2");
+            var node1 = new Node ("Node1");
+            var node2 = new Node ("Node2");
+            var mbox1 = new MailBox ("Node1");
+            var mbox2 = new MailBox ("Node1");
+            node1.Attach (mbox1);
+            node2.Attach (mbox2);
 
             var wld = new World ();
             wld.AddChild (node1);
@@ -73,12 +79,12 @@ namespace DD.UnitTest {
             var recved1 = false;
             var recved2 = false;
 
-            node1.AddMailBox (node1.Name, (from, address, letter) => {
+            mbox1.Action += (from, address, letter) => {
                 recved1 = true;
-            });
-            node2.AddMailBox (node2.Name, (from, address, letter) => {
+            };
+            mbox2.Action += (from, address, letter) => {
                 recved2 = true;
-            });
+            };
 
             // 宛先が "All" の場合は全ノードが受信する
             wld.PostOffice.Post (node1, "All", null);
@@ -91,13 +97,16 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Receive_All () {
             var node1 = new Node ("Node1");
-        
-            var recved = false;
 
             // メールボックスの宛名が "All" の場合は全メッセージを受信する
-            node1.AddMailBox ("All", (from, address, args) => {
+            var mbox1 = new MailBox ("All");
+            node1.Attach (mbox1);
+
+            var recved = false;
+
+            mbox1.Action += (from, address, args) => {
                 recved = true;
-            });
+            };
 
             var wld = new World ();
             wld.AddChild (node1);

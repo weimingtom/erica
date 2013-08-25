@@ -260,33 +260,35 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SendMessage () {
-            var cmp1 = new MyComponent ();
-            var cmp2 = new MyComponent ();
-            
             var node1 = new Node ("Node1");
             var node2 = new Node ("Node2");
+
+            var cmp1 = new MyComponent ();
+            var cmp2 = new MyComponent ();
             node1.Attach (cmp1);
             node2.Attach (cmp2);
 
-            node1.AddMailBox (node1.Name);
-            node2.AddMailBox (node2.Name);
+            var mbox1 = new MailBox ("Node1");
+            var mbox2 = new MailBox ("Node2");
+            node1.Attach (mbox1);
+            node2.Attach (mbox2);
 
             var wld = new World ();
             wld.AddChild (node1);
             wld.AddChild (node2);
 
-            cmp1.SendMessage ("Node2", "1 --> 2");
-            cmp2.SendMessage ("Node1", "2 --> 1");
+            cmp1.SendMessage ("Node2", "Node: 1 --> 2");
+            cmp2.SendMessage ("Node1", "Node: 2 --> 1");
 
             wld.Deliver ();
 
             Assert.AreEqual ("Node1", cmp1.LetterTo);
             Assert.AreEqual (node2, cmp1.LetterFrom);
-            Assert.AreEqual ("2 --> 1", (string)cmp1.Letter);
+            Assert.AreEqual ("Node: 2 --> 1", (string)cmp1.Letter);
 
             Assert.AreEqual ("Node2", cmp2.LetterTo);
             Assert.AreEqual (node1, cmp2.LetterFrom);
-            Assert.AreEqual ("1 --> 2", (string)cmp2.Letter);
+            Assert.AreEqual ("Node: 1 --> 2", (string)cmp2.Letter);
         }
 
     }

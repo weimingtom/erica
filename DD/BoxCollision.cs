@@ -10,14 +10,14 @@ using Microsoft.Xna.Framework;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using SFML.Window;
 
-namespace DD.Physics {
+namespace DD {
     /// <summary>
     /// ボックス コリジョン形状 クラス
     /// </summary>
     /// <remarks>
     /// ローカル座標の原点に箱の中心が来るように箱形のコリジョン形状を定義します。
     /// </remarks>
-    public class BoxCollisionShape : CollisionShape {
+    public class BoxCollision : Collision {
         #region Field
         float halfWidth;
         float halfHeight;
@@ -37,7 +37,7 @@ namespace DD.Physics {
         /// <param name="halfWidth">幅の半分（ピクセル数）</param>
         /// <param name="halfHeight">高さの半分（ピクセル数）</param>
         /// <param name="halfDepth">奥行きの半分（ピクセル数）</param>
-        public BoxCollisionShape (float halfWidth, float halfHeight, float halfDepth) : base(ShapeType.Polygon) {
+        public BoxCollision (float halfWidth, float halfHeight, float halfDepth) : base(ShapeType.Polygon) {
             if (halfWidth < 0 || halfHeight < 0 || halfDepth < 0) {
                 throw new ArgumentException ("Size is invalid");
             }
@@ -69,10 +69,38 @@ namespace DD.Physics {
             get { return halfDepth * 2; }
         }
 
+        public override int VertexCount {
+            get {
+                return 4;
+            }
+            set {
+            }
+        }
+
+        public override IEnumerable<Vector3> Vertices {
+            get {
+                return new Vector3[4]{Offset + new Vector3(-halfWidth, -halfHeight, 0),
+                                      Offset + new Vector3(halfWidth, -halfHeight, 0),
+                                      Offset + new Vector3(halfWidth, halfHeight, 0),
+                                      Offset + new Vector3(-halfWidth, halfHeight, 0)};
+            }
+        }
         #endregion
 
         #region Method
 
+        /// <inheritdoc/>
+        public override bool Contain (float x, float y, float z) {
+            var p = new Vector3 (x, y, z) - Offset;
+
+            if ((p.X >= -halfWidth && p.X < halfWidth) &&
+                (p.Y >= -halfHeight && p.Y < halfHeight) &&
+                (p.Z >= -halfDepth && p.Z < halfDepth)) {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         internal override Shape CreateShapeBody (float ppm) {

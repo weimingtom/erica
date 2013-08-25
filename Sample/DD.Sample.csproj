@@ -86,89 +86,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationSample\MyFireExplosion.cs" />
-    <Compile Include="AnimationSample\Program.cs" />
-    <Compile Include="DonkeyKongSample\MyBall.cs" />
-    <Compile Include="DonkeyKongSample\MyCharacter.cs" />
-    <Compile Include="DonkeyKongSample\MyDeadBox.cs" />
-    <Compile Include="DonkeyKongSample\MyDebugInfo.cs" />
-    <Compile Include="DonkeyKongSample\MyFireExplosion.cs" />
-    <Compile Include="DonkeyKongSample\MyGameClear.cs" />
-    <Compile Include="DonkeyKongSample\MyGoal.cs" />
-    <Compile Include="DonkeyKongSample\MyGorilla.cs" />
-    <Compile Include="DonkeyKongSample\MyPlatform.cs" />
-    <Compile Include="DonkeyKongSample\MyPopupNumber.cs" />
-    <Compile Include="DonkeyKongSample\MyWorld.cs" />
-    <Compile Include="GUISample\MyCamera.cs" />
-    <Compile Include="GUISample\MyButton.cs" />
-    <Compile Include="GUISample\MyMouseSelector.cs" />
-    <Compile Include="GUISample\MyTarget.cs" />
-    <Compile Include="GUISample\MyWorld.cs" />
-    <Compile Include="GUISample\Program.cs" />
-    <Compile Include="IsometricSample\MyCamera.cs" />
-    <Compile Include="IsometricSample\MyCharacter.cs" />
-    <Compile Include="IsometricSample\MyClicker.cs" />
-    <Compile Include="IsometricSample\MyLabels.cs" />
-    <Compile Include="IsometricSample\MyMap.cs" />
-    <Compile Include="IsometricSample\MyWorld.cs" />
-    <Compile Include="IsometricSample\Program.cs" />
     <Compile Include="MessageSample\MyButton.cs" />
     <Compile Include="MessageSample\MyLetter.cs" />
     <Compile Include="MessageSample\MyRecver.cs" />
     <Compile Include="MessageSample\MySender.cs" />
     <Compile Include="MessageSample\Program.cs" />
-    <Compile Include="PhysicsSample\MyRhombus.cs" />
-    <Compile Include="PhysicsSample\MySphere.cs" />
-    <Compile Include="PhysicsSample\MyWalls.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="RTSSample\Enum.cs" />
-    <Compile Include="RTSSample\MyBackground.cs" />
-    <Compile Include="RTSSample\MyBalloon.cs" />
-    <Compile Include="RTSSample\MyBGM.cs" />
-    <Compile Include="RTSSample\MyBigExplosion.cs" />
-    <Compile Include="RTSSample\MyCamera.cs" />
-    <Compile Include="RTSSample\MyContinuousTrack.cs" />
-    <Compile Include="RTSSample\MyEnemyAI.cs" />
-    <Compile Include="RTSSample\MyExplosion.cs" />
-    <Compile Include="RTSSample\MyController.cs" />
-    <Compile Include="RTSSample\MyGameClear.cs" />
-    <Compile Include="RTSSample\MyHpBar.cs" />
-    <Compile Include="RTSSample\MyLineSegment.cs" />
-    <Compile Include="RTSSample\MyMarker.cs" />
-    <Compile Include="RTSSample\MyMouseSelector.cs" />
-    <Compile Include="RTSSample\MyProjectile.cs" />
-    <Compile Include="RTSSample\MyRader.cs" />
-    <Compile Include="RTSSample\MyTank.cs" />
-    <Compile Include="RTSSample\MyTurret.cs" />
-    <Compile Include="RTSSample\MyCharacter.cs" />
-    <Compile Include="RTSSample\MyCard.cs" />
-    <Compile Include="RTSSample\Program.cs" />
-    <Compile Include="ScrollSample\MyCamera1.cs" />
-    <Compile Include="ScrollSample\MyCharacter.cs" />
-    <Compile Include="ScrollSample\MyDrawArgs.cs" />
-    <Compile Include="ScrollSample\MyHUD.cs" />
-    <Compile Include="ScrollSample\MyCamera2.cs" />
-    <Compile Include="ScrollSample\MyWorld.cs" />
-    <Compile Include="PlatformSample\MyCharacter.cs" />
-    <Compile Include="PlatformSample\MyWorld.cs" />
-    <Compile Include="PlatformSample\Program.cs" />
-    <Compile Include="DonkeyKongSample\Program.cs" />
-    <Compile Include="ScrollSample\MyPopupNumber.cs" />
-    <Compile Include="ScrollSample\Program.cs" />
     <Compile Include="SimpleSample\MyComponent.cs" />
     <Compile Include="SimpleSample\Program.cs" />
-    <Compile Include="TiledMapSample\MyCabbage.cs" />
-    <Compile Include="TiledMapSample\MyCamera1.cs" />
-    <Compile Include="TiledMapSample\MyCamera2.cs" />
-    <Compile Include="TiledMapSample\MyCharacter.cs" />
-    <Compile Include="PhysicsSample\MyComponent.cs" />
-    <Compile Include="PhysicsSample\Program.cs" />
-    <Compile Include="TiledMapSample\MyGameClear.cs" />
-    <Compile Include="TiledMapSample\MyPopup.cs" />
-    <Compile Include="TiledMapSample\MyTiledMap.cs" />
-    <Compile Include="TiledMapSample\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PhysicsSample\UpdraftComponent.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -194,7 +120,6 @@
     <None Include="media\Konatu.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="PhysicsSample\MyWorld.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

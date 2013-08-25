@@ -92,6 +92,11 @@ namespace DD {
         /// </summary>
         Sphere,
 
+        /// <summary>
+        /// 大きさのない一点
+        /// </summary>
+        Point,
+
     }
 
 

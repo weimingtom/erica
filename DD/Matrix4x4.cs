@@ -424,29 +424,7 @@ namespace DD {
             return done;
         }
 
-        /// <summary>
-        /// ベクトルの変換
-        /// </summary>
-        /// <remarks>
-        /// この4x4行列を使って指定のベクトルを変換します。
-        /// ベクトルは <c>W=1</c> が追加され、返還後に自動的にW除算されます。
-        /// </remarks>
-        /// <param name="x">ベクトルのX成分</param>
-        /// <param name="y">ベクトルのY成分</param>
-        /// <param name="z">ベクトルのZ成分</param>
-        [Obsolete]
-        public void Apply (ref float x, ref float y, ref float z) {
-            var v = new Vector3 (x, y, z);
-            var m = this;
-            x = m[0] * v[0] + m[1] * v[1] + m[2] * v[2] + m[3] * 1;
-            y = m[4] * v[0] + m[5] * v[1] + m[6] * v[2] + m[7] * 1;
-            z = m[8] * v[0] + m[9] * v[1] + m[10] * v[2] + m[11] * 1;
-            var w = m[12] * v[0] + m[13] * v[1] + m[14] * v[2] + m[15] * 1;
-            x /= w;
-            y /= w;
-            z /= w;
-        }
-
+     
         /// <summary>
         /// 座標変換
         /// </summary>
@@ -464,6 +442,10 @@ namespace DD {
             var Z = this[8] * x + this[9] * y + this[10] * z + this[11] * w;
             var W = this[12] * x + this[13] * y + this[14] * z + this[15] * w;
             return (w != 0) ? new Vector3 (X/W, Y/W, Z/W) : new Vector3(X,Y,Z);
+        }
+
+        public Vector3 Apply (Vector3 v) {
+            return Apply (v.X, v.Y, v.Z, 1);
         }
 
         /// <summary>

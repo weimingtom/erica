@@ -10,7 +10,7 @@ namespace DD.UnitTest.Physics {
     public class TestBoxCollision {
         [TestMethod]
         public void Test_New () {
-            var box = new BoxCollisionShape (1, 2, 3);
+            var box = new BoxCollision (1, 2, 3);
 
             Assert.AreEqual (DD.ShapeType.Polygon, box.Type);
             Assert.AreEqual (true, box.IsPolygon);
@@ -22,7 +22,7 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_CreateShape () {
-            var box = new BoxCollisionShape (1, 2, 3);
+            var box = new BoxCollision (1, 2, 3);
             box.Offset = new Vector3 (1, 2, 3);
 
             Assert.IsNotNull(box.CreateShapeBody (1.0f));

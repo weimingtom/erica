@@ -23,7 +23,6 @@ namespace DD {
         IOrderedEnumerable<IGrouping<string, Node>> allNodesGroupedByName;    // 全ノードのキャッシュ（名前でグルーピング化）
         #endregion
 
-
         #region Constructor
         /// <summary>
         /// コンストラクター
@@ -348,6 +347,45 @@ namespace DD {
                    select node;
         }
 
+
+        /// <summary>
+        /// ノードのピック
+        /// </summary>
+        /// <remarks>
+        /// 指定の点を内部に持つノードをピックアップします。複数のノードが該当する場合一番 <see cref="DrawPriority"/> が高いノードがピックされます。
+        /// （注意）引数のピック位置はグローバル座標です。
+        /// 線分を使ったピックは現在未実装です。
+        /// </remarks>
+        /// <note>
+        /// このメソッドは時代遅れ。1点のピックとかあり得ん。
+        /// レイキャスト方式でピックするように変更する。
+        /// </note>
+        /// <param name="x">ピック位置X（グローバル座標）</param>
+        /// <param name="y">ピック位置Y（グローバル座標）</param>
+        /// <param name="y">ピック位置Z（グローバル座標）</param>
+        /// <returns></returns>
+        public Node Pick (float x, float y, float z) {
+
+            return (from node in Downwards
+                         where Node.Contain (node, x, y, z)
+                         orderby DrawPriority
+                         select node).FirstOrDefault ();
+        }
+
+        /// <summary>
+        /// ノードのピック
+        /// </summary>
+        /// <param name="start">開始地点（グローバル座標）</param>
+        /// <param name="end">終了地点（グローバル座標）</param>
+        /// <returns></returns>
+        public IEnumerable<Node> RayCast (Vector3 start, Vector3 end) {
+            return from node in Downwards
+                    let f = Node.RayCast (node, start, end)
+                    where f > 0
+                    orderby f
+                    orderby node.DrawPriority
+                    select node;
+        }
 
         #endregion
     }

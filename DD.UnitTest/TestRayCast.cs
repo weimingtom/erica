@@ -8,6 +8,7 @@ using DD.Physics;
 namespace DD.UnitTest {
     [TestClass]
     public class TestRayCast {
+        /*
         [TestMethod]
         public void Test_New_1 () {
             var pointA = new Vector3(0,0,0);
@@ -43,6 +44,6 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (20.0f, output.Distance, 0.0001f);
         }
-
+        */
     }
 }

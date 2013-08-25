@@ -8,6 +8,7 @@ using DD.Physics;
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestPhysicsMaterial {
+        /*
         [TestMethod]
         public void Test_New () {
             var mat = new PhysicsMaterial ();
@@ -58,5 +59,6 @@ namespace DD.UnitTest.Physics {
 
             Assert.AreEqual (0.5f, mat.AngulerDamping, 0.0001f);
         }
+         * */
     }
 }
