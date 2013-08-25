@@ -73,11 +73,12 @@
     <Compile Include="Physics\TestContactPoint.cs" />
     <Compile Include="Physics\TestPhysics2D.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
-    <Compile Include="Physics\TestRhombus.cs" />
     <Compile Include="Physics\TestSphereCollision.cs" />
     <Compile Include="SFML\TestCamera.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
+    <Compile Include="TestBoxCollision.cs" />
+    <Compile Include="TestCollision.cs" />
     <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestBar.cs" />
     <Compile Include="TestCamera.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="TestLineParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="TestSphereCollision.cs" />
     <Compile Include="TestTiledMapComposer.cs" />
     <Compile Include="TestTransformable.cs" />
     <Compile Include="TestVector2.cs" />

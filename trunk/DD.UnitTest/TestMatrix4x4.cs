@@ -314,15 +314,17 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Apply () {
+        public void Test_Apply_1 () {
 
             var m = new Matrix4x4 (1, 2, 1, 1,
                                    2, 1, 2, 1,
                                    2, 2, 2, 2,
                                    1, 1, 2, 1);
-            Assert.AreEqual(new Vector3(0.9f, 1.1f, 1.4f), m.Apply (1,2,3)); // w=1
-            Assert.AreEqual (new Vector3 (8,10,12), m.Apply (1, 2, 3, 0));   // w=0（W除算を行わない）
+            Assert.AreEqual(new Vector3(0.9f, 1.1f, 1.4f), m.Apply (1,2,3));                   // w=1
+            Assert.AreEqual (new Vector3 (0.9f, 1.1f, 1.4f), m.Apply (new Vector3 (1, 2, 3))); // w=1
+            Assert.AreEqual (new Vector3 (8, 10, 12), m.Apply (1, 2, 3, 0));                   // w=0（W除算を行わない）
         }
+
 
         [TestMethod]
         public void Test_ApplyVector () {

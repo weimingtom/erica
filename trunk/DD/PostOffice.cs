@@ -72,15 +72,16 @@ namespace DD {
                             from node in World.Downwards
                             where node.Deliverable == true
                             from mailbox in node.MailBoxs
-                            where mail.Address == mailbox.NamePlate || mail.Address == "All" || mailbox.NamePlate=="All"
+                            where mail.Address == mailbox.Address || mail.Address == "All" || mailbox.Address=="All"
                             select new {mail, node, mailbox}).ToArray();   // (*1)
 
             foreach (var delivery in deliveries) {
                 var from = delivery.mail.From;
                 var addr = delivery.mail.Address;
-                var to = delivery.node;
                 var letter = delivery.mail.Letter;
-                delivery.mailbox.Action (from, addr, letter);
+                foreach (var cmp in delivery.node.Components) {
+                    cmp.OnMailBox (from, addr, letter);
+                }
             }
 
             this.mails.Clear ();

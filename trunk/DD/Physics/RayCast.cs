@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace DD.Physics {
+    /*
+     * 
+     * 
     /// <summary>
     /// レイ構造体
     /// </summary>
@@ -133,6 +136,6 @@ namespace DD.Physics {
         public float Distance { get { return Fraction * Ray.UnitLength; } }
     }
 
-
+    */
 
 }

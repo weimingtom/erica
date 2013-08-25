@@ -28,7 +28,8 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.UserData.Count ());
             Assert.AreEqual (0, node.DrawPriority);
             Assert.AreEqual (0, node.UpdatePriority);
-            Assert.AreEqual (0, node.MailBoxCount);
+
+            Assert.AreEqual (null, node.Collision);
             Assert.AreEqual (0, node.MailBoxs.Count());
         }
 
@@ -143,6 +144,27 @@ namespace DD.UnitTest {
             Assert.AreEqual (2, (int)node.UserData["Key2"]);
         }
 
+        [TestMethod]
+        public void Test_Collision () {
+            var node = new Node ("Node");
+            var col = new BoxCollision (1, 1, 1);
+            node.Attach (col);
+
+            Assert.AreEqual (col, node.Collision);
+        }
+
+        [TestMethod]
+        public void Test_MailBoxs () {
+            var node = new Node ("Node");
+            var mbox1 = new MailBox ("Address1");
+            var mbox2 = new MailBox ("Address1");
+            node.Attach (mbox1);
+            node.Attach (mbox2);
+
+            Assert.AreEqual (2, node.MailBoxs.Count());
+            Assert.AreEqual (mbox1, node.MailBoxs.ElementAt (0));
+            Assert.AreEqual (mbox2, node.MailBoxs.ElementAt (1));
+        }
 
         [TestMethod]
         public void Test_AddChild () {
@@ -292,6 +314,19 @@ namespace DD.UnitTest {
             Assert.AreEqual (comp1, node.GetComponent<Component> ());
             Assert.AreEqual (comp1, node.GetComponent<Component> (0));
             Assert.AreEqual (comp2, node.GetComponent<Component> (1));
+        }
+
+        [TestMethod]
+        public void Test_GetComponents () {
+            var cmp1 = new MailBox ("Address1");
+            var cmp2 = new MailBox("Address2");
+            var cmp3 = new Sprite (64, 64);
+            var node = new Node ();
+            node.Attach (cmp1);
+            node.Attach (cmp2);
+            node.Attach (cmp3);
+
+            Assert.AreEqual (2, node.GetComponents<MailBox> ().Count ());
         }
 
         [TestMethod]
@@ -534,30 +569,32 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_AddMailBox () {
-            var node = new Node ("Node1");
-            var action1 = new MailBoxAction ((from, address, letter) => { });
-            var action2 = new MailBoxAction ((from, address, letter) => { });
-            node.AddMailBox ("MyAddress1", action1);
-            node.AddMailBox ("MyAddress2", action2);
+        public void Test_Contain () {
+            var node = new Node ();
+            var col = new BoxCollision (1, 1, 1);
+            node.Attach (col);
 
-            Assert.AreEqual (2, node.MailBoxCount);
-            Assert.AreEqual ("MyAddress1", node.GetMailBox (0).NamePlate);
-            Assert.AreEqual ("MyAddress2", node.GetMailBox (1).NamePlate);
-            Assert.AreEqual (action1, node.GetMailBox (0).Action);
-            Assert.AreEqual (action2, node.GetMailBox (1).Action);
+            node.SetTranslation (10, 10, 10);
+
+            Assert.AreEqual (true, Node.Contain (node, 10, 10, 10));
+            Assert.AreEqual (false, Node.Contain (node, 0, 0, 0));
+
+            col.SetOffset (-10, -10, -10);
+
+            Assert.AreEqual (false, Node.Contain (node, 10, 10, 10));
+            Assert.AreEqual (true, Node.Contain (node, 0, 0, 0));
         }
 
         [TestMethod]
-        public void Test_RemoveMailBox () {
-            var node = new Node ("Node1");
-            node.AddMailBox ("MyAddress1");
-            node.AddMailBox ("MyAddress2");
-            node.RemoveMailBox ("MyAddress1");
-            node.RemoveMailBox ("MyAddress2");
+        public void Test_Contain_Null () {
+            var node = new Node ();
 
-            Assert.AreEqual (0, node.MailBoxCount);
+            node.SetTranslation (10, 10, 10);
+
+            Assert.AreEqual (false, Node.Contain (node, 10, 10, 10));
+            Assert.AreEqual (false, Node.Contain (node, 1, 1, 1));
         }
+
 
     }
 }

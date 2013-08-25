@@ -9,6 +9,7 @@ using DD.Physics;
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestPhysics2D {
+        /*
         [TestMethod]
         public void Test_CreatWorld () {
             var p2d = Physics2D.GetInstance ();
@@ -34,8 +35,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_1 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new SphereCollisionShape (1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new SphereCollision (1);
 
             Collision col;
 
@@ -59,8 +60,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_2 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new SphereCollisionShape (1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new SphereCollision (1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
 
@@ -85,8 +86,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_3 () {
-            var shape1 = new BoxCollisionShape (1, 1, 1);
-            var shape2 = new BoxCollisionShape (1, 1, 1);
+            var shape1 = new BoxCollision (1, 1, 1);
+            var shape2 = new BoxCollision (1, 1, 1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
 
@@ -115,8 +116,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_4 () {
-            var shape1 = new BoxCollisionShape (1, 1, 1);
-            var shape2 = new SphereCollisionShape (1);
+            var shape1 = new BoxCollision (1, 1, 1);
+            var shape2 = new SphereCollision (1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
 
@@ -147,8 +148,8 @@ namespace DD.UnitTest.Physics {
         /// </remarks>
         [TestMethod]
         public void Test_Collide_5 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new BoxCollisionShape (1, 1, 1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new BoxCollision (1, 1, 1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
 
@@ -176,8 +177,8 @@ namespace DD.UnitTest.Physics {
         /// </remarks>
         [TestMethod]
         public void Test_Collide_6 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new BoxCollisionShape (1, 1, 1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new BoxCollision (1, 1, 1);
             var node1 = new Node ();
             var node2 = new Node ();
            
@@ -211,7 +212,7 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_7 () {
-            var shape1 = new SphereCollisionShape (1);
+            var shape1 = new SphereCollision (1);
             var shape2 = new RhombusCollisionShape (1, 1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
@@ -237,7 +238,7 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Collide_8 () {
-            var shape1 = new BoxCollisionShape (1, 1, 1);
+            var shape1 = new BoxCollision (1, 1, 1);
             var shape2 = new RhombusCollisionShape (1, 1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
@@ -262,7 +263,7 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_Contain_1 () {
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
 
             Assert.AreEqual(true, Physics2D.Contain(shape, null, new Vector2(0,0)));
             Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (1,1)));
@@ -271,7 +272,7 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_Contain_2 () {
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
 
             var tra = Matrix4x4.CreateFromTranslation (0, 0, 0);
             Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
@@ -285,7 +286,7 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_Contain_3 () {
-            var shape = new BoxCollisionShape (1, 1, 1);
+            var shape = new BoxCollision (1, 1, 1);
 
             Assert.AreEqual (true, Physics2D.Contain (shape, null, new Vector2 (0, 0)));
             Assert.AreEqual (false, Physics2D.Contain (shape, null, new Vector2 (2, 2)));
@@ -294,7 +295,7 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_Contain_4 () {
-            var shape = new BoxCollisionShape (1, 1, 1);
+            var shape = new BoxCollision (1, 1, 1);
 
             var tra = Matrix4x4.CreateFromTranslation (0, 0, 0);
             Assert.AreEqual (true, Physics2D.Contain (shape, tra, new Vector2 (0, 0)));
@@ -312,7 +313,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_RayCast_1 () {
             
-            var shape = new SphereCollisionShape(1.0f);
+            var shape = new SphereCollision(1.0f);
             RayIntersection output;
 
             var ray = new Ray (new Vector3 (10, 0, 0), new Vector3 (9, 0, 0), 10);
@@ -346,7 +347,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_RayCast_2 () {
 
-            var shape = new BoxCollisionShape (1,1,1);
+            var shape = new BoxCollision (1,1,1);
             RayIntersection output;
 
             var ray = new Ray (new Vector3 (10, 0, 0), new Vector3 (9, 0, 0), 10);
@@ -380,7 +381,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_RayCast_3 () {
 
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
             RayIntersection output;
 
             var ray = new Ray (new Vector3 (0, 0, 0), new Vector3 (1, 0, 0), 2);
@@ -408,7 +409,7 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_RayCast_4 () {
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
             var node = new Node ();
             node.Attach (shape);
 
@@ -438,7 +439,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_RayCast_5 () {
 
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
             shape.Offset = new Vector3 (10, 0, 0);
 
             var ray = new Ray (new Vector3 (0, 0, 0), new Vector3 (2, 0, 0), 10);
@@ -458,7 +459,7 @@ namespace DD.UnitTest.Physics {
         [TestMethod]
         public void Test_RayCast_6 () {
             var node = new Node();
-            var shape = new SphereCollisionShape (1);
+            var shape = new SphereCollision (1);
             shape.Offset = new Vector3 (10, 0, 0);
             node.Attach(shape);
 
@@ -482,8 +483,8 @@ namespace DD.UnitTest.Physics {
         /// </remarks>
         [TestMethod]
         public void Test_Distance_1 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new SphereCollisionShape (1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new SphereCollision (1);
             ClosestPoints cp;
 
             // overlap            
@@ -514,8 +515,8 @@ namespace DD.UnitTest.Physics {
         /// </remarks>
         [TestMethod]
         public void Test_Distance_2 () {
-            var shape1 = new BoxCollisionShape (1,1,1);
-            var shape2 = new BoxCollisionShape (1,1,1);
+            var shape1 = new BoxCollision (1,1,1);
+            var shape2 = new BoxCollision (1,1,1);
             ClosestPoints cp;
 
             // overlap            
@@ -543,8 +544,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Distance_3 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new SphereCollisionShape (1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new SphereCollision (1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
             ClosestPoints cp;
@@ -573,8 +574,8 @@ namespace DD.UnitTest.Physics {
         /// </summary>
         [TestMethod]
         public void Test_Distance_4 () {
-            var shape1 = new SphereCollisionShape (1);
-            var shape2 = new BoxCollisionShape (1,1,1);
+            var shape1 = new SphereCollision (1);
+            var shape2 = new BoxCollision (1,1,1);
             var tra1 = Matrix4x4.Identity;
             var tra2 = Matrix4x4.Identity;
             ClosestPoints cp;
@@ -586,6 +587,6 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (new Vector3 (1, 0, 0), cp.PointA);
             Assert.AreEqual (new Vector3 (1.5758f, 0, 0), cp.PointB);
         }
-
+        */
     }
 }

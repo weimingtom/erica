@@ -148,6 +148,8 @@ namespace DD.Physics {
             }
         }
 
+        /*
+         * 
         /// <summary>
         /// 2物体の衝突の検出
         /// </summary>
@@ -161,7 +163,7 @@ namespace DD.Physics {
         /// <param name="matB">変換行列B</param>
         /// <param name="col">結果を受け取るコリジョン構造体</param>
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
-        public static bool Collide (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB, out Collision col) {
+        public static bool Collide (Collision shapeA, Matrix4x4? matA, Collision shapeB, Matrix4x4? matB, out Collision col) {
             if (shapeA == null || shapeB == null) {
                 throw new ArgumentNullException ("Shapes are null");
             }
@@ -236,7 +238,7 @@ namespace DD.Physics {
         /// <param name="shapeB">コリジョン形状B</param>
         /// <param name="matB">変換行列B</param>
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
-        public static bool Collide (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+        public static bool Collide (Collision shapeA, Matrix4x4? matA, Collision shapeB, Matrix4x4? matB) {
             Collision col;
             return Collide (shapeA, matA, shapeB, matB, out col);
         }
@@ -251,7 +253,7 @@ namespace DD.Physics {
         /// <param name="shapeB">コリジョン形状B</param>
         /// <param name="col">結果を受け取るコリジョン構造体</param>
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
-        public static bool Collide (CollisionShape shapeA, CollisionShape shapeB, out Collision col) {
+        public static bool Collide (Collision shapeA, Collision shapeB, out Collision col) {
             if(shapeA == null || shapeB == null){
                 throw new ArgumentNullException("Shapes are null");
             }
@@ -269,7 +271,7 @@ namespace DD.Physics {
         /// <param name="shapeA">コリジョン形状A</param>
         /// <param name="shapeB">コリジョン形状B</param>
         /// <returns>衝突があれば<c>true</c>, そうでなければ <c>false</c>.</returns>
-        public static bool Collide (CollisionShape shapeA, CollisionShape shapeB) {
+        public static bool Collide (Collision shapeA, Collision shapeB) {
             Collision col;
             return Collide (shapeA, shapeB, out col);
         }
@@ -289,7 +291,7 @@ namespace DD.Physics {
         /// <param name="shapeB">コリジョン形状B</param>
         /// <param name="matB">変換行列B</param>
         /// <returns></returns>
-        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB) {
+        public static float Distance (Collision shapeA, Matrix4x4? matA, Collision shapeB, Matrix4x4? matB) {
             if (shapeA == null) {
                 Console.WriteLine ("Distance shapeA is null");
             }
@@ -316,7 +318,7 @@ namespace DD.Physics {
         /// <param name="matB">変換行列B</param>
         /// <param name="cp">結果の再近接地点情報を受け取る</param>
         /// <returns>距離</returns>
-        public static float Distance (CollisionShape shapeA, Matrix4x4? matA, CollisionShape shapeB, Matrix4x4? matB, out ClosestPoints cp) {
+        public static float Distance (Collision shapeA, Matrix4x4? matA, Collision shapeB, Matrix4x4? matB, out ClosestPoints cp) {
 
             DistanceOutput output;
             SimplexCache cache;
@@ -366,7 +368,7 @@ namespace DD.Physics {
         /// <param name="matA">変換行列</param>
         /// <param name="point">判定したい1点</param>
         /// <returns>コリジョン形状の中にあれば<c>true</c>, そうでなければ <c>false</c>. </returns>
-        public static bool Contain (CollisionShape shapeA, Matrix4x4? matA, Vector2 point) {
+        public static bool Contain (Collision shapeA, Matrix4x4? matA, Vector2 point) {
 
             Vector3 T;
             Matrix3x3 R;
@@ -394,7 +396,7 @@ namespace DD.Physics {
         /// <param name="ray">レイ</param>
         /// <param name="rayOut">結果を受け取る <see cref="RayIntersection"/> オブジェクト</param>
         /// <returns>レイと物体が交差したら<c>true</c>, そうでなければ <c>false</c>.</returns>
-        public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray, out RayIntersection rayOut) {
+        public static bool RayCast (Collision shapeA, Matrix4x4? matA, Ray ray, out RayIntersection rayOut) {
             FarseerPhysics.Collision.RayCastInput input;
             FarseerPhysics.Collision.RayCastOutput output;
             input.Point1 = Convert (ray.PointA);
@@ -427,7 +429,7 @@ namespace DD.Physics {
         /// <param name="matA">変換行列A</param>
         /// <param name="ray">レイ</param>
         /// <returns></returns>
-        public static bool RayCast (CollisionShape shapeA, Matrix4x4? matA, Ray ray) {
+        public static bool RayCast (Collision shapeA, Matrix4x4? matA, Ray ray) {
             RayIntersection output;
             return RayCast (shapeA, matA, ray, out output);
         }
@@ -443,7 +445,7 @@ namespace DD.Physics {
         /// <param name="ray">レイ</param>
         /// <param name="output">結果を受け取る <see cref="RayIntersection"/> 構造体</param>
         /// <returns></returns>
-        public static bool RayCast (CollisionShape shapeA, Ray ray, out RayIntersection output) {
+        public static bool RayCast (Collision shapeA, Ray ray, out RayIntersection output) {
             if (shapeA.Node == null) {
                 throw new ArgumentException ("ShapeA is not attached");
             }
@@ -461,14 +463,14 @@ namespace DD.Physics {
         /// <param name="shapeA">形状A</param>
         /// <param name="ray">レイ</param>
         /// <returns></returns>
-        public static bool RayCast (CollisionShape shapeA, Ray ray) {
+        public static bool RayCast (Collision shapeA, Ray ray) {
             RayIntersection output;
             var matA = shapeA.Node.Transform;
             return RayCast (shapeA, matA, ray, out output);
         }
+        */
 
-
-        private static Shape Convert (CollisionShape shape) {
+        private static Shape Convert (Collision shape) {
             return shape.CreateShapeBody (1.0f);
         }
 
@@ -493,7 +495,7 @@ namespace DD.Physics {
         }
 
 
-
+        
         /// <summary>
         /// 物理エンジンを1ステップ進める
         /// </summary>
@@ -511,6 +513,8 @@ namespace DD.Physics {
                 prev = msec;
             }
 
+            throw new NotImplementedException ("Sorry, Physics");
+            /*
             var colliders = from node in ddworld.Downwards
                             from comp in node.Components
                             where comp is PhysicsBody
@@ -547,6 +551,7 @@ namespace DD.Physics {
             }
 
             this.prev = msec;
+             * */
         }
         #endregion
     }

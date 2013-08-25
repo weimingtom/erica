@@ -12,7 +12,7 @@ using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using SFML.Window;
 
 
-namespace DD.Physics {
+namespace DD {
     /// <summary>
     /// スフィア コリジョン形状 コンポーネント
     /// </summary>
@@ -20,9 +20,10 @@ namespace DD.Physics {
     /// 球の中心がローカル座標の原点に一致する球形のコリジョン形状を定義します。
     /// 中心位置は後から変更可能です。
     /// </remarks>
-    public class SphereCollisionShape : CollisionShape {
+    public class SphereCollision : Collision {
         #region Field
         float radius;
+        int vertexCount;
         #endregion
 
         #region Constructor
@@ -34,11 +35,12 @@ namespace DD.Physics {
         /// 引数の <paramref name="radius"/> は半径（中心から外周まで）をピクセル数で指定します。
         /// </remarks>
         /// <param name="radius">半径（ピクセル数）</param>
-        public SphereCollisionShape (float radius): base(ShapeType.Sphere) {
+        public SphereCollision (float radius): base(ShapeType.Sphere) {
             if (radius < 0) {
                 throw new ArgumentException ("Raidus is invalid");
             }
             this.radius = radius;
+            this.vertexCount = 8;
         }
         #endregion
 
@@ -47,15 +49,60 @@ namespace DD.Physics {
         /// 球の半径
         /// </summary>
         /// <remarks>
-        /// 球の半径をピクセル数で返します。
+        /// 球の半径です。
         /// </remarks>
         public float Radius {
             get { return radius; }
         }
 
+        /// <summary>
+        /// 球の直径
+        /// </summary>
+        /// <remarks>
+        /// 球の直径です。
+        /// </remarks>
+        public float Diameter {
+            get { return radius * 2; }
+        }
+
+        public override int VertexCount {
+            get {
+                return vertexCount;
+            }
+            set {
+                if (value < 4) {
+                    throw new ArgumentException ("VertexCount must be greater than 4");
+                }
+                this.vertexCount = value;
+            }
+        }
+
+        public override IEnumerable<Vector3> Vertices {
+            get {
+                var vertices = new Vector3[vertexCount];
+                for(var i=0; i < vertexCount; i++){
+                    vertices[i] = Offset + new Vector3 (radius * (float)(Math.Cos ((i / (float)vertexCount) * Math.PI * 2)),
+                                                        radius * (float)(Math.Sin ((i / (float)vertexCount) * Math.PI * 2)),
+                                                        0);
+
+                }
+                return vertices;
+            }
+        }
+
         #endregion
 
         #region Method
+
+        /// <inheritdoc/>
+        public override bool Contain (float x, float y, float z) {
+            var p = new Vector3 (x, y, z) - Offset;
+            if (p.Length <= radius) {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         internal override Shape CreateShapeBody (float ppm) {

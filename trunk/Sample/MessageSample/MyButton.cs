@@ -23,7 +23,7 @@ namespace DD.Sample.MessageSample {
             label.Color = Color.Black;
             label.SetOffset (8, 8);
 
-            var col = new BoxCollisionShape(16, 16, 0);
+            var col = new BoxCollision(16, 16, 0);
             col.SetOffset (16, 16, 0);
 
             var node = new Node (name);

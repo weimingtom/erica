@@ -131,14 +131,20 @@ namespace DD.UnitTest {
         public void Test_Deliver () {
             var node1 = new Node ("Node1");
             var node2 = new Node ("Node2");
+            var mbox1 = new MailBox ("All");
+            var mbox2 = new MailBox ("All");
+            node1.Attach (mbox1);
+            node2.Attach (mbox2);
+
             var received1 = false;
             var received2 = false;
-            node1.AddMailBox ("All", (from, to, args) => {
+            
+            mbox1.Action += (from, to, args) => {
                 received1 = true;
-            });
-            node1.AddMailBox ("All", (from, to, args) => {
+            };
+            mbox2.Action += (from, to, args) => {
                 received2 = true;
-            });
+            };
 
             var wld = new World ();
             wld.AddChild (node1);
@@ -293,13 +299,16 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Deliverable () {
             var node = new Node ("Node");
+            var mbox = new MailBox ("Node");
+            node.Attach (mbox);
+
             var wld = new World ();
             wld.AddChild (node);
 
             var recved = false;
-            node.AddMailBox (node.Name, (from, address, letter) => {
+            mbox.Action += (from, address, letter) => {
                 recved = true;
-            });
+            };
 
             
             node.Deliverable = true;
@@ -323,6 +332,61 @@ namespace DD.UnitTest {
 
         }
 
+        [TestMethod]
+        public void Test_Pick () {
+            var wld = new World ();
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
 
+            wld.AddChild (node1);
+            node1.AddChild (node2);
+            wld.AddChild (node3);
+
+            node1.SetTranslation (-10, 0, 0);
+            node2.SetTranslation (-10, 0, 0);
+            node3.SetTranslation (10, 0, 0);
+
+            node1.Attach (new SphereCollision (1));
+            node2.Attach (new SphereCollision (1));
+            node3.Attach (new SphereCollision (1));
+
+            Assert.AreEqual (node1, wld.Pick (-10, 0, 0));
+            Assert.AreEqual (node2, wld.Pick (-20, 0, 0));
+            Assert.AreEqual (node3, wld.Pick (10, 0, 0));
+            Assert.AreEqual (null, wld.Pick (0, 0, 0));
+        }
+
+        [TestMethod]
+        public void Test_RayCast () {
+
+            var wld = new World ();
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+
+            wld.AddChild (node1);
+            node1.AddChild (node2);
+            wld.AddChild (node3);
+
+            node1.SetTranslation (-10, 0, 0);
+            node2.SetTranslation (-10, 0, 0);
+            node3.SetTranslation (10, 0, 0);
+
+            node1.Attach (new SphereCollision (1));
+            node2.Attach (new SphereCollision (1));
+            node3.Attach (new SphereCollision (1));
+
+           
+           Assert.AreEqual (node3, wld.RayCast (new Vector3 (20, 0, 0), new Vector3 (-20, 0, 0)));
+           Assert.AreEqual (node1, wld.RayCast (new Vector3 (0, 0, 0), new Vector3 (-20, 0, 0)));
+           Assert.AreEqual (node2, wld.RayCast (new Vector3 (-10, 0, 0), new Vector3 (-20, 0, 0)));
+
+            // 現状ではZを考慮しないためこのRayCastはNode1が返ってくる。
+            // コリジョン検出エンジンをFarrseer以外の物を検討する
+            // (そもそもあれ2Dなので・・・）
+            // Assert.AreEqual (null, wld.RayCast (new Vector3 (20, 0, -10), new Vector3 (-20, 0, -10)));
+        
+        }
     }
 }

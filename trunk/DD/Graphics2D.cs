@@ -122,32 +122,6 @@ namespace DD {
         }
 
         /// <summary>
-        /// スクリーン上の1点を指定してノードの検出
-        /// </summary>
-        /// <remarks>
-        /// スクリーン上の1点（典型的にはマウスの位置）を指定して対象ノード <paramref name="node"/> 以下をピックします。
-        /// ピック対象になるのは <see cref="CollisionShape"/> を保有するノードだけです。
-        /// 結果はピックされたすべてのノードを <see cref="Node.DrawPriority"/> の順番でソートして返します。
-        /// 1ノードもヒットしなかった場合カウント0がかえり<c>null</c> を返す事はありません。
-        /// </remarks>
-        /// <param name="node">ピック対象のノード（これ以下のノードすべてが対象）</param>
-        /// <param name="x">ピックする点のX座標（ワールド座標）</param>
-        /// <param name="y">ピックする点のY座標（ワールド座標）</param>
-        /// <returns></returns>
-        public static IEnumerable<Node> Pick (Node node, float x, float y) {
-            if (node == null) {
-                return new Node[0];
-            }
-            var point = new Vector2 (x, y);
-
-            return from n in node.Downwards
-                   let col = n.GetComponent<CollisionShape> ()
-                   where (col != null) && Physics2D.Contain (col, col.Node.GlobalTransform, point)
-                   orderby n.DrawPriority
-                   select n;
-        }
-
-        /// <summary>
         /// シーンの描画
         /// </summary>
         /// <remarks>
@@ -373,8 +347,10 @@ namespace DD {
             this.keyBuffer.Add (btn);
             this.mouse = pos;
 
-            var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
-            foreach (var node in picked) {
+            // ここ本当はレイキャストで (0,∞) でピックすべきだろう
+            var node = workingScript.Pick (pos.X, pos.Y, 0);
+
+            if(node != null){
                 foreach (var comp in node.Components.ToArray()) {
                     switch (clicked.Button) {
                         case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
@@ -399,8 +375,10 @@ namespace DD {
             this.keyBuffer.Remove (btn);
             this.mouse = pos;
 
-            var picked = Graphics2D.Pick (workingScript, pos.X, pos.Y);
-            foreach (var node in picked) {
+            // ここは本当はレイキャストでピックすべきだろう
+            var node = workingScript.Pick(pos.X, pos.Y, 0);
+
+            if (node != null){
                 foreach (var comp in node.Components.ToArray()) {
                     switch (released.Button) {
                         case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
@@ -428,19 +406,21 @@ namespace DD {
 
             this.mouse = pos;
 
-            var hit = Graphics2D.Pick (workingScript, pos.X, pos.Y).FirstOrDefault();
-            if (hit != prevHit) {
+            // ここ本当はレイキャストでピックすべきだろう
+            var node = workingScript.Pick(pos.X, pos.Y, 0);
+
+            if (node != prevHit) {
                 if (prevHit != null) {
                     foreach (var comp in prevHit.Components) {
                         comp.OnMouseFocusOut ((int)pos.X, (int)pos.Y);
                     }
                 }
-                if (hit != null) {
-                    foreach (var comp in hit.Components) {
+                if (node != null) {
+                    foreach (var comp in node.Components) {
                         comp.OnMouseFocusIn ((int)pos.X, (int)pos.Y);
                     }
                 }
-                this.prevHit = hit;
+                this.prevHit = node;
             }
 
         }

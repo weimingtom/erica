@@ -13,10 +13,10 @@ using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace DD.Physics {
     /// <summary>
-    /// コライダー コンポーネント
+    /// 剛体物理 コンポーネント
     /// </summary>
     /// <remarks>
-    /// 衝突判定と物理エンジンによる挙動制御を行うコンポーネントです。
+    /// 物理エンジンによる挙動制御を行うコンポーネントです。
     /// ノードにこのコンポーネントをアタッチする事で、ノードは物理エンジンによってコントロールされるようになります。
     /// コライダーは制御方法の違いで (1) ダイナミック, (2) スタティック, (3) キネマティックの3種類があります。
     /// これとは別にトリガー モードと呼ばれる物理作用無しで衝突のみを判定する場合があります。
@@ -24,7 +24,7 @@ namespace DD.Physics {
     public class PhysicsBody : Component, IDisposable {
 
         #region Field
-        CollisionShape shape;
+        Collision shape;
         PhysicsMaterial mat;
         Body body;
         int hash;
@@ -61,7 +61,7 @@ namespace DD.Physics {
         /// <remarks>
         /// このコライダーに設定されているコリジョン形状を取得するプロパティです。
         /// </remarks>
-        public CollisionShape Shape {
+        public Collision Shape {
             get { return shape; }
             set { SetShape (value); }
         }
@@ -313,11 +313,11 @@ namespace DD.Physics {
         /// <remarks>
         /// このコライダーと現在衝突中の物体を列挙する列挙子
         /// </remarks>
-        public IEnumerable<Collision> Collisions {
+        public IEnumerable<ContactPoint> ContactPoints {
             get {
                 var phy = Physics2D.GetInstance ();
 
-                var list = new List<Collision> ();
+                var list = new List<ContactPoint> ();
                 for (var edge = body.ContactList; edge != null; edge = edge.Next) {
 
                     FixedArray2<XnaVector2> points;
@@ -337,17 +337,17 @@ namespace DD.Physics {
                     if (count == 0 && edge.Contact.IsTouching ()) {
                         // センサー（トリガー）モード
                         // count=0 かつ Manifold は未定義
-                        list.Add (new Collision (collidee, new Vector3(), new Vector3()));
+                        list.Add (new ContactPoint (collidee, new Vector3 (), new Vector3 ()));
                     } 
                     else if (count == 1) {
                         var cp = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
                         var nrm = new Vector3 (normal.X, normal.Y, 0);
-                        list.Add (new Collision (collidee, cp, nrm));
+                        list.Add (new ContactPoint (collidee, cp, nrm));
                     }
                     else if (count == 2) {
                         var cp = new Vector3 ((points[0].X + points[0].X) / 2.0f * phy.PPM, (points[1].Y + points[1].Y) / 2.0f * phy.PPM, 0);
                         var nrm = new Vector3 (normal.X, normal.Y, 0);
-                        list.Add (new Collision (collidee, cp, nrm));
+                        list.Add (new ContactPoint (collidee, cp, nrm));
                     }
                 }
                 return list;
@@ -364,7 +364,7 @@ namespace DD.Physics {
         /// コリジョン形状に <c>null</c> に設定すると例外が発生します。
         /// </remarks>
         /// <param name="shape">コリジョン形状</param>
-        public void SetShape (CollisionShape shape) {
+        public void SetShape (Collision shape) {
             if (shape == null) {
                 throw new ArgumentNullException ("Shape is null");
             }
@@ -490,7 +490,7 @@ namespace DD.Physics {
             if (count == 0 && contact.IsTouching ()) {
                 // センサー（トリガー）モードの時、
                 // count=0 かつ Manifold は未定義
-                var cp = new Collision (b, new Vector3 (0, 0, 0), new Vector3 (0, 0, 0));
+                var cp = new ContactPoint (b, new Vector3 (0, 0, 0), new Vector3 (0, 0, 0));
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
@@ -498,7 +498,7 @@ namespace DD.Physics {
             else if (count == 1) {
                 var p = new Vector3 (points[0].X * phy.PPM, points[0].Y * phy.PPM, 0);
                 var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new Collision (b, p, n);
+                var cp = new ContactPoint (b, p, n);
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
@@ -506,7 +506,7 @@ namespace DD.Physics {
             else if (count == 2) {
                 var p = new Vector3 ((points[0].X + points[1].X) / 2.0f * phy.PPM, (points[0].Y + points[1].Y) / 2.0f * phy.PPM, 0);
                 var n = new Vector3 (normal.X, normal.Y, 0);
-                var cp = new Collision (b, p, n);
+                var cp = new ContactPoint (b, p, n);
                 foreach (var comp in Node.Components) {
                     comp.OnCollisionEnter (cp);
                 }
