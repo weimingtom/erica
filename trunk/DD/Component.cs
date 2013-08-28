@@ -370,8 +370,8 @@ namespace DD {
         /// 物理エンジンのコリジョン発生処理を行う仮想関数のエントリーポイント。
         /// </remarks>
         /// <param name="cp">衝突地点情報</param>
-        public virtual void OnCollisionEnter (Physics.ContactPoint cp) {
-        }
+        //public virtual void OnCollisionEnter (Physics.ContactPoint cp) {
+        //}
 
         /// <summary>
         /// 物理エンジンのコリジョン消失のエントリーポイント
@@ -379,8 +379,8 @@ namespace DD {
         /// <remarks>
         /// 物理エンジンのコリジョン消失処理を行う仮想関数のエントリーポイント。
         /// </remarks>
-        public virtual void OnCollisionExit (Physics.PhysicsBody collider) {
-        }
+        //public virtual void OnCollisionExit (Physics.PhysicsBody collider) {
+        //}
 
         /// <summary>
         /// ライン イベントのエントリーポイント

@@ -87,6 +87,7 @@
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="CollisionShape.cs" />
     <Compile Include="SoundTrack.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Camera.cs" />
@@ -97,10 +98,6 @@
     <Compile Include="KeyAlias.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="MusicTrack.cs" />
-    <Compile Include="BoxCollision.cs" />
-    <Compile Include="Physics\ContactPoint.cs" />
-    <Compile Include="Physics\PhysicsBody.cs" />
-    <Compile Include="Collision.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Keyframe.cs" />
@@ -109,15 +106,9 @@
     <Compile Include="Matrix3x3.cs" />
     <Compile Include="Matrix4x4.cs" />
     <Compile Include="MyMath.cs" />
-    <Compile Include="Physics\Enums.cs" />
-    <Compile Include="Physics\Physics2D.cs" />
-    <Compile Include="Physics\PhysicsMaterial.cs" />
-    <Compile Include="Physics\RayCast.cs" />
-    <Compile Include="SphereCollision.cs" />
     <Compile Include="GridBoard.cs" />
     <Compile Include="PostOffice.cs" />
     <Compile Include="Quaternion.cs" />
-    <Compile Include="Physics\FarseerExtensions.cs" />
     <Compile Include="SeTrack.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="TiledMapComposer.cs" />
@@ -185,7 +176,9 @@
   <ItemGroup>
     <None Include="Resources\arial.ttf" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Physics\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

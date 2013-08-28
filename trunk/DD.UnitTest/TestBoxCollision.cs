@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestBoxCollision {
-
+        /*
         [TestMethod]
         public void Test_New () {
             var col = new BoxCollision (1, 1, 1);
@@ -60,7 +60,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, box.Contain (1, 1, 0));
             Assert.AreEqual (false, box.Contain (2, 2, 0));
         }
-
+        */
     
     }
 }

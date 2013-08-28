@@ -3,11 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DD.Physics;
+//using DD.Physics;
 
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestCollisionShape {
+        /*
         [TestMethod]
         public void Test_New () {
             var shape = new SphereCollision (1);
@@ -28,6 +29,6 @@ namespace DD.UnitTest.Physics {
             Assert.AreEqual (new Vector3 (4,5,6), shape.Offset);
 
         }
-
+        */
     }
 }
