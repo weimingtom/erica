@@ -332,6 +332,7 @@ namespace DD.UnitTest {
 
         }
 
+        /*
         [TestMethod]
         public void Test_Pick () {
             var wld = new World ();
@@ -388,5 +389,6 @@ namespace DD.UnitTest {
             // Assert.AreEqual (null, wld.RayCast (new Vector3 (20, 0, -10), new Vector3 (-20, 0, -10)));
         
         }
+         * */
     }
 }

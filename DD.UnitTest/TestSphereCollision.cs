@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestSphereCollision {
-
+        /*
         [TestMethod]
         public void Test_New () {
             var col = new SphereCollision (1);
@@ -61,7 +61,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (false, sph.Contain (0, 0, 0));
             Assert.AreEqual (true, sph.Contain (1, 1, 0));
         }
-    
+    */
     
     }
 }

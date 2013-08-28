@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestCollision {
-
+        /*
         [TestMethod]
         public void Test_Overlap_Null_to_Null () {
             var node1 = new Node ("Node1");
@@ -306,6 +306,7 @@ namespace DD.UnitTest {
 
             f = Node.Sweep (null, node2, new Vector3 (-1, 0, 0));
             Assert.AreEqual (Single.NaN, f);
-}        
+        }    
+         */
     }
 }

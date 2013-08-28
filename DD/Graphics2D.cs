@@ -8,7 +8,6 @@ using System.Reflection;
 using SFML.Audio;
 using SFML.Window;
 using SFML.Graphics;
-using DD.Physics;
 
 namespace DD {
     /// <summary>
@@ -348,7 +347,10 @@ namespace DD {
             this.mouse = pos;
 
             // ここ本当はレイキャストで (0,∞) でピックすべきだろう
-            var node = workingScript.Pick (pos.X, pos.Y, 0);
+            //var node = workingScript.Pick (pos.X, pos.Y, 0);
+            var node = (Node)null;
+
+            throw new NotImplementedException ("Sorry");
 
             if(node != null){
                 foreach (var comp in node.Components.ToArray()) {
@@ -376,7 +378,10 @@ namespace DD {
             this.mouse = pos;
 
             // ここは本当はレイキャストでピックすべきだろう
-            var node = workingScript.Pick(pos.X, pos.Y, 0);
+            //var node = workingScript.Pick(pos.X, pos.Y, 0);
+            var node = (Node)null;
+
+            throw new NotImplementedException ("Sorry");
 
             if (node != null){
                 foreach (var comp in node.Components.ToArray()) {
@@ -407,7 +412,10 @@ namespace DD {
             this.mouse = pos;
 
             // ここ本当はレイキャストでピックすべきだろう
-            var node = workingScript.Pick(pos.X, pos.Y, 0);
+            //var node = workingScript.Pick(pos.X, pos.Y, 0);
+            var node = (Node)null;
+
+            throw new NotImplementedException ("Sorry");
 
             if (node != prevHit) {
                 if (prevHit != null) {

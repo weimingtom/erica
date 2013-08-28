@@ -383,9 +383,9 @@ namespace DD {
         /// コリジョンが何もアタッチされていない場合は <c>null</c> を返します。
         /// 複数のコリジョンがアタッチされていた場合、どれが返るかは未定義です。
         /// </remarks>
-        public Collision Collision {
-            get { return GetComponent<Collision> (); }
-        }
+        //public Collision Collision {
+        //    get { return GetComponent<Collision> (); }
+        //}
 
         #endregion
 
@@ -703,7 +703,7 @@ namespace DD {
         }
 
    
-
+        /*
 
 
         /// <summary>
@@ -869,6 +869,7 @@ namespace DD {
 
             return false;
         }
+         * */
 
         /// <inheritdoc/>
         public override string ToString () {

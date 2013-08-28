@@ -29,7 +29,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.DrawPriority);
             Assert.AreEqual (0, node.UpdatePriority);
 
-            Assert.AreEqual (null, node.Collision);
+            //Assert.AreEqual (null, node.Collision);
             Assert.AreEqual (0, node.MailBoxs.Count());
         }
 
@@ -143,7 +143,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (1, (int)node.UserData["Key1"]);
             Assert.AreEqual (2, (int)node.UserData["Key2"]);
         }
-
+        /*
         [TestMethod]
         public void Test_Collision () {
             var node = new Node ("Node");
@@ -152,6 +152,7 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (col, node.Collision);
         }
+        */
 
         [TestMethod]
         public void Test_MailBoxs () {
@@ -567,7 +568,7 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (expected, node3.Rotation);
         }
-
+        /*
         [TestMethod]
         public void Test_Contain () {
             var node = new Node ();
@@ -594,7 +595,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (false, Node.Contain (node, 10, 10, 10));
             Assert.AreEqual (false, Node.Contain (node, 1, 1, 1));
         }
-
+        */
 
     }
 }
