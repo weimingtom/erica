@@ -224,7 +224,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_TranslationMatrix () {
+        public void Test_CreateFromTranslation () {
             var mat = Matrix4x4.CreateFromTranslation (1, 2, 3);
             var exptected = new Matrix4x4 (1, 0, 0, 1,
                                            0, 1, 0, 2,
@@ -235,8 +235,20 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_ScalingMatrix () {
+        public void Test_CreateFromScale_1 () {
             var mat = Matrix4x4.CreateFromScale (1, 2, 3);
+            var expected = new Matrix4x4 (1, 0, 0, 0,
+                                          0, 2, 0, 0,
+                                          0, 0, 3, 0,
+                                          0, 0, 0, 1);
+            Assert.AreEqual (expected, mat);
+
+            
+        }
+
+        [TestMethod]
+        public void Test_CreateFromScale_2 () {
+            var mat = Matrix4x4.CreateFromScale (new Vector3 (1, 2, 3));
             var expected = new Matrix4x4 (1, 0, 0, 0,
                                           0, 2, 0, 0,
                                           0, 0, 3, 0,
@@ -245,7 +257,18 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_RotationMatrix_1 () {
+        public void Test_CreateFromScale_3 () {
+            var mat = Matrix4x4.CreateFromScale (4);
+            var expected = new Matrix4x4 (4, 0, 0, 0,
+                                          0, 4, 0, 0,
+                                          0, 0, 4, 0,
+                                          0, 0, 0, 1);
+            Assert.AreEqual (expected, mat);
+        }
+
+
+        [TestMethod]
+        public void Test_CreateFromRotation_1 () {
             var mat = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
             var s = (float)Math.Sin (45 * Math.PI / 180.0f);
             var c = (float)Math.Cos (45 * Math.PI / 180.0f);
@@ -257,7 +280,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_RotationMatrix_2 () {
+        public void Test_CreateFromRotation_2 () {
             var mat = Matrix4x4.CreateFromRotation (new Quaternion (45, 0, 0, 1));
             var s = (float)Math.Sin (45 * Math.PI / 180.0f);
             var c = (float)Math.Cos (45 * Math.PI / 180.0f);
@@ -311,6 +334,18 @@ namespace DD.UnitTest {
             Assert.AreEqual (expectedT, outT);
             Assert.AreEqual (expectedR, outR);
             Assert.AreEqual (expectedS, outS);
+        }
+
+        [TestMethod]
+        public void Test_Compress () {
+            var T = new Vector3 (1, 2, 3);
+            var R = new Quaternion(45, 0, 0, 1);
+            var S = new Vector3 (1, 2, 3);
+
+            var TRS = Matrix4x4.CreateFromTranslation (T) * Matrix4x4.CreateFromRotation (R) * Matrix4x4.CreateFromScale (S);
+
+            Assert.AreEqual (TRS, Matrix4x4.Compress (T, R, S));
+
         }
 
         [TestMethod]

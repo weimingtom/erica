@@ -597,7 +597,7 @@ namespace DD {
 
         /// <inheritdoc/>
         public override string ToString () {
-            return string.Format ("({0},{1},{2},{3})", X, Y, Z, W);
+            return string.Format ("(x:{0}, y:{1}, z:{2}, w:{3})", X, Y, Z, W);
         }
         #endregion
     }

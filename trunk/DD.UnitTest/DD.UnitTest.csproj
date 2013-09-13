@@ -35,6 +35,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BulletSharp, Version=2.81.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\DD\libs\BulletSharp.dll</HintPath>
+    </Reference>
     <Reference Include="FarseerPhysics, Version=3.3.4910.21339, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DD\libs\FarseerPhysics.dll</HintPath>
@@ -67,18 +70,20 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Physics\TestBoxCollision.cs" />
-    <Compile Include="Physics\TestCollider.cs" />
-    <Compile Include="Physics\TestCollisionShape.cs" />
-    <Compile Include="Physics\TestContactPoint.cs" />
-    <Compile Include="Physics\TestPhysics2D.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
-    <Compile Include="Physics\TestSphereCollision.cs" />
+    <Compile Include="Physics\TestPhysicsSimulation.cs" />
+    <Compile Include="Physics\TestPhysicsSimulator.cs" />
+    <Compile Include="Physics\TestRigidBody.cs" />
+    <Compile Include="Physics\TestBulletPhysicsExtensions.cs" />
     <Compile Include="SFML\TestCamera.cs" />
     <Compile Include="SFML\TestExtensions.cs" />
     <Compile Include="SFML\TestGraphics2D.cs" />
-    <Compile Include="TestBoxCollision.cs" />
-    <Compile Include="TestCollision.cs" />
+    <Compile Include="TestBoxShape.cs" />
+    <Compile Include="TestCapsuleShape.cs" />
+    <Compile Include="TestCollisionObject.cs" />
+    <Compile Include="TestCollisionAnalyzer.cs" />
+    <Compile Include="TestDistance.cs" />
+    <Compile Include="TestRaycastResult.cs" />
     <Compile Include="TestSoundClip.cs" />
     <Compile Include="TestBar.cs" />
     <Compile Include="TestCamera.cs" />
@@ -107,7 +112,8 @@
     <Compile Include="TestLineParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="TestSphereCollision.cs" />
+    <Compile Include="TestSphereShape.cs" />
+    <Compile Include="TestSweep.cs" />
     <Compile Include="TestTiledMapComposer.cs" />
     <Compile Include="TestTransformable.cs" />
     <Compile Include="TestVector2.cs" />

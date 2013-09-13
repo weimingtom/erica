@@ -23,7 +23,7 @@ namespace DD {
         #region Field
         static Graphics2D g2d;
         RenderWindow win;
-        World workingScript;
+        World wld;
         Node prevHit;
         HashSet<KeyCode> keyBuffer;
         Vector2 mouse;
@@ -36,7 +36,7 @@ namespace DD {
         /// </summary>
         private Graphics2D () {
             this.win = null;
-            this.workingScript = null;
+            this.wld = null;
             this.prevHit = null;
             this.wheele = 0;
             this.keyBuffer = new HashSet<KeyCode> ();
@@ -134,7 +134,6 @@ namespace DD {
                 return;
             }
 
-            var id = 0x0000ffffu;
             if (world.ActiveCamera == null) {
                 win.Clear (SFML.Graphics.Color.Blue);
             }else{
@@ -144,7 +143,6 @@ namespace DD {
                 }
                 cam.SetupView (win);
                 cam.SetupClear (win);
-                id = cam.GroupID;
             }
 
             // 全ノードの描画プレ処理
@@ -160,7 +158,6 @@ namespace DD {
             // 全ノードの描画
             var nodes = from node in world.Downwards
                         where node.Upwards.Aggregate (true, (x, y) => x & y.Drawable) == true
-                        where (node.GroupID & id) != 0
                         orderby node.DrawPriority descending
                         select node;
             foreach (var node in nodes) {
@@ -193,7 +190,7 @@ namespace DD {
                 throw new ArgumentNullException ("Script is null");
             }
 
-            this.workingScript = script;
+            this.wld = script;
 
             // ホイールはリリースされない仕様なので
             // 自力で開放する
@@ -222,7 +219,7 @@ namespace DD {
                 }
             }
 
-            this.workingScript = null;
+            this.wld = null;
         }
 
 
@@ -346,11 +343,9 @@ namespace DD {
             this.keyBuffer.Add (btn);
             this.mouse = pos;
 
-            // ここ本当はレイキャストで (0,∞) でピックすべきだろう
-            //var node = workingScript.Pick (pos.X, pos.Y, 0);
-            var node = (Node)null;
-
-            throw new NotImplementedException ("Sorry");
+            var start = new Vector3 (pos.X, pos.Y, -1000);
+            var end = new Vector3 (pos.X, pos.Y, 1000);
+            var node = wld.Pick (start, end);
 
             if(node != null){
                 foreach (var comp in node.Components.ToArray()) {
@@ -377,11 +372,9 @@ namespace DD {
             this.keyBuffer.Remove (btn);
             this.mouse = pos;
 
-            // ここは本当はレイキャストでピックすべきだろう
-            //var node = workingScript.Pick(pos.X, pos.Y, 0);
-            var node = (Node)null;
-
-            throw new NotImplementedException ("Sorry");
+            var start = new Vector3 (pos.X, pos.Y, -1000);
+            var end = new Vector3 (pos.X, pos.Y, 1000);
+            var node = wld.Pick (start, end);
 
             if (node != null){
                 foreach (var comp in node.Components.ToArray()) {
@@ -412,11 +405,10 @@ namespace DD {
             this.mouse = pos;
 
             // ここ本当はレイキャストでピックすべきだろう
-            //var node = workingScript.Pick(pos.X, pos.Y, 0);
-            var node = (Node)null;
-
-            throw new NotImplementedException ("Sorry");
-
+            var start = new Vector3 (pos.X, pos.Y, -1000);
+            var end = new Vector3 (pos.X, pos.Y, 1000);
+            var node = wld.Pick(start, end);
+            
             if (node != prevHit) {
                 if (prevHit != null) {
                     foreach (var comp in prevHit.Components) {

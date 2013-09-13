@@ -36,6 +36,7 @@ namespace DD.Sample.SimpleSample {
 
                 g2d.Dispatch (wld);
                 wld.Animate (msec, 33);
+                wld.Analyze ();
                 wld.Update (msec);
                 g2d.Draw (wld);
             }

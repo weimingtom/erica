@@ -23,6 +23,7 @@ namespace DD.Sample.TiledMapSample {
             var node = new Node ();
             node.Attach (cmp);
             node.Attach (label);
+
             node.Translation = pos + new Vector3(0,-10,0);
             node.DrawPriority = -1;
 

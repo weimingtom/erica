@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DD.Physics;
 
 namespace DD {
     /// <summary>
@@ -14,6 +15,7 @@ namespace DD {
         #region Field
         Node node;
         bool updateInitIsCalled;
+        bool physicsUpdateInitIsCalled;
         #endregion
 
         #region Constructor
@@ -22,7 +24,8 @@ namespace DD {
         /// </summary>
         public Component () {
             this.node = null;
-            this.IsUpdateInitCalled = false;
+            this.updateInitIsCalled = false;
+            this.physicsUpdateInitIsCalled = false;
         }
         #endregion
 
@@ -44,6 +47,14 @@ namespace DD {
         }
 
         /// <summary>
+        /// PhysicsUpdateInit()が呼ばれた事があるかどうかのフラグ
+        /// </summary>
+        public bool IsPhysicsUpdateInitCalled {
+            get { return physicsUpdateInitIsCalled; }
+            set { this.physicsUpdateInitIsCalled = value; }
+        }
+
+        /// <summary>
         /// ノード名
         /// </summary>
         /// <remarks>
@@ -61,25 +72,10 @@ namespace DD {
         /// </remarks>
         public World World {
             get {
-                if (node == null || !(node.Root is World)) {
+                if (node == null) {
                     return null;
                 }
                 return node.Root as World;
-            }
-        }
-
-        /// <summary>
-        /// グループID
-        /// </summary>
-        /// <remarks>
-        /// ノードのグループIDを返すプロパティです。
-        /// </remarks>
-        public uint GroupID {
-            get {
-                if (node == null) {
-                    throw new InvalidOperationException ("This component is not attached");
-                }
-                return node.GroupID;
             }
         }
 
@@ -138,6 +134,29 @@ namespace DD {
             get { return GetComponent<PostOffice> () ?? World.PostOffice; }
         }
 
+        /// <summary>
+        /// 標準のコリジョン解析機
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルのコリジョン解析機 <see cref="CollisionAnalyzer"/> 、またはそれが存在しない場合は
+        /// <see cref="World"/> のコリジョン解析機  <see cref="CollisionAnalyzer"/> を返します。
+        /// <see cref="World"/> オブジェクトは必ずデフォルトのコリジョン解析機を1つ保持しています。
+        /// </remarks>
+        public CollisionAnalyzer CollisionAnalyzer {
+            get { return GetComponent<CollisionAnalyzer> () ?? World.CollisionAnlyzer; }
+        }
+
+        /// <summary>
+        /// 標準の物理シミュレーター
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルの物理シミュレーター <see cref="PhysicsSimulator"/> 、またはそれが存在しない場合は
+        /// <see cref="World"/> の物理シミュレーター  <see cref="PhysicsSimulator"/> を返します。
+        /// <see cref="World"/> オブジェクトは必ずデフォルトの物理シミュレーターを1つ保持しています。
+        /// </remarks>
+        public PhysicsSimulator PhysicsSimulator {
+            get { return GetComponent<PhysicsSimulator> () ?? World.PhysicsSimulator; }
+        }
 
         /// <summary>
         /// このコンポーネントがアタッチ済みかどうかを確認するプロパティ
@@ -229,6 +248,7 @@ namespace DD {
         /// 指定のノードをシーンから取り外し削除します。
         /// ノードはこのメソッドを使って削除するのが一番安全です。
         /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
+        /// このメソッドは必要なら OnDetached(), OnDestroyed() を呼び出します。
         /// </remarks>
         /// <param name="node">ノード</param>
         protected void Destroy (Node node) {
@@ -236,16 +256,8 @@ namespace DD {
                 return;
             }
 
-            foreach (var cmp in node.Components.ToArray ()) {
-                cmp.OnDestroyed ();
-                node.Detach (cmp);
-                if (cmp is IDisposable) {
-                    ((IDisposable)cmp).Dispose ();
-                }
-            }
-            if (node.Parent != null) {
-                node.Parent.RemoveChild (node);
-            }
+            node.Destroy ();
+
         }
 
         /// <summary>
@@ -352,6 +364,11 @@ namespace DD {
         public virtual void OnUpdate (long msec) {
         }
 
+
+        public virtual void OnPhysicsUpdateInit (long msec) {
+
+        }
+
         /// <summary>
         /// 物理エンジンの更新処理のエントリーポイント
         /// </summary>
@@ -359,9 +376,19 @@ namespace DD {
         /// 物理エンジンが更新処理を行う仮想関数のエントリーポイント。
         /// 通常ユーザーがこの仮想関数をオーバーライドする必要はありません。
         /// </remarks>
-        public virtual void OnPhysicsUpdate () {
+        public virtual void OnPhysicsUpdate (long msec) {
         }
 
+
+        /// <summary>
+        /// コリジョン解決のための準備
+        /// </summary>
+        public virtual void OnPrepareCollisions () {
+
+        }
+
+        public virtual void OnCollisionResolved () {
+        }
 
         /// <summary>
         /// 物理エンジンのコリジョン発生のエントリーポイント
@@ -370,8 +397,8 @@ namespace DD {
         /// 物理エンジンのコリジョン発生処理を行う仮想関数のエントリーポイント。
         /// </remarks>
         /// <param name="cp">衝突地点情報</param>
-        //public virtual void OnCollisionEnter (Physics.ContactPoint cp) {
-        //}
+        public virtual void OnCollisionEnter (Node collidee) {
+        }
 
         /// <summary>
         /// 物理エンジンのコリジョン消失のエントリーポイント
@@ -379,8 +406,8 @@ namespace DD {
         /// <remarks>
         /// 物理エンジンのコリジョン消失処理を行う仮想関数のエントリーポイント。
         /// </remarks>
-        //public virtual void OnCollisionExit (Physics.PhysicsBody collider) {
-        //}
+        public virtual void OnCollisionExit (Node collidee) {
+        }
 
         /// <summary>
         /// ライン イベントのエントリーポイント
