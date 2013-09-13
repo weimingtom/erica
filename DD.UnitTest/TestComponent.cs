@@ -3,17 +3,20 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DD.Physics;
 
 namespace DD.UnitTest {
     [TestClass]
     public class TestComponent {
-        class MyComponent : Component, IDisposable  {
+        class MyComponent : Component, IDisposable {
             public bool IsDisposed { get; private set; }
             public bool IsDestroyed { get; private set; }
             public bool IsMailed { get; private set; }
             public object Letter { get; private set; }
             public Node LetterFrom { get; private set; }
             public string LetterTo { get; private set; }
+            public int UpdateInitCount { get; private set; }
+            public int PhysicsUpdateInitCount { get; private set; }
             public new T GetComponent<T> () where T : Component {
                 return base.GetComponent<T> ();
             }
@@ -24,10 +27,10 @@ namespace DD.UnitTest {
                 return base.GetNode (pred);
             }
             public new void Destroy (Node node) {
-                base.Destroy(node);
+                base.Destroy (node);
             }
             public new void Destroy (Component comp) {
-                base.Destroy(comp);
+                base.Destroy (comp);
             }
             public new void SendMessage (string address, object letter) {
                 base.SendMessage (address, letter);
@@ -36,7 +39,7 @@ namespace DD.UnitTest {
                 this.IsDisposed = true;
             }
             public override void OnDestroyed () {
-                this.IsDestroyed = true;   
+                this.IsDestroyed = true;
             }
             public override void OnMailBox (Node from, string to, object letter) {
                 this.IsMailed = true;
@@ -44,13 +47,19 @@ namespace DD.UnitTest {
                 this.LetterTo = to;
                 this.Letter = letter;
             }
+            public override void OnUpdateInit (long msec) {
+                this.UpdateInitCount += 1;
+            }
+            public override void OnPhysicsUpdateInit (long msec) {
+                this.PhysicsUpdateInitCount += 1;
+            }
         }
 
         [TestMethod]
         public void Test_New () {
-           var comp = new Component ();
+            var comp = new Component ();
 
-           Assert.AreEqual (null, comp.Node);
+            Assert.AreEqual (null, comp.Node);
         }
 
         [TestMethod]
@@ -78,7 +87,19 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_NodeName  () {
+        public void Test_IsPhysicsUpdateInitCalled () {
+            var comp = new Component ();
+
+            comp.IsPhysicsUpdateInitCalled = true;
+            Assert.AreEqual (true, comp.IsPhysicsUpdateInitCalled);
+
+            comp.IsPhysicsUpdateInitCalled = false;
+            Assert.AreEqual (false, comp.IsPhysicsUpdateInitCalled);
+
+        }
+
+        [TestMethod]
+        public void Test_NodeName () {
             var comp = new Component ();
             var node = new Node ("Node");
 
@@ -105,7 +126,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (null, comp.World);
 
             wld.AddChild (node);
-            
+
             Assert.AreEqual (wld, comp.World);
 
             wld.RemoveChild (node);
@@ -126,7 +147,7 @@ namespace DD.UnitTest {
             node.Attach (comp);
 
             Assert.AreEqual (input, comp.Input);
-            
+
             wld.AddChild (node);
 
             Assert.AreNotEqual (wld.InputReceiver, comp.Input);
@@ -184,6 +205,42 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_CollisionAnalyzer () {
+            var ca = new CollisionAnalyzer ();
+            var cmp = new MyComponent ();
+
+            var node = new Node ();
+            node.Attach (ca);
+            node.Attach (cmp);
+
+            var wld = new World ();
+
+            wld.AddChild (node);
+            Assert.AreNotEqual (wld.CollisionAnlyzer, cmp.CollisionAnalyzer);
+
+            wld.RemoveChild (node);
+            Assert.AreEqual (ca, cmp.CollisionAnalyzer);
+        }
+
+        [TestMethod]
+        public void Test_PhysicsSimulator () {
+            var phys = new PhysicsSimulator ();
+            var cmp = new MyComponent ();
+
+            var node = new Node ();
+            node.Attach (phys);
+            node.Attach (cmp);
+
+            var wld = new World ();
+
+            wld.AddChild (node);
+            Assert.AreNotEqual (wld.PhysicsSimulator, cmp.PhysicsSimulator);
+
+            wld.RemoveChild (node);
+            Assert.AreEqual (phys, cmp.PhysicsSimulator);
+        }
+
+        [TestMethod]
         public void Test_GetComponent () {
             var comp1 = new MyComponent ();
             var comp2 = new MyComponent ();
@@ -191,7 +248,7 @@ namespace DD.UnitTest {
             node.Attach (comp1);
             node.Attach (comp2);
 
-            Assert.AreEqual(comp1, comp1.GetComponent<MyComponent> ());
+            Assert.AreEqual (comp1, comp1.GetComponent<MyComponent> ());
             Assert.AreEqual (comp1, comp1.GetComponent<MyComponent> (0));
             Assert.AreEqual (comp2, comp1.GetComponent<MyComponent> (1));
         }
@@ -213,13 +270,13 @@ namespace DD.UnitTest {
             Assert.AreEqual (node2, comp.GetNode (x => x.Name == "Node2"));
 
         }
-       
+
         [TestMethod]
         public void Test_Destroy_by_Node () {
             var comp1 = new MyComponent ();
             var comp2 = new MyComponent ();
-            
-            var node1 = new Node();
+
+            var node1 = new Node ();
             var node2 = new Node ();
             node1.Attach (comp1);
             node2.Attach (comp2);
@@ -289,6 +346,42 @@ namespace DD.UnitTest {
             Assert.AreEqual ("Node2", cmp2.LetterTo);
             Assert.AreEqual (node1, cmp2.LetterFrom);
             Assert.AreEqual ("Node: 1 --> 2", (string)cmp2.Letter);
+        }
+
+        [TestMethod]
+        public void Test_UpdateInit () {
+            var cmp = new MyComponent ();
+            var node = new Node ();
+            node.Attach (cmp);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.Update (0);
+            Assert.AreEqual (true, cmp.IsUpdateInitCalled);
+            Assert.AreEqual (1, cmp.UpdateInitCount);
+
+            wld.Update (0);
+            Assert.AreEqual (true, cmp.IsUpdateInitCalled);
+            Assert.AreEqual (1, cmp.UpdateInitCount);
+        }
+
+        [TestMethod]
+        public void Test_PhysicsUpdateInit () {
+            var cmp = new MyComponent ();
+            var node = new Node ();
+            node.Attach (cmp);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.PhysicsUpdate (0);
+            Assert.AreEqual (true, cmp.IsPhysicsUpdateInitCalled);
+            Assert.AreEqual (1, cmp.PhysicsUpdateInitCount);
+
+            wld.PhysicsUpdate (0);
+            Assert.AreEqual (true, cmp.IsPhysicsUpdateInitCalled);
+            Assert.AreEqual (1, cmp.PhysicsUpdateInitCount);
         }
 
     }

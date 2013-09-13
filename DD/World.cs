@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BulletSharp;
 
 namespace DD {
     /// <summary>
@@ -19,9 +20,12 @@ namespace DD {
         #region Field
         Node activeCamera;
         Dictionary<string, object> prop;
-        IEnumerable<Node> allNodes;                                           // 全ノードのキャッシュ
-        IOrderedEnumerable<IGrouping<string, Node>> allNodesGroupedByName;    // 全ノードのキャッシュ（名前でグルーピング化）
+        IEnumerable<Node> allNodes;                    // 全ノードのキャッシュ
+        ILookup<string, Node> allNodesGroupedByName;   // 全ノードのキャッシュ（名前でグルーピング済み）
+        ILookup<string, Node> allNodesGroupedByGroup;  // 全ノードのキャッシュ（グループでグルーピング済み）
         #endregion
+
+
 
         #region Constructor
         /// <summary>
@@ -29,6 +33,7 @@ namespace DD {
         /// </summary>
         public World ()
             : this ("") {
+            // 省略時 name=""でいい
         }
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// スクリプト名は単なる識別用の文字列でエンジン内部では使用しません。
-        /// <see cref="World"/> オブジェクトはデフォルトで以下のコンポーネントがアタッチされています。
+        /// <see cref="World"/> オブジェクトはデフォルトで以下のコンポーネントが自動でアタッチされています。
         /// <list type="bullet">
         ///   <item><see cref="InputReceiver"/></item>
         ///   <item><see cref="AnimationController"/></item>
@@ -46,13 +51,15 @@ namespace DD {
         /// <param name="name">シーン名</param>
         public World (string name)
             : base (name) {
-                this.activeCamera = null;
-                this.prop = new Dictionary<string, object> ();
+            this.activeCamera = null;
+            this.prop = new Dictionary<string, object> ();
 
             this.Attach (new InputReceiver ());
             this.Attach (new AnimationController ());
             this.Attach (new SoundPlayer ());
             this.Attach (new PostOffice ());
+            this.Attach (new CollisionAnalyzer ());
+            this.Attach (new Physics.PhysicsSimulator ());
 
             // キャッシュ
             this.allNodes = null;
@@ -124,6 +131,20 @@ namespace DD {
         }
 
         /// <summary>
+        /// デフォルトのコリジョン分析機
+        /// </summary>
+        public CollisionAnalyzer CollisionAnlyzer {
+            get { return GetComponent<CollisionAnalyzer> (); }
+        }
+
+        /// <summary>
+        /// デフォルトの物理演算機
+        /// </summary>
+        public Physics.PhysicsSimulator PhysicsSimulator {
+            get { return GetComponent<Physics.PhysicsSimulator> (); }
+        }
+
+        /// <summary>
         /// 全ノードを列挙する列挙子（高速）
         /// </summary>
         /// <remarks>
@@ -135,7 +156,7 @@ namespace DD {
         public new IEnumerable<Node> Downwards {
             get {
                 if (allNodes == null) {
-                    StoreNodeCache();
+                    StoreNodeCache ();
                 }
                 return allNodes;
             }
@@ -230,7 +251,7 @@ namespace DD {
 
             /// 検索用キャッシュの更新
             StoreNodeCache ();
-        
+
             var nodes = from node in Downwards
                         where node.Upwards.Aggregate (true, (x, y) => x & y.Updatable) == true
                         orderby node.UpdatePriority ascending
@@ -250,14 +271,41 @@ namespace DD {
         }
 
         /// <summary>
-        /// ノードキャッシュの更新
+        /// 物理演算ワールドの更新
         /// </summary>
-        void StoreNodeCache () {
-            this.allNodes = base.Downwards;
-            this.allNodesGroupedByName = from node in allNodes
-                                         group node by node.Name into groupedNode
-                                         orderby groupedNode.Key
-                                         select groupedNode;
+        /// <remarks>
+        /// 注意：現在の実装では時刻の指定がバグっている。
+        /// ここで指定するのは現在時刻だが BulletPhysics が必要とするのはデルタ タイム。
+        /// 現在の所前のフレームの時刻を保存していないので計算不可能。
+        /// </remarks>
+        /// <param name="msec">現在時刻 (msec)</param>
+        public void PhysicsUpdate (long msec) {
+
+            var nodes = from node in Downwards
+                        where node.Upwards.Aggregate (true, (x, y) => x & y.Updatable) == true
+                        orderby node.UpdatePriority ascending
+                        select node;
+
+            // OnPhysicsUpdateInit() の呼び出し
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components.ToArray ()) {
+                    if (!comp.IsPhysicsUpdateInitCalled) {
+                        comp.OnPhysicsUpdateInit (msec);
+                        comp.IsPhysicsUpdateInitCalled = true;
+                    }
+                }
+            }
+
+            // 物理シミュレーションの実行
+            var pa = GetComponent<Physics.PhysicsSimulator> ();
+            pa.Step (msec);
+
+            // OnPhysicsUpdate() の呼び出し
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components.ToArray ()) {
+                    comp.OnPhysicsUpdate (msec);
+                }
+            }
         }
 
         /// <summary>
@@ -269,7 +317,25 @@ namespace DD {
         public void Deliver () {
             var po = GetComponent<PostOffice> ();
             po.Deliver ();
+
         }
+
+
+        /// <summary>
+        /// コリジョンの解決
+        /// </summary>
+        public void Analyze() {
+            var cr = GetComponent<CollisionAnalyzer> ();
+            cr.Analyze ();
+        }
+
+        /// <summary>
+        /// ノードキャッシュの更新
+        /// </summary>
+        private void StoreNodeCache () {
+            this.allNodes = base.Downwards;
+            this.allNodesGroupedByName = allNodes.ToLookup (x => x.Name);
+            }
 
         /// <summary>
         /// ノードの検索（高速）
@@ -285,10 +351,7 @@ namespace DD {
                 StoreNodeCache ();
             }
 
-            return (from nodeGroup in allNodesGroupedByName
-                    where nodeGroup.Key == name
-                    from node in nodeGroup
-                    select node).FirstOrDefault ();
+            return Finds(name).FirstOrDefault ();
         }
 
         /// <summary>
@@ -322,11 +385,8 @@ namespace DD {
             if (allNodesGroupedByName == null) {
                 StoreNodeCache ();
             }
-            
-            return from nodeGroup in allNodesGroupedByName
-                    where nodeGroup.Key == name
-                    from node in nodeGroup
-                    select node;
+
+            return allNodesGroupedByName[name];
         }
 
 
@@ -347,47 +407,100 @@ namespace DD {
                    select node;
         }
 
-        /*
+
+
         /// <summary>
-        /// ノードのピック
+        /// 2つのノードのコリジョンの重複判定
         /// </summary>
         /// <remarks>
-        /// 指定の点を内部に持つノードをピックアップします。複数のノードが該当する場合一番 <see cref="DrawPriority"/> が高いノードがピックされます。
-        /// （注意）引数のピック位置はグローバル座標です。
-        /// 線分を使ったピックは現在未実装です。
+        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>false</c> が返ります。
+        /// このメソッドは NaN を返しません。
         /// </remarks>
-        /// <note>
-        /// このメソッドは時代遅れ。1点のピックとかあり得ん。
-        /// レイキャスト方式でピックするように変更する。
-        /// </note>
-        /// <param name="x">ピック位置X（グローバル座標）</param>
-        /// <param name="y">ピック位置Y（グローバル座標）</param>
-        /// <param name="y">ピック位置Z（グローバル座標）</param>
-        /// <returns></returns>
-        public Node Pick (float x, float y, float z) {
-
-            return (from node in Downwards
-                         where Node.Contain (node, x, y, z)
-                         orderby DrawPriority
-                         select node).FirstOrDefault ();
+        /// <param name="nodeA">ノードA</param>
+        /// <param name="nodeB">ノードA</param>
+        /// <returns>重複している時 <c>true</c>, そうでないとき <c>false</c></returns>
+        public bool Overlap (Node nodeA, Node nodeB) {
+            return Distance (nodeA, nodeB) == 0;
         }
 
         /// <summary>
-        /// ノードのピック
+        /// 
         /// </summary>
-        /// <param name="start">開始地点（グローバル座標）</param>
-        /// <param name="end">終了地点（グローバル座標）</param>
+        /// <param name="nodeA"></param>
+        /// <param name="nodeB"></param>
         /// <returns></returns>
-        public IEnumerable<Node> RayCast (Vector3 start, Vector3 end) {
-            return from node in Downwards
-                    let f = Node.RayCast (node, start, end)
-                    where f > 0
-                    orderby f
-                    orderby node.DrawPriority
-                    select node;
-        }
-        */
+        public float Distance (Node nodeA, Node nodeB) {
+            if (nodeA == null || !nodeA.Is<CollisionObject> () || nodeB == null || !nodeB.Is<CollisionObject> ()) {
+                return Single.NaN;
+            }
+            if (nodeA.World != this || nodeB.World != this) {
+                throw new ArgumentException ("Node belongs to another world");
+            }
 
+            var colA = nodeA.GetComponent<CollisionObject> ();
+            var colB = nodeB.GetComponent<CollisionObject> ();
+
+            return CollisionAnalyzer.Distance (colA, colB);
+        }
+
+        /// <summary>
+        /// 1つのノードにレイキャスト
+        /// </summary>
+        /// <remarks>
+        /// ノードに対してレイキャストを行いレイとノードが交差する距離を返します。
+        /// 交差しない場合は 0 を返します。このメソッドが負の値を返すことはありません。
+        /// レイの開始地点がコリジョン内部の場合はそのレイとノードは交差しません。
+        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>NaN</c> が返ります。
+        /// </remarks>
+        /// <note>
+        /// 現状ではFarrseerを使用しているためZを考慮しない。いずれ変更する。
+        /// </note>
+        /// <param name="nodeA">ノードA</param>
+        /// <param name="start">レイキャストの開始地点（グローバル座標）</param>
+        /// <param name="end">レイキャストの終了地点（グローバル座標）</param>
+        /// <param name="collideWith">コリジョン対象を表すビットマスク</param>
+        /// <returns>0より大きな浮動小数値、または0、測定不能の時 <c>NaN</c>.</returns>
+        public IEnumerable<RaycastResult> RayCast (Vector3 start, Vector3 end, int collideWith = -1) {
+            return CollisionAnlyzer.RayCast (start, end, collideWith);
+        }
+
+        public Node Pick (Vector3 start, Vector3 end, int collideWith = -1) {
+            return (from result in CollisionAnlyzer.RayCast (start, end, collideWith)
+                   select result.Node).FirstOrDefault();
+        }
+
+        public RaycastResult Sweep (Node node, Vector3 move) {
+            if (node == null) {
+                return new RaycastResult ();
+            }
+            if (node.World != this) {
+                throw new ArgumentException ("Node belongs to another world");
+            }
+
+            var colA = node.GetComponent<CollisionObject> ();
+
+            return CollisionAnlyzer.Sweep(colA, move);
+        }
+
+        /// <summary>
+        /// シーンの削除
+        /// </summary>
+        /// <remarks>
+        /// すべてのシーン ノードおよびそこにアタッチされていたすべてのコンポーネントを安全に削除します。
+        /// すべてのノードおよびコンポーネントは（実装されていれば）Dispose() されます。
+        /// <note>
+        /// シーンノードの削除の順番は順不同だが、微妙に下から削除した方がいい気がする。
+        /// SceneDepthプロパティを実装すれば可能。
+        /// Worldだけは一番最後に削除されることが保証されている（でないといろいろ困る）。
+        /// </note>
+        /// </remarks>
+        public new void Destroy () {
+            
+            foreach (var node in base.Downwards.Skip(1).Reverse().ToArray ()) {
+                node.Destroy ();
+            }
+            base.Destroy ();
+        }
         #endregion
     }
 }

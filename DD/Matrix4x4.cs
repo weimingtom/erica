@@ -341,6 +341,10 @@ namespace DD {
                                   0, 0, 0, 1);
         }
 
+        public static Matrix4x4 CreateFromTranslation (Vector3 v) {
+            return CreateFromTranslation(v.X, v.Y, v.Z);
+        }
+
         /// <summary>
         /// スケーリングをあらわす4x4の行列の作成
         /// </summary>
@@ -353,6 +357,24 @@ namespace DD {
                                   0, sy, 0, 0,
                                   0, 0, sz, 0,
                                   0, 0, 0, 1);
+        }
+
+        /// <summary>
+        /// スケーリングをあらわす4x4の行列の作成
+        /// </summary>
+        /// <param name="s">拡大縮小率を表すベクトル </param>
+        /// <returns></returns>
+        public static Matrix4x4 CreateFromScale (Vector3 s) {
+            return CreateFromScale (s.X, s.Y, s.Z);
+        }
+
+        /// <summary>
+        /// スケーリングをあらわす4x4の行列の作成
+        /// </summary>
+        /// <param name="sx">拡大縮小率 (3軸共通) </param>
+        /// <returns></returns>
+        public static Matrix4x4 CreateFromScale (float s) {
+            return CreateFromScale (s, s, s);
         }
 
         /// <summary>
@@ -424,6 +446,17 @@ namespace DD {
             return done;
         }
 
+        /// <summary>
+        /// TRS要素を4x4行列に合成
+        /// </summary>
+        /// <param name="T">平行移動成分</param>
+        /// <param name="R">回転成分</param>
+        /// <param name="S">拡大縮小成分</param>
+        /// <returns></returns>
+        public static Matrix4x4 Compress (Vector3 T, Quaternion R, Vector3 S) {
+            return Matrix4x4.CreateFromTranslation (T) * Matrix4x4.CreateFromRotation (R) * Matrix4x4.CreateFromScale (S);
+
+        }
      
         /// <summary>
         /// 座標変換
@@ -454,7 +487,7 @@ namespace DD {
         /// <remarks>
         /// 法線などの方向を表すベクトルは、座標変換を行う <see cref="Apply"/> では正しく変換できません。
         /// （例えばJason GregoryのGame Engine Architectureを参照）
-        /// このメソッドは方向ベクトルを変換行列ではなく変換行列の逆行列の転置行列で変換します。
+        /// このメソッドは方向ベクトルを変換行列ではなく、変換行列の逆行列の転置行列で変換します。
         /// （方向ベクトルは同次空間で W=0 で表されることに注意）
         /// 戻り値は正規化されていません。
         /// </remarks>
@@ -466,6 +499,9 @@ namespace DD {
             return this.Inverse ().Transpose ().Apply (x, y, z, 0);
         }
 
+        public Vector3 ApplyDirection (Vector3 v) {
+            return ApplyDirection (v.X, v.Y, v.Z);
+        }
 
         /// <inheritdoc/>
         public override bool Equals (object obj) {

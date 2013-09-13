@@ -12,8 +12,8 @@ namespace DD.Sample.IsometricSample {
 
             // ----------------------------------------
 
-            var node1 = MyMap.Create ("media/GlassLand.tmx");
-            //var node1 = MyMap.Create ("media/desert.tmx");
+            //var node1 = MyTiledMap.Create ("media/GlassLand.tmx");
+            var node1 = MyTiledMap.Create ("media/GlassWater.tmx");
             var node2 = MyCharacter.Create ();
             var node3 = MyCamera.Create ();
             var node4 = MyLabels.Create ();
@@ -43,12 +43,14 @@ namespace DD.Sample.IsometricSample {
                 var msec = watch.ElapsedMilliseconds;
 
                 wld.Animate (msec, 0);
+                wld.Analyze ();
                 wld.Update (msec);
                 g2d.Dispatch (wld);
                 g2d.Draw (wld);
 
             }
 
+            wld.Destroy ();
             Console.WriteLine ("End of Game");
 
         }

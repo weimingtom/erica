@@ -48,6 +48,9 @@
     <AssemblyOriginatorKeyFile>AssemblyKeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BulletSharp">
+      <HintPath>libs\BulletSharp.dll</HintPath>
+    </Reference>
     <Reference Include="FarseerPhysics">
       <HintPath>libs\FarseerPhysics.dll</HintPath>
     </Reference>
@@ -87,11 +90,20 @@
     <Compile Include="AnimationController.cs" />
     <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationTrack.cs" />
+    <Compile Include="BoxShape.cs" />
+    <Compile Include="CollisionObject.cs" />
     <Compile Include="CollisionShape.cs" />
+    <Compile Include="CollisionAnalyzer.cs" />
+    <Compile Include="ContactPoint.cs" />
+    <Compile Include="CapsuleShape.cs" />
+    <Compile Include="Physics\PhysicsSimulator.cs" />
+    <Compile Include="BulletPhysicsExtensions.cs" />
+    <Compile Include="Physics\PysicsMaterial.cs" />
+    <Compile Include="Physics\RigidBody.cs" />
+    <Compile Include="RaycastResult.cs" />
     <Compile Include="SoundTrack.cs" />
     <Compile Include="Bar.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="ClosestPoints.cs" />
     <Compile Include="Mail.cs" />
     <Compile Include="MailBox.cs" />
     <Compile Include="InputReceiver.cs" />
@@ -110,6 +122,7 @@
     <Compile Include="PostOffice.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="SeTrack.cs" />
+    <Compile Include="SphereShape.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="TiledMapComposer.cs" />
     <Compile Include="Transformable.cs" />
@@ -159,6 +172,7 @@
     <Content Include="libs\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
     <None Include="Resources\WhiteTexture.png" />
     <None Include="App.config" />
@@ -176,9 +190,7 @@
   <ItemGroup>
     <None Include="Resources\arial.ttf" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Physics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

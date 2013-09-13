@@ -8,13 +8,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestNode {
+        public class MyComponent: Component, IDisposable{
+            public static bool Disposed { get; set; }
+            public void Dispose () {
+                Disposed = true;
+            }
+        }
+        public class MyNode : Node, IDisposable {
+            public static bool Disposed { get; set; }
+            public void Dispose () {
+                Disposed = true;
+            }
+        }
+
         [TestMethod]
         public void Test_New () {
             var node = new Node ("Node1");
 
             Assert.AreEqual ("Node1", node.Name);
+            Assert.AreEqual (-1, node.GroupID);
             Assert.AreEqual (0, node.X);
             Assert.AreEqual (0, node.Y);
+            Assert.AreEqual (0, node.Z);
             Assert.AreEqual (null, node.Parent);
             Assert.AreEqual (true, node.Drawable);
             Assert.AreEqual (true, node.Updatable);
@@ -23,11 +38,11 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, node.Collidable);
             Assert.AreEqual (0, node.ChildCount);
             Assert.AreEqual (0, node.ComponentCount);
-            Assert.AreEqual (0x0000ffffu, node.GroupID);
             Assert.AreEqual (1.0f, node.Opacity);
             Assert.AreEqual (0, node.UserData.Count ());
             Assert.AreEqual (0, node.DrawPriority);
             Assert.AreEqual (0, node.UpdatePriority);
+            Assert.AreEqual (false, node.IsDestroyed);
 
             //Assert.AreEqual (null, node.Collision);
             Assert.AreEqual (0, node.MailBoxs.Count());
@@ -44,9 +59,9 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_GroupID () {
             var node = new Node ("Node");
+            node.GroupID = 1;
 
-            node.GroupID = 0x12345678u;
-            Assert.AreEqual (0x12345678u, node.GroupID);
+            Assert.AreEqual (1, node.GroupID);
         }
 
         [TestMethod]
@@ -419,6 +434,34 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_SetGlobalTransform () {
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node1.AddChild (node2);
+            node2.AddChild (node3);
+
+            node2.Translation = new Vector3 (-1, 0, 0);
+            node2.Scale = new Vector3 (2, 2, 2);
+          
+            var g = node3.GlobalTransform;
+
+            node3.GlobalTransform = Matrix4x4.CreateFromTranslation (1, 0, 0) * Matrix4x4.CreateFromRotation (45, 0, 0, 1);
+
+            Vector3 T;
+            Quaternion R;
+            Vector3 S;
+
+            node3.GlobalTransform.Decompress (out T, out R, out S);
+
+            Assert.AreEqual (new Vector3 (1,0,0), T);
+            Assert.AreEqual (Quaternion.Set(0,0,0.382683f,0.923879f, false), R);
+            Assert.AreEqual (45, R.Angle, 0.001f);
+            Assert.AreEqual (new Vector3 (0, 0, 1), R.Axis);
+            Assert.AreEqual (new Vector3 (1,1,1), S);
+        }
+
+        [TestMethod]
         public void Test_LocalTransform () {
             var node1 = new Node ();
             var node2 = new Node ();
@@ -546,46 +589,28 @@ namespace DD.UnitTest {
             node1.AddChild (node2);
             node2.AddChild (node3);
 
-            // node3.GlobalTransform = 
-            //   T = (1,7.656854,7)
-            //   R = (0,0,0.7071068,0.7071068)
-            //   S = (2,2,2)
-            /*
-            Vector3 T;
-            Quaternion R;
-            Vector3 S;
-
-            node3.GlobalTransform.Decompress (out T, out R, out S);
-
-            Debug.WriteLine ("T = " + T);
-            Debug.WriteLine ("R = " + R);
-            Debug.WriteLine ("S = " + S);
-             * */
-
-            node3.SetGlobalRotation (Quaternion.Set (0, 0, 0.7071068f, 0.7071068f, false));
+           node3.SetGlobalRotation (Quaternion.Set (0, 0, 0.7071068f, 0.7071068f, false));
 
             var expected = new Quaternion (45, 0, 0, 1);
 
             Assert.AreEqual (expected, node3.Rotation);
         }
-        /*
+
         [TestMethod]
-        public void Test_Contain () {
-            var node = new Node ();
-            var col = new BoxCollision (1, 1, 1);
-            node.Attach (col);
+        public void Test_Destroy () {
+            var node = new MyNode ();
+            var cmp = new MyComponent();
+            node.Attach (cmp);
 
-            node.SetTranslation (10, 10, 10);
+            node.Destroy ();
 
-            Assert.AreEqual (true, Node.Contain (node, 10, 10, 10));
-            Assert.AreEqual (false, Node.Contain (node, 0, 0, 0));
-
-            col.SetOffset (-10, -10, -10);
-
-            Assert.AreEqual (false, Node.Contain (node, 10, 10, 10));
-            Assert.AreEqual (true, Node.Contain (node, 0, 0, 0));
+            Assert.AreEqual (true, MyComponent.Disposed);
+            Assert.AreEqual (true, MyNode.Disposed);
+            Assert.AreEqual (true, node.IsDestroyed);
         }
 
+        /*
+        
         [TestMethod]
         public void Test_Contain_Null () {
             var node = new Node ();

@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestClosestPoints {
+        /*
         [TestMethod]
         public void Test_New () {
             var pointA = new Vector3(1,2,3);
@@ -17,5 +18,6 @@ namespace DD.UnitTest {
             Assert.AreEqual (pointB, cp.PointB);
             Assert.AreEqual (pointB - pointA, cp.VectorAtoB);
         }
+         * */
     }
 }

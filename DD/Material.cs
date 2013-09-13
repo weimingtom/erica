@@ -24,7 +24,7 @@ namespace DD {
         /// 派生クラスはこのメソッドをオーバーライドして独自の実装を提供して下さい。
         /// </remarks>
         /// <returns>ハッシュ値</returns>
-        public int GetHashValue () {
+        public virtual int GetHashValue () {
             int hash = 0;
             var type = this.GetType();
             
@@ -34,5 +34,6 @@ namespace DD {
             }
             return hash;
         }
+
     }
 }

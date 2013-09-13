@@ -59,6 +59,9 @@
     <StartupObject>DD.Sample.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BulletSharp, Version=2.81.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\DD\libs\BulletSharp.dll</HintPath>
+    </Reference>
     <Reference Include="FarseerPhysics">
       <HintPath>..\DD\libs\FarseerPhysics.dll</HintPath>
     </Reference>
@@ -86,15 +89,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageSample\MyButton.cs" />
-    <Compile Include="MessageSample\MyLetter.cs" />
-    <Compile Include="MessageSample\MyRecver.cs" />
-    <Compile Include="MessageSample\MySender.cs" />
-    <Compile Include="MessageSample\Program.cs" />
+    <Compile Include="AnimationSample\MyFireExplosion.cs" />
+    <Compile Include="AnimationSample\Program.cs" />
+    <Compile Include="CollisionDetectSample\MyBlock.cs" />
+    <Compile Include="CollisionDetectSample\MyCharacter.cs" />
+    <Compile Include="CollisionDetectSample\Program.cs" />
+    <Compile Include="IsometricSample\MyCamera.cs" />
+    <Compile Include="IsometricSample\MyCharacter.cs" />
+    <Compile Include="IsometricSample\MyClicker.cs" />
+    <Compile Include="IsometricSample\MyLabels.cs" />
+    <Compile Include="IsometricSample\MyTiledMap.cs" />
+    <Compile Include="IsometricSample\MyWorld.cs" />
+    <Compile Include="IsometricSample\Program.cs" />
+    <Compile Include="MailBoxSample\MyButton.cs" />
+    <Compile Include="MailBoxSample\MyLetter.cs" />
+    <Compile Include="MailBoxSample\MyRecver.cs" />
+    <Compile Include="MailBoxSample\MySender.cs" />
+    <Compile Include="MailBoxSample\Program.cs" />
+    <Compile Include="PhysicsSample\MyFpsCounter.cs" />
+    <Compile Include="PhysicsSample\MyBall.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PhysicsSample\MyWall.cs" />
+    <Compile Include="PhysicsSample\MyWorld.cs" />
+    <Compile Include="PhysicsSample\Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlatformSample\MyBlock.cs" />
+    <Compile Include="PlatformSample\MyEnum.cs" />
+    <Compile Include="PlatformSample\MyFpsCounter.cs" />
+    <Compile Include="PlatformSample\MyCharacter.cs" />
+    <Compile Include="PlatformSample\MyLabel.cs" />
+    <Compile Include="PlatformSample\MyFloor.cs" />
+    <Compile Include="PlatformSample\Program.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ScrollSample\MyCamera1.cs" />
+    <Compile Include="ScrollSample\MyCamera2.cs" />
+    <Compile Include="ScrollSample\MyCharacter.cs" />
+    <Compile Include="ScrollSample\MyDrawArgs.cs" />
+    <Compile Include="ScrollSample\MyHUD.cs" />
+    <Compile Include="ScrollSample\MyPopupNumber.cs" />
+    <Compile Include="ScrollSample\MyWorld.cs" />
+    <Compile Include="ScrollSample\Program.cs" />
     <Compile Include="SimpleSample\MyComponent.cs" />
     <Compile Include="SimpleSample\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TiledMapSample\MyCabbage.cs" />
+    <Compile Include="TiledMapSample\MyCamera.cs" />
+    <Compile Include="TiledMapSample\MyCharacter.cs" />
+    <Compile Include="TiledMapSample\MyFPSCounter.cs" />
+    <Compile Include="TiledMapSample\MyGameClear.cs" />
+    <Compile Include="TiledMapSample\MyLabels.cs" />
+    <Compile Include="TiledMapSample\MyPopup.cs" />
+    <Compile Include="TiledMapSample\MyRader.cs" />
+    <Compile Include="TiledMapSample\MyRaderDot.cs" />
+    <Compile Include="TiledMapSample\MyTiledMap.cs" />
+    <Compile Include="TiledMapSample\Program.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

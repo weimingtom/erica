@@ -21,13 +21,15 @@ namespace DD.Sample.SimpleSample {
             var spr = new Sprite (64, 64);
             spr.Color = Color.Red;
 
-            //var col = new BoxCollision (32, 32, 0);
-            //col.SetOffset (32, 32, 0);
+            var col = new CollisionObject();
+            col.Shape  = new BoxShape(32, 32, 32);
+            col.SetOffset (32, 32, 32);
 
             var node = new Node ();
             node.Attach (cmp);
             node.Attach (spr);
-            //node.Attach (col);
+            node.Attach (col);
+            
             node.UserData.Add (clip.Name, clip);
 
             return node;

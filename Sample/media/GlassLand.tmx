@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="grassland" tilewidth="64" tileheight="32">
   <image source="grassland.png" width="1024" height="1344"/>
  </tileset>
- <layer name="Collision" width="10" height="10">
+ <layer name="CollisionMap" width="10" height="10">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC2NgoD4wZCRNHbJ6EBtdPzbziFVHifuooQ+bO/GpAwAqPzTpkAEAAA==
   </data>

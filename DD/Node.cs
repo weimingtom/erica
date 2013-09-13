@@ -2,18 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FarseerPhysics.Collision;
-using Microsoft.Xna.Framework;
-
-using XnaVector2 = Microsoft.Xna.Framework.Vector2;
-using FarseerPhysics.Common;
-
-// メモ
-// FarseerPhysicsで使用しているのはコリジョン検出だけ
-// 具体的に言うと距離とレイキャストの2つ
-// 空間構造は使用していない
-// しょせん2Dのライブラリなので3Dでは使えない・・・
-
+//using BulletSharp;
+using DD.Physics;
 
 namespace DD {
 
@@ -28,10 +18,10 @@ namespace DD {
 
         #region Field
         string name;
+        int groupID;
         Node parent;
         List<Node> children;
         List<Component> components;
-        uint groupID;
         Dictionary<string, object> userData;
         float opacity;
         bool drawable;
@@ -42,8 +32,8 @@ namespace DD {
         sbyte drawPriority;
         sbyte updatePriority;
         Matrix4x4? matrix;      // = Cache of GlobalTransform
+        bool isDestroyed;
         #endregion
-
 
 
         #region Constructor
@@ -64,6 +54,7 @@ namespace DD {
         public Node (string name)
             : base () {
             this.name = name ?? "";
+            this.groupID = -1;
             this.drawable = true;
             this.updatable = true;
             this.animatable = true;
@@ -74,10 +65,10 @@ namespace DD {
             this.components = new List<Component> ();
             this.drawPriority = 0;
             this.updatePriority = 0;
-            this.groupID = 0x0000ffffu;
             this.userData = new Dictionary<string, object> ();
             this.opacity = 1.0f;
             this.matrix = null;
+            this.isDestroyed = false;
         }
         #endregion
 
@@ -94,6 +85,24 @@ namespace DD {
             //set { this.name = value ?? ""; }
         }
 
+
+        /// <summary>
+        /// グループID
+        /// </summary>
+        /// <remarks>
+        /// グループIDは32ビットINT型をビットマスクとして使用します。
+        /// デフォルトのグループIDは -1 で、従って32個のビットがすべて立っています。
+        /// グループIDはレンダリングや衝突判定で使用されます。
+        /// </remarks>
+        public int GroupID {
+            get { 
+                return groupID; 
+            }
+            set {
+                this.groupID = value; 
+            }
+        }
+
         /// <summary>
         /// ユニークID
         /// </summary>
@@ -105,17 +114,6 @@ namespace DD {
 
         }
 
-        /// <summary>
-        /// グループID
-        /// </summary>
-        /// <remarks>
-        /// デフォルト値は 0x0000ffff です。
-        /// レンダリングや衝突判定で使用されます。
-        /// </remarks>
-        public uint GroupID {
-            get { return groupID; }
-            set { this.groupID = value; }
-        }
 
         /// <summary>
         /// ユーザー データ
@@ -133,7 +131,7 @@ namespace DD {
         /// すべてのメール ボックスを列挙する列挙子
         /// </summary>
         public IEnumerable<MailBox> MailBoxs {
-            get { return GetComponents<MailBox>(); }
+            get { return GetComponents<MailBox> (); }
         }
 
 
@@ -169,6 +167,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードは更新されます。
+        /// <c>false</c> の場合はこのノードおよびすべての子ノードが更新されなくなります。
         /// デフォルトは <c>true</c> です。
         /// </remarks>
         public bool Updatable {
@@ -273,7 +272,8 @@ namespace DD {
         /// 順番は先頭が自分で幅優先探索で子ノードが続きます。
         /// <note>
         /// 幅優先で実装してあるがこの仕様は有益か？
-        /// --> SceneDepth を実装して後からソートした方が実装が簡単になる。後で修正する
+        /// --> SceneDepth を実装して後からソートした方が実装が簡単になる。後で修正する。
+        /// --> 単に深さ優先で実装するのが一番良い。World.Destroy()した時に下から上に辿って破壊できるように！！
         /// </note>
         /// </remarks>
         public IEnumerable<Node> Downwards {
@@ -315,12 +315,21 @@ namespace DD {
         /// ルート ノード
         /// </summary>
         /// <remarks>
-        /// ルート ノードとツリーを上方向に null になるまでたどった時の一番上のノードの事を言います。
+        /// ルート ノードとはツリーを上方向に null になるまでたどった時の一番上のノードの事を言います。
         /// 親ノードが <c>null</c> の場合は自分がルート ノードです。
         /// </remarks>
         public Node Root {
             get {
                 return Upwards.LastOrDefault ();
+            }
+        }
+
+        /// <summary>
+        /// ワールド ノード
+        /// </summary>
+        public World World {
+            get {
+                return Root as World;
             }
         }
 
@@ -336,6 +345,8 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このプロパティは計算結果をキャッシュし、2回目以降は高速に動作します。
+        /// 明示的に再計算したい場合は InvalidateTransformCache() を呼んでキャッシュを無効化して下さい。
+        /// 通常は自動的に処理されるので気にする必要はありません。。
         /// </remarks>
         public Matrix4x4 GlobalTransform {
             get {
@@ -343,6 +354,22 @@ namespace DD {
                     this.matrix = Upwards.Aggregate (Matrix4x4.Identity, (t, node) => node.Transform * t);
                 }
                 return matrix.Value;
+            }
+            set {
+                if (value == null) {
+                    throw new ArgumentNullException ("Matrix is null");
+                }
+                var matrix = ParentTransform * value;
+
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+
+                matrix.Decompress (out T, out R, out S);
+
+                base.Translation = T;
+                base.Rotation = R;
+                base.Scale = S;
             }
         }
 
@@ -375,17 +402,28 @@ namespace DD {
             }
         }
 
-        /// <summary>
-        /// コリジョン形状
-        /// </summary>
-        /// <remarks>
-        /// このノードにアタッチされている最初のコリジョン コンポーネントを返します。
-        /// コリジョンが何もアタッチされていない場合は <c>null</c> を返します。
-        /// 複数のコリジョンがアタッチされていた場合、どれが返るかは未定義です。
-        /// </remarks>
-        //public Collision Collision {
-        //    get { return GetComponent<Collision> (); }
-        //}
+        public Quaternion Orientation {
+            get {
+                Vector3 T;
+                Quaternion R;
+                Vector3 S;
+                GlobalTransform.Decompress (out T, out R, out S);
+                return R;
+            }
+        }
+
+        public CollisionObject CollisionObject {
+            get { return GetComponent<CollisionObject> (); }
+        }
+
+        public RigidBody RigidBody {
+            get { return GetComponent<RigidBody> (); }
+        }
+
+
+        public bool IsDestroyed {
+            get { return isDestroyed; }
+        }
 
         #endregion
 
@@ -673,9 +711,9 @@ namespace DD {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public IEnumerable<T> GetComponents<T> () where T : Component {
-            return  from cmp in components
-                    where cmp is T
-                    select (T)cmp;
+            return from cmp in components
+                   where cmp is T
+                   select (T)cmp;
         }
 
         /// <summary>
@@ -702,149 +740,35 @@ namespace DD {
             return components[index];
         }
 
-   
+        /// <summary>
+        /// このノードの削除
+        /// </summary>
+        /// <remarks>
+        /// アタッチされているすべてのコンポーネントをデタッチして削除し、
+        /// シーンからこのノードを取り除き、さらに自分自身を削除します。
+        /// このメソッドを呼び出した後は、このノードのプロパティ、メソッドへのアクセスは
+        /// <see cref=" IsDestroyed"/> を除き未定義です。
+        /// </remarks>
+        public void Destroy () {
+
+            foreach (var cmp in components.ToArray()) {
+                cmp.OnDestroyed ();  // 必ずデタッチより前
+                Detach (cmp);
+                if (cmp is System.IDisposable) {
+                    ((System.IDisposable)cmp).Dispose ();
+                }
+            }
+            if (parent != null) {
+                parent.RemoveChild (this);
+            }
+            if (this is System.IDisposable) {
+                ((System.IDisposable)this).Dispose ();
+            }
+
+            this.isDestroyed = true;
+        }
+
         /*
-
-
-        /// <summary>
-        /// 2つのノードのコリジョンの重複判定
-        /// </summary>
-        /// <remarks>
-        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>false</c> が返ります。
-        /// </remarks>
-        /// <param name="nodeA">ノードA</param>
-        /// <param name="nodeB">ノードA</param>
-        /// <returns>重複している時 <c>true</c>, そうでないとき <c>false</c></returns>
-        public static bool Overlap (Node nodeA, Node nodeB) {
-            return Distance (nodeA, nodeB) == 0;
-        }
-
-        /// <summary>
-        /// 2つのノードのコリジョンの距離
-        /// </summary>
-        /// <remarks>
-        /// 2つのノードのコリジョンを結ぶ最短距離を求めます。
-        /// コリジョンが重複している時は一律 0 が返ります。負の値を返すことはありません。
-        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>NaN</c> が返ります。
-        /// </remarks>
-        /// <param name="nodeA">ノードA</param>
-        /// <param name="nodeB">ノードB</param>
-        /// <returns>0より大きな浮動小数値、または0、測定不能の時 <c>NaN</c>.</returns>
-        public static float Distance (Node nodeA, Node nodeB) {
-            if (nodeA == null || nodeB == null || !nodeA.Is<Collision> () || !nodeB.Is<Collision> ()) {
-                return Single.NaN;
-            }
-
-            var colA = nodeA.GetComponent<Collision> ();
-            var traA = nodeA.GlobalTransform;
-
-            var colB = nodeB.GetComponent<Collision> ();
-            var traB = nodeB.GlobalTransform;
-
-            DistanceInput input = new DistanceInput ();
-            DistanceProxy proxyA = new DistanceProxy ();
-            DistanceProxy proxyB = new DistanceProxy ();
-            proxyA.Set (colA.CreateShapeBody (1), 0);
-            proxyB.Set (colB.CreateShapeBody (1), 0);
-
-            input.ProxyA = proxyA;
-            input.ProxyB = proxyB;
-            input.UseRadii = true;
-
-            Vector3 T;
-            Matrix3x3 R;
-            Vector3 S;
-
-            nodeA.GlobalTransform.Decompress (out T, out R, out S);
-            var posA = new XnaVector2 (T.X, T.Y);
-            var rotA = new Mat22 (R[0], R[1], R[3], R[4]);
-            input.TransformA = new Transform (ref posA, ref rotA);
-
-            nodeB.GlobalTransform.Decompress (out T, out R, out S);
-            var posB = new XnaVector2 (T.X, T.Y);
-            var rotB = new Mat22 (R[0], R[1], R[3], R[4]);
-            input.TransformB = new Transform (ref posB, ref rotB);
-
-            DistanceOutput output;
-            SimplexCache cache;
-            FarseerPhysics.Collision.Distance.ComputeDistance (out output, out cache, input);
-
-            return output.Distance;
-        }
-
-
-        /// <summary>
-        /// 1つのノードにレイキャスト
-        /// </summary>
-        /// <remarks>
-        /// ノードに対してレイキャストを行いレイとノードが交差する距離を返します。
-        /// 交差しない場合は 0 を返します。このメソッドが負の値を返すことはありません。
-        /// レイの開始地点がコリジョン内部の場合はそのレイとノードは交差しません。
-        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>NaN</c> が返ります。
-        /// </remarks>
-        /// <note>
-        /// 現状ではFarrseerを使用しているためZを考慮しない。いずれ変更する。
-        /// </note>
-        /// <param name="nodeA">ノードA</param>
-        /// <param name="start">レイキャストの開始地点（グローバル座標）</param>
-        /// <param name="end">レイキャストの終了地点（グローバル座標）</param>
-        /// <returns>0より大きな浮動小数値、または0、測定不能の時 <c>NaN</c>.</returns>
-        public static float RayCast (Node nodeA, Vector3 start, Vector3 end) {
-            if (nodeA == null || !nodeA.Is<Collision> ()) {
-                return Single.NaN;
-            }
-
-            Vector3 T;
-            Matrix3x3 R;
-            Vector3 S;
-
-            nodeA.GlobalTransform.Decompress (out T, out R, out S);
-            var posA = new XnaVector2 (T.X, T.Y);
-            var rotA = new Mat22 (R[0], R[1], R[3], R[4]);
-            var traA = new Transform (ref posA, ref rotA);
-
-            var colA = nodeA.GetComponent<Collision> ();
-            var shpA = colA.CreateShapeBody (1);
-
-            RayCastInput input;
-            input.Point1 = new XnaVector2 (start.X, start.Y);
-            input.Point2 = new XnaVector2 (end.X, end.Y);
-            input.MaxFraction = 1;
-
-            RayCastOutput output;
-
-            var hit = shpA.RayCast (out output, ref input, ref traA, 0);
-
-            return (hit == false) ? 0 : output.Fraction * (end - start).Length;
-        }
-
-        /// <summary>
-        /// ノードのスィープ判定
-        /// </summary>
-        /// <remarks>
-        /// ノードBを移動ベクトル分だけ動かした時に、ノードAと交差するかどうかを判定します。
-        /// 戻り値はノードとノードが接触するまでの移動量です。
-        /// 接触しない場合は 0 が返ります。
-        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>NaN</c> が返ります。
-        /// </remarks>
-        /// <param name="nodeA">ノードA（固定）</param>
-        /// <param name="nodeB">ノードB（移動）</param>
-        /// <param name="v">移動ベクトル</param>
-        /// <returns>0より大きな浮動小数値、または0、測定不能の時 <c>NaN</c>.</returns>
-        public static float Sweep (Node nodeA, Node nodeB, Vector3 v) {
-            if (nodeA == null || nodeB == null || !nodeA.Is<Collision> () || !nodeB.Is<Collision> ()) {
-                return Single.NaN;
-            }
-
-            return (from vertex in nodeB.Collision.Vertices
-                    let pos = nodeB.GlobalTransform.Apply (vertex)
-                    let d = RayCast (nodeA, pos, pos + v)
-                    where d > 0
-                    orderby d
-                    select d).FirstOrDefault ();
-        }
-
-
         /// <summary>
         /// 点Pがこのノードに包含されるかどうかの判定
         /// </summary>
@@ -859,17 +783,17 @@ namespace DD {
         /// <returns></returns>
         public static bool Contain (Node node, float x, float y, float z) {
 
-            var p = node.LocalTransform.Apply (x, y, z);
+        var p = node.LocalTransform.Apply (x, y, z);
 
-            foreach (var col in node.GetComponents<Collision> ()) {
-                if (col.Contain (p.X, p.Y, p.Z)) {
-                    return true;
-                };
-            }
-
-            return false;
+        foreach (var col in node.GetComponents<Collision> ()) {
+        if (col.Contain (p.X, p.Y, p.Z)) {
+        return true;
+        };
         }
-         * */
+
+        return false;
+        }
+        * */
 
         /// <inheritdoc/>
         public override string ToString () {

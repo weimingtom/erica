@@ -173,15 +173,19 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 2Dの直交座標系（orthographic）を2.5Dの等角投影系（isometric）に変換します。
-        /// いわゆるクォータービューのゲームはゲームロジックは通常通り2Dで作成し、
+        /// いわゆるクォータービューのゲームはゲームロジックは通常通り2Dで作成し、表示のみ2.5Dで行います。
+        /// このオフセット値は直交座標系から等角投影座標に変換するオフセットです。
+        /// 
         /// このメソッドで2.5Dの表示位置を計算して、スプライトのオフセットにセットすることで
         /// 2.5Dで表示可能です。
         /// </remarks>
         /// <param name="or">直交座標系（ピクセル）</param>
         /// <returns></returns>
-        public Vector3 OrthogonalToIsometric (Vector3 or) {
-            var x = -or.X / 2 - or.Y * tileWidth / (2 * tileHeight);
-            var y = or.X * tileHeight / (2 * tileWidth) - or.Y / 2;
+        public Vector3 OrthogonalToIsometricOffset (Vector3 or) {
+            //var x = -or.X / 2 - or.Y * tileWidth / (2 * tileHeight);
+            //var y = or.X * tileHeight / (2 * tileWidth) - or.Y / 2;
+            var x = -or.X / 2f - (tileWidth /(float)tileHeight) * (or.Y / 2f);
+            var y = (tileHeight / (float)tileWidth) * (or.X / 2f) - (or.Y / 2f);
             return new Vector3 (x, y, 0);
         }
 
@@ -191,6 +195,7 @@ namespace DD {
         /// <remarks>
         /// Tiled Map Editor の TMX 形式のマップ ファイルを読み込んで、
         /// このノードの下に再構築します。
+        /// タイルのプロパティで"Name"という名前のものを設定しておくと、その名前でノードを作成します。
         /// <note>
         /// "Orthogonal"でも"Isometric"でもノード位置はまったく同じ。
         /// "Isometric"の場合マップが菱形になるようにスプライトのオフセットが設定される。
@@ -270,13 +275,17 @@ namespace DD {
                         var tx = tileset.TileOffset.X + tileset.Margin + (tileset.TileWidth + tileset.Spacing) * ix;
                         var ty = tileset.TileOffset.Y + tileset.Margin + (tileset.TileHeight + tileset.Spacing) * iy;
 
-                        var tileNode = new Node (layer.Name + "[" + x + "," + y + "]");
+                        var name = layer.Name + "[" + x + "," + y + "]";                     
+                        var tileNode = new Node (name);
                         tileNode.Translation = new Vector3 (x * TileWidth, y * TileHeight, 0);
 
                         var spr = new Sprite (tex, tileset.TileWidth, tileset.TileHeight);
                         spr.SetTextureOffset (tx, ty);
                         if (orientaion == "Isometric") {
-                            var sx = -x * TileWidth / 2 - y * TileWidth / 2; // -TileWidth / 2;
+                            // ノード位置 : Port
+                            // 表示位置 : Piso
+                            // スプライトのオフセット : Piso - Port
+                            var sx = -x * TileWidth / 2 - y * TileWidth / 2;
                             var sy = x * TileHeight / 2 - y * TileHeight / 2;
                             spr.SetOffset (sx, sy);
                         }
