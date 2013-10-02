@@ -341,6 +341,11 @@ namespace DD {
                                   0, 0, 0, 1);
         }
 
+        /// <summary>
+        /// 平行移動をあらわす4x4の行列の作成
+        /// </summary>
+        /// <param name="v">平行移動量</param>
+        /// <returns></returns>
         public static Matrix4x4 CreateFromTranslation (Vector3 v) {
             return CreateFromTranslation(v.X, v.Y, v.Z);
         }
@@ -371,7 +376,7 @@ namespace DD {
         /// <summary>
         /// スケーリングをあらわす4x4の行列の作成
         /// </summary>
-        /// <param name="sx">拡大縮小率 (3軸共通) </param>
+        /// <param name="s">拡大縮小率 (3軸共通) </param>
         /// <returns></returns>
         public static Matrix4x4 CreateFromScale (float s) {
             return CreateFromScale (s, s, s);
@@ -452,7 +457,7 @@ namespace DD {
         /// <param name="T">平行移動成分</param>
         /// <param name="R">回転成分</param>
         /// <param name="S">拡大縮小成分</param>
-        /// <returns></returns>
+        /// <returns>複合4x4行列</returns>
         public static Matrix4x4 Compress (Vector3 T, Quaternion R, Vector3 S) {
             return Matrix4x4.CreateFromTranslation (T) * Matrix4x4.CreateFromRotation (R) * Matrix4x4.CreateFromScale (S);
 
@@ -477,28 +482,38 @@ namespace DD {
             return (w != 0) ? new Vector3 (X/W, Y/W, Z/W) : new Vector3(X,Y,Z);
         }
 
+        /// <summary>
+        /// 座標変換
+        /// </summary>
+        /// <param name="v">座標位置ベクトル</param>
+        /// <returns></returns>
         public Vector3 Apply (Vector3 v) {
             return Apply (v.X, v.Y, v.Z, 1);
         }
 
         /// <summary>
-        /// 方向の変換
+        /// 方向ベクトルの変換
         /// </summary>
         /// <remarks>
-        /// 法線などの方向を表すベクトルは、座標変換を行う <see cref="Apply"/> では正しく変換できません。
+        /// 法線などの方向を表すベクトルは、座標変換を行う <see cref="Apply(Vector3)"/> では正しく変換できません。
         /// （例えばJason GregoryのGame Engine Architectureを参照）
         /// このメソッドは方向ベクトルを変換行列ではなく、変換行列の逆行列の転置行列で変換します。
         /// （方向ベクトルは同次空間で W=0 で表されることに注意）
         /// 戻り値は正規化されていません。
         /// </remarks>
-        /// <param name="x">ベクトルのX成分</param>
-        /// <param name="y">ベクトルのY成分</param>
-        /// <param name="z">ベクトルのZ成分</param>
+        /// <param name="x">方向ベクトルのX成分</param>
+        /// <param name="y">方向ベクトルのY成分</param>
+        /// <param name="z">方向ベクトルのZ成分</param>
         /// <returns></returns>
         public Vector3 ApplyDirection (float x, float y, float z) {
             return this.Inverse ().Transpose ().Apply (x, y, z, 0);
         }
 
+        /// <summary>
+        /// 方向ベクトルの変換
+        /// </summary>
+        /// <param name="v">方向ベクトル</param>
+        /// <returns></returns>
         public Vector3 ApplyDirection (Vector3 v) {
             return ApplyDirection (v.X, v.Y, v.Z);
         }

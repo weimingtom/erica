@@ -15,13 +15,13 @@ namespace DD {
     /// </note>
     /// </remarks>
     public struct Vector3 : IEquatable<Vector3> {
-
+        #region Constructor
         /// <summary>
         /// コンストラクター
         /// </summary>
-        /// <param name="x">位置X</param>
-        /// <param name="y">位置Y</param>
-        /// <param name="z">位置Z</param>
+        /// <param name="x">X要素</param>
+        /// <param name="y">Y要素</param>
+        /// <param name="z">Z要素</param>
         public Vector3 (float x, float y, float z)
             : this () {
             this.X = x;
@@ -29,13 +29,20 @@ namespace DD {
             this.Z = z;
         }
 
-        public Vector3(Vector2 v, float z) : this(){
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="v">2要素のベクトル</param>
+        /// <param name="z">Z要素</param>
+        public Vector3 (Vector2 v, float z)
+            : this () {
             this.X = v.X;
             this.Y = v.Y;
             this.Z = z;
         }
-       
+        #endregion
 
+        #region Property
         /// <summary>
         /// X座標
         /// </summary>
@@ -78,7 +85,7 @@ namespace DD {
         /// <returns>正規化済みのベクトル</returns>
         public Vector3 Normalize () {
             if (Length == 0) {
-                 throw new ArithmeticException ("Divied by 0");
+                throw new ArithmeticException ("Divied by 0");
             }
             return new Vector3 (X / Length, Y / Length, Z / Length);
         }
@@ -88,7 +95,7 @@ namespace DD {
         /// </summary>
         /// <param name="index">インデックス</param>
         /// <returns>座標位置</returns>
-        public float this [int index] {
+        public float this[int index] {
             get {
                 switch (index) {
                     case 0: return X;
@@ -113,7 +120,10 @@ namespace DD {
         public static Vector3 Zero {
             get { return new Vector3 (0, 0, 0); }
         }
+        #endregion
 
+
+        #region Method
         /// <summary>
         /// ベクトルとfloatのかけ算
         /// </summary>
@@ -199,25 +209,25 @@ namespace DD {
         /// 2つのベクトルの角度を度数 (in degree) で返します。
         /// 戻り値は必ず [0,180] の範囲内です。180度より大きな角度やマイナスの角度は返しません。
         /// また角度が計算できない場合 NAN を返します。
-        /// ベクトルAをベクトルBへ向けるための回転（クォータニオン）は以下の式を使って求まります。
+        /// 2つのベクトルの角度を利用して、ベクトルAをベクトルBへ向けるための回転（クォータニオン）は以下の式を使って計算可能です。
         /// <code>
         ///  var angle = Vector3.Angle (a, b);
         ///  var cross = Vector3.Cross (a, b);
-        ///  var rot = new Quarnion (angle, cross.X, cross.Y, cross.Z);
+        ///  var rot = new Quarnion (angle, cross);
         /// </code>
         /// <note>
         /// 角度が計算できない場合って NAN で良いの？
         /// </note>
         /// </remarks>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
+        /// <param name="a">ベクトルA</param>
+        /// <param name="b">ベクトルB</param>
         /// <returns></returns>
         public static float Angle (Vector3 a, Vector3 b) {
             if (a.Length2 == 0 || b.Length2 == 0) {
                 return Single.NaN;
             }
-            var cos = MyMath.Clamp(Vector3.Dot (a, b) / (a.Length * b.Length), -1, 1);
-            var angle = (float)(Math.Acos(cos) / Math.PI * 180.0);
+            var cos = MyMath.Clamp (Vector3.Dot (a, b) / (a.Length * b.Length), -1, 1);
+            var angle = (float)(Math.Acos (cos) / Math.PI * 180.0);
             return angle;
         }
 
@@ -266,6 +276,8 @@ namespace DD {
         public static bool operator != (Vector3 a, Vector3 b) {
             return !(a == b);
         }
+        #endregion
+
     }
 
 

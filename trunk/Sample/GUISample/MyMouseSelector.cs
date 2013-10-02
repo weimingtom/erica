@@ -6,9 +6,8 @@ using DD.Physics;
 
 namespace DD.Sample.GUISample {
     public class MyMouseSelector : Component {
-        Sprite spr;
         Vector2 start;
-        public bool Selecting { get; set; }
+        bool selecting;
 
         public MyMouseSelector () {
         }
@@ -16,78 +15,70 @@ namespace DD.Sample.GUISample {
         public static Node Create () {
             var cmp = new MyMouseSelector ();
 
-            cmp.spr = new Sprite (1, 1);
-            cmp.spr.AddTexture (new Texture("media/image128x128(Purple).png"));
-            cmp.spr.SetColor (255, 255, 255, 64);
+            var spr = new Sprite (1, 1);
+            spr.SetColor (255, 64, 64, 64);
+
+            var col = new CollisionObject ();
+            col.Shape = new BoxShape (1, 1, 1);
 
             var node = new Node ("MouseSelector");
             node.Attach (cmp);
-            node.Attach (cmp.spr);
+            node.Attach (spr);
+            node.Attach (col);
+
             node.DrawPriority = -1;
-            node.Drawable = false;
+            node.Visible = false;
 
             return node;
         }
 
-        public void BeginSelection () {
-            this.start = Graphics2D.GetInstance ().GetMousePosition ();
-            this.Selecting = true;
-            Node.SetGlobalTranslation (start.X, start.Y, 0);
-            Node.Drawable = true;
+        public void BeginSelect (float x, float y) {
+            this.selecting = true;
+            this.start = new Vector2 (x, y);
 
-            var nodes = World.Find ("Targets");
-            foreach (var node in nodes.Downwards) {
-                var tar = node.GetComponent<MyTarget> ();
-                if (tar != null) {
-                    tar.Selected = false;
+            Node.Visible = false;
+        }
+
+        public void EndSelect (float x, float y) {
+            this.selecting = false;
+
+            SendMessage ("MouseDeselect", null);
+
+            Node.Visible = false;
+        }
+
+        public override void OnUpdate (long msec) {
+            if (selecting) {
+                var end = Graphics2D.GetInstance ().GetMousePosition ();
+                var width = Math.Abs (end.X - start.X);
+                var height = Math.Abs (end.Y - start.Y);
+                var depth = 2000;
+                var center = (start + end) / 2;
+
+                // 原点はそのまま画面の左上でオフセットのみ変更する
+                // コリジョン形状って登録後に変えられたっけ？
+                if (width > 1 && height > 1) {
+                    Node.Visible = true;
+
+                    var spr = GetComponent<Sprite> ();
+                    spr.Offset = start;
+                    spr.Resize ((int)width, (int)height);
+
+                    var col = GetComponent<CollisionObject> ();
+                    col.Offset = new Vector3 (center, 0);
+                    col.Shape = new BoxShape (width / 2, height / 2, depth / 2);
+
+                    SendMessage ("MouseSelect", col);
                 }
             }
-
         }
 
-        public void EndSelection () {
-            var pos = Graphics2D.GetInstance ().GetMousePosition ();
-            var width = pos.X - start.X;
-            var height = pos.Y - start.Y;
 
-            Console.WriteLine ("Width={0}, Height={1}", width, height);
 
-            width = (width >= 1) ? width : 1;
-            height = (height >= 1) ? height : 1;
-
-            if (width > 0 && height > 0) {
-                var mycol = new BoxCollisionShape (width / 2, height / 2, 0);
-                mycol.SetOffset (width / 2, height / 2, 0);
-                var mytra = Node.GlobalTransform;
-
-                var targets = World.Find ("Targets");
-                var nodes = from node in targets.Downwards
-                            let col = node.GetComponent<CollisionShape> ()
-                            let myspr = node.GetComponent<MyTarget> ()
-                            where col != null
-                            let tra = node.GlobalTransform
-                            where Physics2D.Distance (col, tra, mycol, mytra) == 0
-                            select node;
-                foreach (var node in nodes) {
-                    var tar = node.GetComponent<MyTarget> ();
-                    if (tar != null) {
-                        tar.Selected = true;
-                    }
-                }
-            }
-
-            this.Selecting = false;
-            Node.Drawable = false;
-        }
-
-        public override void OnPreDraw (object window) {
-            if (spr != null) {
-                var pos = Graphics2D.GetInstance ().GetMousePosition ();
-                var width = (int)(pos.X - start.X);
-                var height = (int)(pos.Y - start.Y);
-                spr.Resize (width, height);
-            }
-        }
 
     }
 }
+
+
+
+

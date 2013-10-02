@@ -25,23 +25,15 @@ namespace DD.Sample.PhysicsSample {
             spr.SetOffset (-tex.Width/2, -tex.Height/2);
 
             var body = new RigidBody ();
-            if (angle == 1) {
-                body.Mass = 0;
-            }
-            else {
-                body.Mass = 1f;
-
-            }
+            body.AddShape (new SphereShape (radius));
+            body.Mass = 1;
             body.Material = new PhysicsMaterial ();
             body.Material.Restitution = 1f;
             body.Use2D = true;
-            body.CollideWith = -1;
-            body.Shape = new BoxShape (radius, radius, radius);
-            
+
             var node = new Node ("Ball");
             node.Attach (spr);
             node.Attach (body);
-            node.GroupID = -1;
 
             node.Translation = pos;
             node.Rotate (angle, 0, 0, 1);

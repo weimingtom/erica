@@ -216,7 +216,7 @@ namespace DD.UnitTest {
             var wld = new World ();
 
             wld.AddChild (node);
-            Assert.AreNotEqual (wld.CollisionAnlyzer, cmp.CollisionAnalyzer);
+            Assert.AreNotEqual (wld.CollisionAnalyzer, cmp.CollisionAnalyzer);
 
             wld.RemoveChild (node);
             Assert.AreEqual (ca, cmp.CollisionAnalyzer);

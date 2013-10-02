@@ -5,7 +5,6 @@ using System.Text;
 
 namespace DD.Sample.IsometricSample {
     public class MyCamera : Component {
-        float speed = 10;
 
         public static Node Create (){
 

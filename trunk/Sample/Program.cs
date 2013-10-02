@@ -6,7 +6,7 @@ using System.Text;
 namespace DD.Sample {
     public class Program {
         static void Main (string[] args) {
-            var select = 9;
+            var select = 11;
 
             switch (select) {
                 case 0: DD.Sample.SimpleSample.Program.Main (args); break;
@@ -19,6 +19,8 @@ namespace DD.Sample {
                 case 7: DD.Sample.TiledMapSample.Program.Main (args); break;
                 case 8: DD.Sample.IsometricSample.Program.Main (args); break;
                 case 9: DD.Sample.PhysicsSample.Program.Main (args); break;
+                case 10: DD.Sample.GUISample.Program.Main (args); break;
+                case 11: DD.Sample.MouseSample.Program.Main (args); break;
                 default: throw new NotImplementedException ("Sorry");
             }
         }

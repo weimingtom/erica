@@ -56,7 +56,7 @@ namespace DD {
         /// </summary>
         public abstract void Stop ();
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public abstract void Dispose ();
     }
 }

@@ -21,9 +21,9 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_SetText () {
             var label = new Label ();
-            label.SetText ("Text");
+            label.Text = "Some text";
 
-            Assert.AreEqual ("Text", label.Text);
+            Assert.AreEqual ("Some text", label.Text);
         }
 
         [TestMethod]

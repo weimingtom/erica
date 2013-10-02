@@ -160,11 +160,30 @@ namespace DD {
         }
 
         /// <summary>
+        /// SFMLのマウスボタンをDDのマウス ボタンに変換
+        /// </summary>
+        /// <remarks>
+        /// キーコードに変換するには ToDD_KeyCode() を使用する。
+        /// </remarks>
+        /// <param name="button">ボタン</param>
+        /// <returns>キー コード</returns>
+        public static DD.MouseButton ToDD (this SFML.Window.Mouse.Button button) {
+            switch (button) {
+                case Mouse.Button.Left: return MouseButton.Left;
+                case Mouse.Button.Right: return MouseButton.Right;
+                case Mouse.Button.Middle: return MouseButton.Middle;
+                case Mouse.Button.XButton1: return MouseButton.XButton1;
+                case Mouse.Button.XButton2: return MouseButton.XButton2;
+                default: throw new NotImplementedException ("Sorry");
+            }
+        }
+
+        /// <summary>
         /// SFMLのマウスボタンをDDのキー コードに変換
         /// </summary>
         /// <param name="button">ボタン</param>
         /// <returns>キー コード</returns>
-        public static DD.KeyCode ToDD (this SFML.Window.Mouse.Button button) {
+        public static DD.KeyCode ToDD_KeyCode (this SFML.Window.Mouse.Button button) {
             switch (button) {
                 case Mouse.Button.Left: return KeyCode.Mouse0;
                 case Mouse.Button.Right: return KeyCode.Mouse1;
@@ -174,6 +193,7 @@ namespace DD {
                 default: throw new NotImplementedException ("Sorry");
             }
         }
+
 
         /// <summary>
         /// SFMLの<see cref="SFML.Window.Vector2f"/> 型をDDの <see cref="DD.Vector2"/> 型に変換

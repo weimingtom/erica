@@ -20,23 +20,36 @@ namespace DD.Physics {
     /// <list type="bullet">
     ///   <item>Shape : 剛体の形状</item>
     ///   <item>Material : 摩擦係数などの物質特性</item>
-    ///   <item>Massなど : 質量ほか</item>
+    ///   <item>Massなど : 質量ほか制御変数</item>
     /// </list>
     /// これらの3要素を適切に制御することで物体の物理シミュレーションを行うことが可能です。
     /// 剛体はパラメーターによって3種類に分類することが可能です。
-    /// 以下略
+    /// 
+    /// 剛体の種類
+    /// 物理演算の完全なコントロール下に置かれるダイナミック体とスタティック体、それに
+    /// ユーザーがコントロール可能で他の物体をはじき飛ばすことが可能なキネマティック体の3種類が存在します。
+    /// キネマティック体は現在未実装です。
+    /// 
+    /// コリジョン形状
+    /// 現在の所コリジョン形状は1つしか対応していません。
+    /// 将来的には複数の形状で1つの複雑なコリジョン形状を表現できるようにするつもりです。
+    /// 
+    /// コリジョン オフセット
+    /// 現在機能しません。従って質量中心は必ずノードの原点(0,0,0)になります。
     /// </remarks>
     public class RigidBody : Component, System.IDisposable {
 
         #region Field
-        CollisionShape shape;
+        List<CollisionShape> shapes;
+        List<Vector3> offsets;    // 個別オフセット
         PhysicsMaterial material;
         int collideWith;
         int ignoreWith;
-        Vector3 offset;
+        Vector3 offset;   // 全体オフセット
         float mass;
         bool useGravity;
-        bool useResponse;
+        bool useContactResponse;
+        bool useCCD;
         Vector3 linearFactor;
         Vector3 angularFactor;
         BulletSharp.RigidBody rigidBody;
@@ -48,17 +61,22 @@ namespace DD.Physics {
         /// 剛体物理オブジェクトを作成するコンストラクター
         /// </summary>
         public RigidBody () {
-            this.shape = null;
+            this.shapes = new List<CollisionShape> ();
+            this.offsets = new List<Vector3> ();
             this.material = null;
             this.offset = new Vector3 (0, 0, 0);
             this.collideWith = -1;
             this.ignoreWith = 0;
             this.mass = 1;
             this.useGravity = true;
-            this.useResponse = true;
+            this.useContactResponse = true;
+            this.useCCD = true;
             this.linearFactor = new Vector3 (1, 1, 1);
             this.angularFactor = new Vector3 (1, 1, 1);
-            this.rigidBody = null;
+            this.rigidBody = new BulletSharp.RigidBody(new BulletSharp.RigidBodyConstructionInfo (mass,
+                                                                                                  new DefaultMotionState (),
+                                                                                                  new CompoundShape(true)));
+    
         }
         #endregion
 
@@ -118,42 +136,29 @@ namespace DD.Physics {
         /// </remarks>
         public bool Use2D {
             set {
-                SetLinearFactor (0, 1, 0);
+                SetLinearFactor (1, 1, 0);
                 SetAngularFactor (0, 0, 1);
             }
         }
 
+
         /// <summary>
-        /// 剛体物理の形状
+        /// コリジョン形状の数
         /// </summary>
         /// <remarks>
-        /// 剛体物理の多くのメソッド・プロパティは形状を定義しないと呼び出せません（当たり前）。
+        /// コリジョン形状は複数セット可能で複雑な形状を表現可能ですが、
+        /// 現在の所1つしか対応していません。
+        /// このメソッドは常に1を返します。
         /// </remarks>
-        public CollisionShape Shape {
-            get { return shape; }
-            set {
-                if (value == null) {
-                    throw new ArgumentNullException ("Shape is null");
-                }
-                this.shape = value;
-                this.rigidBody = value.CreateRigidBody (mass);
-                this.rigidBody.UserObject = this;
+        public int ShapeCount {
+            get { return shapes.Count(); }
+        }
 
-                // Bullet側と同期
-                this.rigidBody.LinearFactor = linearFactor.ToBullet ();
-                this.rigidBody.AngularFactor = angularFactor.ToBullet ();
-
-                this.rigidBody.CollisionFlags = this.rigidBody.CollisionFlags;
-
-                // 係数のセット
-                if (material != null) {
-                    this.rigidBody.Restitution = material.Restitution;
-                    this.rigidBody.Friction = material.Friction;
-                    this.rigidBody.RollingFriction = material.RollingFriction;
-                    this.rigidBody.SetDamping (material.LinearDamping, material.AngularDamping);
-                }
-
-            }
+        /// <summary>
+        /// すべてのコリジョン形状を列挙する列挙子
+        /// </summary>
+        public IEnumerable<CollisionShape> Shapes {
+            get { return shapes; }
         }
 
         /// <summary>
@@ -166,14 +171,6 @@ namespace DD.Physics {
                     throw new ArgumentNullException ("Material is null");
                 }
                 this.material = value;
-
-                // 係数のセット
-                if (rigidBody != null) {
-                    this.rigidBody.Restitution = material.Restitution;
-                    this.rigidBody.Friction = material.Friction;
-                    this.rigidBody.RollingFriction = material.RollingFriction;
-                    this.rigidBody.SetDamping (material.LinearDamping, material.AngularDamping);
-                }
             }
         }
 
@@ -205,11 +202,12 @@ namespace DD.Physics {
         }
 
         /// <summary>
-        /// オフセット
+        /// 全体オフセット
         /// </summary>
         /// <remarks>
-        /// 質量中心を指定のオフセットになるように移動します。
+        /// 質量中心が指定のオフセットになるように移動します。
         /// デフォルトではすべての形状で質量中心は(0,0,0)です。
+        /// このプロパティは未実装です。
         /// </remarks>
         public Vector3 Offset {
             get { return offset; }
@@ -227,17 +225,7 @@ namespace DD.Physics {
         public bool UseGravity {
             get { return useGravity; }
             set {
-                if (this.rigidBody == null) {
-                    throw new InvalidOperationException ("RigidBody is null");
-                }
-
                 this.useGravity = value;
-                if (value) {
-                    this.rigidBody.Flags = rigidBody.Flags & ~RigidBodyFlags.DisableWorldGravity;
-                }
-                else {
-                    this.rigidBody.Flags = rigidBody.Flags | RigidBodyFlags.DisableWorldGravity;
-                }
             }
         }
 
@@ -248,20 +236,23 @@ namespace DD.Physics {
         /// このフラグが <c>true</c> の時は物体を押し返します。
         /// デフォルトは <c>true</c> です。
         /// </remarks>
-        public bool UseResponse {
-            get { return useResponse; }
+        public bool UseContactResponse {
+            get { return useContactResponse; }
             set {
-                if (this.rigidBody == null) {
-                    throw new InvalidOperationException ("RigidBody is null");
-                }
+                this.useContactResponse = value;
+            }
+        }
 
-                this.useResponse = value;
-                if (value) {
-                    this.rigidBody.CollisionFlags = rigidBody.CollisionFlags & ~CollisionFlags.NoContactResponse;
-                }
-                else {
-                    this.rigidBody.CollisionFlags = rigidBody.CollisionFlags | CollisionFlags.NoContactResponse;
-                }
+        /// <summary>
+        /// 連続コリジョン判定モード
+        /// </summary>
+        /// <remarks>
+        /// 現在このプロパティは未実装です
+        /// </remarks>
+        public bool UseCCD {
+            get { return useCCD; }
+            set {
+                this.useCCD = value;
             }
         }
 
@@ -278,11 +269,6 @@ namespace DD.Physics {
                     throw new ArgumentException ("Mass is invalid");
                 }
                 this.mass = value;
-                if (rigidBody != null) {
-                    var inertia = rigidBody.CollisionShape.CalculateLocalInertia (value);
-                    this.rigidBody.SetMassProps (value, inertia);
-                    this.rigidBody.UpdateInertiaTensor ();
-                }
             }
         }
 
@@ -293,9 +279,10 @@ namespace DD.Physics {
         /// <remarks>
         /// 物理計算の結果得られた速度はこのファクターで乗算した結果が適応されます。
         /// すなわちここで 0 を指定した座標軸は位置が固定されます。
-        /// 剛体の移動を2次元に制限したい場合は、このメソッドを使って制限してもかまいませんが、
-        /// すでに用意されている <see cref="Box2DShape"/>, <see cref="Sphere2DShape"/> を使用した方が簡単です。
+        /// 剛体の移動を2次元に制限したい場合は、このメソッドを使って制限するより
+        /// <see cref="Use2D"/> プロパティを使用した方が簡単です。
         /// </remarks>
+        /// <seealso cref="Use2D"/>
         public Vector3 LinearFactor {
             get {
                 return linearFactor;
@@ -309,10 +296,11 @@ namespace DD.Physics {
         /// 回転ファクター
         /// </summary>
         /// <remarks>
-        /// 物理計算の結果得られた回転速度はこのファクターで乗算した結果が適応されます。
-        /// すなわちここで 0 を指定した回転軸は位置が固定されます。
-        /// 剛体の移動を2次元に制限したい場合は、このメソッドを使って制限してもかまいませんが、
-        /// すでに用意されている <see cref="Box2DShape"/>, <see cref="Sphere2DShape"/> を使用した方が簡単です。
+        /// 物理計算の結果得られた回転速度に、このファクターを乗算した結果が適応されます。
+        /// すなわち物理演算の結果を人為的に増強（または弱く）させます。
+        /// ここで 0 を指定した回転は固定されます。
+        /// 剛体の移動および回転を2次元に制限したい場合は、このメソッドを使って制限するより
+        /// <see cref="Use2D"/> プロパティを使用する方が簡単です。
         /// </remarks>
         public Vector3 AngularFactor {
             get { return angularFactor; }
@@ -533,7 +521,9 @@ namespace DD.Physics {
         /// <remarks>
         /// 剛体に指定のトルク積（トルクx時間）を加えます。
         /// </remarks>
-        /// <param name="torque">トルク積（ローカル座標）</param>
+        /// <param name="x">トルク積のX成分</param>
+        /// <param name="y">トルク積のY成分</param>
+        /// <param name="z">トルク積のZ成分</param>
         public void ApplyTorqueImpulse (float x, float y, float z) {
             if (rigidBody == null) {
                 throw new InvalidOperationException ("RigidBody is null");
@@ -548,7 +538,7 @@ namespace DD.Physics {
         /// <remarks>
         /// 剛体に指定のトルク積（トルクx時間）を加えます。
         /// </remarks>
-        /// <param name="torque">トルク積（ローカル座標）</param>
+        /// <param name="torqueImpulse">トルク積（ローカル座標）</param>
         public void ApplyTorqueImpulse (Vector3 torqueImpulse) {
             if (rigidBody == null) {
                 throw new InvalidOperationException ("RigidBody is null");
@@ -560,9 +550,13 @@ namespace DD.Physics {
         /// <summary>
         /// 線形ファクターの変更
         /// </summary>
-        /// <param name="x">線形ファクターのx</param>
-        /// <param name="y">線形ファクターのy</param>
-        /// <param name="z">線形ファクターのz</param>
+        /// <remarks>
+        /// 物理演算の結果得られた速度に対して、最後にこのファクターを乗算して物理ワールドに適応します。
+        /// [0,1]が有効です。
+        /// </remarks>
+        /// <param name="x">線形ファクターのx成分</param>
+        /// <param name="y">線形ファクターのy成分</param>
+        /// <param name="z">線形ファクターのz成分</param>
         public void SetLinearFactor (float x, float y, float z) {
             if (x < 0 || x > 1 || y < 0 || y > 1 || z < 0 || z > 1) {
                 throw new ArgumentException ("LinearFactor is invalid");
@@ -576,6 +570,10 @@ namespace DD.Physics {
         /// <summary>
         /// 回転ファクターの変更
         /// </summary>
+        /// <remarks>
+        /// 物理演算の結果得られた速度に対して、最後にこのファクターを乗算して物理ワールドに適応します。
+        /// [0,1]が有効です。
+        /// </remarks>
         /// <param name="x">X軸まわりの回転ファクター</param>
         /// <param name="y">Y軸まわりの回転ファクター</param>
         /// <param name="z">Z軸まわりの回転ファクター</param>
@@ -584,39 +582,153 @@ namespace DD.Physics {
                 throw new ArgumentException ("AngularFactor is invalid");
             }
             this.angularFactor = new Vector3 (x, y, z);
-            if (rigidBody != null) {
-                this.rigidBody.AngularFactor = new BulletVector3 (x, y, z);
+        }
+
+        /// <summary>
+        /// オフセットを指定して形状の追加
+        /// </summary>
+        /// <remarks>
+        /// 現在このメソッドは未実装です。従ってコリジョン オフセットの機能は使用できません。
+        /// </remarks>
+        /// <param name="shape"></param>
+        /// <param name="offset"></param>
+        public void AddShape (CollisionShape shape, Vector3 offset) {
+            throw new NotImplementedException ("Sorry");
+            //this.shapes.Add (shape);
+            //this.offsets.Add (offset);
+        }
+
+        /// <summary>
+        /// コリジョン形状の追加
+        /// </summary>
+        /// <remarks>
+        /// コリジョン形状は複数セット可能ですが、現在1つしか対応していません。
+        /// </remarks>
+        /// <param name="shape">コリジョン形状</param>
+        public void AddShape (CollisionShape shape) {
+            if (shape == null) {
+                throw new ArgumentNullException ("Collision shape is null");
             }
+            if (shapes.Count () >= 1) {
+                throw new NotImplementedException ("Sorry, CollisionShapes must be single");
+            }
+
+            this.shapes.Add (shape);
+            this.offsets.Add (new Vector3 (0, 0, 0));
+
+            var shp = rigidBody.CollisionShape as CompoundShape;
+            shp.AddChildShape (Matrix.Identity, shape.CreateBulletShape ());
+        }
+
+        /// <summary>
+        /// コリジョン形状の取得
+        /// </summary>
+        /// <param name="index">形状インデックス</param>
+        /// <returns></returns>
+        public CollisionShape GetShape (int index) {
+            if (index < 0 || index > ShapeCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            return shapes[index];
+        }
+
+        /// <summary>
+        /// コリジョン形状の削除
+        /// </summary>
+        /// <param name="index">形状インデックス</param>
+        public void RemoveShape (int index) {
+            this.shapes.RemoveAt (index);
+            this.offsets.RemoveAt (index);
+
+            var compShape = rigidBody.CollisionShape as CompoundShape;
+            compShape.RemoveChildShapeByIndex (index);
+        }
+
+
+        /// <summary>
+        /// すべてのDDワールドのパラメーターを物理演算ワールドに反映
+        /// </summary>
+        /// <remarks>
+        /// 物理演算に関するすべてのパラメーターを物理演算ワールドに反映します。
+        /// 現在の所登録後にパラメーターの変更を自動で検出して必要に応じて物理演算ワールドに反映する仕組みは実装されていません。
+        /// 従って明示的にこのメソッドを呼び出してパラメーターを反映する必要があります。
+        /// （物理演算ワールドに登録する最初の1回だけは自動で呼び出されます）
+        /// <note>
+        /// 重力の無効化はAddRigidBody()より前に実行されないと効果がない。
+        /// </note>
+        /// </remarks>
+        public void SyncWithPhysicsWorld () {
+
+            // 座標の更新
+            var T = Node.Position  / PhysicsSimulator.PPM;
+            var R = Node.Orientation;
+            var S = new Vector3 (1, 1, 1);
+            rigidBody.WorldTransform = Matrix4x4.Compress (T, R, S).ToBullet ();
+
+            
+            // 重量の更新
+            var inertia = rigidBody.CollisionShape.CalculateLocalInertia (mass);
+            rigidBody.SetMassProps (mass, inertia);
+            rigidBody.UpdateInertiaTensor ();
+            
+            // 剛体パラメーターの更新
+            rigidBody.LinearFactor = linearFactor.ToBullet ();
+            rigidBody.AngularFactor = angularFactor.ToBullet ();
+            rigidBody.Flags = (useGravity)
+                               ? (rigidBody.Flags & ~RigidBodyFlags.DisableWorldGravity) 
+                               : (rigidBody.Flags |  RigidBodyFlags.DisableWorldGravity);
+            rigidBody.CollisionFlags = (useContactResponse)
+                               ? (rigidBody.CollisionFlags & ~CollisionFlags.NoContactResponse)
+                               : (rigidBody.CollisionFlags | CollisionFlags.NoContactResponse);
+            if (useCCD) {
+                // 未実装
+                //rigidBody.CcdMotionThreshold = 1;
+                //rigidBody.CcdSweptSphereRadius = 0.9f * compShape.InSphereRadius;
+            }
+
+
+            // マテリアル パラメーター(null可)の更新
+            if (material != null) {
+                rigidBody.Restitution = material.Restitution;
+                rigidBody.Friction = material.Friction;
+                rigidBody.RollingFriction = material.RollingFriction;
+                rigidBody.SetDamping (material.LinearDamping, material.AngularDamping);
+            }
+
         }
 
         /// <inheritdoc/>
         public override void OnPhysicsUpdateInit (long msec) {
-            if (rigidBody != null) {
+            //if (rigidBody != null) {
                 var phys = World.PhysicsSimulator;
                 if (!phys.IsRegistered (Node)) {
-                    // 本当はオフセットが必要
+                    // （メモ）
+                    // UseGravityの変更はAddRigidBody()より
+                    // 前に行う必要がある
+                    SyncWithPhysicsWorld ();
                     phys.AddRigidBody (Node);
-                }
-            }
+                 }
+            //}
         }
+
 
         /// <inheritdoc/>
         public override void OnPhysicsUpdate (long msec) {
             // 物理演算ワールドの座標をDD側に反映
-            // PPM補正を忘れずに
-            // 本当はオフセットが必要
-            var T = rigidBody.CenterOfMassPosition.ToDD() * PhysicsSimulator.PPM;
+            // PPM補正を忘れずに!
+            var T = rigidBody.WorldTransform.Origin.ToDD () * PhysicsSimulator.PPM;
             var R = rigidBody.Orientation.ToDD ();
             var S = new Vector3(1,1,1);
 
             Node.GlobalTransform = Matrix4x4.Compress(T, R, S);
-            // +Matrix.CreateFromTranslation(-body.Offset)
         }
+
+        // OnDestroyed()で物理演算ワールドから取り除くべき
 
         /// <inheritdoc/>
         void System.IDisposable.Dispose () {
             if (rigidBody != null) {
-                // すでにデタッチされているので明示的に物理演算ワールドから削除する事ができない
+                // （注意）すでにデタッチされているので明示的に物理演算ワールドから削除する事ができない
                 // これまでの所問題になっていないので多分これで大丈夫。
                 rigidBody.Dispose ();
                 this.rigidBody = null;

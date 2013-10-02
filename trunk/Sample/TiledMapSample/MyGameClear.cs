@@ -20,7 +20,7 @@ namespace DD.Sample.TiledMapSample {
             node.Attach (spr);
 
             node.DrawPriority = -1;
-            node.Drawable = false;
+            node.Visible = false;
             
             return node;
         }
@@ -35,7 +35,7 @@ namespace DD.Sample.TiledMapSample {
 
             var cabs = World.Find ("CabbageMap").Downwards.Skip(1);
             if (cabs.Count () == 0) {
-                Node.Drawable = true;
+                Node.Visible = true;
                 Node.Updatable = false;
             }
         }

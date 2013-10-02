@@ -13,16 +13,16 @@ using System.Diagnostics;
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestPhysicsSimulation {
+      
         [TestMethod]
         public void Test_Gravity () {
-
             var ball1 = new Node ("FreeFall");
             ball1.Attach(new RigidBody ());
-            ball1.RigidBody.Shape = new SphereShape (1);
+            ball1.RigidBody.AddShape (new SphereShape (1));
 
             var ball2 = new Node ("NoFall");
             ball2.Attach (new RigidBody ());
-            ball2.RigidBody.Shape = new SphereShape (1);
+            ball2.RigidBody.AddShape (new SphereShape (1));
             ball2.RigidBody.Mass = 0;   // = static, no gravity
             ball2.Translate (10, 0, 0);
 
@@ -48,12 +48,12 @@ namespace DD.UnitTest.Physics {
         public void Test_Static () {
             var ball1 = new Node ("Static");
             ball1.Attach (new RigidBody ());
-            ball1.RigidBody.Shape = new SphereShape (1);
+            ball1.RigidBody.AddShape (new SphereShape (1));
             ball1.RigidBody.Mass = 0;   // = static
 
             var ball2 = new Node ("Dynamic");
             ball2.Attach (new RigidBody ());
-            ball2.RigidBody.Shape = new SphereShape (1);
+            ball2.RigidBody.AddShape ( new SphereShape (1));
             ball2.RigidBody.Mass = 1;   // = dynamic
 
             
@@ -80,8 +80,31 @@ namespace DD.UnitTest.Physics {
         }
 
         [TestMethod]
-        public void Test_Sphere_to_Box () {
+        public void Test_Offset () {
+            var sph = new Node ("Sphere");
+            sph.Attach (new RigidBody ());
+            sph.RigidBody.Mass = 1;
+            sph.RigidBody.Material = new PhysicsMaterial();
+            sph.RigidBody.AddShape (new SphereShape (1));
+            sph.RigidBody.SetOffset (1, 0, 0);
 
+            var wld = new World ("");
+            wld.AddChild (sph);
+
+            wld.PhysicsSimulator.SetGravity (0, -9.8f, 0);
+
+            sph.Translate (10, 10, 0);
+
+            for (var i = 0; i < 100; i++) {
+                wld.PhysicsUpdate (33);
+                Debug.WriteLine ("Sphere = {0}", sph.Position);
+            }
+
+            wld.Destroy ();
+        }
+
+        [TestMethod]
+        public void Test_Sphere_to_Box () {
             var mat = new PhysicsMaterial ();
             mat.Restitution=1;
 
@@ -89,13 +112,13 @@ namespace DD.UnitTest.Physics {
             sph.Attach(new RigidBody ());
             sph.RigidBody.Mass = 1;
             sph.RigidBody.Material = mat;
-            sph.RigidBody.Shape = new SphereShape (1);
+            sph.RigidBody.AddShape( new SphereShape (1));
 
             var box = new Node ("Box");
             box.Attach(new RigidBody ());
             box.RigidBody.Mass = 0;
             box.RigidBody.Material = mat;
-            box.RigidBody.Shape = new BoxShape (1,1,1);
+            box.RigidBody.AddShape(new BoxShape (1,1,1));
 
             var wld = new World ("");
             wld.AddChild (sph);
@@ -116,11 +139,10 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_ApplyForce () {
-
             var ball1 = new Node ("Ball1");
             var rb1 = new RigidBody ();
             rb1.Mass = 1;
-            rb1.Shape = new SphereShape (1);
+            rb1.AddShape ( new SphereShape (1));
             rb1.Material = new PhysicsMaterial ();
             rb1.Material.Restitution = 1;
             ball1.Attach (rb1);
@@ -128,12 +150,10 @@ namespace DD.UnitTest.Physics {
             var ball2 = new Node ("Ball2");
             var rb2 = new RigidBody ();
             rb2.Mass = 1;
-            rb2.Shape = new SphereShape (1);
+            rb2.AddShape ( new SphereShape (1));
             rb2.Material = new PhysicsMaterial ();
             rb2.Material.Restitution = 1;
             ball2.Attach (rb2);
-
-           
 
             var wld = new World ("");
             wld.AddChild (ball1);
@@ -149,11 +169,11 @@ namespace DD.UnitTest.Physics {
             
             for (var i = 0; i < 100; i++) {
                 wld.PhysicsUpdate (33);
-                //Debug.WriteLine ("Ball1 = {0}, Ball2 = {1}", ball1.Position, ball2.Position);
+                Debug.WriteLine ("Ball1 = {0}, Ball2 = {1}", ball1.Position, ball2.Position);
             }
 
             Assert.AreEqual (new Vector3 (8.0333f, 0, 0), ball1.Position);
-            Assert.AreEqual (new Vector3 (29.7445f, 0, 0), ball2.Position);
+            Assert.AreEqual (new Vector3 (56.6890f, 0, 0), ball2.Position);
 
             wld.Destroy ();
         }
@@ -161,17 +181,16 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_ApplyImpulse () {
-
             var box1 = new Node ("Box1");
             box1.Attach (new RigidBody());
-            box1.RigidBody.Shape = new BoxShape (1,1,1);
+            box1.RigidBody.AddShape (new BoxShape (1,1,1));
             box1.RigidBody.Material = new PhysicsMaterial ();
             box1.RigidBody.Mass = 1;
             box1.RigidBody.Material.Restitution = 1;
 
             var box2 = new Node ("Box2");
             box2.Attach (new RigidBody ());
-            box2.RigidBody.Shape = new BoxShape (1, 1, 1);
+            box2.RigidBody.AddShape (new BoxShape (1, 1, 1));
             box2.RigidBody.Material = new PhysicsMaterial ();
             box2.RigidBody.Mass = 1;
             box2.RigidBody.Material.Restitution = 1;
@@ -200,34 +219,33 @@ namespace DD.UnitTest.Physics {
             }
 
             Assert.AreEqual (new Vector3 (8.03333f, 0, 0), box1.Position);
-            Assert.AreEqual (new Vector3 (29.7445f, 0, 0), box2.Position);
+            Assert.AreEqual (new Vector3 (56.6890f, 0, 0), box2.Position);
 
             wld.Destroy ();
         }
 
         [TestMethod]
         public void Test_Restitution () {
-
             var sph1 = new Node ("Sphere1");
             sph1.Attach (new RigidBody ());
             sph1.RigidBody.Material = new PhysicsMaterial ();
             sph1.RigidBody.Mass = 1;
             sph1.RigidBody.Material.Restitution = 0;   // 反射 0%
-            sph1.RigidBody.Shape = new SphereShape (1);
+            sph1.RigidBody.AddShape ( new SphereShape (1));
 
             var sph2 = new Node ("Sphere2");
             sph2.Attach (new RigidBody ());
             sph2.RigidBody.Material = new PhysicsMaterial ();
             sph2.RigidBody.Mass = 1;
             sph2.RigidBody.Material.Restitution = 1;    // 反射 100%
-            sph2.RigidBody.Shape = new SphereShape (1);
+            sph2.RigidBody.AddShape( new SphereShape (1));
 
             var plane = new Node ("Plane");
             plane.Attach (new RigidBody ());
             plane.RigidBody.Material = new PhysicsMaterial ();
             plane.RigidBody.Mass = 0;
             plane.RigidBody.Material.Restitution = 1;
-            plane.RigidBody.Shape = new BoxShape (100, 1, 100);
+            plane.RigidBody.AddShape(new BoxShape (100, 1, 100));
 
             var wld = new World ("");
             wld.AddChild (sph1);
@@ -252,27 +270,28 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_Friction () {
-
             var box1 = new Node ("Box1");
             box1.Attach (new RigidBody ());
             box1.RigidBody.Material = new PhysicsMaterial ();
             box1.RigidBody.Mass = 1;
             box1.RigidBody.Material.Friction = 0.8f;   // 摩擦 0.5
-            box1.RigidBody.Shape = new BoxShape (1,1,1);
+            box1.RigidBody.AddShape( new BoxShape (1, 1, 1));
+            box1.RigidBody.Use2D = true;
 
             var box2 = new Node ("Box2");
             box2.Attach (new RigidBody ());
             box2.RigidBody.Material = new PhysicsMaterial ();
             box2.RigidBody.Mass = 1;
-            box2.RigidBody.Material.Friction = 0;    // 摩擦 0
-            box2.RigidBody.Shape = new BoxShape (1, 1, 1);
+            box2.RigidBody.Material.Friction = 0;    // 摩擦なし 0
+            box2.RigidBody.AddShape( new BoxShape (1, 1, 1));
+            box2.RigidBody.Use2D = true;
 
             var plane = new Node ("Plane");
             plane.Attach (new RigidBody ());
             plane.RigidBody.Material = new PhysicsMaterial ();
             plane.RigidBody.Mass = 0;
             plane.RigidBody.Material.Friction = 0.8f;
-            plane.RigidBody.Shape = new BoxShape (100, 1, 100);
+            plane.RigidBody.AddShape ( new BoxShape (100, 1, 100));
 
             var wld = new World ("");
             wld.AddChild (box1);
@@ -294,23 +313,23 @@ namespace DD.UnitTest.Physics {
                 Debug.WriteLine ("Box1 = {0}, Box2 = {1}", box1.Position, box2.Position);
             }
 
-            Assert.AreEqual (new Vector3 (18.9796f, 2, 0), box1.Position);
-            Assert.AreEqual (new Vector3 (37.7778f, 2, 0), box2.Position);
+            Assert.AreEqual (new Vector3 (21.8618f, 2.0317f, 0), box1.Position);
+            Assert.AreEqual (new Vector3 (64.7224f, 2, 0), box2.Position);
 
             wld.Destroy ();
         }
 
         [TestMethod]
         public void Test_Rotation () {
-
             var sph = new Node ("Sphere1");
             sph.Attach (new RigidBody ());
-            sph.RigidBody.Shape = new BoxShape (1, 1, 1);
+            sph.RigidBody.AddShape( new SphereShape (1));
+            sph.RigidBody.Use2D = true;
 
             var plane = new Node ("Plane");
             plane.Attach (new RigidBody ());
             plane.RigidBody.Mass = 0;             // =static
-            plane.RigidBody.Shape = new BoxShape (100, 1, 100);
+            plane.RigidBody.AddShape( new BoxShape (100, 1, 100));
 
             var wld = new World ("");
             wld.AddChild (sph);
@@ -326,20 +345,19 @@ namespace DD.UnitTest.Physics {
                 Debug.WriteLine ("Sphere = {0}", sph.Position);
             }
 
-            Assert.AreEqual (new Vector3 (2.7034f, 0.7107f, 0), sph.Position);
+            Assert.AreEqual (new Vector3 (17.23807f, -14.40964f, 0), sph.Position);
 
             wld.Destroy ();
         }
 
         [TestMethod]
         public void Test_Damping () {
-
             var box = new Node ("Box1");
             box.Attach (new RigidBody ());
             box.RigidBody.Material = new PhysicsMaterial ();
             box.RigidBody.Mass = 1;
             box.RigidBody.Material.LinearDamping= 0.9f;   // 減衰 90%
-            box.RigidBody.Shape = new BoxShape (1, 1, 1);
+            box.RigidBody.AddShape (new BoxShape (1, 1, 1));
 
             var wld = new World ("");
             wld.AddChild (box);
@@ -353,7 +371,7 @@ namespace DD.UnitTest.Physics {
                 Debug.WriteLine ("Box = {0}", box.Position);
             }
 
-            Assert.AreEqual (new Vector3 (7.2191f, 0, 0), box.Position);
+            Assert.AreEqual (new Vector3 (7.3742f, 0, 0), box.Position);
 
             wld.Destroy ();
         }

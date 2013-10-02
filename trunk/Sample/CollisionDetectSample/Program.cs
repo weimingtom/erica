@@ -14,14 +14,16 @@ namespace DD.Sample.CollisionDetectSample {
 
             var wld = new World ();
 
-            var node1 = MyCharacter.Create (new Vector3 (200, 200, 0), 16);    // GroupID = 1
+            var node1 = MyCharacter.Create (new Vector3 (200, 200, 0), 16);    // GroupID = 1<<4
             var node2 = MyBlock.Create (new Vector3 (100, 300, 0), -1);        // CollideWith = All
-            var node3 = MyBlock.Create (new Vector3 (300, 300, 0), 16);        // CollideWith = 1
+            var node3 = MyBlock.Create (new Vector3 (300, 300, 0), 16);        // CollideWith = 1<<4
             var node4 = MyBlock.Create (new Vector3 (500, 300, 0), 0);         // CollideWith = None
+            var node5 = MyHUD.Create (new Vector3 (10, 10, 0));
             wld.AddChild (node1);
             wld.AddChild (node2);
             wld.AddChild (node3);
             wld.AddChild (node4);
+            wld.AddChild (node5);
 
             // ----------------------------------------
             var active = true;
@@ -42,7 +44,8 @@ namespace DD.Sample.CollisionDetectSample {
 
                 g2d.Dispatch (wld);
                 wld.Animate (msec, 33);
-                wld.Analyze ();
+                wld.Deliver ();
+                wld.CollisionUpdate ();
                 wld.Update (msec);
                 g2d.Draw (wld);
             }

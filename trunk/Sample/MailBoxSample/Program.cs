@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 
 namespace DD.Sample.MessageSample {
@@ -58,7 +53,7 @@ namespace DD.Sample.MessageSample {
 
                 g2d.Dispatch (wld);
                 wld.Animate (msec, 33);
-                wld.Analyze ();
+                wld.CollisionUpdate ();
                 wld.Update (msec);
                 wld.Deliver ();
                 g2d.Draw (wld);

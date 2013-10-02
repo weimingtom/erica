@@ -15,7 +15,7 @@ namespace DD {
    public class CapsuleShape : CollisionShape {
        #region Field
        float radius;
-       float height;
+       float halfHeight;
        #endregion
 
        #region Constructor
@@ -27,13 +27,13 @@ namespace DD {
        /// 高さは上下の球の中心から中心までの距離です。
        /// </remarks>
        /// <param name="radius">半径</param>
-       /// <param name="height">高さ</param>
-       public CapsuleShape (float radius, float height) {
-           if (radius <= 0 || height <=0) {
+       /// <param name="halfHeight">高さ</param>
+       public CapsuleShape (float radius, float halfHeight) {
+           if (radius <= 0 || halfHeight <=0) {
                throw new ArgumentException ("Capsule size is invalid");
            }
            this.radius = radius;
-           this.height = height;
+           this.halfHeight = halfHeight;
        }
        #endregion
 
@@ -46,20 +46,42 @@ namespace DD {
        }
 
        /// <summary>
+       /// カプセルの高さの1/2
+       /// </summary>
+       /// <remarks>
+       /// カプセルの高さは質量中心から球の中心までの距離です。
+       /// </remarks>
+       public float HalfHeight {
+           get { return halfHeight; }
+       }
+
+       /// <summary>
        /// カプセルの高さ
        /// </summary>
        /// <remarks>
-       /// カプセルの高さは球の中心から中心までの距離です。
+       /// カプセルの高さは球の中心から反対側の球の中心までの距離です。
        /// </remarks>
        public float Height {
-           get { return height; }
+           get { return halfHeight*2; }
        }
+
+       /// <inheritdoc/>
+       public override float ExSphereRadius {
+           get { return halfHeight + radius; }
+       }
+
+       /// <inheritdoc/>
+       public override float InSphereRadius {
+           get { return radius; }
+       }
+
        #endregion
 
+       #region Method
        /// <inheritdoc/>
        public override BulletSharp.PairCachingGhostObject CreateGhostObject () {
            var col = new BulletSharp.PairCachingGhostObject ();
-           col.CollisionShape = new BulletSharp.CapsuleShape (radius, height);
+           col.CollisionShape = new BulletSharp.CapsuleShape (radius, halfHeight);
            col.CollisionFlags |= CollisionFlags.NoContactResponse;
            return col;
        }
@@ -69,15 +91,24 @@ namespace DD {
            var ppm = DD.Physics.PhysicsSimulator.PPM;
            
            var mstate = new DefaultMotionState ();
-           var shape = new BulletSharp.CapsuleShape (radius/ppm, height/ppm);
+           var shape = new BulletSharp.CapsuleShape (radius/ppm, halfHeight/ppm);
            var info = new BulletSharp.RigidBodyConstructionInfo (mass, mstate, shape);
 
            return new BulletSharp.RigidBody (info);
        }
 
        /// <inheritdoc/>
-       public override string ToString () {
-           return string.Format("Capsule : {0}, {1}", radius, height);
+       public override BulletSharp.CollisionShape CreateBulletShape () {
+           var ppm = DD.Physics.PhysicsSimulator.PPM;
+           
+           return new BulletSharp.CapsuleShape (radius / ppm, halfHeight / ppm);
        }
+
+       /// <inheritdoc/>
+       public override string ToString () {
+           return string.Format("Capsule : {0}, {1}", radius, halfHeight);
+       }
+       #endregion
+
    }
 }

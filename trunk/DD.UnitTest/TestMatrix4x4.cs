@@ -225,70 +225,50 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_CreateFromTranslation () {
-            var mat = Matrix4x4.CreateFromTranslation (1, 2, 3);
+            var mat1 = Matrix4x4.CreateFromTranslation (1, 2, 3);
+            var mat2 = Matrix4x4.CreateFromTranslation (new Vector3 (1,2,3));
             var exptected = new Matrix4x4 (1, 0, 0, 1,
                                            0, 1, 0, 2,
                                            0, 0, 1, 3,
                                            0, 0, 0, 1);
 
-            Assert.AreEqual (exptected, mat);
+            Assert.AreEqual (exptected, mat1);
+            Assert.AreEqual (exptected, mat2);
         }
 
         [TestMethod]
-        public void Test_CreateFromScale_1 () {
-            var mat = Matrix4x4.CreateFromScale (1, 2, 3);
-            var expected = new Matrix4x4 (1, 0, 0, 0,
-                                          0, 2, 0, 0,
-                                          0, 0, 3, 0,
-                                          0, 0, 0, 1);
-            Assert.AreEqual (expected, mat);
+        public void Test_CreateFromScale () {
+            var mat1 = Matrix4x4.CreateFromScale (1, 2, 3);
+            var mat2 = Matrix4x4.CreateFromScale (new Vector3 (1, 2, 3));
+            var mat3 = Matrix4x4.CreateFromScale (1);
+            var expected1 = new Matrix4x4 (1, 0, 0, 0,
+                                           0, 2, 0, 0,
+                                           0, 0, 3, 0,
+                                           0, 0, 0, 1);
+            var expected2 = new Matrix4x4 (1, 0, 0, 0,
+                                           0, 1, 0, 0,
+                                           0, 0, 1, 0,
+                                           0, 0, 0, 1);
 
-            
-        }
-
-        [TestMethod]
-        public void Test_CreateFromScale_2 () {
-            var mat = Matrix4x4.CreateFromScale (new Vector3 (1, 2, 3));
-            var expected = new Matrix4x4 (1, 0, 0, 0,
-                                          0, 2, 0, 0,
-                                          0, 0, 3, 0,
-                                          0, 0, 0, 1);
-            Assert.AreEqual (expected, mat);
-        }
-
-        [TestMethod]
-        public void Test_CreateFromScale_3 () {
-            var mat = Matrix4x4.CreateFromScale (4);
-            var expected = new Matrix4x4 (4, 0, 0, 0,
-                                          0, 4, 0, 0,
-                                          0, 0, 4, 0,
-                                          0, 0, 0, 1);
-            Assert.AreEqual (expected, mat);
+            Assert.AreEqual (expected1, mat1);
+            Assert.AreEqual (expected1, mat2);
+            Assert.AreEqual (expected2, mat3);
         }
 
 
         [TestMethod]
         public void Test_CreateFromRotation_1 () {
-            var mat = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
+            var mat1 = Matrix4x4.CreateFromRotation (45, 0, 0, 1);
+            var mat2 = Matrix4x4.CreateFromRotation (new Quaternion (45, 0, 0, 1));
             var s = (float)Math.Sin (45 * Math.PI / 180.0f);
             var c = (float)Math.Cos (45 * Math.PI / 180.0f);
             var expected = new Matrix4x4 (c, -s, 0, 0,
                                           s, c, 0, 0,
                                           0, 0, 1, 0,
                                           0, 0, 0, 1);
-            Assert.AreEqual (expected, mat);
-        }
 
-        [TestMethod]
-        public void Test_CreateFromRotation_2 () {
-            var mat = Matrix4x4.CreateFromRotation (new Quaternion (45, 0, 0, 1));
-            var s = (float)Math.Sin (45 * Math.PI / 180.0f);
-            var c = (float)Math.Cos (45 * Math.PI / 180.0f);
-            var expected = new Matrix4x4 (c, -s, 0, 0,
-                                          s, c, 0, 0,
-                                          0, 0, 1, 0,
-                                          0, 0, 0, 1);
-            Assert.AreEqual (expected, mat);
+            Assert.AreEqual (expected, mat1);
+            Assert.AreEqual (expected, mat2);
         }
 
 
@@ -349,7 +329,7 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_Apply_1 () {
+        public void Test_Apply () {
 
             var m = new Matrix4x4 (1, 2, 1, 1,
                                    2, 1, 2, 1,

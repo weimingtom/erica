@@ -50,7 +50,7 @@ namespace DD.UnitTest {
             wld.AddChild (node2);
             wld.AddChild (node3);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             var result = wld.Sweep (node1, new Vector3 (100, 0, 0));
             Assert.AreEqual (true, result.Hit);

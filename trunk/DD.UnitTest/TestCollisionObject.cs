@@ -7,17 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DD.UnitTest {
     [TestClass]
     public class TestCollisionObject {
-        public class MyComponent : Component{
-            public bool IsCollisionEnterCalled { get; private set; }
-            public bool IsCollisionExitCalled { get; private set; }
-            public override void OnCollisionEnter (Node collidee) {
-                this.IsCollisionEnterCalled = true;
-            }
-            public override void OnCollisionExit (Node collidee) { 
-                this.IsCollisionExitCalled = true;
-            }
-        }
-    
+
 
         [TestMethod]
         public void Test_New () {
@@ -26,8 +16,9 @@ namespace DD.UnitTest {
             Assert.AreEqual (null, col.Shape);
             Assert.AreEqual (-1, col.CollideWith);
             Assert.AreEqual (0, col.IgnoreWith);
-            Assert.AreEqual (0, col.OverlapCount);
-            Assert.AreEqual (0, col.Overlaps.Count ());
+            Assert.AreEqual (0, col.OverlappingObjectCount);
+            Assert.AreEqual (0, col.OverlapObjects.Count ());
+            Assert.AreEqual (new Vector3 (0, 0, 0), col.Offset);
         }
 
         [TestMethod]
@@ -58,59 +49,42 @@ namespace DD.UnitTest {
         public void Test_SetCollideWith () {
             var col = new CollisionObject ();
 
-            col.CollideWith = 1 << 1 | 1<<2 | 1<<3;
+            col.CollideWith = 15;
 
-            Assert.AreEqual (1 << 1 | 1 << 2 | 1 << 3, col.CollideWith);
+            Assert.AreEqual (15, col.CollideWith);
         }
 
         [TestMethod]
         public void Test_SetIgnoreWith () {
             var col = new CollisionObject ();
 
-            col.IgnoreWith = 1 << 1 | 1 << 2 | 1 << 3;
+            col.IgnoreWith = 255;
 
-            Assert.AreEqual (1 << 1 | 1 << 2 | 1 << 3, col.IgnoreWith);
+            Assert.AreEqual (255, col.IgnoreWith);
         }
-
 
         [TestMethod]
-        public void Test_OnPrepareCollisions () {
-            var node = new Node();
+        public void Test_CollisionMask () {
             var col = new CollisionObject ();
-            col.Shape = new BoxShape (1, 1, 1);
-            node.Attach(col);
-            node.Translate (1, 2, 3);
 
-            var wld = new World();
-            wld.AddChild(node);
+            col.CollideWith = 15;
+            col.IgnoreWith = 3;
 
-            col.OnPrepareCollisions ();
-
-            
-            // (1) コリジョン ワールドへ登録済み
-            Assert.AreEqual (1, wld.CollisionAnlyzer.CollisionObjectCount);
-
-            // (2) DDワールドからコリジョン ワールドへ座標を反映
-            Assert.AreEqual (1f, col.Data.WorldTransform.M41);
-            Assert.AreEqual (2f, col.Data.WorldTransform.M42);
-            Assert.AreEqual (3f, col.Data.WorldTransform.M43);
-
+            Assert.AreEqual (12, col.CollisionMask);
+    
         }
+     
 
         [TestMethod]
         public void Test_Overlaps () {
             var node1 = new Node ("Node1");
-            var cmp1 = new MyComponent ();
             var col1 = new CollisionObject ();
             col1.Shape = new BoxShape (1, 1, 1);
-            node1.Attach (cmp1);
             node1.Attach (col1);
 
             var node2 = new Node ("Node2");
-            var cmp2 = new MyComponent ();
             var col2 = new CollisionObject ();
             col2.Shape = new BoxShape (1, 1, 1);
-            node2.Attach (cmp2);
             node2.Attach (col2);
 
             var wld = new World ();
@@ -118,52 +92,19 @@ namespace DD.UnitTest {
             wld.AddChild (node2);
 
             // コリジョン発生
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
-            Assert.AreEqual (1, col1.OverlapCount);
-            Assert.AreEqual (1, col2.OverlapCount);
-
-            // コリジョン消失
-            node2.Translate (10, 0, 0);
-            wld.Analyze ();
-
-            Assert.AreEqual (0, col1.OverlapCount);
-            Assert.AreEqual (0, col2.OverlapCount);
-        }
-
-        [TestMethod]
-        public void Test_Invoke_ColisionExit () {
-            var node1 = new Node ("Node1");
-            var cmp1 = new MyComponent ();
-            var col1 = new CollisionObject ();
-            col1.Shape = new BoxShape (1, 1, 1);
-            node1.Attach (cmp1);
-            node1.Attach (col1);
-
-            var node2 = new Node ("Node2");
-            var cmp2 = new MyComponent ();
-            var col2 = new CollisionObject ();
-            col2.Shape = new BoxShape (1, 1, 1);
-            node2.Attach (cmp2);
-            node2.Attach (col2);
-
-            var wld = new World ();
-            wld.AddChild (node1);
-            wld.AddChild (node2);
-
-            // コリジョン発生
-            wld.Analyze ();
-
-            Assert.AreEqual (true, cmp1.IsCollisionEnterCalled);
-            Assert.AreEqual (true, cmp2.IsCollisionEnterCalled);
+            Assert.AreEqual (1, col1.OverlappingObjectCount);
+            Assert.AreEqual (1, col2.OverlappingObjectCount);
 
             // コリジョン消失
             node2.Translate (10, 0, 0);
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
-            Assert.AreEqual (true, cmp1.IsCollisionExitCalled);
-            Assert.AreEqual (true, cmp2.IsCollisionExitCalled);
+            Assert.AreEqual (0, col1.OverlappingObjectCount);
+            Assert.AreEqual (0, col2.OverlappingObjectCount);
         }
+
 
 
     }

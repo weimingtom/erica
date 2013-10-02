@@ -6,12 +6,17 @@ using SFML.Graphics;
 using SFML.Window;
 
 namespace DD {
-    public enum BarOrientation {
-        Horizontal,
-        Vertical
-    }
 
+    /// <summary>
+    /// バー コンポーネント
+    /// </summary>
+    /// <remarks>
+    /// HPなどを表示するのに便利なバー コンポーネントです。
+    /// バーは [0,最大値] の範囲の値をとり、現在値に応じて伸張します。
+    /// 背景カラーとテクスチャー、前景カラーとテクスチャーを変更可能です。
+    /// </remarks>
     public class Bar : Component {
+
         #region Field
         BarOrientation orientation;
         int width;
@@ -25,6 +30,13 @@ namespace DD {
         Vector2 offset;
         #endregion
 
+        #region Constructor
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="width">横幅（ピクセル数）</param>
+        /// <param name="length">縦幅（ピクセル数）</param>
+        /// <param name="ori">バーの伸びる方向</param>
         public Bar (int width, int length, BarOrientation ori) {
             if (width < 0 || length < 0) {
                 throw new ArgumentException ("Bar size is invalie");
@@ -40,7 +52,12 @@ namespace DD {
             this.currentValue = 0;
             this.offset = new Vector2 (0, 0);
         }
+        #endregion
 
+        #region Property
+        /// <summary>
+        /// バーの最大値
+        /// </summary>
         public float MaxValue {
             get { return maxValue; }
             set {
@@ -51,6 +68,9 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// 現在値
+        /// </summary>
         public float CurrentValue {
             get { return currentValue; }
             set {
@@ -58,52 +78,100 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// 現在値の最大値に対する比率 [0,1]
+        /// </summary>
         public float CurrentRate {
             get { return (maxValue==0) ? 1 : currentValue / maxValue; }
 
         }
 
+        /// <summary>
+        /// 横幅（ピクセル数）
+        /// </summary>
         public int Width {
             get { return width; }
         }
 
+        /// <summary>
+        /// 縦幅（ピクセル数）
+        /// </summary>
         public int Height {
             get { return length; }
         }
 
+        /// <summary>
+        /// オフセット（ピクセル数）
+        /// </summary>
         public Vector2 Offset {
             get { return offset; }
             set { this.offset = value; }
         }
 
+        /// <summary>
+        /// バーの伸びる方向
+        /// </summary>
         public BarOrientation Orientation {
             get { return orientation; }
         }
 
+        /// <summary>
+        /// 背景色
+        /// </summary>
+        /// <remarks>
+        /// デフォルト黒
+        /// </remarks>
         public Color BackgroundColor {
             get { return bgColor; }
             set { this.bgColor = value; }
         }
         
+        /// <summary>
+        /// バーの色
+        /// </summary>
+        /// <remarks>
+        /// デフォルト緑
+        /// </remarks>
         public Color ForegroundColor {
             get { return fgColor; }
             set { this.fgColor = value; }
         }
 
+        /// <summary>
+        /// 背景テクスチャー
+        /// </summary>
+        /// <remarks>
+        /// デフォルトなし
+        /// </remarks>
         public Texture BackgroundTexture {
             get { return backgroundTexture; }
             set { this.backgroundTexture = value; }
         }
 
+        /// <summary>
+        /// バーのテクスチャー
+        /// </summary>
+        /// <remarks>
+        /// デフォルト無し
+        /// </remarks>
         public Texture ForegroundTexture {
             get { return foregroundTexture; }
             set { this.foregroundTexture = value; }
         }
 
+        #endregion
+
+        #region Method
+        /// <summary>
+        /// オフセットの変更
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void SetOffset (float x, float y) {
             this.offset = new Vector2 (x, y);
         }
 
+        /// <inheritdoc/>
         public override void OnDraw (object window) {
 
             Vector3 T;
@@ -150,6 +218,12 @@ namespace DD {
             win.Draw (spr1);
             win.Draw (spr2);
         }
+
+        /// <inheritdoc/>
+        public override string ToString () {
+            return string.Format("Value : {0}/{1}", currentValue, maxValue);
+        }
+        #endregion
 
 
     }

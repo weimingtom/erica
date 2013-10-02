@@ -70,6 +70,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestCollisionAnalyze.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
     <Compile Include="Physics\TestPhysicsSimulation.cs" />
     <Compile Include="Physics\TestPhysicsSimulator.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="TestCapsuleShape.cs" />
     <Compile Include="TestCollisionObject.cs" />
     <Compile Include="TestCollisionAnalyzer.cs" />
+    <Compile Include="TestOverlappingPair.cs" />
     <Compile Include="TestDistance.cs" />
     <Compile Include="TestRaycastResult.cs" />
     <Compile Include="TestSoundClip.cs" />

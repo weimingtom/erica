@@ -14,7 +14,18 @@ namespace DD {
     /// このクラスと派生クラスは形状を定義する他はほぼ何もしません。
     /// </remarks>
     public abstract class CollisionShape {
-       /// <summary>
+
+        /// <summary>
+        /// この形状の外接球の半径
+        /// </summary>
+        public abstract float ExSphereRadius { get; }
+
+        /// <summary>
+        /// この形状の内接球の半径
+        /// </summary>
+        public abstract float InSphereRadius { get; }
+
+        /// <summary>
        /// この形状の Bullet Physics コリジョン オブジェクトの作成
        /// </summary>
        /// <remarks>
@@ -34,5 +45,14 @@ namespace DD {
         /// <returns></returns>
        public abstract BulletSharp.RigidBody CreateRigidBody (float mass);
 
+
+        /// <summary>
+        /// この形状の Bullet Physics のシェイプを作成
+        /// </summary>
+       /// <remarks>
+       /// Bullet Physics で使用される指定の形状を作成します。
+       ///  </remarks>
+       /// <returns></returns>
+       public abstract BulletSharp.CollisionShape CreateBulletShape ();
     }
 }

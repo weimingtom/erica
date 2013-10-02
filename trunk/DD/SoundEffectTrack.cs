@@ -7,14 +7,11 @@ using SFML.Audio;
 namespace DD {
 
     /// <summary>
-    /// サウンド　トラック
+    /// サウンド エフェクト　トラック
     /// </summary>
     /// <remarks>
-    /// サウンド トラックは効果音などの短い時間の音を遅延なしで再生するのに適したトラックです。
+    /// サウンド エフェクト トラックは効果音などの短い時間のサウンドを、遅延なしで再生するのに適したトラックです。
     /// このトラックは指定の音データを1回だけ再生します。
-    /// <note>
-    /// 本来は SoundEffectTrack にすべきだが長すぎるので省略した。微妙・・・
-    /// </note>
     /// </remarks>
     public class SoundEffectTrack : SoundTrack {
 
@@ -39,28 +36,28 @@ namespace DD {
         #endregion
 
         #region Property
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override string FileName { 
             get {return fileName;}
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override int Duration { 
             get{return (int)data.SoundBuffer.Duration / 1000;}
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override float Volume { 
             get {return data.Volume/100f;}
             set{
                 if(value < 0 || value > 1) {
-                    throw new ArgumentException("Vaolume is invalie");
+                    throw new ArgumentException("Volume is invalie");
                 }
                 data.Volume = value*100;
             }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override bool IsPlaying { 
             get {
                 return data.Status == SoundStatus.Playing;
@@ -69,7 +66,7 @@ namespace DD {
         #endregion
 
         #region Method
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Play () {
             if (IsPlaying) {
                 data.Stop ();
@@ -77,12 +74,12 @@ namespace DD {
             data.Play();  
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Stop () {
             data.Stop();
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Dispose () {
             if(data != null){
                 data.Dispose();
@@ -90,7 +87,7 @@ namespace DD {
             }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override string ToString () {
             return fileName;
         }

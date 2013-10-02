@@ -279,7 +279,6 @@ namespace DD {
         /// ミュージック トラックの取得
         /// </summary>
         /// <param name="name">サウンド ファイル名</param>
-        /// <param name="streaming">ストリーミング再生</param>
         /// <returns>サウンド クリップ</returns>
         public static MusicTrack GetMusicTrack (string name) {
             if (!audios.ContainsKey (name)) {
@@ -288,6 +287,11 @@ namespace DD {
             return audios[name] as MusicTrack;
         }
 
+        /// <summary>
+        /// サウンド エフェクト トラックの取得
+        /// </summary>
+        /// <param name="name">サウンドファイル名</param>
+        /// <returns></returns>
         public static SoundEffectTrack GetSoundTrack (string name) {
             if (!audios.ContainsKey (name)) {
                 audios.Add (name, new SoundEffectTrack(name));

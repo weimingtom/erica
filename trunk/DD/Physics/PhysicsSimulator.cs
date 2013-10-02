@@ -36,7 +36,7 @@ namespace DD.Physics {
             this.solver = new SequentialImpulseConstraintSolver ();
             this.wld = new DiscreteDynamicsWorld (dispatcher, broadphase, solver, cc);
         
-            this.wld.Gravity = new BulletSharp.Vector3 (0, -9.8f / ppm, 0);   // 重力は-Y方向
+            this.wld.Gravity = new BulletSharp.Vector3 (0, -9.8f, 0);   // 重力は-Y方向
         }
         #endregion
 
@@ -61,9 +61,11 @@ namespace DD.Physics {
         /// このプロパティは物理演算ワールドの1mがDDワールドの何単位に相当するかを決定します。
         /// 通常はDDワールドの1単位は1ピクセルとして画面に表示されます。
         /// デフォルトは 64 です。10ピクセル～300ピクセル程度の動的物体を精度良く計算可能です。
+        /// デフォルトの重力は 9.8 m^2/s なので1秒間の自由落下で 4.9 m 落下し、デフォルトの ppm = 64 の時、 313 ピクセル移動します。
+        /// 
         /// <note>
         /// （注意）これ意外とクリティカルに効いてくるのできちんと 0.2 ～ 5.0 に収まるように PPM を調整すること。
-        /// 通常はデフォルト値の64で十分だが、例えばシューティングゲームなどで 10 ピクセル以下の弾丸を使用する場合は、
+        /// 通常はデフォルト値の 64 で十分だが、例えばシューティングゲームなどで 10 ピクセル以下の弾丸を使用する場合は、
         /// もう少し小さい値にしないと不正な結果が得られる。
         /// </note>
         /// </remarks>
@@ -96,10 +98,10 @@ namespace DD.Physics {
         /// </summary>
         /// <remarks>
         /// 物理演算ワールド全体に設定された重力です。
-        /// 重力の影響は剛体毎にON/OFFできます。
+        /// 重力の影響は剛体毎に ON/OFF を切り替えられます。
         /// </remarks>
         public Vector3 Gravity {
-            get { return wld.Gravity.ToDD () * ppm;}
+            get { return wld.Gravity.ToDD ();}
             set { 
                 SetGravity (value.X, value.Y, value.Z);
             }
@@ -111,38 +113,39 @@ namespace DD.Physics {
         /// <summary>
         /// 重力の変更
         /// </summary>
-        /// <param name="x">重力加速度のX成分（ワールド座標）</param>
-        /// <param name="y">重力加速度のY成分（ワールド座標）</param>
-        /// <param name="z">重力加速度のZ成分（ワールド座標）</param>
+        /// <param name="x">重力加速度のX成分（物理演算ワールドの座標系）</param>
+        /// <param name="y">重力加速度のY成分（物理演算ワールドの座標系）</param>
+        /// <param name="z">重力加速度のZ成分（物理演算ワールドの座標系）</param>
         public void SetGravity (float x, float y, float z) {
-            this.wld.Gravity = new BulletSharp.Vector3 (x, y, z) / ppm;
+            this.wld.Gravity = new BulletSharp.Vector3 (x, y, z);
         }
 
         /// <summary>
         /// 剛体を物理演算ワールドに登録
         /// </summary>
         /// <remarks>
-        /// すでに登録済みの場合何もしません。
+        /// すでに登録済みの場合は何もしません。物理演算ワールドに登録するだけで位置情報の登録は行いません。
+        /// DDワールドから物理演算ワールドへの位置情報の反映はこのメソッドを呼び出した後に行って下さい。
         /// </remarks>
         /// <param name="node">剛体をアタッチされたノード</param>
-        /// <param name="globalTransform">変換行列</param>
         public void AddRigidBody (Node node) {
             if (node == null) {
                 throw new ArgumentNullException ("Node is null");
             }
-            if (!node.Is<RigidBody> ()) {
+            if (!node.Has<RigidBody> ()) {
                 throw new ArgumentException ("Node is not RigidBody");
             }
             if (IsRegistered(node)) {
                 return;
             }
             var rb = node.GetComponent<RigidBody> ();
-            if (rb.Shape == null) {
-                throw new InvalidOperationException ("RigidBody shape is null");
+            if (rb.ShapeCount == 0) {
+                throw new InvalidOperationException ("RigidBody has no shape");
             }
 
-            rb.Data.WorldTransform = node.GlobalTransform.ToBullet() / ppm;
-            wld.AddRigidBody (rb.Data);
+            wld.AddRigidBody (rb.Data, 
+                              (CollisionFilterGroups)node.GroupID, 
+                              (CollisionFilterGroups)(rb.CollideWith & ~rb.IgnoreWith));
         }
 
         /// <summary>
@@ -156,16 +159,13 @@ namespace DD.Physics {
             if (node == null) {
                 throw new ArgumentNullException ("Node is null");
             }
-            if (!node.Is<RigidBody> ()) {
+            if (!node.Has<RigidBody> ()) {
                 throw new ArgumentException ("Node is not RigidBody");
             }
             if (!IsRegistered (node)) {
                 return;
             }
             var rb = node.GetComponent<RigidBody> ();
-            if (rb.Shape == null) {
-                throw new InvalidOperationException ("RigidBody shape is null");
-            }
 
             wld.RemoveRigidBody (rb.Data);
         }
@@ -179,10 +179,11 @@ namespace DD.Physics {
             if (node == null) {
                 return false;
             }
-            if (!node.Is<RigidBody> ()) {
-                throw new ArgumentException ("Node is not RigidBody");
-            }
             var rb = node.GetComponent<RigidBody> ();
+            if (rb == null) {
+                throw new ArgumentException ("Node has no RigidBody");
+            }
+
             return wld.CollisionObjectArray.Contains (rb.Data);
         }
 
@@ -200,7 +201,7 @@ namespace DD.Physics {
         public void Step (long msec) {
 
             // 物理シミュレーション
-            wld.StepSimulation (msec / 1000f);
+            wld.StepSimulation (msec / 1000f, 10);
         }
 
         

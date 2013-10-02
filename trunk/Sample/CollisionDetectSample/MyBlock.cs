@@ -19,7 +19,7 @@ namespace DD.Sample.CollisionDetectSample {
             col.CollideWith = collisionMask;
 
             var label = new Label ();
-            label.SetText ("Mask = " + collisionMask.ToString("x"));
+            label.Text = "Mask = 0x" + collisionMask.ToString("x");
 
             var node = new Node ("Block");
             node.Attach (cmp);

@@ -43,7 +43,7 @@ namespace DD.Sample.IsometricSample {
                 var msec = watch.ElapsedMilliseconds;
 
                 wld.Animate (msec, 0);
-                wld.Analyze ();
+                wld.CollisionUpdate ();
                 wld.Update (msec);
                 g2d.Dispatch (wld);
                 g2d.Draw (wld);

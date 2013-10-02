@@ -37,17 +37,17 @@ namespace DD {
 
         #region Property
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override string FileName {
             get { return fileName; }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override int Duration { 
             get { return (int)data.Duration.TotalMilliseconds; } 
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override float Volume {
             get {
                 return data.Volume / 100f;
@@ -60,14 +60,14 @@ namespace DD {
             }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override bool IsPlaying {
             get { return data.Status == SoundStatus.Playing; }
         }
         #endregion
 
         #region Method
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Play () {
             if (IsPlaying) {
                 return;
@@ -75,12 +75,12 @@ namespace DD {
             data.Play();
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Stop () {
             data.Stop ();
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override void Dispose () {
             if (data != null) {
                 data.Dispose ();
@@ -88,7 +88,7 @@ namespace DD {
             }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override string ToString () {
             return fileName;
         }
