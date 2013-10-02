@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DD.Physics;
 
 namespace DD.UnitTest {
     [TestClass]
@@ -21,8 +22,19 @@ namespace DD.UnitTest {
 
             Assert.IsNotNull (sph.CreateGhostObject ());
             Assert.IsNotNull (sph.CreateRigidBody (1));
+            Assert.IsNotNull (sph.CreateBulletShape ());
         }
 
-    
+
+        [TestMethod]
+        public void Test_CreateShape () {
+            var box = new SphereShape (1);
+            var shp = box.CreateBulletShape () as BulletSharp.SphereShape;
+
+            var radius = shp.Radius * PhysicsSimulator.PPM;
+
+            Assert.AreEqual (1, radius);
+        }
+
     }
 }

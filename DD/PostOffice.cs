@@ -50,11 +50,11 @@ namespace DD {
         /// <param name="to">送信先アドレス（文字列）</param>
         /// <param name="letter">通信メッセージ</param>
         public void Post (Node from, string to, object letter) {
-            if(from == null){
+            if (from == null) {
                 throw new ArgumentNullException ("Mail From is null");
             }
-            if (to == null){
-                throw new ArgumentNullException("Mail To is null");
+            if (to == null) {
+                throw new ArgumentNullException ("Mail To is null");
             }
             this.mails.Add (new Mail (from, to, letter));
         }
@@ -66,14 +66,14 @@ namespace DD {
         /// キューに保存しているすべての未配達のメールを送信します。
         /// このメソッドが帰るとキューのサイズは0です。
         /// </remarks>
-        /// (*1) foreachの中でメールボックスを削除できるようにするためこの ToArray() は消さないように
+        /// (*1) foreachの中で（ユーザーが）メールボックスを削除できるようにするためこの ToArray() は消さないように
         public void Deliver () {
             var deliveries = (from mail in mails
-                            from node in World.Downwards
-                            where node.Deliverable == true
-                            from mailbox in node.MailBoxs
-                            where mail.Address == mailbox.Address || mail.Address == "All" || mailbox.Address=="All"
-                            select new {mail, node, mailbox}).ToArray();   // (*1)
+                              from node in World.Downwards
+                              where node.Deliverable == true
+                              from mailbox in node.MailBoxs
+                              where mail.Address == mailbox.Address || mail.Address == "All" || mailbox.Address == "All"
+                              select new { mail, node, mailbox }).ToArray ();   // (*1)
 
             foreach (var delivery in deliveries) {
                 var from = delivery.mail.From;
@@ -82,9 +82,9 @@ namespace DD {
                 foreach (var cmp in delivery.node.Components) {
                     cmp.OnMailBox (from, addr, letter);
                 }
-            }
 
-            this.mails.Clear ();
+                mails.Remove (delivery.mail);
+            }
         }
 
     }

@@ -22,9 +22,7 @@ namespace DD {
         Dictionary<string, object> prop;
         IEnumerable<Node> allNodes;                    // 全ノードのキャッシュ
         ILookup<string, Node> allNodesGroupedByName;   // 全ノードのキャッシュ（名前でグルーピング済み）
-        ILookup<string, Node> allNodesGroupedByGroup;  // 全ノードのキャッシュ（グループでグルーピング済み）
         #endregion
-
 
 
         #region Constructor
@@ -133,7 +131,7 @@ namespace DD {
         /// <summary>
         /// デフォルトのコリジョン分析機
         /// </summary>
-        public CollisionAnalyzer CollisionAnlyzer {
+        public CollisionAnalyzer CollisionAnalyzer {
             get { return GetComponent<CollisionAnalyzer> (); }
         }
 
@@ -245,11 +243,12 @@ namespace DD {
         /// <remarks>
         /// ゲーム ロジックを更新します。
         /// またこのメソッドに入るタイミングでノード キャッシュを更新します。
+        /// 原則として1フレームに1回呼び出して下さい。
         /// </remarks>
         /// <param name="msec">現在時刻 (msec)</param>
         public void Update (long msec) {
 
-            /// 検索用キャッシュの更新
+            // 検索用キャッシュの更新
             StoreNodeCache ();
 
             var nodes = from node in Downwards
@@ -271,12 +270,54 @@ namespace DD {
         }
 
         /// <summary>
+        /// コリジョンの解決
+        /// </summary>
+        /// <remarks>
+        /// コリジョン解析機を使ってシーンのコリジョンを解決し、コリジョン状態の変化に応じて
+        /// <see cref="Component.OnCollisionEnter"/> と <see cref="Component.OnCollisionExit"/> を呼び出します。 
+        /// 原則として1フレームに1回呼び出して下さい。
+        /// </remarks>
+        public void CollisionUpdate () {
+            var nodes = from node in Downwards
+                        where node.Upwards.Aggregate (true, (x, y) => x & y.Updatable) == true
+                        orderby node.UpdatePriority ascending
+                        select node;
+
+            // OnCollisionUpdateInit() の呼び出し
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components.ToArray ()) {
+                    if (!comp.IsCollisionUpdateInitCalled) {
+                        comp.OnCollisionUpdateInit (0);
+                        comp.IsCollisionUpdateInitCalled = true;
+                    }
+                }
+            }
+
+            // OnCollisionUpdate() の呼び出し
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components.ToArray ()) {
+                    comp.OnCollisionUpdate (0);
+                }
+            }
+
+            // コリジョンの解析と Enter, Exit の呼び出し
+            var ca = GetComponent<CollisionAnalyzer> ();
+            ca.Analyze ();
+
+        }
+
+
+
+        /// <summary>
         /// 物理演算ワールドの更新
         /// </summary>
         /// <remarks>
+        /// 物理演算を使用する場合は、原則として1フレームに1回呼び出して下さい。
+        /// <note>
         /// 注意：現在の実装では時刻の指定がバグっている。
         /// ここで指定するのは現在時刻だが BulletPhysics が必要とするのはデルタ タイム。
         /// 現在の所前のフレームの時刻を保存していないので計算不可能。
+        /// </note>
         /// </remarks>
         /// <param name="msec">現在時刻 (msec)</param>
         public void PhysicsUpdate (long msec) {
@@ -313,6 +354,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// ゲームオブジェクト間のメッセージ通信を処理します。
+        /// 原則として1フレームに1回呼び出して下さい。
         /// </remarks>
         public void Deliver () {
             var po = GetComponent<PostOffice> ();
@@ -320,14 +362,6 @@ namespace DD {
 
         }
 
-
-        /// <summary>
-        /// コリジョンの解決
-        /// </summary>
-        public void Analyze() {
-            var cr = GetComponent<CollisionAnalyzer> ();
-            cr.Analyze ();
-        }
 
         /// <summary>
         /// ノードキャッシュの更新
@@ -358,14 +392,14 @@ namespace DD {
         /// ノードの検索（高速）
         /// </summary>
         /// <remarks>
-        /// このメソッドは <see cref="Node.Find(Func<Node,bool>)"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// このメソッドは <see cref="Node.Find(Func{Node,bool})"/> をキャッシュを使った高速バージョンに置き換えます。
         /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
         /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
         /// </remarks>
         /// <param name="pred">条件式</param>
         /// <returns></returns>
-        /// <seealso cref="Node.Find(Func<Node,bool>)"/>
-        public Node Find (Func<Node, bool> pred) {
+        /// <seealso cref="Node.Find(Func{Node,bool})"/>
+        public new Node Find (Func<Node, bool> pred) {
             return Finds (pred).FirstOrDefault ();
         }
 
@@ -394,13 +428,13 @@ namespace DD {
         /// ノードの検索（高速）
         /// </summary>
         /// <remarks>
-        /// このメソッドは <see cref="Node.Finds(Func<Node,bool>))"/> をキャッシュを使った高速バージョンに置き換えます。
+        /// このメソッドは <see cref="Node.Finds(Func{Node,bool})"/> をキャッシュを使った高速バージョンに置き換えます。
         /// ノード キャッシュは <see cref="World.Update"/> を呼んだタイミングで更新されます。
         /// 従って新しくインスタンス化したゲーム オブジェクトは次のフレームから検索で発見されるようになります。
         /// </remarks>
         /// <param name="pred">条件式</param>
         /// <returns></returns>
-        /// <seealso cref="Node.Finds(Func<Node,bool>)"/>
+        /// <seealso cref="Node.Finds(Func{Node,bool})"/>
         public new IEnumerable<Node> Finds (Func<Node, bool> pred) {
             return from node in Downwards
                    where pred (node) == true
@@ -420,6 +454,19 @@ namespace DD {
         /// <param name="nodeB">ノードA</param>
         /// <returns>重複している時 <c>true</c>, そうでないとき <c>false</c></returns>
         public bool Overlap (Node nodeA, Node nodeB) {
+            if (nodeA == null || !nodeA.Has<CollisionObject> () || nodeB == null || !nodeB.Has<CollisionObject> ()) {
+                return false;
+            }
+            var maskA = nodeA.CollisionObject.CollideWith & ~nodeA.CollisionObject.IgnoreWith;
+            var maskB = nodeB.CollisionObject.CollideWith & ~nodeB.CollisionObject.IgnoreWith;
+            if ((maskA & nodeB.GroupID) == 0 || (maskB & nodeA.GroupID) == 0) {
+                return false;
+            }
+            if (nodeA.World != this || nodeB.World != this) {
+                throw new ArgumentException ("Node belongs to another world");
+            }
+
+
             return Distance (nodeA, nodeB) == 0;
         }
 
@@ -430,7 +477,7 @@ namespace DD {
         /// <param name="nodeB"></param>
         /// <returns></returns>
         public float Distance (Node nodeA, Node nodeB) {
-            if (nodeA == null || !nodeA.Is<CollisionObject> () || nodeB == null || !nodeB.Is<CollisionObject> ()) {
+            if (nodeA == null || !nodeA.Has<CollisionObject> () || nodeB == null || !nodeB.Has<CollisionObject> ()) {
                 return Single.NaN;
             }
             if (nodeA.World != this || nodeB.World != this) {
@@ -444,42 +491,53 @@ namespace DD {
         }
 
         /// <summary>
-        /// 1つのノードにレイキャスト
+        /// シーン全体からレイキャストを行いヒットするすべてのノードを列挙する
         /// </summary>
         /// <remarks>
-        /// ノードに対してレイキャストを行いレイとノードが交差する距離を返します。
-        /// 交差しない場合は 0 を返します。このメソッドが負の値を返すことはありません。
-        /// レイの開始地点がコリジョン内部の場合はそのレイとノードは交差しません。
-        /// ノードのどちらか一方、または両方が <c>null</c> またはコリジョン形状がアタッチされていない場合は <c>NaN</c> が返ります。
+        /// シーン全体に対してレイキャストを行いヒットするノードを近い順に列挙します。
+        /// 内部にレイの開始地点を持つコリジョンは含まれません。
         /// </remarks>
-        /// <note>
-        /// 現状ではFarrseerを使用しているためZを考慮しない。いずれ変更する。
-        /// </note>
-        /// <param name="nodeA">ノードA</param>
         /// <param name="start">レイキャストの開始地点（グローバル座標）</param>
         /// <param name="end">レイキャストの終了地点（グローバル座標）</param>
         /// <param name="collideWith">コリジョン対象を表すビットマスク</param>
         /// <returns>0より大きな浮動小数値、または0、測定不能の時 <c>NaN</c>.</returns>
         public IEnumerable<RaycastResult> RayCast (Vector3 start, Vector3 end, int collideWith = -1) {
-            return CollisionAnlyzer.RayCast (start, end, collideWith);
+            return CollisionAnalyzer.RayCast (start, end, collideWith);
         }
 
+        /// <summary>
+        /// シーン全体から指定のレイキャストでヒットする一番手前のノードを選択する
+        /// </summary>
+        /// <param name="start">開始地点（ワールド座標）</param>
+        /// <param name="end">終了地点（ワールド座標）</param>
+        /// <param name="collideWith">コリジョン対象のビットマスク</param>
+        /// <returns></returns>
         public Node Pick (Vector3 start, Vector3 end, int collideWith = -1) {
-            return (from result in CollisionAnlyzer.RayCast (start, end, collideWith)
-                   select result.Node).FirstOrDefault();
+            return (from result in CollisionAnalyzer.RayCast (start, end, collideWith)
+                    select result.Node).FirstOrDefault();
         }
 
+        /// <summary>
+        /// ノードのスィープ テスト
+        /// </summary>
+        /// <param name="node">対象ノード</param>
+        /// <param name="move">移動ベクトル</param>
+        /// <remarks>
+        /// コリジョン形状がアタッチされている対象ノードを指定ベクトル分移動して、衝突判定を行います。
+        /// 自分自身にはヒットしませんが、このノードに重なっているノードがあった場合距離 0 が返ることがあります。
+        /// コリジョンマスクは <paramref name="node"/> のそれが使用されます。
+        /// ノードが <c>null</c> または <see cref="CollisionObject"/> がアタッチ背廷内場合は例外は発生せずヒット無しが返ります。
+        /// </remarks>
+        /// <returns></returns>
         public RaycastResult Sweep (Node node, Vector3 move) {
-            if (node == null) {
+            if (node == null || node.CollisionObject == null) {
                 return new RaycastResult ();
             }
             if (node.World != this) {
                 throw new ArgumentException ("Node belongs to another world");
             }
 
-            var colA = node.GetComponent<CollisionObject> ();
-
-            return CollisionAnlyzer.Sweep(colA, move);
+            return CollisionAnalyzer.Sweep (node.CollisionObject, move);
         }
 
         /// <summary>

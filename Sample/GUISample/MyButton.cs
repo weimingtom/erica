@@ -6,11 +6,11 @@ using DD.Physics;
 
 namespace DD.Sample.GUISample {
     public class MyButton : Component{
-        
-        public Label Label1 { get; set; }
-        public Label Label2 { get; set; }
 
-        public static Node Create () {
+        public MyButton () {
+        }
+
+        public static Node Create (Vector3 pos) {
             var cmp = new MyButton ();
             
             var btn = new Button (ButtonType.Push);
@@ -20,9 +20,10 @@ namespace DD.Sample.GUISample {
             var label1 = new Label ();
             var label2 = new Label ();
             label2.SetOffset (0, 20);
-            
-            var col = new BoxCollisionShape (64, 64, 0);
-            col.SetOffset (64, 64, 0);
+
+            var col = new CollisionObject ();
+            col.Shape = new BoxShape (64, 64, 100);
+            col.SetOffset (64, 64, 100);
 
             var node = new Node ("Button");
             node.Attach (btn);
@@ -31,20 +32,19 @@ namespace DD.Sample.GUISample {
             node.Attach (label2);
             node.Attach (col);
 
-           // node.Translate (128, 128, 0);
+           node.Translation = pos;
            
-            cmp.Label1 = label1;
-            cmp.Label2 = label2;
-            
             return node;
         }
 
         public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
-           Label1.Text = "Pressed " + button + " : " + x + ", " + y + "";
+            var label = GetComponent<Label> (0);
+            label.Text = "Pressed " + button + " : " + x + ", " + y + "";
         }
 
         public override void OnMouseButtonReleased (MouseButton button, float x, float y) {
-            Label2.Text = "Released " + button + " : " + x + ", " + y + "";
+            var label = GetComponent<Label> (1);
+            label.Text = "Released " + button + " : " + x + ", " + y + "";
         }
 
     }

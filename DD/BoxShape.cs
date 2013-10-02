@@ -38,9 +38,46 @@ namespace DD {
             this.halfHeight = halfHeight;
             this.halfDepth = halfDepth;
         }
+
+        /// <summary>
+        /// ボックス形状を作成するコンストラクター
+        /// </summary>
+        /// <remarks>
+        /// 正方形のボックスを作成します。いずれか一辺の長さが 0 以下のボックスは作れません。
+        /// </remarks>
+        /// <param name="halfWidth">横幅の1/2</param>
+        public BoxShape (float halfWidth) {
+            if (halfWidth <= 0) {
+                throw new ArgumentException ("Box size is invalid");
+            }
+            this.halfWidth = halfWidth;
+            this.halfHeight = halfWidth;
+            this.halfDepth = halfWidth;
+        }
         #endregion
 
         #region Property
+        /// <summary>
+        /// ボックスの横幅の1/2
+        /// </summary>
+        public float HalfWidth {
+            get { return halfWidth; }
+        }
+
+        /// <summary>
+        /// ボックスの縦幅の1/2
+        /// </summary>
+        public float HalfHeight {
+            get { return halfHeight; }
+        }
+
+        /// <summary>
+        /// ボックスの奥行きの1/2
+        /// </summary>
+        public float HalfDepth {
+            get { return halfDepth; }
+        }
+
         /// <summary>
         /// ボックスの横幅
         /// </summary>
@@ -61,6 +98,17 @@ namespace DD {
         public float Depth {
             get { return halfDepth * 2; }
         }
+
+        /// <inheritdoc/>
+        public override float ExSphereRadius {
+            get { return (float)Math.Sqrt (halfWidth * halfWidth + halfHeight * halfHeight + halfDepth * halfDepth); }
+        }
+
+        /// <inheritdoc/>
+        public override float InSphereRadius {
+            get { return new []{halfWidth, halfHeight, halfDepth}.Min(); }
+        }
+        
         #endregion
 
 
@@ -87,6 +135,12 @@ namespace DD {
             return body;
         }
 
+        /// <inheritdoc/>
+        public override BulletSharp.CollisionShape CreateBulletShape () {
+            var ppm = DD.Physics.PhysicsSimulator.PPM;
+
+            return new BulletSharp.BoxShape (halfWidth / ppm, halfHeight / ppm, halfDepth / ppm);
+        }
 
 
         /// <inheritdoc/>
@@ -94,6 +148,7 @@ namespace DD {
             return String.Format ("Box: {0}, {1}, {2}", halfWidth, halfHeight, halfDepth);
         }
         #endregion
+
 
 
     }

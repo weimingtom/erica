@@ -167,7 +167,7 @@ namespace DD.Sample.PlatformSample {
             var x = 0;
 
             // 着地
-            if (foot.OverlapCount > 0) {
+            if (foot.OverlappingObjectCount > 0) {
                 this.isGrounded = true;
                 this.jumpingVelocity = 0;
             }
@@ -194,7 +194,7 @@ namespace DD.Sample.PlatformSample {
             // 床面に沿った移動
             if (x != 0) {
                 var move = new Vector3 (x, 0, 0) * speed;
-                var node = foot.Overlaps.FirstOrDefault ();
+                var node = foot.OverlapObjects.FirstOrDefault ();
                 if (node != null) {
                     Console.WriteLine ("壁面 = " + node);
                     move = node.GlobalTransform.ApplyDirection (move);

@@ -31,7 +31,7 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_Post () {
             var node = new Node ("Node1");
-         
+
             var po = new PostOffice ();
             po.Post (node, "Node2", null);
 
@@ -41,26 +41,77 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_Deliver () {
-            var node = new Node ("Node1");
-            var mbox = new MailBox ("Node1");
+            var node = new Node ("Node");
+            var mbox = new MailBox ("Address");
             node.Attach (mbox);
-            
-            var received = false;
 
-            mbox.Action += (from, address, letter) => {
+            var received = false;
+            Node from = null;
+            string address = "";
+            string letter = "";
+
+            mbox.Action += (frm, addr, let) => {
                 received = true;
-                Assert.AreEqual (node, from);
-                Assert.AreEqual ("Node1", address);
-                Assert.AreEqual ("Hello World", (string)letter);
+                from = frm;
+                address = addr;
+                letter = (string)let;
             };
 
             var wld = new World ();
             wld.AddChild (node);
 
-            wld.PostOffice.Post (node, "Node1", "Hello World");
+            wld.PostOffice.Post (node, "Address", "Hello World");
             wld.PostOffice.Deliver ();
 
             Assert.AreEqual (true, received);
+            Assert.AreEqual (node, from);
+            Assert.AreEqual ("Address", address);
+            Assert.AreEqual ("Hello World", letter);
+        }
+
+        /// <summary>
+        /// メールボックスの中で自分自身に送るといろいろ不都合がある（あった）
+        /// </summary>
+        [TestMethod]
+        public void Test_Deliver_to_MySelf () {
+            var node = new Node ("Node");
+            var mbox1 = new MailBox ("Address1");
+            var mbox2 = new MailBox ("Address2");
+            node.Attach (mbox1);
+            node.Attach (mbox2);
+
+            mbox1.Action += (frm, addr, let) => {
+                // 2ndアドレスに送信
+                mbox1.World.PostOffice.Post (node, "Address2", "Hello World 2");
+            };
+
+            var received = false;
+            Node from = null;
+            string address = "";
+            string letter = "";
+
+            mbox2.Action += (frm, addr, let) => {
+                received = true;
+                from = frm;
+                address = addr;
+                letter = (string)let;
+            };
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.PostOffice.Post (node, "Address1", "Hello World 1");
+            
+            // node --> Address1
+            wld.PostOffice.Deliver ();
+
+            // node --> Address2
+            wld.PostOffice.Deliver ();
+
+            Assert.AreEqual (true, received);
+            Assert.AreEqual (node, from);
+            Assert.AreEqual ("Address2", address);
+            Assert.AreEqual ("Hello World 2", letter);
         }
 
         [TestMethod]
@@ -110,7 +161,7 @@ namespace DD.UnitTest {
 
             var wld = new World ();
             wld.AddChild (node1);
-        
+
             wld.PostOffice.Post (node1, "SomeAddress", null);
             wld.PostOffice.Deliver ();
 

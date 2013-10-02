@@ -31,7 +31,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (0, node.Y);
             Assert.AreEqual (0, node.Z);
             Assert.AreEqual (null, node.Parent);
-            Assert.AreEqual (true, node.Drawable);
+            Assert.AreEqual (true, node.Visible);
             Assert.AreEqual (true, node.Updatable);
             Assert.AreEqual (true, node.Animatable);
             Assert.AreEqual (true, node.Deliverable);
@@ -76,11 +76,11 @@ namespace DD.UnitTest {
         public void Test_Drawable () {
             var node = new Node ("Node");
 
-            node.Drawable = false;
-            Assert.AreEqual (false, node.Drawable);
+            node.Visible = false;
+            Assert.AreEqual (false, node.Visible);
 
-            node.Drawable = true;
-            Assert.AreEqual (true, node.Drawable);
+            node.Visible = true;
+            Assert.AreEqual (true, node.Visible);
         }
 
         [TestMethod]
@@ -314,8 +314,8 @@ namespace DD.UnitTest {
             var comp = new Sprite (16, 16);
             node.Attach (comp);
 
-            Assert.AreEqual (true, node.Is<Sprite> ());
-            Assert.AreEqual (false, node.Is<Camera> ());
+            Assert.AreEqual (true, node.Has<Sprite> ());
+            Assert.AreEqual (false, node.Has<Camera> ());
         }
 
 
@@ -510,7 +510,7 @@ namespace DD.UnitTest {
 
 
         [TestMethod]
-        public void Test_Point () {
+        public void Test_Position () {
             var node1 = new Node ();
             var node2 = new Node ();
             var node3 = new Node ();
@@ -519,17 +519,65 @@ namespace DD.UnitTest {
             node1.AddChild (node2);
             node2.AddChild (node3);
 
-            Vector3 T;
+            Vector3 T;     // =(3,4,5)
             Quaternion R;
             Vector3 S;
 
             node3.GlobalTransform.Decompress (out T, out R, out S);
 
-            Assert.AreEqual (T.X, node3.Position.X);
-            Assert.AreEqual (T.Y, node3.Position.Y);
-            Assert.AreEqual (T.Z, node3.Position.Z);
+            Assert.AreEqual (T, node3.Position);
         }
 
+        [TestMethod]
+        public void Test_SetPosition () {
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Translation = new Vector3 (1, 2, 3);
+            //node3.Translation = new Vector3 (2, 2, 2);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
+
+            node3.Position = new Vector3 (3, 4, 5);
+
+            Assert.AreEqual (new Vector3(2,2,2), node3.Translation);
+        }
+
+
+        [TestMethod]
+        public void Test_Orientation () {
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Orientation = new Quaternion(90, 1,0,0);
+            node3.Orientation = new Quaternion(90, 0,1,0);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
+
+            Vector3 T;    
+            Quaternion R;  // 90, (0,0,-1)...ではなく最短距離の回転 120, (0.577,0.577,0.577)
+            Vector3 S;
+
+            node3.GlobalTransform.Decompress (out T, out R, out S);
+
+            Assert.AreEqual (R, node3.Orientation);
+        }
+        
+        [TestMethod]
+        public void Test_SetOrientation () {
+            var node1 = new Node ();
+            var node2 = new Node ();
+            var node3 = new Node ();
+            node2.Orientation = new Quaternion (90, 1, 0, 0);
+            //node3.Orientation = new Quaternion (90, 0, 1, 0);
+            node1.AddChild (node2);
+            node2.AddChild (node3);
+
+            node3.Orientation = new Quaternion (120, 0.577f, 0.577f, 0.577f); 
+
+
+            Assert.AreEqual (Quaternion.Set(0.5f,0.5f,0.5f,0.5f), node3.Orientation);
+        }
 
         [TestMethod]
         public void Test_SetGlobalTranslation () {

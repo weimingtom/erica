@@ -36,9 +36,9 @@ namespace DD {
         /// 送信先アドレス
         /// </summary>
         /// <remarks>
-        /// 送信先アドレスはノードではなくメールボックスの名前 <see cref="Mailbox.NamePlate"/> （文字列）です。
-        /// ユーザーはメールボックスを任意の受け取りアドレスで何個でも作成可能です。
-        /// また同名のアドレスを持つノードが複数存在する場合、すべてのノードに送信されます。
+        /// 送信先アドレスはメールボックスに付けられた宛先 <see cref="MailBox.Address"/> （文字列）です。
+        /// ユーザーはメールボックスを何個でも任意のアドレスで作成可能です。
+        /// またメールはシーン全体にブロードキャストするので同名のアドレスを持つノードが複数存在する場合、すべてのノードに送信されます。
         /// </remarks>
         public string Address { get; private set; }
 
@@ -46,13 +46,13 @@ namespace DD {
         /// 通信メッセージ
         /// </summary>
         /// <remarks>
-        /// 通信内容を表す文字列です。
+        /// 通信内容を表す任意のオブジェクトです。
         /// </remarks>
         public object Letter { get; private set; }
 
         /// <inheritdoc/>
         public override string ToString () {
-            return From.ToString() + " --> " + Address;
+            return string.Format("{0} --> \"{1}\"", From.ToString(), Address);
         }
     }
 

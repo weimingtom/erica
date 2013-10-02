@@ -93,7 +93,14 @@
     <Compile Include="AnimationSample\Program.cs" />
     <Compile Include="CollisionDetectSample\MyBlock.cs" />
     <Compile Include="CollisionDetectSample\MyCharacter.cs" />
+    <Compile Include="CollisionDetectSample\MyHUD.cs" />
     <Compile Include="CollisionDetectSample\Program.cs" />
+    <Compile Include="GUISample\MyButton.cs" />
+    <Compile Include="GUISample\MyCamera.cs" />
+    <Compile Include="GUISample\MyMouseSelector.cs" />
+    <Compile Include="GUISample\MyTarget.cs" />
+    <Compile Include="GUISample\MyWorld.cs" />
+    <Compile Include="GUISample\Program.cs" />
     <Compile Include="IsometricSample\MyCamera.cs" />
     <Compile Include="IsometricSample\MyCharacter.cs" />
     <Compile Include="IsometricSample\MyClicker.cs" />
@@ -106,6 +113,12 @@
     <Compile Include="MailBoxSample\MyRecver.cs" />
     <Compile Include="MailBoxSample\MySender.cs" />
     <Compile Include="MailBoxSample\Program.cs" />
+    <Compile Include="MouseSample\MyLogger.cs" />
+    <Compile Include="MouseSample\MyMouseSelector.cs" />
+    <Compile Include="MouseSample\MySprite.cs" />
+    <Compile Include="MouseSample\MyWorld.cs" />
+    <Compile Include="MouseSample\Program.cs" />
+    <Compile Include="PhysicsSample\MyBox.cs" />
     <Compile Include="PhysicsSample\MyFpsCounter.cs" />
     <Compile Include="PhysicsSample\MyBall.cs">
       <SubType>Code</SubType>
@@ -200,6 +213,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\BigExplosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\Box-64x64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Character-Ako.png">

@@ -8,11 +8,13 @@ using DD.Physics;
 namespace DD.UnitTest.Physics {
     [TestClass]
     public class TestPhysicsSimulator {
+
         [TestMethod]
         public void Test_New () {
             var phy = new PhysicsSimulator ();
 
-            Assert.AreEqual (64, PhysicsSimulator.PPM);
+            // 標準では PPM=64 だがユニットテストに限り PPM=1 で使用する。
+           Assert.AreEqual (1, PhysicsSimulator.PPM);
 
             Assert.IsNotNull (phy.PhysicsWorld);
             Assert.AreEqual (new Vector3 (0, -9.8f, 0), phy.Gravity);
@@ -22,9 +24,12 @@ namespace DD.UnitTest.Physics {
 
         [TestMethod]
         public void Test_SetPPM () {
-            PhysicsSimulator.PPM = 128;
+            var old = PhysicsSimulator.PPM;
+            PhysicsSimulator.PPM  = 99;
 
-            Assert.AreEqual (128, PhysicsSimulator.PPM);
+            Assert.AreEqual (99, PhysicsSimulator.PPM);
+
+            PhysicsSimulator.PPM = old;
         }
 
 
@@ -43,7 +48,7 @@ namespace DD.UnitTest.Physics {
         public void Test_AddRigidBody () {
             var node = new Node ();
             var rb = new RigidBody ();
-            rb.Shape = new SphereShape (1);
+            rb.AddShape(new SphereShape (1));
             rb.Material = new PhysicsMaterial ();
             node.Attach (rb);
 
@@ -58,7 +63,7 @@ namespace DD.UnitTest.Physics {
         public void Test_RemoveRigidBody () {
             var node = new Node ();
             var rb = new RigidBody ();
-            rb.Shape = new SphereShape (1);
+            rb.AddShape (new SphereShape (1))                ;
             rb.Material = new PhysicsMaterial ();
             node.Attach (rb);
 
@@ -74,7 +79,7 @@ namespace DD.UnitTest.Physics {
         public void Test_IsRegistered () {
             var node = new Node ();
             var rb = new RigidBody ();
-            rb.Shape = new SphereShape (1);
+            rb.AddShape (new SphereShape (1));
             rb.Material = new PhysicsMaterial ();
             node.Attach (rb);
 

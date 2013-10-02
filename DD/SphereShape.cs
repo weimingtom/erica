@@ -42,7 +42,21 @@ namespace DD {
        public float Diameter {
            get { return radius*2; }
        }
+
+       /// <inheritdoc/>
+       public override float ExSphereRadius {
+           get { return radius; }
+       }
+
+       /// <inheritdoc/>
+       public override float InSphereRadius {
+           get { return radius; }
+       }
+
        #endregion
+       
+       
+       
        #region Method
        /// <inheritdoc/>
        public override BulletSharp.PairCachingGhostObject CreateGhostObject () {
@@ -65,10 +79,20 @@ namespace DD {
            return new BulletSharp.RigidBody (info);
        }
 
+       /// <inheritdoc/>
+       public override BulletSharp.CollisionShape CreateBulletShape () {
+           var ppm = DD.Physics.PhysicsSimulator.PPM;
+           
+           return new BulletSharp.SphereShape (radius / ppm);
+       }
 
+
+       /// <inheritdoc/>
        public override string ToString () {
            return string.Format("Sphere : {0}", radius);
        }
        #endregion
+
+
    }
 }

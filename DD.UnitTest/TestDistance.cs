@@ -44,7 +44,7 @@ namespace DD.UnitTest {
             wld.AddChild (node1);
             wld.AddChild (node2);
             
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             Assert.AreEqual(10*1.4142f - 2*1.4142f, wld.Distance (node1, node2), 0.05f);
 
@@ -78,7 +78,7 @@ namespace DD.UnitTest {
             wld.AddChild (node1);
             wld.AddChild (node2);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             Assert.AreEqual (10 * 1.4142f - 2, wld.Distance (node1, node2), 0.01f);
 
@@ -104,7 +104,7 @@ namespace DD.UnitTest {
             wld.AddChild (node1);
             wld.AddChild (node2);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
 
             node2.Translation = new Vector3 (3, 0, 0);
@@ -136,7 +136,7 @@ namespace DD.UnitTest {
             wld.AddChild (node1);
             wld.AddChild (node2);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             var d = wld.Distance (node1, node2);
             Assert.AreEqual (Single.NaN, d);

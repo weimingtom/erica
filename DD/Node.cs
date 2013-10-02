@@ -111,7 +111,6 @@ namespace DD {
         /// </remarks>
         public int UniqueID {
             get { return GetHashCode (); }
-
         }
 
 
@@ -157,7 +156,7 @@ namespace DD {
         /// <remarks>
         /// このフラグが <c>true</c> のノードは表示されます。
         /// </remarks>
-        public bool Drawable {
+        public bool Visible {
             get { return drawable; }
             set { this.drawable = value; }
         }
@@ -391,6 +390,7 @@ namespace DD {
         /// 位置（ワールド座標系）
         /// </summary>
         /// <remarks>
+        /// このノードのワールド座標系での位置です。
         /// </remarks>
         public Vector3 Position {
             get {
@@ -400,8 +400,17 @@ namespace DD {
                 GlobalTransform.Decompress (out T, out R, out S);
                 return T;
             }
+            set {
+                SetGlobalTranslation (value.X, value.Y, value.Z);
+            }
         }
 
+        /// <summary>
+        /// 回転（ワールド座標系）
+        /// </summary>
+        /// <remarks>
+        /// このノードのワールド座標系での回転です。
+        /// </remarks>
         public Quaternion Orientation {
             get {
                 Vector3 T;
@@ -410,17 +419,40 @@ namespace DD {
                 GlobalTransform.Decompress (out T, out R, out S);
                 return R;
             }
+            set {
+                SetGlobalRotation (value);
+            }
         }
 
+        /// <summary>
+        /// このノードのコリジョン オブジェクト
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされているコリジョン オブジェクトを返します。
+        /// 複数のコリジョン オブジェクトがアタッチされている場合、どれが返るかは未定義です。
+        /// </remarks>
         public CollisionObject CollisionObject {
             get { return GetComponent<CollisionObject> (); }
         }
 
+        /// <summary>
+        /// このノードの剛体オブジェクト
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされている剛体オブジェクトを返します。
+        /// 複数の剛体オブジェクトがアタッチされている場合、どれが返るかは未定義です。
+        /// </remarks>
         public RigidBody RigidBody {
             get { return GetComponent<RigidBody> (); }
         }
 
-
+        /// <summary>
+        /// このノードが削除済みかどうかのフラグ
+        /// </summary>
+        /// <remarks>
+        /// ノードは削除されたフレームが終了するまでは有効な状態で存続します。
+        /// その間はこのフラグが <c>true</c> を返します。
+        /// </remarks>
         public bool IsDestroyed {
             get { return isDestroyed; }
         }
@@ -441,11 +473,11 @@ namespace DD {
         /// コンポーネントの識別
         /// </summary>
         /// <remarks>
-        /// このノードが指定のコンポーネント型 <typeref name="T"/> をアタッチされている時 <c>true</c> を返します。
+        /// このノードに指定の型 <typeref name="T"/> のコンポーネントがアタッチされている時 <c>true</c> を返します。
         /// </remarks>
         /// <typeparam name="T">コンポーネント型</typeparam>
         /// <returns></returns>
-        public bool Is<T> () where T : Component {
+        public bool Has<T> () where T : Component {
             return GetComponent<T> () != null;
         }
 
@@ -453,8 +485,8 @@ namespace DD {
         /// 平行移動量の変更（グローバル座標）
         /// </summary>
         /// <remarks>
-        /// それまでセットされていたこのノードの平行移動量を破棄し、新しい値に変更します。
-        /// このメソッドはグローバル座標で指定する事を除き <see cref="Transformable.SetTranslation"/> と同じです。
+        /// 指定のグローバル座標になるように、このノードの平行移動量を <see cref="Transformable.SetTranslation"/>
+        /// を使用して変更します。
         /// </remarks>
         /// <param name="tx">X方向の平行移動量</param>
         /// <param name="ty">Y方向の平行移動量</param>
@@ -547,6 +579,7 @@ namespace DD {
             comp.Node = this;
             comp.OnAttached ();
         }
+
 
         /// <summary>
         /// コンポーネントのデタッチ

@@ -80,7 +80,9 @@ namespace DD {
         /// </summary>
         public string Text {
             get { return text; }
-            set { SetText (value); }
+            set {
+                this.text = value ?? "";
+            }
         }
 
         /// <summary>
@@ -101,13 +103,6 @@ namespace DD {
         #endregion
 
         #region Method
-        /// <summary>
-        /// テキストの変更
-        /// </summary>
-        /// <param name="text">文字列</param>
-        public void SetText (string text) {
-            this.text = text ?? "";
-        }
 
         /// <summary>
         /// 文字サイズの変更

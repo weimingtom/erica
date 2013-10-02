@@ -16,6 +16,7 @@ namespace DD {
         Node node;
         bool updateInitIsCalled;
         bool physicsUpdateInitIsCalled;
+        bool collisionUpdateInitIsCalled;
         #endregion
 
         #region Constructor
@@ -26,6 +27,7 @@ namespace DD {
             this.node = null;
             this.updateInitIsCalled = false;
             this.physicsUpdateInitIsCalled = false;
+            this.collisionUpdateInitIsCalled = false;
         }
         #endregion
 
@@ -53,6 +55,15 @@ namespace DD {
             get { return physicsUpdateInitIsCalled; }
             set { this.physicsUpdateInitIsCalled = value; }
         }
+
+        /// <summary>
+        /// CollisionUpdateInit()が呼ばれた事があるかどうかのフラグ
+        /// </summary>
+        public bool IsCollisionUpdateInitCalled {
+            get { return collisionUpdateInitIsCalled; }
+            set { this.collisionUpdateInitIsCalled = value; }
+        }
+
 
         /// <summary>
         /// ノード名
@@ -143,7 +154,7 @@ namespace DD {
         /// <see cref="World"/> オブジェクトは必ずデフォルトのコリジョン解析機を1つ保持しています。
         /// </remarks>
         public CollisionAnalyzer CollisionAnalyzer {
-            get { return GetComponent<CollisionAnalyzer> () ?? World.CollisionAnlyzer; }
+            get { return GetComponent<CollisionAnalyzer> () ?? World.CollisionAnalyzer; }
         }
 
         /// <summary>
@@ -257,7 +268,6 @@ namespace DD {
             }
 
             node.Destroy ();
-
         }
 
         /// <summary>
@@ -364,9 +374,36 @@ namespace DD {
         public virtual void OnUpdate (long msec) {
         }
 
+        /// <summary>
+        /// コリジョン解析機の初期化処理のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// コリジョン解析機が更新処理を行うタイミングで一度だけ呼ばれる仮想関数のエントリーポイント。
+        /// 通常ユーザーがこの仮想関数をオーバーライドする必要はありません。
+        /// </remarks>
+        public virtual void OnCollisionUpdateInit (long msec) {
+        }
 
+        /// <summary>
+        /// コリジョン解析機の更新処理のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// コリジョン解析機が更新処理を行う仮想関数のエントリーポイント。
+        /// 通常ユーザーがこの仮想関数をオーバーライドする必要はありません。
+        /// </remarks>
+        public virtual void OnCollisionUpdate (long msec) {
+        }
+
+
+
+        /// <summary>
+        /// 物理エンジンの初期化処理のエントリーポイント
+        /// </summary>
+        /// <remarks>
+        /// 物理エンジンが更新処理を行うタイミングで一度だけ呼ばれる仮想関数のエントリーポイント。
+        /// 通常ユーザーがこの仮想関数をオーバーライドする必要はありません。
+        /// </remarks>
         public virtual void OnPhysicsUpdateInit (long msec) {
-
         }
 
         /// <summary>
@@ -381,22 +418,12 @@ namespace DD {
 
 
         /// <summary>
-        /// コリジョン解決のための準備
-        /// </summary>
-        public virtual void OnPrepareCollisions () {
-
-        }
-
-        public virtual void OnCollisionResolved () {
-        }
-
-        /// <summary>
         /// 物理エンジンのコリジョン発生のエントリーポイント
         /// </summary>
         /// <remarks>
         /// 物理エンジンのコリジョン発生処理を行う仮想関数のエントリーポイント。
         /// </remarks>
-        /// <param name="cp">衝突地点情報</param>
+        /// <param name="collidee">衝突の相手</param>
         public virtual void OnCollisionEnter (Node collidee) {
         }
 
@@ -406,6 +433,7 @@ namespace DD {
         /// <remarks>
         /// 物理エンジンのコリジョン消失処理を行う仮想関数のエントリーポイント。
         /// </remarks>
+        /// <param name="collidee">衝突の相手</param>
         public virtual void OnCollisionExit (Node collidee) {
         }
 
@@ -521,13 +549,13 @@ namespace DD {
         /// メール ボックスのエントリー ポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="World.Deliver"/> フェーズでメール ボックスにメールが送られた時に呼び出される標準のメールボックス アクションです。
-        /// ユーザーが独自のアクションを登録した場合はそちらが呼ばれます。
+        /// メール ボックスにメールを受信した時に呼び出される標準のメールボックス アクションです。
+        /// ユーザーがこのアクションではなく独自のアクションを登録した場合はこのアクションは呼び出されません。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// </remarks>
         /// <param name="from">送信元ノード</param>
-        /// <param name="address">送信先アドレス</param>
-        /// <param name="letter">通信メッセージ</param>
+        /// <param name="address">送信先アドレス（文字列）</param>
+        /// <param name="letter">通信メッセージ（任意）</param>
         public virtual void OnMailBox (Node from, string address, object letter) {
         }
 
@@ -537,7 +565,7 @@ namespace DD {
         /// <remarks>
         /// 描画の前に処理を行う仮想関数のエントリーポイント。
         /// 描画される前に追加の処理を行いたい時に、この仮想関数をオーバーライドします。
-        /// この前処理は <see cref="DD.Node.Drawable"/> の値に関わらず常に呼び出されます。
+        /// この前処理は <see cref="DD.Node.Visible"/> の値に関わらず常に呼び出されます。
         /// </remarks>
         /// <param name="window">ウィンドウ（SFML.Graphics.RenderWindow）</param>
         public virtual void OnPreDraw (object window) {

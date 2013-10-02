@@ -125,7 +125,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 指定のシーン <paramref name="world"/> を描画します。
-        /// 描画されるノードは <see cref="Node.Drawable"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
+        /// 描画されるノードは <see cref="Node.Visible"/> フラグと表示優先度 <see cref="Node.DrawPriority"/> によって制御されます。
         /// </remarks>
         /// <param name="world">シーン</param>
         /// <param name="finish">描画の終了</param>
@@ -136,7 +136,8 @@ namespace DD {
 
             if (world.ActiveCamera == null) {
                 win.Clear (SFML.Graphics.Color.Blue);
-            }else{
+            }
+            else {
                 var cam = world.ActiveCamera.GetComponent<Camera> ();
                 if (cam.Type != ProjectionType.Screen) {
                     throw new InvalidOperationException ("Camera type is invalid for 2D, type=" + cam.Type);
@@ -157,7 +158,7 @@ namespace DD {
 
             // 全ノードの描画
             var nodes = from node in world.Downwards
-                        where node.Upwards.Aggregate (true, (x, y) => x & y.Drawable) == true
+                        where node.Upwards.Aggregate (true, (x, y) => x & y.Visible) == true
                         orderby node.DrawPriority descending
                         select node;
             foreach (var node in nodes) {
@@ -235,17 +236,21 @@ namespace DD {
         /// <param name="height">ウィンドウ高さ（ピクセル数）</param>
         /// <param name="title">ウィンドウ タイトル名</param>
         public void CreateWindow (int width, int height, string title) {
+            if (width <= 0 || height <= 0) {
+                throw new ArgumentException ("Window size is invalid");
+            }
+
             string dir = System.IO.Directory.GetCurrentDirectory ();
 
             try {
                 // DLLはexeと同じディレクトリに存在
-                this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title);
+                this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title ?? "");
             }
             catch (DllNotFoundException e) {
                 // ないときは libs の下も探す
                 if (System.IO.Directory.Exists ("libs")) {
                     System.IO.Directory.SetCurrentDirectory (dir + "/libs");
-                    this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title);
+                    this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title ?? "");
                     System.IO.Directory.SetCurrentDirectory (dir);
                 }
                 else {
@@ -260,12 +265,12 @@ namespace DD {
 
 
         /// <summary>
-        /// 最大フレームレートの設定
+        /// 最大フレーム レートの設定
         /// </summary>
         /// <remarks>
         /// フレーム レートを固定します。
         /// </remarks>
-        /// <param name="max"></param>
+        /// <param name="max">フレーム レート</param>
         public void SetFrameRateLimit (int max) {
             win.SetFramerateLimit ((uint)max);
         }
@@ -276,7 +281,7 @@ namespace DD {
         /// </summary>
         /// <param name="title">タイトル</param>
         public void SetWindowTitle (string title) {
-            this.win.SetTitle (title);
+            this.win.SetTitle (title ?? "");
         }
 
         /// <summary>
@@ -285,6 +290,9 @@ namespace DD {
         /// <param name="width">幅（ピクセル数）</param>
         /// <param name="height">高さ（ピクセル数）</param>
         public void SetWindowSize (int width, int height) {
+            if (width <= 0 || height <= 0) {
+                throw new ArgumentException ("Window size is invalid");
+            }
             this.win.Size = new Vector2u ((uint)width, (uint)height);
         }
 
@@ -338,23 +346,19 @@ namespace DD {
         private void OnMouseButtonPressedEventHandler (object sender, MouseButtonEventArgs clicked) {
 
             var btn = clicked.Button.ToDD ();
+            var key = clicked.Button.ToDD_KeyCode ();
             var pos = win.MapPixelToCoords (new Vector2i (clicked.X, clicked.Y)).ToDD ();
-            
-            this.keyBuffer.Add (btn);
+
+            this.keyBuffer.Add (key);
             this.mouse = pos;
 
-            var start = new Vector3 (pos.X, pos.Y, -1000);
-            var end = new Vector3 (pos.X, pos.Y, 1000);
-            var node = wld.Pick (start, end);
+            var start = new Vector3 (pos.X, pos.Y, 1000);
+            var end = new Vector3 (pos.X, pos.Y, -1000);
 
-            if(node != null){
-                foreach (var comp in node.Components.ToArray()) {
-                    switch (clicked.Button) {
-                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonPressed (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
-                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonPressed (MouseButton.Right, (int)pos.X, (int)pos.Y); break;
-                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonPressed (MouseButton.Middle, (int)pos.X, (int)pos.Y); break;
-                        default: break;
-                    }
+            var nodes = wld.RayCast (start, end).Select (x => x.Node);
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components) {
+                    comp.OnMouseButtonPressed (btn, (int)pos.X, (int)pos.Y);
                 }
             }
         }
@@ -367,27 +371,21 @@ namespace DD {
         private void OnMouseButtonReleasedEventHandler (object sender, MouseButtonEventArgs released) {
 
             var btn = released.Button.ToDD ();
+            var key = released.Button.ToDD_KeyCode ();
             var pos = win.MapPixelToCoords (new Vector2i (released.X, released.Y)).ToDD ();
 
-            this.keyBuffer.Remove (btn);
+            this.keyBuffer.Remove (key);
             this.mouse = pos;
 
-            var start = new Vector3 (pos.X, pos.Y, -1000);
-            var end = new Vector3 (pos.X, pos.Y, 1000);
-            var node = wld.Pick (start, end);
+            var start = new Vector3 (pos.X, pos.Y, 1000);
+            var end = new Vector3 (pos.X, pos.Y, -1000);
 
-            if (node != null){
-                foreach (var comp in node.Components.ToArray()) {
-                    switch (released.Button) {
-                        case SFML.Window.Mouse.Button.Left: comp.OnMouseButtonReleased (MouseButton.Left, (int)pos.X, (int)pos.Y); break;
-                        case SFML.Window.Mouse.Button.Right: comp.OnMouseButtonReleased (MouseButton.Right, (int)pos.X, (int)pos.Y); break;
-                        case SFML.Window.Mouse.Button.Middle: comp.OnMouseButtonReleased (MouseButton.Middle, (int)pos.X, (int)pos.Y); break;
-                        default: break;
-                    }
+            var nodes = wld.RayCast (start, end).Select (x => x.Node);
+            foreach (var node in nodes) {
+                foreach (var comp in node.Components) {
+                    comp.OnMouseButtonReleased (btn, (int)pos.X, (int)pos.Y);
                 }
             }
-
-
         }
 
         /// <summary>
@@ -407,8 +405,8 @@ namespace DD {
             // ここ本当はレイキャストでピックすべきだろう
             var start = new Vector3 (pos.X, pos.Y, -1000);
             var end = new Vector3 (pos.X, pos.Y, 1000);
-            var node = wld.Pick(start, end);
-            
+            var node = wld.Pick (start, end);
+
             if (node != prevHit) {
                 if (prevHit != null) {
                     foreach (var comp in prevHit.Components) {

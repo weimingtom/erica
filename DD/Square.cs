@@ -6,58 +6,136 @@ using SFML.Window;
 using SFML.Graphics;
 
 namespace DD {
-    public class Square : Component{
+
+    /// <summary>
+    /// 枠表示コンポーネント
+    /// </summary>
+    /// <remarks>
+    /// 4角形の枠を表示するコンポーネントです。ライン <see cref="Line"/> の4角形版に相当します。
+    /// 4角形の中身は塗りつぶしません。
+    /// あまり使い道のなさそうなコンポーネントですが結構便利です。
+    /// </remarks>
+    public class Square : Component {
+
+        #region 
         float width;
         float height;
         float lineWidth;
         Color color;
         Vector3 offset;
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <remarks>
+        /// 枠線は縦横サイズの内側に表示されます。
+        /// </remarks>
+        /// <param name="width">横サイズ</param>
+        /// <param name="height">縦サイズ</param>
+        /// <param name="lineWidth">ライン幅</param>
         public Square (float width, float height, float lineWidth) {
             this.width = width;
             this.height = height;
             this.lineWidth = lineWidth;
             this.color = Color.White;
         }
+        #endregion
 
+        #region Property
+        /// <summary>
+        /// 横サイズ
+        /// </summary>
         public float Width {
             get { return width; }
-            set { this.width = value; }
+            set {
+                if (value <= 0) {
+                    throw new ArgumentException ("Width is invalid");
+                }
+                this.width = value;
+            }
         }
 
+        /// <summary>
+        /// 縦サイズ
+        /// </summary>
         public float Height{
             get{return height;}
-            set { this.height = value; }
+            set {
+                if (value <= 0) {
+                    throw new ArgumentException ("Height is invalid");
+                }
+                this.height = value;
+            }
         }
 
+        /// <summary>
+        /// 線幅
+        /// </summary>
         public float LineWidth {
             get { return lineWidth; }
-            set { this.lineWidth = value; }
+            set {
+                if (value <= 0) {
+                    throw new ArgumentException ("LineWidth is invalid");
+                }
+                this.lineWidth = value;
+            }
         }
 
+        /// <summary>
+        /// 線色
+        /// </summary>
+        /// <remarks>
+        /// デフォルトは白色です。
+        /// </remarks>
         public Color Color {
             get { return color; }
-            set { this.color = value; }
+            set { SetColor (value.R, value.G, value.B, value.A); }
         }
 
+        /// <summary>
+        /// オフセット
+        /// </summary>
         public Vector3 Offset {
             get { return offset; }
             set { this.offset = value; }
         }
+        #endregion
 
+        #region Method
+        /// <summary>
+        /// サイズの変更
+        /// </summary>
+        /// <param name="width">横サイズ</param>
+        /// <param name="height">縦サイズ</param>
         public void Resize (float width, float height) {
             this.width = width;
             this.height = height;
         }
 
+        /// <summary>
+        /// 線色の変更
+        /// </summary>
+        /// <param name="r">赤</param>
+        /// <param name="g">緑</param>
+        /// <param name="b">青</param>
+        /// <param name="a">不透明度</param>
         public void SetColor (byte r, byte g, byte b, byte a) {
             this.color = new Color (r, g, b, a);
         }
 
+        /// <summary>
+        /// オフセットの変更
+        /// </summary>
+        /// <param name="x">オフセットX</param>
+        /// <param name="y">オフセットY</param>
+        /// <param name="z">オフセットZ</param>
         public void SetOffset (float x, float y, float z) {
             this.offset = new Vector3 (x, y, z);
         }
 
+        /// <inheritdoc/>
         public override void OnDraw (object window) {
             Vector3 T;
             Quaternion R;
@@ -118,6 +196,7 @@ namespace DD {
             win.Draw (spr3);
             win.Draw (spr4);
         }
+        #endregion
 
 
     }

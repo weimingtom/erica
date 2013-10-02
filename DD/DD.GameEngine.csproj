@@ -94,7 +94,7 @@
     <Compile Include="CollisionObject.cs" />
     <Compile Include="CollisionShape.cs" />
     <Compile Include="CollisionAnalyzer.cs" />
-    <Compile Include="ContactPoint.cs" />
+    <Compile Include="OverlappingPair.cs" />
     <Compile Include="CapsuleShape.cs" />
     <Compile Include="Physics\PhysicsSimulator.cs" />
     <Compile Include="BulletPhysicsExtensions.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="GridBoard.cs" />
     <Compile Include="PostOffice.cs" />
     <Compile Include="Quaternion.cs" />
-    <Compile Include="SeTrack.cs" />
+    <Compile Include="SoundEffectTrack.cs" />
     <Compile Include="SphereShape.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="TiledMapComposer.cs" />

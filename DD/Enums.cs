@@ -70,37 +70,6 @@ namespace DD {
         Screen
     }
 
-    /// <summary>
-    /// シェイプ タイプ
-    /// </summary>
-    public enum ShapeType {
-        /// <summary>
-        /// 未定義（使用しない）
-        /// </summary>
-        Undefined,
-
-        /// <summary>
-        /// 多角形
-        /// </summary>
-        /// <remarks>
-        /// 多角形は方形（<see cref="DD.Physics.BoxCollisionShape"/>）と菱形（<see cref="DD.Physics.RhombusCollisionShape"/>）の両方が該当します。
-        /// </remarks>
-        Polygon,
-
-        /// <summary>
-        /// 球形
-        /// </summary>
-        Sphere,
-
-        /// <summary>
-        /// 大きさのない一点
-        /// </summary>
-        Point,
-
-    }
-
-
-
 
     /// <summary>
     /// キー コード
@@ -873,7 +842,23 @@ namespace DD {
         /// 中マウスボタン
         /// </summary>
         Middle,
+
+        /// <summary>
+        /// マウスボタン（不明）
+        /// </summary>
+        XButton1,
+
+        /// <summary>
+        /// マウスボタン（不明）
+        /// </summary>
+        XButton2,
+
+        /// <summary>
+        /// ダミー
+        /// </summary>
+        Dummy,
     }
+
 
     /*
     /// <summary>
@@ -1002,5 +987,21 @@ namespace DD {
         /// </summary>
         Automatic
     }
+
+    /// <summary>
+    /// バー方向
+    /// </summary>
+    public enum BarOrientation {
+        /// <summary>
+        /// 水平
+        /// </summary>
+        Horizontal,
+        
+        /// <summary>
+        /// 垂直
+        /// </summary>
+        Vertical
+    }
+
 
 }

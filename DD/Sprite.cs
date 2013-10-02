@@ -281,6 +281,9 @@ namespace DD {
         /// <summary>
         /// サイズの変更
         /// </summary>
+        /// <remarks>
+        /// <paramref name="width"/> と <paramref name="height"/> は0以上です。
+        /// </remarks>
         /// <param name="width">スプライトの幅（ピクセル数）</param>
         /// <param name="height">スプライトの高さ（ピクセル数）</param>
         public void Resize (int width, int height) {

@@ -6,7 +6,6 @@ using DD.Physics;
 
 namespace DD.Sample.GUISample {
     public class MyWorld : Component {
-        Node mouse;
 
         public MyWorld () {
         }
@@ -16,10 +15,11 @@ namespace DD.Sample.GUISample {
             
             var spr = new Sprite (new Texture ("media/Vanity.jpg"));
 
-            var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
+            var col = new CollisionObject ();
+            col.Shape = new BoxShape (spr.Width / 2, spr.Height / 2, 1);
             col.SetOffset (spr.Width / 2, spr.Height / 2, 0);
 
-            var wld = new World ("World");
+            var wld = new World ("MyWorld");
             wld.Attach (cmp);
             wld.Attach (spr);
             wld.Attach (col);
@@ -27,18 +27,24 @@ namespace DD.Sample.GUISample {
             return wld;
         }
 
-        public override void OnUpdateInit (long msec) {
-            this.mouse = World.Find ("MouseSelector");
-        }
-
         public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
-            mouse.GetComponent<MyMouseSelector>().BeginSelection ();
+            var sel = World.Find ("MouseSelector");
+            if (sel != null) {
+                if (button == MouseButton.Right) {
+                    sel.GetComponent<MyMouseSelector> ().BeginSelect (x, y);
+                }
+            }    
         }
 
-        public override void OnMouseButtonReleased (MouseButton button, float x, float y){
-            mouse.GetComponent<MyMouseSelector>().EndSelection ();
+        public override void OnMouseButtonReleased (MouseButton button, float x, float y) {
+            var sel = World.Find ("MouseSelector");
+            if (sel != null) {
+                if (button == MouseButton.Right) {
+                    sel.GetComponent<MyMouseSelector> ().EndSelect (x, y);
+                }
+            }
         }
-
+        
 
     }
 }

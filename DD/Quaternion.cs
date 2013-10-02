@@ -51,7 +51,7 @@ namespace DD {
             else {
                 var axis = new Vector3 (ax, ay, az).Normalize ();
                 var theta = (Math.PI * angle / 180.0);
-                
+
                 this.X = (float)(axis.X * Math.Sin (theta / 2.0));
                 this.Y = (float)(axis.Y * Math.Sin (theta / 2.0));
                 this.Z = (float)(axis.Z * Math.Sin (theta / 2.0));
@@ -70,8 +70,8 @@ namespace DD {
         /// </remarks>
         /// <param name="angle">回転角度 [0,360)</param>
         /// <param name="axis">回転軸</param>
-        public Quaternion (float angle, Vector3 axis) : this(angle, axis.X, axis.Y, axis.Z){
-
+        public Quaternion (float angle, Vector3 axis)
+            : this (angle, axis.X, axis.Y, axis.Z) {
         }
 
         #endregion
@@ -243,7 +243,8 @@ namespace DD {
         /// 数値を直接指定してクォータニオンを作成
         /// </summary>
         /// <remarks>
-        /// 引数の <paramref name="normalize"/> フラグを true に指定すると正規化します。
+        /// クォータニオンの数値を直接指定して新しいクォータニオンオブジェクトを作成します。
+        /// 引数の <paramref name="normalize"/> を <c>true</c> に指定すると正規化します。
         /// ユーザーは自分が何をやっているのかよく理解している場合を除き、このメソッドを使うべきではありません。
         /// </remarks>
         /// <param name="x">X要素(ベクトル成分i)</param>
@@ -252,7 +253,7 @@ namespace DD {
         /// <param name="w">W要素(スカラー成分)</param>
         /// <param name="normalize">正規化フラグ</param>
         /// <returns>作成したクォータニオン</returns>
-        public static Quaternion Set (float x, float y, float z, float w, bool normalize) {
+        public static Quaternion Set (float x, float y, float z, float w, bool normalize = false) {
             var q = new Quaternion ();
             q.X = x;
             q.Y = y;
@@ -299,7 +300,7 @@ namespace DD {
             }
             return q;
         }
- 
+
         /// <summary>
         /// 逆クォータニオン
         /// </summary>

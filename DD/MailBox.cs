@@ -5,10 +5,10 @@ using System.Text;
 
 namespace DD {
     /// <summary>
-    /// メールボックス アクション
+    /// メール ボックス アクション
     /// </summary>
     /// <param name="from">メッセージの送信元（ノード）</param>
-    /// <param name="to">メッセージの宛先（文字列）</param>
+    /// <param name="address">メッセージの宛先（文字列）</param>
     /// <param name="letter">通信メッセージ</param>
     public delegate void MailBoxAction (Node from, string address, object letter);
 
@@ -77,7 +77,7 @@ namespace DD {
             }
         }
 
-        /// <inheritdoc>
+        /// <inheritdoc/>
         public override string ToString () {
             return "MailBox: \"" + Address + "\"";
         }

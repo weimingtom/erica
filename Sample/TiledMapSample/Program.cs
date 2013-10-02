@@ -50,7 +50,7 @@ namespace DD.Sample.TiledMapSample {
                 var msec = watch.ElapsedMilliseconds;
 
                 wld.Animate (msec, 0);
-                wld.Analyze ();
+                wld.CollisionUpdate ();
                 wld.Deliver ();
                 wld.Update (msec);
                 g2d.Dispatch (wld);

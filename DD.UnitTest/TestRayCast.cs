@@ -32,7 +32,7 @@ namespace DD.UnitTest {
             var wld = new World ();
             wld.AddChild (node);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
 
             // (1+1) - 1*√2
@@ -40,7 +40,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, result.Hit);
             Assert.AreEqual (new Vector3 (0.5858f, 0, 0), result.Point);
             Assert.AreEqual (new Vector3 (-1, 0, 0), result.Normal);
-            Assert.AreEqual (10.4907f, result.Distance, 0.01f);
+            Assert.AreEqual (10.58579f, result.Distance, 0.01f);
             Assert.AreEqual (0.5245f, result.Fraction, 0.01f);
 
             // (1+1) + 1*√2
@@ -48,7 +48,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (true, result.Hit);
             Assert.AreEqual (new Vector3 (3.4142f, 0, 0), result.Point);
             Assert.AreEqual (new Vector3 (1, 0, 0), result.Normal);
-            Assert.AreEqual (6.4503f, result.Distance, 0.01f);
+            Assert.AreEqual (6.585786f, result.Distance, 0.01f);
             Assert.AreEqual (0.3225f, result.Fraction, 0.01f);
 
             wld.Destroy ();
@@ -73,7 +73,7 @@ namespace DD.UnitTest {
             var wld = new World ();
             wld.AddChild (node);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             // (1+1) - 1
             var result = wld.RayCast (new Vector3 (-10, 0, 0), new Vector3 (10, 0, 0)).First ();
@@ -111,7 +111,7 @@ namespace DD.UnitTest {
             var wld = new World ();
             wld.AddChild (node);
 
-            wld.Analyze ();
+            wld.CollisionUpdate ();
 
             // 1<<0
             var result = wld.RayCast (new Vector3 (-10, 0, 0), new Vector3 (10, 0, 0), 1 << 0).FirstOrDefault ();
@@ -143,7 +143,7 @@ namespace DD.UnitTest {
         public void Test_AllNodes () {
 
             var wld = new World ();
-
+            
             for (var i = 0; i < 10; i++) {
                 var node = new Node ("" + i);
 
@@ -155,10 +155,11 @@ namespace DD.UnitTest {
 
                 wld.AddChild (node);
             }
+            
 
+            wld.CollisionUpdate ();
 
-            wld.Analyze ();
-
+            
             var results = wld.RayCast (new Vector3 (-10, 10, 0), new Vector3 (10, 10, 0));
             Assert.AreEqual (0, results.Count ());
 
@@ -175,6 +176,7 @@ namespace DD.UnitTest {
             Assert.AreEqual ("7", results.ElementAt (7).Node.Name);
             Assert.AreEqual ("8", results.ElementAt (8).Node.Name);
             Assert.AreEqual ("9", results.ElementAt (9).Node.Name);
+            
 
             wld.Destroy ();
         }
