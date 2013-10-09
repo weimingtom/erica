@@ -235,7 +235,7 @@ namespace DD {
 
 
         /// <inheritdoc/>
-        public override void OnDestroyed () {
+        public override void  OnDetached(){
             // コリジョン ワールドから削除
             // ここで削除しなくても CollisionAnyzer が終了する時にすべて自動で削除される。
             // これは個別のゲームオブジェクトが単独で死ぬ時の処理。
@@ -247,7 +247,6 @@ namespace DD {
                     CollisionAnalyzer.RemoveGhostObject (Node);
                 }
             }
-
         }
 
         /// <inheritdoc/>

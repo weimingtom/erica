@@ -45,9 +45,9 @@ namespace DD {
         /// <summary>
         /// テクスチャー オブジェクトをビットマップ画像から作成
         /// </summary>
-        /// <param name="bitmap">ビットマップ</param>
         /// <param name="name">テクスチャー名</param>
-        public Texture (System.Drawing.Bitmap bitmap, string name) {
+        /// <param name="bitmap">ビットマップ</param>
+        public Texture (string name, System.Drawing.Bitmap bitmap) {
             if (bitmap == null) {
                 throw new ArgumentNullException ("Bitmap is null");
             }
@@ -70,9 +70,9 @@ namespace DD {
         /// <summary>
         /// テクスチャー オブジェクトをメモリー上の画像ファイルから作成
         /// </summary>
-        /// <param name="memory">メモリー ストリーム</param>
         /// <param name="name">テクスチャー名</param>
-        public Texture (System.IO.MemoryStream memory, string name) {
+        /// <param name="memory">メモリー ストリーム</param>
+        public Texture (string name, System.IO.MemoryStream memory) {
             if (memory == null) {
                 throw new ArgumentNullException ("Memory stream is null");
             }

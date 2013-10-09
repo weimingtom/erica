@@ -16,7 +16,7 @@ namespace DD.Sample.TiledMapSample {
 
                 var node = MyPopup.Create (Node.Position);
                 World.AddChild (node);
-                Destroy (this);
+                Destroy (Node, 0);
             }
         }
 

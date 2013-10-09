@@ -94,6 +94,8 @@
     <Compile Include="CollisionObject.cs" />
     <Compile Include="CollisionShape.cs" />
     <Compile Include="CollisionAnalyzer.cs" />
+    <Compile Include="ClockTower.cs" />
+    <Compile Include="DestroyOrder.cs" />
     <Compile Include="OverlappingPair.cs" />
     <Compile Include="CapsuleShape.cs" />
     <Compile Include="Physics\PhysicsSimulator.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Line.cs" />
     <Compile Include="LineReader.cs" />
     <Compile Include="YAMLParser.cs" />
+    <Compile Include="NodeDestroyer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\csfml-audio-2.dll">

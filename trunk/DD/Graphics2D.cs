@@ -24,8 +24,8 @@ namespace DD {
         static Graphics2D g2d;
         RenderWindow win;
         World wld;
-        Node prevHit;
         HashSet<KeyCode> keyBuffer;
+        List<Node> prevHits;
         Vector2 mouse;
         int wheele;
         #endregion
@@ -37,7 +37,7 @@ namespace DD {
         private Graphics2D () {
             this.win = null;
             this.wld = null;
-            this.prevHit = null;
+            this.prevHits = new List<Node> ();
             this.wheele = 0;
             this.keyBuffer = new HashSet<KeyCode> ();
             this.mouse = new Vector2 ();
@@ -324,18 +324,35 @@ namespace DD {
         /// キーを押した時の処理
         /// </summary>
         /// <param name="sender">ウィンドウ (SFML:RenderWindow)</param>
-        /// <param name="e">キー イベント引数</param>
-        void OnKeyPressedEventHandler (object sender, KeyEventArgs e) {
-            this.keyBuffer.Add (e.Code.ToDD ());
+        /// <param name="ev">キー イベント引数</param>
+        void OnKeyPressedEventHandler (object sender, KeyEventArgs ev) {
+
+            var key = ev.Code.ToDD ();
+
+            this.keyBuffer.Add (key);
+
+            foreach (var node in wld.Downwards) {
+                foreach (var comp in node.Components) {
+                    comp.OnKeyPressed (key);
+                }
+            }
         }
 
         /// <summary>
         /// キーを離した時の処理
         /// </summary>
         /// <param name="sender">ウィンドウ (SFML:RenderWindow)</param>
-        /// <param name="e">キー イベント引数</param>
-        void OnKeyReleasedEventHandler (object sender, KeyEventArgs e) {
-            this.keyBuffer.Remove (e.Code.ToDD ());
+        /// <param name="ev">キー イベント引数</param>
+        void OnKeyReleasedEventHandler (object sender, KeyEventArgs ev) {
+            var key = ev.Code.ToDD ();
+
+            this.keyBuffer.Remove (key);
+
+            foreach (var node in wld.Downwards) {
+                foreach (var comp in node.Components) {
+                    comp.OnKeyReleased (key);
+                }
+            }
         }
 
         /// <summary>
@@ -399,28 +416,27 @@ namespace DD {
         private void OnMouseMovedEventHandler (object sender, MouseMoveEventArgs moved) {
 
             var pos = win.MapPixelToCoords (new Vector2i (moved.X, moved.Y)).ToDD ();
-
             this.mouse = pos;
 
-            // ここ本当はレイキャストでピックすべきだろう
-            var start = new Vector3 (pos.X, pos.Y, -1000);
-            var end = new Vector3 (pos.X, pos.Y, 1000);
-            var node = wld.Pick (start, end);
+            var start = new Vector3 (pos, 1000);
+            var end = new Vector3 (pos, -1000);
+            var hits = wld.RayCast (start, end).Select (x => x.Node);
 
-            if (node != prevHit) {
-                if (prevHit != null) {
-                    foreach (var comp in prevHit.Components) {
-                        comp.OnMouseFocusOut ((int)pos.X, (int)pos.Y);
-                    }
+            var focusin = hits.Except (prevHits);
+            var focusout = prevHits.Except (hits);
+
+            foreach (var node in focusin) {
+                foreach (var comp in node.Components) {
+                    comp.OnMouseFocusIn ((int)pos.X, (int)pos.Y);
                 }
-                if (node != null) {
-                    foreach (var comp in node.Components) {
-                        comp.OnMouseFocusIn ((int)pos.X, (int)pos.Y);
-                    }
+            }
+            foreach (var node in focusout) {
+                foreach (var comp in node.Components) {
+                    comp.OnMouseFocusOut ((int)pos.X, (int)pos.Y);
                 }
-                this.prevHit = node;
             }
 
+            this.prevHits = hits.ToList ();
         }
 
         /// <summary>

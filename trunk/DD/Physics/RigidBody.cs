@@ -609,9 +609,6 @@ namespace DD.Physics {
             if (shape == null) {
                 throw new ArgumentNullException ("Collision shape is null");
             }
-            if (shapes.Count () >= 1) {
-                throw new NotImplementedException ("Sorry, CollisionShapes must be single");
-            }
 
             this.shapes.Add (shape);
             this.offsets.Add (new Vector3 (0, 0, 0));

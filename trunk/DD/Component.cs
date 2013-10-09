@@ -41,9 +41,19 @@ namespace DD {
         }
 
         /// <summary>
+        /// このノード
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Node"/> の別名です。
+        /// </remarks>
+        public Node This {
+            get { return node; }
+        }
+
+        /// <summary>
         /// UpdateInit()が呼ばれた事があるかどうかのフラグ
         /// </summary>
-        public bool IsUpdateInitCalled {
+        internal bool IsUpdateInitCalled {
             get { return updateInitIsCalled; }
             set { this.updateInitIsCalled = value; }
         }
@@ -51,7 +61,7 @@ namespace DD {
         /// <summary>
         /// PhysicsUpdateInit()が呼ばれた事があるかどうかのフラグ
         /// </summary>
-        public bool IsPhysicsUpdateInitCalled {
+        internal bool IsPhysicsUpdateInitCalled {
             get { return physicsUpdateInitIsCalled; }
             set { this.physicsUpdateInitIsCalled = value; }
         }
@@ -59,7 +69,7 @@ namespace DD {
         /// <summary>
         /// CollisionUpdateInit()が呼ばれた事があるかどうかのフラグ
         /// </summary>
-        public bool IsCollisionUpdateInitCalled {
+        internal bool IsCollisionUpdateInitCalled {
             get { return collisionUpdateInitIsCalled; }
             set { this.collisionUpdateInitIsCalled = value; }
         }
@@ -98,9 +108,23 @@ namespace DD {
         /// <see cref="World"/> のインプット レシーバー  <see cref="InputReceiver"/> を返します。
         /// <see cref="World"/> クラスは必ずデフォルトのインプット レシーバーを1つ保持しています。
         /// </remarks>
-        public InputReceiver Input {
+        protected internal InputReceiver Input {
             get {
                 return GetComponent<InputReceiver>() ?? World.InputReceiver;
+            }
+        }
+
+        /// <summary>
+        /// 標準の時計塔
+        /// </summary>
+        /// <remarks>
+        /// このノードにアタッチされたローカルの時計塔 <see cref="ClockTower"/> または、それが存在しない場合は
+        /// <see cref="World"/> の時計塔  <see cref="ClockTower"/> を返します。
+        /// <see cref="World"/> クラスは必ずデフォルトの時計塔を1つ保持しています。
+        /// </remarks>
+        protected internal ClockTower Time {
+            get {
+                return GetComponent<ClockTower> () ?? World.ClockTower;
             }
         }
 
@@ -113,7 +137,7 @@ namespace DD {
         /// <see cref="World"/> クラスは必ずデフォルトのアニメーション コントローラーを1つ保持しています。
         /// 
         /// </remarks>
-        public AnimationController Animation {
+        protected internal AnimationController Animation {
             get {
                 return GetComponent<AnimationController> () ?? World.AnimationController;
             }
@@ -127,7 +151,7 @@ namespace DD {
         /// <see cref="World"/> のサウンド プレイヤー  <see cref="SoundPlayer"/> を返します。
         /// <see cref="World"/> クラスは必ずデフォルトのサウンド プレイヤーを1つ保持しています。
         /// </remarks>
-        public SoundPlayer Sound {
+        protected internal SoundPlayer Sound {
             get {
                 return GetComponent<SoundPlayer> () ?? World.SoundPlayer;
             }
@@ -141,7 +165,7 @@ namespace DD {
         /// <see cref="World"/> の郵便局  <see cref="PostOffice"/> を返します。
         /// <see cref="World"/> オブジェクトは必ずデフォルトの郵便局を1つ保持しています。
         /// </remarks>
-        public PostOffice PostOffice {
+        protected internal PostOffice PostOffice {
             get { return GetComponent<PostOffice> () ?? World.PostOffice; }
         }
 
@@ -153,7 +177,7 @@ namespace DD {
         /// <see cref="World"/> のコリジョン解析機  <see cref="CollisionAnalyzer"/> を返します。
         /// <see cref="World"/> オブジェクトは必ずデフォルトのコリジョン解析機を1つ保持しています。
         /// </remarks>
-        public CollisionAnalyzer CollisionAnalyzer {
+        protected internal CollisionAnalyzer CollisionAnalyzer {
             get { return GetComponent<CollisionAnalyzer> () ?? World.CollisionAnalyzer; }
         }
 
@@ -165,7 +189,7 @@ namespace DD {
         /// <see cref="World"/> の物理シミュレーター  <see cref="PhysicsSimulator"/> を返します。
         /// <see cref="World"/> オブジェクトは必ずデフォルトの物理シミュレーターを1つ保持しています。
         /// </remarks>
-        public PhysicsSimulator PhysicsSimulator {
+        protected internal PhysicsSimulator PhysicsSimulator {
             get { return GetComponent<PhysicsSimulator> () ?? World.PhysicsSimulator; }
         }
 
@@ -256,36 +280,30 @@ namespace DD {
         /// ノードの削除
         /// </summary>
         /// <remarks>
-        /// 指定のノードをシーンから取り外し削除します。
-        /// ノードはこのメソッドを使って削除するのが一番安全です。
-        /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
-        /// このメソッドは必要なら OnDetached(), OnDestroyed() を呼び出します。
+        /// 指定のノードを <paramref name="delayTime"/> 後にシーンから削除します。
+        /// このメソッド内部で直ちに削除したい場合は -1 を指定します(非推奨)。
+        /// このフレームを終了後に直ちに削除したい場合は 0 を指定します。
+        /// 基本的にノードはこのメソッドを使って削除するのが一番安全です。
+        /// 自分自身を削除する事も可能です。
         /// </remarks>
-        /// <param name="node">ノード</param>
-        protected void Destroy (Node node) {
+        /// <param name="node">削除したいノード</param>
+        /// <param name="delayTime">遅延時間 (msec)</param>
+        protected void Destroy (Node node, long delayTime) {
             if (node == null) {
                 return;
             }
-
-            node.Destroy ();
-        }
-
-        /// <summary>
-        /// ノードの削除
-        /// </summary>
-        /// <remarks>
-        /// 指定のノードをシーンから取り外し削除します。
-        /// ノードはこのメソッドを使って削除するのが一番安全です。
-        /// 自分自身も削除する事ができますが、この呼び出しが返った以降は何もせずただちに終了してください。
-        /// </remarks>
-        /// <param name="comp">コンポーネント</param>
-        protected void Destroy (Component comp) {
-            if (comp == null || comp.Node == null) {
-                return;
+            if (delayTime < -1) {
+                throw new ArgumentException ("DelayTime is invalid");
             }
 
-            Destroy(comp.Node);
+            if (delayTime == -1) {
+                node.Destroy (-1);
+            }
+            else {
+                node.Destroy (World.ClockTower.CurrentTime + delayTime);
+            }
         }
+
 
         /// <summary>
         /// 他のノードにメッセージを送信
@@ -339,16 +357,16 @@ namespace DD {
         }
 
         /// <summary>
-        /// ノードの削除のエントリーポイント
+        /// コンポーネントの最終処理のエントリーポイント
         /// </summary>
         /// <remarks>
-        /// <see cref="Destroy(Node)"/> メソッドでノードを破棄した場合に一度だけ呼ばれます。
-        /// （注意：Destroyを呼ばずにノードを破棄するとこのエントリーポイントは呼び出されません）
-        /// このエントリー ポイントの呼び出しが終了するまでデタッチ前である事が保証されます。
-        /// 従ってこのエントリーポイントが最後のカスタマイズ ポイントです。
-        /// IDisposableはこの後、デタッチされたのち呼び出されます。
+        /// コンポーネントの最終処理のエントリー ポイントです。
+        /// 主にコンポーネントのマネージド リソースの解放を目的としています。
+        /// （と言っても普通は特にやることはなく、自動でGCによって回収されますが）
+        /// アンマネージド リソースの解放はここではなく IDisposable インターフェースを実装して Dispose() に記述して下さい。
+        /// この仮想関数はデタッチ後に呼ばれます。従ってノードの情報やシーン情報を利用する事はできません。
         /// </remarks>
-        public virtual void OnDestroyed () {
+        public virtual void OnFinalize () {
         }
 
         /// <summary>
@@ -460,7 +478,7 @@ namespace DD {
         /// キーボード処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// </remarks>
-        public virtual void OnKeyPressed () {
+        public virtual void OnKeyPressed (KeyCode key) {
         }
 
 
@@ -471,7 +489,7 @@ namespace DD {
         /// キーボード処理を行う仮想関数のエントリーポイント。
         /// 必要ならこの仮想関数をオーバーライドして独自の処理を実装してください。
         /// </remarks>
-        public virtual void OnKeyReleased () {
+        public virtual void OnKeyReleased (KeyCode key) {
         }
 
 

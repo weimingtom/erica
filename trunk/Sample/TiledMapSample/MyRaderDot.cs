@@ -32,7 +32,7 @@ namespace DD.Sample.TiledMapSample {
 
         public override void OnMailBox (Node from, string address, object letter) {
             if (from == target) {
-                Destroy (this);
+                Destroy (Node, 0);
             } 
         }
 

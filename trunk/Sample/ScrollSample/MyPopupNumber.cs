@@ -33,14 +33,14 @@ namespace DD.Sample.ScrollSample {
             this.BirthTime = msec;  
         }
 
-        public override void OnDestroyed () {
+        public override void OnFinalize () {
             Console.WriteLine ("Destroyed " + MyCount);
         }
 
 
         public override void OnUpdate (long msec) {
             if (msec > BirthTime + LifeTime) {
-                Destroy (this);
+                Destroy (Node, 0);
             }
         }
 
