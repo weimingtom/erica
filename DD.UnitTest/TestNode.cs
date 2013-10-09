@@ -9,15 +9,16 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestNode {
         public class MyComponent: Component, IDisposable{
-            public static bool Disposed { get; set; }
-            public void Dispose () {
-                Disposed = true;
+            public MyComponent () { }
+            public bool IsDisposed { get; private set; }
+            void IDisposable.Dispose () {
+                IsDisposed = true;
             }
         }
         public class MyNode : Node, IDisposable {
-            public static bool Disposed { get; set; }
-            public void Dispose () {
-                Disposed = true;
+            public bool IsDisposed { get; private set; }
+            void IDisposable.Dispose () {
+                IsDisposed = true;
             }
         }
 
@@ -230,13 +231,13 @@ namespace DD.UnitTest {
             node2.AddChild (node4);
             node3.AddChild (node5);
 
-            // 幅優先
+            // 深さ優先
             var nodes = node1.Downwards.ToArray ();
             Assert.AreEqual (5, nodes.Count ());
             Assert.AreEqual (node1, nodes[0]);
             Assert.AreEqual (node2, nodes[1]);
-            Assert.AreEqual (node3, nodes[2]);
-            Assert.AreEqual (node4, nodes[3]);
+            Assert.AreEqual (node4, nodes[2]);
+            Assert.AreEqual (node3, nodes[3]);
             Assert.AreEqual (node5, nodes[4]);
         }
 
@@ -290,6 +291,16 @@ namespace DD.UnitTest {
 
             Assert.AreEqual (node, comp1.Node);
             Assert.AreEqual (node, comp2.Node);
+        }
+
+        [TestMethod]
+        public void Test_AddComponent () {
+            var node = new Node ();
+
+            node.AddComponent<MyComponent> ();
+            node.AddComponent<MyComponent> ();
+
+            Assert.AreEqual (2, node.ComponentCount);
         }
 
         [TestMethod]
@@ -648,13 +659,33 @@ namespace DD.UnitTest {
         public void Test_Destroy () {
             var node = new MyNode ();
             var cmp = new MyComponent();
+            node.Attach(cmp);
+
+            // ここでは即時ファイナライズ(World=null)のみをテストし、
+            // 遅延ファイナライズは TestGraveYard で行う
+            node.Destroy (100);
+
+            Assert.AreEqual (true, node.IsDestroyed);
+            Assert.AreEqual (true, node.IsFinalized);
+            Assert.AreEqual (true, cmp.IsDisposed);
+            Assert.AreEqual (true, node.IsDisposed);
+            Assert.AreEqual (0, node.ComponentCount);
+        }
+
+        [TestMethod]
+        public void Test_FinalizeNode () {
+            var node = new MyNode ();
+            var cmp = new MyComponent ();
             node.Attach (cmp);
 
-            node.Destroy ();
+            // ここでは即時ファイナライズ(World=null)のみをテストし、
+            // 遅延ファイナライズは TestGraveYard で行う
+            node.FinalizeNode();
 
-            Assert.AreEqual (true, MyComponent.Disposed);
-            Assert.AreEqual (true, MyNode.Disposed);
-            Assert.AreEqual (true, node.IsDestroyed);
+            Assert.AreEqual (true, node.IsFinalized);
+            Assert.AreEqual (true, cmp.IsDisposed);
+            Assert.AreEqual (true, node.IsDisposed);
+            Assert.AreEqual (0, node.ComponentCount);
         }
 
         /*

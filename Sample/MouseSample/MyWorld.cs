@@ -30,7 +30,7 @@ namespace DD.Sample.MouseSample {
 
         public override void OnMouseButtonReleased (MouseButton button, float x, float y) {
             var selector = Node.Find ("MouseSelector");
-            Destroy (selector);
+            Destroy (selector, 0);
         }
     }
 }

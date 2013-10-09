@@ -147,7 +147,7 @@ namespace DD {
                 case Keyboard.Key.Tab: return KeyCode.Tab;
                 case Keyboard.Key.Tilde: return KeyCode.Caret;
                 case Keyboard.Key.U: return KeyCode.U;
-                case Keyboard.Key.Unknown: return KeyCode.None;
+                case Keyboard.Key.Unknown: return KeyCode.Unknown;
                 case Keyboard.Key.Up: return KeyCode.UpArrow;
                 case Keyboard.Key.V: return KeyCode.V;
                 case Keyboard.Key.W: return KeyCode.W;

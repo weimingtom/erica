@@ -35,6 +35,22 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_New_3 () {
+            var q1 = new Quaternion (0, new Vector3(0, 0, 1));
+            var q2 = new Quaternion (45, new Vector3(0, 0, 1));
+
+            Assert.AreEqual (0, q1.X);
+            Assert.AreEqual (0, q1.Y);
+            Assert.AreEqual (0, q1.Z);
+            Assert.AreEqual (1, q1.W);
+            Assert.AreEqual (0, q2.X);
+            Assert.AreEqual (0, q2.Y);
+            Assert.AreEqual (0.38265f, q2.Z, 0.0001f);
+            Assert.AreEqual (0.92385f, q2.W, 0.0001f);
+        }
+
+
+        [TestMethod]
         public void Test_Identity () {
             var q = Quaternion.Identity;
 

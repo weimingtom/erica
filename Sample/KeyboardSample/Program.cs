@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace DD.Sample.SimpleSample {
+namespace DD.Sample.KeyboardSample {
     public class Program {
         public static void Main (string[] args) {
             var g2d = DD.Graphics2D.GetInstance ();
@@ -12,9 +12,9 @@ namespace DD.Sample.SimpleSample {
 
             // ----------------------------------------
 
-            var wld = new World ();
+            var wld = MyWorld.Create (800, 600, "media/Vanity.jpg");
+            var node1 = MyConsole.Create (new Vector3 (100, 100, 0));
 
-            var node1 = MyComponent.Create (new Vector3(100,100,0));
             wld.AddChild (node1);
 
             // ----------------------------------------
@@ -34,10 +34,12 @@ namespace DD.Sample.SimpleSample {
             while (active) {
                 var msec = watch.ElapsedMilliseconds;
 
-                g2d.Dispatch (wld);
                 wld.Animate (msec, 33);
+                wld.Deliver ();
                 wld.CollisionUpdate ();
                 wld.Update (msec);
+                g2d.Dispatch (wld);
+
                 g2d.Draw (wld);
             }
 
@@ -45,4 +47,5 @@ namespace DD.Sample.SimpleSample {
             wld.Destroy ();
         }
     }
+
 }

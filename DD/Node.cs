@@ -13,6 +13,9 @@ namespace DD {
     /// <remarks>
     /// シーン グラフを構成するノード クラス。
     /// ノードは <see cref="Root"/> を頂点とする木構造のグラフを構成します。
+    /// <note>
+    /// 名前を GameObject に変更しようかどうか迷っている。
+    /// </note>
     /// </remarks>
     public class Node : Transformable {
 
@@ -33,6 +36,7 @@ namespace DD {
         sbyte updatePriority;
         Matrix4x4? matrix;      // = Cache of GlobalTransform
         bool isDestroyed;
+        bool isFinalized;
         #endregion
 
 
@@ -48,7 +52,7 @@ namespace DD {
         /// コンストラクター
         /// </summary>
         /// <remarks>
-        /// ノード名が null または "" でないノードはデフォルトでノード名と同名のメールボックスを1つ保有します。
+        /// 名前を指定してノードを作成します。名前は後から変更できません。
         /// </remarks>
         /// <param name="name">ノード名</param>
         public Node (string name)
@@ -69,6 +73,7 @@ namespace DD {
             this.opacity = 1.0f;
             this.matrix = null;
             this.isDestroyed = false;
+            this.isFinalized = false;
         }
         #endregion
 
@@ -95,11 +100,11 @@ namespace DD {
         /// グループIDはレンダリングや衝突判定で使用されます。
         /// </remarks>
         public int GroupID {
-            get { 
-                return groupID; 
+            get {
+                return groupID;
             }
             set {
-                this.groupID = value; 
+                this.groupID = value;
             }
         }
 
@@ -155,6 +160,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードは表示されます。
+        /// <c>false</c> の場合はこのノードおよびすべての子ノードが表示されなくなります。
         /// </remarks>
         public bool Visible {
             get { return drawable; }
@@ -179,6 +185,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードはアニメートされます。
+        ///         /// <c>false</c> の場合はこのノードおよびすべての子ノードがアニメートされなくなります。
         /// デフォルトは <c>true</c> です。
         /// </remarks>
         public bool Animatable {
@@ -191,6 +198,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードはメールを受信します。
+        /// <c>false</c> の場合はこのノードおよびすべての子ノードのメールが受信されなくなります。
         /// デフォルトは <c>true</c> です。
         /// </remarks>
         public bool Deliverable {
@@ -203,6 +211,7 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このフラグが <c>true</c> のノードは衝突判定があります。
+        ///         /// <c>false</c> の場合はこのノードおよびすべての子ノードが衝突判定がなくなります。
         /// 現在このプロパティは機能しません。
         /// </remarks>
         public bool Collidable {
@@ -216,7 +225,8 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このノードの表示優先度 (-127～128) を取得・設定するプロパティ。
-        /// デフォルトは 0 で -127 が一番優先度が高く（一番手前に）表示されます。
+        /// -127 が一番優先度が高く（一番手前に）表示され、128が一番優先度が低く（一番奥に）表示されます。
+        /// デフォルトは 0 です。
         /// </remarks>
         public sbyte DrawPriority {
             get { return drawPriority; }
@@ -277,6 +287,7 @@ namespace DD {
         /// </remarks>
         public IEnumerable<Node> Downwards {
             get {
+                /*
                 var downs = new List<Node> () { this };
                 var nodes = this.children;
                 while (nodes.Count > 0) {
@@ -288,6 +299,14 @@ namespace DD {
                     nodes = tmp;
                 }
                 return downs;
+                 * */
+
+                var nodes = new List<Node> () { this };
+                foreach (var node in children) {
+                    nodes.AddRange (node.Downwards);
+                }
+
+                return nodes;
             }
         }
 
@@ -447,15 +466,31 @@ namespace DD {
         }
 
         /// <summary>
-        /// このノードが削除済みかどうかのフラグ
+        /// このノードが削除申請済みかどうかのフラグ
         /// </summary>
         /// <remarks>
-        /// ノードは削除されたフレームが終了するまでは有効な状態で存続します。
+        /// <see cref="DD.Node.Destroy"/> によって削除申請されたノードは
+        /// 指定の予約時刻に達するまでは有効な状態でシーンに存続します。
         /// その間はこのフラグが <c>true</c> を返します。
+        /// 実際に削除される（<see cref="IsFinalized"/> = <c>true</c>）まで、オブジェクトは有効です。
         /// </remarks>
+        /// <seealso cref="IsFinalized"/>
         public bool IsDestroyed {
             get { return isDestroyed; }
         }
+
+        /// <summary>
+        /// このノードが削除済みかどうかのフラグ
+        /// </summary>
+        /// <remarks>
+        /// ノードが実際に削除されるとこのフラグが <c>true</c> を返します。
+        /// このプロパティが <c>true</c> を返すオブジェクトは使用禁止です。
+        /// </remarks>
+        /// <seealso cref="IsDestroyed"/>
+        public bool IsFinalized {
+            get { return isFinalized; }
+        }
+
 
         #endregion
 
@@ -558,10 +593,10 @@ namespace DD {
 
 
         /// <summary>
-        /// コンポーネントのアタッチ
+        /// コンポーネントの追加
         /// </summary>
         /// <remarks>
-        /// コンポーネントをノードに追加します。
+        /// ノードに指定のコンポーネントを追加します。
         /// すでに他のノードで登録されているコンポーネントは登録できません。
         /// すでに登録済みのコンポーネントと同型のコンポーネントを登録可能です。
         /// これについては後日変更するかもしれません。
@@ -580,6 +615,21 @@ namespace DD {
             comp.OnAttached ();
         }
 
+        /// <summary>
+        /// コンポーネントの追加
+        /// </summary>
+        /// <remarks>
+        /// 指定の型のコンポーネントをインスタンス化して、ノードに追加します。
+        /// 型 <typeparamref name="T"/> は引数無しのコンストラクターが定義されている必要があります。
+        /// <note>
+        /// このメソッドはテスト実装。基本的に Attach() を使えば必要ないし
+        /// Attach()より便利になる気もしない。とりあえず試作しただけ。
+        /// </note>
+        /// </remarks>
+        /// <typeparam name="T">コンポーネント型</typeparam>
+        public void AddComponent<T> () where T : Component, new () {
+            Attach (new T ());
+        }
 
         /// <summary>
         /// コンポーネントのデタッチ
@@ -774,19 +824,44 @@ namespace DD {
         }
 
         /// <summary>
-        /// このノードの削除
+        /// 削除申請
         /// </summary>
         /// <remarks>
-        /// アタッチされているすべてのコンポーネントをデタッチして削除し、
-        /// シーンからこのノードを取り除き、さらに自分自身を削除します。
-        /// このメソッドを呼び出した後は、このノードのプロパティ、メソッドへのアクセスは
-        /// <see cref=" IsDestroyed"/> を除き未定義です。
+        /// このノードを削除予定時刻（msec）にシーンから取り除き、すべてのコンポーネントをデタッチし、削除するよう予約します。
+        /// 削除予定時刻まではそのままシーン中に有効なまま留まります。
+        /// <paramref name="purgeTime"/> に -1 を指定すると直ちにこのメソッド内で削除されます。
         /// </remarks>
-        public void Destroy () {
+        /// <param name="purgeTime">削除予定時刻 (msec)</param>
+        public void Destroy (long purgeTime) {
+            if (purgeTime < -1) {
+                throw new ArgumentException ("PurgeTime is invalid");
+            }
+            if (isDestroyed) {
+                return;
+            }
 
-            foreach (var cmp in components.ToArray()) {
-                cmp.OnDestroyed ();  // 必ずデタッチより前
+            this.isDestroyed = true;
+
+            if (purgeTime == -1 || World == null) {
+                // 即時ファイナライズ
+                FinalizeNode ();
+            }
+            else {
+                // 遅延ファイナライズ
+                World.NodeDestroyer.Reserve (this, purgeTime);
+            }
+        }
+
+        /// <summary>
+        /// ノード削除の最終処理
+        /// </summary>
+        internal void FinalizeNode () {
+
+            this.isFinalized = true;
+
+            foreach (var cmp in components.ToArray ()) {
                 Detach (cmp);
+                cmp.OnFinalize ();
                 if (cmp is System.IDisposable) {
                     ((System.IDisposable)cmp).Dispose ();
                 }
@@ -798,39 +873,11 @@ namespace DD {
                 ((System.IDisposable)this).Dispose ();
             }
 
-            this.isDestroyed = true;
         }
-
-        /*
-        /// <summary>
-        /// 点Pがこのノードに包含されるかどうかの判定
-        /// </summary>
-        /// <remarks>
-        /// このノードがコリジョン形状を持ち、その中に点Pが含まれる場合、
-        /// このメソッドは <c>true</c> を返します。
-        /// </remarks>
-        /// <param name="node">ノード</param>
-        /// <param name="x">点の位置X（グローバル座標）</param>
-        /// <param name="y">点の位置Y（グローバル座標）</param>
-        /// <param name="z">点の位置Z（グローバル座標）</param>
-        /// <returns></returns>
-        public static bool Contain (Node node, float x, float y, float z) {
-
-        var p = node.LocalTransform.Apply (x, y, z);
-
-        foreach (var col in node.GetComponents<Collision> ()) {
-        if (col.Contain (p.X, p.Y, p.Z)) {
-        return true;
-        };
-        }
-
-        return false;
-        }
-        * */
 
         /// <inheritdoc/>
         public override string ToString () {
-            return Name;
+            return string.Format ("\"{0}\"", Name);
         }
         #endregion
 

@@ -224,26 +224,42 @@ namespace DD {
         }
 
         /// <summary>
-        /// ノードの回転 (in degree)
+        /// ノードの回転
         /// </summary>
         /// <remarks>
-        /// 現在セットされている回転にさらに、引数で指定された回転を加えます。
+        /// 現在セットされている回転にさらに、引数で指定された回転（度数）を加えます。
         /// </remarks>
         /// <param name="angle">回転角度 [0,360)</param>
         /// <param name="ax">回転軸X</param>
         /// <param name="ay">回転軸Y</param>
         /// <param name="az">回転軸Z</param>
         public void Rotate (float angle, float ax, float ay, float az) {
-            this.rot = new Quaternion (angle, ax, ay, az) * this.rot;
-
-            InvalidateTransformCache ();
+            if (ax == 0 && ay == 0 && az == 0) {
+                throw new ArgumentException ("Rotation axis is invalid");
+            }
+            Rotate (new Quaternion (angle, ax, ay, az));
         }
 
         /// <summary>
-        /// ノードの回転 (in degree)
+        /// ノードの回転
         /// </summary>
         /// <remarks>
-        /// 現在セットされている回転にさらに、引数で指定された回転を加えます。
+        /// 現在セットされている回転にさらに、引数で指定された回転（度数）を加えます。
+        /// </remarks>
+        /// <param name="angle">回転角度 [度数] </param>
+        /// <param name="axis">回転軸</param>
+        public void Rotate (float angle, Vector3 axis) {
+            if (axis.Length2 == 0) {
+                throw new ArgumentException ("Rotation axis is invalid");
+            }
+            Rotate (new Quaternion (angle, axis));
+        }
+
+        /// <summary>
+        /// ノードの回転
+        /// </summary>
+        /// <remarks>
+        /// 現在セットされている回転にさらに、引数で指定された回転（度数[0,360]）を加えます。
         /// </remarks>
         /// <param name="q">回転を表すクォータニオン</param>
         public void Rotate (Quaternion q) {

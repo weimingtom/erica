@@ -108,6 +108,9 @@
     <Compile Include="IsometricSample\MyTiledMap.cs" />
     <Compile Include="IsometricSample\MyWorld.cs" />
     <Compile Include="IsometricSample\Program.cs" />
+    <Compile Include="KeyboardSample\MyConsole.cs" />
+    <Compile Include="KeyboardSample\MyWorld.cs" />
+    <Compile Include="KeyboardSample\Program.cs" />
     <Compile Include="MailBoxSample\MyButton.cs" />
     <Compile Include="MailBoxSample\MyLetter.cs" />
     <Compile Include="MailBoxSample\MyRecver.cs" />

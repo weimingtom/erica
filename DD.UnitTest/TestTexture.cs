@@ -21,9 +21,9 @@ namespace DD.UnitTest {
         [TestMethod]
         public void Test_New_2_FromBitmap () {
             var bitmap = new Bitmap ("abstract7.png");
-            var tex = new Texture (bitmap, "abstract7.png");
+            var tex = new Texture ("Texture name", bitmap);
 
-            Assert.AreEqual ("abstract7.png", tex.Name);
+            Assert.AreEqual ("Texture name", tex.Name);
             Assert.AreEqual (614, tex.Width);
             Assert.AreEqual (1024, tex.Height);
         }
@@ -32,9 +32,9 @@ namespace DD.UnitTest {
         public void Test_New_3_FromStream () {
 
             var bytes = File.ReadAllBytes ("abstract7.png");
-            var tex = new Texture (new MemoryStream(bytes), "abstract7.png");
+            var tex = new Texture ("Texture name", new MemoryStream(bytes));
 
-            Assert.AreEqual ("abstract7.png", tex.Name);
+            Assert.AreEqual ("Texture name", tex.Name);
             Assert.AreEqual (614, tex.Width);
             Assert.AreEqual (1024, tex.Height);
         }

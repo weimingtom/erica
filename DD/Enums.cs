@@ -79,9 +79,12 @@ namespace DD {
     /// </remarks>
     public enum KeyCode {
         /// <summary>
-        /// 使用しません
+        /// 不明
         /// </summary>
-        None,
+        /// <remarks>
+        /// 原則として使用しませんが、日本語固有のキーが相当します。
+        /// </remarks>
+        Unknown,
 
         /// <summary>
         /// バックスペース 'Back Space'

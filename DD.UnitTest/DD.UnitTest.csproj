@@ -70,6 +70,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestReservedDestroy.cs" />
     <Compile Include="TestCollisionAnalyze.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />
     <Compile Include="Physics\TestPhysicsSimulation.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="TestCapsuleShape.cs" />
     <Compile Include="TestCollisionObject.cs" />
     <Compile Include="TestCollisionAnalyzer.cs" />
+    <Compile Include="TestClockTower.cs" />
     <Compile Include="TestOverlappingPair.cs" />
     <Compile Include="TestDistance.cs" />
     <Compile Include="TestRaycastResult.cs" />
@@ -134,6 +136,7 @@
     <Compile Include="TestWorld.cs" />
     <Compile Include="TestSprite.cs" />
     <Compile Include="MyEventArgs.cs" />
+    <Compile Include="TestNodeDestroyer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DD\DD.GameEngine.csproj">

@@ -203,7 +203,7 @@ namespace DD {
         public static Texture GetDefaultTexture () {
             var name = "WhiteTexture.png";
             if (!textures.ContainsKey (name)) {
-                textures.Add (name, new Texture (Properties.Resources.WhiteTexture, name));
+                textures.Add (name, new Texture (name, Properties.Resources.WhiteTexture));
 
             }
             return textures[name];
@@ -239,7 +239,7 @@ namespace DD {
         /// <returns>テクスチャー</returns>
         public static Texture GetTexture (Bitmap bitmap, string name) {
             if (!textures.ContainsKey (name)) {
-                textures.Add (name, new Texture (bitmap, name));
+                textures.Add (name, new Texture (name, bitmap));
             }
 
             return textures[name];
@@ -257,7 +257,7 @@ namespace DD {
         /// <returns>テクスチャー</returns>
         public static Texture GetTexture (MemoryStream stream, string name) {
             if (!textures.ContainsKey (name)) {
-                textures.Add (name, new Texture (stream, name));
+                textures.Add (name, new Texture (name, stream));
             }
 
             return textures[name];

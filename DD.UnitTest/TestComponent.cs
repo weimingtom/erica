@@ -9,8 +9,8 @@ namespace DD.UnitTest {
     [TestClass]
     public class TestComponent {
         class MyComponent : Component, IDisposable {
+            public bool IsFinalized { get; private set; }
             public bool IsDisposed { get; private set; }
-            public bool IsDestroyed { get; private set; }
             public bool IsMailed { get; private set; }
             public object Letter { get; private set; }
             public Node LetterFrom { get; private set; }
@@ -26,20 +26,14 @@ namespace DD.UnitTest {
             public new Node GetNode (Func<Node, bool> pred) {
                 return base.GetNode (pred);
             }
-            public new void Destroy (Node node) {
-                base.Destroy (node);
-            }
-            public new void Destroy (Component comp) {
-                base.Destroy (comp);
-            }
             public new void SendMessage (string address, object letter) {
                 base.SendMessage (address, letter);
             }
             public void Dispose () {
                 this.IsDisposed = true;
             }
-            public override void OnDestroyed () {
-                this.IsDestroyed = true;
+            public override void OnFinalize () {
+                this.IsFinalized = true;
             }
             public override void OnMailBox (Node from, string to, object letter) {
                 this.IsMailed = true;
@@ -138,33 +132,50 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_InputReceiver () {
-            var wld = new World ();
-            var node = new Node ();
             var input = new InputReceiver ();
-            var comp = new MyComponent ();
+            var comp = new Component ();
 
+            var node = new Node ();
             node.Attach (input);
             node.Attach (comp);
 
             Assert.AreEqual (input, comp.Input);
 
+            var wld = new World ();
             wld.AddChild (node);
 
             Assert.AreNotEqual (wld.InputReceiver, comp.Input);
         }
 
         [TestMethod]
-        public void Test_AnimationController () {
-            var wld = new World ();
-            var node = new Node ();
-            var anim = new AnimationController ();
-            var comp = new MyComponent ();
+        public void Test_ClockTower () {
+            var tower = new ClockTower ();
+            var comp = new Component ();
 
+            var node = new Node ();
+            node.Attach (tower);
+            node.Attach (comp);
+
+            Assert.AreEqual (tower, comp.Time);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            Assert.AreNotEqual (wld.ClockTower, comp.Time);
+        }
+
+        [TestMethod]
+        public void Test_AnimationController () {
+            var anim = new AnimationController ();
+            var comp = new Component ();
+
+            var node = new Node ();
             node.Attach (anim);
             node.Attach (comp);
 
             Assert.AreEqual (anim, comp.Animation);
 
+            var wld = new World ();
             wld.AddChild (node);
 
             Assert.AreNotEqual (wld.AnimationController, comp.Animation);
@@ -172,16 +183,16 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_SoundPlayer () {
-            var wld = new World ();
-            var node = new Node ();
             var sound = new SoundPlayer ();
             var comp = new MyComponent ();
 
+            var node = new Node ();
             node.Attach (sound);
             node.Attach (comp);
 
             Assert.AreEqual (sound, comp.Sound);
 
+            var wld = new World ();
             wld.AddChild (node);
 
             Assert.AreNotEqual (wld.SoundPlayer, comp.Sound);
@@ -189,16 +200,16 @@ namespace DD.UnitTest {
 
         [TestMethod]
         public void Test_PostOffice () {
-            var wld = new World ();
-            var node = new Node ();
-            var po = new PostOffice ();
+            var post = new PostOffice ();
             var cmp = new MyComponent ();
 
-            node.Attach (po);
+            var node = new Node ();
+            node.Attach (post);
             node.Attach (cmp);
 
-            Assert.AreEqual (po, cmp.PostOffice);
+            Assert.AreEqual (post, cmp.PostOffice);
 
+            var wld = new World ();
             wld.AddChild (node);
 
             Assert.AreNotEqual (wld.PostOffice, cmp.PostOffice);
@@ -271,50 +282,7 @@ namespace DD.UnitTest {
 
         }
 
-        [TestMethod]
-        public void Test_Destroy_by_Node () {
-            var comp1 = new MyComponent ();
-            var comp2 = new MyComponent ();
-
-            var node1 = new Node ();
-            var node2 = new Node ();
-            node1.Attach (comp1);
-            node2.Attach (comp2);
-
-            var wld = new World ();
-            wld.AddChild (node1);
-
-            comp1.Destroy (node1);
-            comp2.Destroy (node2);
-
-            Assert.AreEqual (true, comp1.IsDisposed);
-            Assert.AreEqual (true, comp2.IsDisposed);
-            Assert.AreEqual (true, comp1.IsDestroyed);
-            Assert.AreEqual (true, comp2.IsDestroyed);
-        }
-
-        [TestMethod]
-        public void Test_Destroy_by_Component () {
-            var comp1 = new MyComponent ();
-            var comp2 = new MyComponent ();
-
-            var node1 = new Node ();
-            var node2 = new Node ();
-            node1.Attach (comp1);
-            node2.Attach (comp2);
-
-            var wld = new World ();
-            wld.AddChild (node1);
-
-            comp1.Destroy (comp1);
-            comp2.Destroy (comp2);
-
-            Assert.AreEqual (true, comp1.IsDisposed);
-            Assert.AreEqual (true, comp2.IsDisposed);
-            Assert.AreEqual (true, comp1.IsDestroyed);
-            Assert.AreEqual (true, comp2.IsDestroyed);
-        }
-
+    
         [TestMethod]
         public void Test_SendMessage () {
             var node1 = new Node ("Node1");

@@ -40,7 +40,7 @@ namespace DD.Sample.TiledMapSample {
             Node.Translate (0, DeltaY, 0);
             DeltaY += 1;
             if (DeltaY > 0) {
-                Destroy (this);
+                Destroy (Node, 0);
             }
         }
     }

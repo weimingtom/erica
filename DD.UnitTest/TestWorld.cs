@@ -23,18 +23,18 @@ namespace DD.UnitTest {
             }
         }
         private class MyNode : Node, IDisposable {
-            public static int Disposed { get; set; }
+            public bool IsDisposed { get; private set; }
             public MyNode(string name):base(name){}
             public void Dispose () {
-                Disposed += 1;
+                this.IsDisposed = true;
             }
 
         }
         private class MyWorld : World, IDisposable {
-            public static bool Disposed { get; set; }
+            public bool IsDisposed { get; private set; }
             public MyWorld(string name) : base(name){}
             public void Dispose () {
-                Disposed = true;
+                this.IsDisposed = true;
             }
 
         }
@@ -51,6 +51,8 @@ namespace DD.UnitTest {
             Assert.IsNotNull (wld.PostOffice);
             Assert.IsNotNull (wld.CollisionAnalyzer);
             Assert.IsNotNull (wld.PhysicsSimulator);
+            Assert.IsNotNull (wld.NodeDestroyer);
+            Assert.IsNotNull (wld.ClockTower);
         }
 
         [TestMethod]
@@ -374,6 +376,11 @@ namespace DD.UnitTest {
 
         }
 
+        /// <summary>
+        /// </summary>
+        /// <remarks>
+        /// World.Destroy は Node.Destroy とは別もの
+        /// </remarks>
         [TestMethod]
         public void Test_Destroy () {
             var wld = new MyWorld ("World");
@@ -384,10 +391,25 @@ namespace DD.UnitTest {
             node1.AddChild (node2);
             node2.AddChild (node3);
 
+            // 即時ファイナライズ
             wld.Destroy ();
 
-            Assert.AreEqual (3, MyNode.Disposed);
-            Assert.AreEqual (true, MyWorld.Disposed);
+            Assert.AreEqual (true, node1.IsDestroyed);
+            Assert.AreEqual (true, node2.IsDestroyed);
+            Assert.AreEqual (true, node3.IsDestroyed);
+            
+            Assert.AreEqual (true, node1.IsFinalized);
+            Assert.AreEqual (true, node2.IsFinalized);
+            Assert.AreEqual (true, node3.IsFinalized);
+
+            Assert.AreEqual (true, node1.IsDisposed);
+            Assert.AreEqual (true, node2.IsDisposed);
+            Assert.AreEqual (true, node3.IsDisposed);
+
+            Assert.AreEqual (true, wld.IsDestroyed);
+            Assert.AreEqual (true, wld.IsFinalized);
+            Assert.AreEqual (true, wld.IsDisposed);
+            Assert.AreEqual (0, wld.ChildCount);
         }
     }
 }

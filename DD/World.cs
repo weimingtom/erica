@@ -58,6 +58,8 @@ namespace DD {
             this.Attach (new PostOffice ());
             this.Attach (new CollisionAnalyzer ());
             this.Attach (new Physics.PhysicsSimulator ());
+            this.Attach (new NodeDestroyer ());
+            this.Attach (new ClockTower ());
 
             // キャッシュ
             this.allNodes = null;
@@ -78,17 +80,17 @@ namespace DD {
         public Node ActiveCamera {
             get { return activeCamera; }
             set {
-                var cam = value.GetComponent<Camera> ();
-                if (cam == null) {
-                    throw new ArgumentException ("Node has no Camera");
+                if (!value.Has<Camera>()) {
+                    throw new ArgumentException ("This node has no Camera");
                 }
                 this.activeCamera = value;
+
+                var cam = value.GetComponent<Camera> ();
 
                 // Viewの変更をここで行わないと
                 // ピクセルとワールド座標の対応（mapPixelToCoord()）が正しい値を返さなくなる
                 var g2d = Graphics2D.GetInstance ();
-                var win = g2d.GetWindow ();
-                cam.SetupView (win);
+                cam.SetupView (g2d.GetWindow ());
             }
         }
 
@@ -105,6 +107,20 @@ namespace DD {
         /// </summary>
         public InputReceiver InputReceiver {
             get { return GetComponent<InputReceiver> (); }
+        }
+
+        /// <summary>
+        /// デフォルトの時計塔
+        /// </summary>
+        public ClockTower ClockTower {
+            get { return GetComponent<ClockTower> (); }
+        }
+
+        /// <summary>
+        /// デフォルトのノード削除コンポーネント
+        /// </summary>
+        public NodeDestroyer NodeDestroyer {
+            get { return GetComponent<NodeDestroyer> (); }
         }
 
         /// <summary>
@@ -369,7 +385,7 @@ namespace DD {
         private void StoreNodeCache () {
             this.allNodes = base.Downwards;
             this.allNodesGroupedByName = allNodes.ToLookup (x => x.Name);
-            }
+        }
 
         /// <summary>
         /// ノードの検索（高速）
@@ -385,7 +401,7 @@ namespace DD {
                 StoreNodeCache ();
             }
 
-            return Finds(name).FirstOrDefault ();
+            return Finds (name).FirstOrDefault ();
         }
 
         /// <summary>
@@ -514,7 +530,7 @@ namespace DD {
         /// <returns></returns>
         public Node Pick (Vector3 start, Vector3 end, int collideWith = -1) {
             return (from result in CollisionAnalyzer.RayCast (start, end, collideWith)
-                    select result.Node).FirstOrDefault();
+                    select result.Node).FirstOrDefault ();
         }
 
         /// <summary>
@@ -541,24 +557,33 @@ namespace DD {
         }
 
         /// <summary>
-        /// シーンの削除
+        /// シーン全ての即時削除
         /// </summary>
         /// <remarks>
-        /// すべてのシーン ノードおよびそこにアタッチされていたすべてのコンポーネントを安全に削除します。
-        /// すべてのノードおよびコンポーネントは（実装されていれば）Dispose() されます。
-        /// <note>
-        /// シーンノードの削除の順番は順不同だが、微妙に下から削除した方がいい気がする。
-        /// SceneDepthプロパティを実装すれば可能。
-        /// Worldだけは一番最後に削除されることが保証されている（でないといろいろ困る）。
-        /// </note>
+        /// このシーンの全てのノードを即座に削除します。
         /// </remarks>
-        public new void Destroy () {
-            
-            foreach (var node in base.Downwards.Skip(1).Reverse().ToArray ()) {
-                node.Destroy ();
+        public void Destroy () {
+
+            // このメソッドは Node.Destroy() を上書きして
+            // すべてのノードを直ちに処分する
+            foreach (var node in base.Downwards.Skip (1).Reverse ().ToArray ()) {
+                node.Destroy (-1);
             }
-            base.Destroy ();
+            this.Destroy (-1);
         }
+
+        /// <summary>
+        /// シーンのパージ
+        /// </summary>
+        /// <remarks>
+        /// シーンから最終的にノードを削除します。
+        /// <see cref="Node.Destroy"/> されたノードは指定時刻以降このメソッドを呼ぶと削除されます。
+        /// それまでノードはシーン中に有効なまま存在します。
+        /// </remarks>
+        public void Purge () {
+            NodeDestroyer.Purge ();
+        }
+
         #endregion
     }
 }

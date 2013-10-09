@@ -48,8 +48,11 @@ namespace DD.UnitTest {
             node.Rotate (45, 0, 0, 1);
             Assert.AreEqual (new Quaternion(90,0,0,1), node.Rotation);
 
-            node.Rotate (new Quaternion(45,0,0,1));
+            node.Rotate (45, new Vector3(0, 0, 1));
             Assert.AreEqual (new Quaternion (135, 0, 0, 1), node.Rotation);
+
+            node.Rotate (new Quaternion(45,0,0,1));
+            Assert.AreEqual (new Quaternion (180, 0, 0, 1), node.Rotation);
         }
 
         [TestMethod]

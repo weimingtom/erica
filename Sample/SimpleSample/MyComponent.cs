@@ -10,7 +10,7 @@ namespace DD.Sample.SimpleSample {
         public MyComponent () {
         }
 
-        public static Node Create () {
+        public static Node Create (Vector3 pos) {
 
             var cmp = new MyComponent ();
 
@@ -23,14 +23,15 @@ namespace DD.Sample.SimpleSample {
 
             var col = new CollisionObject();
             col.Shape  = new BoxShape(32, 32, 32);
-            col.SetOffset (32, 32, 32);
+            col.SetOffset (32, 32, 0);
 
             var node = new Node ();
             node.Attach (cmp);
             node.Attach (spr);
             node.Attach (col);
-            
             node.UserData.Add (clip.Name, clip);
+
+            node.Translation = pos;
 
             return node;
         }
@@ -46,9 +47,7 @@ namespace DD.Sample.SimpleSample {
 
         public override void OnMouseButtonPressed (MouseButton button, float x, float y) {
             var clip = Node.UserData["Sound"] as SoundClip;
-            //clip.Stop ();
             clip.Play ();
-
         }
     
     
