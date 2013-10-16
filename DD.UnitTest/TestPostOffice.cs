@@ -24,8 +24,11 @@ namespace DD.UnitTest {
         public void Test_New () {
             var po = new PostOffice ();
 
+            Assert.AreEqual (100, PostOffice.MaxRecordCount);
             Assert.AreEqual (0, po.MailCount);
             Assert.AreEqual (0, po.Mails.Count ());
+            Assert.AreEqual (0, po.DeliveryRecordCount);
+            Assert.AreEqual (0, po.DeliveryRecords.Count ());
         }
 
         [TestMethod]
@@ -39,6 +42,9 @@ namespace DD.UnitTest {
             Assert.AreEqual (1, po.Mails.Count ());
         }
 
+        /// <summary>
+        /// 配達のテスト
+        /// </summary>
         [TestMethod]
         public void Test_Deliver () {
             var node = new Node ("Node");
@@ -67,6 +73,60 @@ namespace DD.UnitTest {
             Assert.AreEqual (node, from);
             Assert.AreEqual ("Address", address);
             Assert.AreEqual ("Hello World", letter);
+        }
+
+        /// <summary>
+        /// 配達ログのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_DeliveryRecord() {
+            var node = new Node ("Node");
+            var mbox = new MailBox ("Address");
+            node.Attach (mbox);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.Update (16);
+            wld.PostOffice.Post (node, "Address", "Hello World");
+            wld.Update (33);
+            wld.PostOffice.Deliver ();
+
+            var po = wld.PostOffice;
+
+            Assert.AreEqual (1, po.DeliveryRecordCount);
+            Assert.AreEqual (1, po.DeliveryRecords.Count());
+
+            var rec = po.DeliveryRecords.ElementAt (0);
+
+            Assert.AreEqual (33, rec.Time);
+            Assert.AreEqual ("Node", rec.From);
+            Assert.AreEqual ("Address", rec.Address);
+            Assert.AreEqual ("Hello World", rec.LetterType);
+        }
+
+        /// <summary>
+        /// 配達ログのクリアのテスト
+        /// </summary>
+        [TestMethod]
+        public void Test_ClearRecords () {
+            var node = new Node ("Node");
+            var mbox = new MailBox ("Address");
+            node.Attach (mbox);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            wld.Update (16);
+            wld.PostOffice.Post (node, "Address", "Hello World");
+            wld.Update (33);
+            wld.PostOffice.Deliver ();
+
+            var po = wld.PostOffice;
+            Assert.AreEqual (1, po.DeliveryRecordCount);
+
+            po.ClearRecords ();
+            Assert.AreEqual (0, po.DeliveryRecordCount);
         }
 
         /// <summary>

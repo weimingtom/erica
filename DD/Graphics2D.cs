@@ -240,7 +240,7 @@ namespace DD {
                 throw new ArgumentException ("Window size is invalid");
             }
 
-            string dir = System.IO.Directory.GetCurrentDirectory ();
+            var dir = System.IO.Directory.GetCurrentDirectory ();
 
             try {
                 // DLLはexeと同じディレクトリに存在
@@ -251,6 +251,30 @@ namespace DD {
                 if (System.IO.Directory.Exists ("libs")) {
                     System.IO.Directory.SetCurrentDirectory (dir + "/libs");
                     this.win = new RenderWindow (new VideoMode ((uint)width, (uint)height), title ?? "");
+                    System.IO.Directory.SetCurrentDirectory (dir);
+                }
+                else {
+                    // Give up
+                    throw e;
+                }
+            }
+
+            win.SetVisible (true);
+            win.Closed += new EventHandler (OnClosedEventHandler);
+        }
+
+        public void CreateWindow (IntPtr handler) {
+            var dir = System.IO.Directory.GetCurrentDirectory ();
+
+            try {
+                // DLLはexeと同じディレクトリに存在
+                this.win = new RenderWindow (handler);
+            }
+            catch (DllNotFoundException e) {
+                // ないときは libs の下も探す
+                if (System.IO.Directory.Exists ("libs")) {
+                    System.IO.Directory.SetCurrentDirectory (dir + "/libs");
+                    this.win = new RenderWindow (handler);
                     System.IO.Directory.SetCurrentDirectory (dir);
                 }
                 else {

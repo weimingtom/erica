@@ -95,6 +95,23 @@
     <Compile Include="CollisionDetectSample\MyCharacter.cs" />
     <Compile Include="CollisionDetectSample\MyHUD.cs" />
     <Compile Include="CollisionDetectSample\Program.cs" />
+    <Compile Include="DebugToolsSample\MyBackground.cs" />
+    <Compile Include="DebugToolsSample\MyBodySprite.cs" />
+    <Compile Include="DebugToolsSample\MyButtons.cs" />
+    <Compile Include="DebugToolsSample\MyCharacter.cs" />
+    <Compile Include="DebugToolsSample\MyCharacters.cs" />
+    <Compile Include="DebugToolsSample\MyButton.cs" />
+    <Compile Include="DebugToolsSample\MyFaceWindow.cs" />
+    <Compile Include="DebugToolsSample\MyDisplayPanel.cs" />
+    <Compile Include="DebugToolsSample\MyNamePlate.cs" />
+    <Compile Include="DebugToolsSample\MyTextBox.cs" />
+    <Compile Include="DebugToolsSample\MyStatusPanel.cs" />
+    <Compile Include="DebugToolsSample\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugToolsSample\Program.Designer.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUISample\MyButton.cs" />
     <Compile Include="GUISample\MyCamera.cs" />
     <Compile Include="GUISample\MyMouseSelector.cs" />
@@ -161,6 +178,9 @@
     <Compile Include="TiledMapSample\MyRaderDot.cs" />
     <Compile Include="TiledMapSample\MyTiledMap.cs" />
     <Compile Include="TiledMapSample\Program.cs" />
+    <EmbeddedResource Include="DebugToolsSample\Program.resx">
+      <DependentUpon>Program.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -219,6 +239,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Box-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonBlack-Active-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonBlack-Hover-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonBlue-Active-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonBlue-Hover-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonGreen-Active-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonGreen-Hover-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonRed-Active-64x64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\ButtonRed-Hover-64x64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\Character-Ako.png">
@@ -422,6 +466,9 @@
     <Content Include="media\Tanks.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="media\TatamiRoom.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\TiledMapBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -432,6 +479,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="media\White.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\雪の舞う花の夢.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

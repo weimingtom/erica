@@ -128,6 +128,12 @@ namespace DD {
             }
         }
 
+        protected internal Logger Logger {
+            get {
+                return GetComponent<Logger> () ?? World.Logger;
+            }
+        }
+
         /// <summary>
         /// 標準のアニメーション コントローラー
         /// </summary>
@@ -304,6 +310,9 @@ namespace DD {
             }
         }
 
+        protected void Log (int priority, string message) {
+            Logger.Write (Node, priority, message);
+        }
 
         /// <summary>
         /// 他のノードにメッセージを送信

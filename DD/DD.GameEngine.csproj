@@ -54,13 +54,13 @@
     <Reference Include="FarseerPhysics">
       <HintPath>libs\FarseerPhysics.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-audio-2">
+    <Reference Include="sfmlnet-audio-2, Version=2.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>libs\sfmlnet-audio-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-graphics-2">
+    <Reference Include="sfmlnet-graphics-2, Version=2.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>libs\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-window-2">
+    <Reference Include="sfmlnet-window-2, Version=2.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>libs\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="Sprache">
@@ -70,6 +70,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -95,7 +96,58 @@
     <Compile Include="CollisionShape.cs" />
     <Compile Include="CollisionAnalyzer.cs" />
     <Compile Include="ClockTower.cs" />
+    <Compile Include="DebugLogger.cs" />
+    <Compile Include="DebugTools\ComponentTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DebugTools\ComponentTabPage.Designer.cs">
+      <DependentUpon>ComponentTabPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\DebugToolsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugTools\DebugToolsForm.Designer.cs">
+      <DependentUpon>DebugToolsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\LogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DebugTools\LogView.Designer.cs">
+      <DependentUpon>LogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\DeliveryView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DebugTools\DeliveryView.Designer.cs">
+      <DependentUpon>DeliveryView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\NewMailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugTools\NewMailForm.Designer.cs">
+      <DependentUpon>NewMailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\NullView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DebugTools\NullView.Designer.cs">
+      <DependentUpon>NullView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\SceneView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DebugTools\SceneView.Designer.cs">
+      <DependentUpon>SceneView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DebugTools\VersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugTools\VersionForm.Designer.cs">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeliveryRecord.cs" />
     <Compile Include="DestroyOrder.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="OverlappingPair.cs" />
     <Compile Include="CapsuleShape.cs" />
     <Compile Include="Physics\PhysicsSimulator.cs" />
@@ -184,6 +236,30 @@
     <None Include="Resources\Konatu.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DebugTools\ComponentTabPage.resx">
+      <DependentUpon>ComponentTabPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\DebugToolsForm.resx">
+      <DependentUpon>DebugToolsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\LogView.resx">
+      <DependentUpon>LogView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\DeliveryView.resx">
+      <DependentUpon>DeliveryView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\NewMailForm.resx">
+      <DependentUpon>NewMailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\NullView.resx">
+      <DependentUpon>NullView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\SceneView.resx">
+      <DependentUpon>SceneView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugTools\VersionForm.resx">
+      <DependentUpon>VersionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

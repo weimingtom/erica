@@ -60,6 +60,7 @@ namespace DD {
             this.Attach (new Physics.PhysicsSimulator ());
             this.Attach (new NodeDestroyer ());
             this.Attach (new ClockTower ());
+            this.Attach (new Logger ());
 
             // キャッシュ
             this.allNodes = null;
@@ -121,6 +122,10 @@ namespace DD {
         /// </summary>
         public NodeDestroyer NodeDestroyer {
             get { return GetComponent<NodeDestroyer> (); }
+        }
+
+        public Logger Logger {
+            get { return GetComponent<Logger> (); }
         }
 
         /// <summary>
