@@ -73,9 +73,9 @@ namespace DD.Properties {
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
-        internal static byte[] Konatu {
+        internal static byte[] ipamp {
             get {
-                object obj = ResourceManager.GetObject("Konatu", resourceCulture);
+                object obj = ResourceManager.GetObject("ipamp", resourceCulture);
                 return ((byte[])(obj));
             }
         }
