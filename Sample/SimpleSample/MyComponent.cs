@@ -21,6 +21,9 @@ namespace DD.Sample.SimpleSample {
             var spr = new Sprite (64, 64);
             spr.Color = Color.Red;
 
+            var label = new Label ();
+            label.Text = "ここにはA子のキャラクター紹介文が入ります。";
+
             var col = new CollisionObject();
             col.Shape  = new BoxShape(32, 32, 32);
             col.SetOffset (32, 32, 0);
@@ -29,6 +32,8 @@ namespace DD.Sample.SimpleSample {
             node.Attach (cmp);
             node.Attach (spr);
             node.Attach (col);
+            node.Attach (label);
+            
             node.UserData.Add (clip.Name, clip);
 
             node.Translation = pos;

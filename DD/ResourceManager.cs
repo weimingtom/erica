@@ -178,14 +178,14 @@ namespace DD {
         /// デフォルト フォントの取得
         /// </summary>
         /// <remarks>
-        /// 日本語デフォルト フォント（"Konatu.ttf", 子夏フォント）を取得します。
+        /// 日本語デフォルト フォント（"ipamp.ttf", IPAフォント(明朝)）を取得します。
         /// デフォルト フォントはユーザーが用意しなくても常に使用可能です。
         /// </remarks>
         /// <returns>フォント</returns>
         public static SFML.Graphics.Font GetDefaultFont () {
             var name = "Konatu.ttf";
             if (!fonts.ContainsKey (name)) {
-                var ttf = new MemoryStream (Properties.Resources.Konatu);
+                var ttf = new MemoryStream (Properties.Resources.ipamp);
                 fonts.Add (name, new SFML.Graphics.Font (ttf));
             }
 

@@ -229,11 +229,11 @@
     </Content>
     <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
+    <None Include="Resources\ipamp.ttf" />
     <None Include="Resources\WhiteTexture.png" />
     <None Include="App.config" />
     <None Include="AssemblyKeyFile.snk" />
     <None Include="ClassDiagram1.cd" />
-    <None Include="Resources\Konatu.ttf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DebugTools\ComponentTabPage.resx">
