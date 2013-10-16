@@ -221,7 +221,8 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// このスプライトで使用するテクスチャーを追加します。
-        /// セットされたテクスチャーの中から1つを選んで（アクティブ テクスチャー）描画されます。
+        /// スプライトには複数のテクスチャーをセット可能で、
+        /// その中から1つを選んで（アクティブ）描画されます。
         /// </remarks>
         /// <param name="tex">テクスチャー オブジェクト</param>
         public void AddTexture (Texture tex) {
@@ -232,6 +233,17 @@ namespace DD {
             if (active == null) {
                 this.active = tex;
             }
+        }
+
+        public void SetTexture (int index, Texture tex) {
+            if (index < 0 || index > TextureCount - 1) {
+                throw new IndexOutOfRangeException ("Index is out of range");
+            }
+            this.texs[index] = tex;
+            if (active == null) {
+                this.active = tex;
+            }
+            this.active = tex;
         }
 
         /// <summary>

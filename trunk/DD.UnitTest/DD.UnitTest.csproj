@@ -70,6 +70,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestDeliveryRecord.cs" />
+    <Compile Include="TestLog.cs" />
+    <Compile Include="TestLogger.cs" />
     <Compile Include="TestReservedDestroy.cs" />
     <Compile Include="TestCollisionAnalyze.cs" />
     <Compile Include="Physics\TestPhysicsMaterial.cs" />

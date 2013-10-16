@@ -16,8 +16,16 @@ namespace DD {
     /// </remarks>
     public class PostOffice : Component {
 
+        #region Const
+        /// <summary>
+        /// 配達記録の最大保持個数
+        /// </summary>
+        public const int MaxRecordCount = 100;
+        #endregion
+        
         #region Field
-        List<Mail> mails;
+        Queue<DeliveryRecord> records;   // 配達済み
+        List<Mail> mails;               // 未配達
         #endregion
 
         #region Constructor
@@ -26,8 +34,17 @@ namespace DD {
         /// </summary>
         public PostOffice () {
             this.mails = new List<Mail> ();
+            this.records = new Queue<DeliveryRecord> ();
         }
         #endregion
+
+        #region Property
+        /// <summary>
+        /// メールの総数
+        /// </summary>
+        public int MailCount {
+            get { return mails.Count (); }
+        }
 
         /// <summary>
         /// すべてのメールを列挙する列挙子
@@ -37,12 +54,24 @@ namespace DD {
         }
 
         /// <summary>
-        /// メールの総数
+        /// 配達記録の総数
         /// </summary>
-        public int MailCount {
-            get { return mails.Count (); }
+        /// <remarks>
+        /// 配達記録は最大 <see cref="MaxRecordCount"/> 個だけ保存され、それを超える分は古い方から削除されます。
+        /// </remarks>
+        public int DeliveryRecordCount {
+            get { return records.Count (); }
         }
 
+        /// <summary>
+        /// すべての配達記録を列挙する列挙子
+        /// </summary>
+        public IEnumerable<DeliveryRecord> DeliveryRecords {
+            get { return records; }
+        }
+        #endregion
+
+        #region Method
         /// <summary>
         /// メールの送信
         /// </summary>
@@ -66,14 +95,25 @@ namespace DD {
         /// キューに保存しているすべての未配達のメールを送信します。
         /// このメソッドが帰るとキューのサイズは0です。
         /// </remarks>
-        /// (*1) foreachの中で（ユーザーが）メールボックスを削除できるようにするためこの ToArray() は消さないように
+        /// (*1) 次の foreach の中で（ユーザーが）メールボックスを削除できるようにこの ToArray() は消さないように
         public void Deliver () {
+            
+            // 配達ログ
+            foreach (var mail in mails) {
+                records.Enqueue (new DeliveryRecord (Time.CurrentTime, mail));
+                if(records.Count() > MaxRecordCount){
+                     records.Dequeue ();
+                }
+            }
+
             var deliveries = (from mail in mails
                               from node in World.Downwards
                               where node.Deliverable == true
                               from mailbox in node.MailBoxs
                               where mail.Address == mailbox.Address || mail.Address == "All" || mailbox.Address == "All"
                               select new { mail, node, mailbox }).ToArray ();   // (*1)
+
+            mails.Clear ();
 
             foreach (var delivery in deliveries) {
                 var from = delivery.mail.From;
@@ -83,9 +123,17 @@ namespace DD {
                     cmp.OnMailBox (from, addr, letter);
                 }
 
-                mails.Remove (delivery.mail);
+                //mails.Remove (delivery.mail);
             }
+
         }
+
+
+        public void ClearRecords () {
+            this.records.Clear ();
+        }
+
+        #endregion
 
     }
 }

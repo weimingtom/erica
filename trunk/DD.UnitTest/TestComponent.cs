@@ -216,6 +216,23 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Logger () {
+            var log = new Logger ();
+            var cmp = new Component ();
+
+            var node = new Node ();
+            node.Attach (log);
+            node.Attach (cmp);
+
+            Assert.AreEqual (log, cmp.Logger);
+
+            var wld = new World ();
+            wld.AddChild (node);
+
+            Assert.AreNotEqual (wld.Logger, cmp.Logger);
+        }
+
+        [TestMethod]
         public void Test_CollisionAnalyzer () {
             var ca = new CollisionAnalyzer ();
             var cmp = new MyComponent ();

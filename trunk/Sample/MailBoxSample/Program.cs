@@ -57,7 +57,6 @@ namespace DD.Sample.MessageSample {
                 wld.Update (msec);
                 wld.Deliver ();
                 g2d.Draw (wld);
-
             }
 
             Console.WriteLine ("End of Game");

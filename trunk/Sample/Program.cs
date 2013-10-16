@@ -6,7 +6,7 @@ using System.Text;
 namespace DD.Sample {
     public class Program {
         static void Main (string[] args) {
-            var select = 0;
+            var select = 13;
 
             switch (select) {
                 case 0: DD.Sample.SimpleSample.Program.Main (args); break;
@@ -22,6 +22,7 @@ namespace DD.Sample {
                 case 10: DD.Sample.GUISample.Program.Main (args); break;
                 case 11: DD.Sample.MouseSample.Program.Main (args); break;
                 case 12: DD.Sample.KeyboardSample.Program.Main (args); break;
+                case 13: DD.Sample.DebugToolsSample.DebugToolsSampleProgram.Main (args); break;
                 default: throw new NotImplementedException ("Sorry");
             }
         }

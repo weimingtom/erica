@@ -48,8 +48,24 @@ namespace DD {
             this.fgColor = Color.Green;
             this.backgroundTexture = null;
             this.foregroundTexture = null;
-            this.maxValue = 0;
-            this.currentValue = 0;
+            this.maxValue = 100;
+            this.currentValue = 100;
+            this.offset = new Vector2 (0, 0);
+        }
+
+        public Bar (int width, int length, BarOrientation ori, float maxValue) {
+            if (width < 0 || length < 0) {
+                throw new ArgumentException ("Bar size is invalie");
+            }
+            this.width = width;
+            this.length = length;
+            this.orientation = ori;
+            this.bgColor = Color.Black;
+            this.fgColor = Color.Green;
+            this.backgroundTexture = null;
+            this.foregroundTexture = null;
+            this.maxValue = maxValue;
+            this.currentValue = maxValue;
             this.offset = new Vector2 (0, 0);
         }
         #endregion
@@ -82,8 +98,13 @@ namespace DD {
         /// 現在値の最大値に対する比率 [0,1]
         /// </summary>
         public float CurrentRate {
-            get { return (maxValue==0) ? 1 : currentValue / maxValue; }
-
+            get { return (maxValue == 0) ? 1 : currentValue / maxValue; }
+            set {
+                if (value < 0 || value > 1) {
+                    throw new ArgumentException("Rate is invalid");
+                }
+                this.currentValue = value * maxValue;
+            }
         }
 
         /// <summary>
@@ -125,7 +146,7 @@ namespace DD {
             get { return bgColor; }
             set { this.bgColor = value; }
         }
-        
+
         /// <summary>
         /// バーの色
         /// </summary>
@@ -199,9 +220,9 @@ namespace DD {
             spr1.Position = new Vector2f (T.X, T.Y);
             spr1.Scale = new Vector2f (S.X, S.Y);
             spr1.Rotation = angle;
-            
+
             spr1.Color = new Color (bgColor.R, bgColor.G, bgColor.B, (byte)(bgColor.A * opacity)).ToSFML ();
-        
+
 
             var spr2 = new SFML.Graphics.Sprite ();
             spr2.Texture = (foregroundTexture ?? Resource.GetDefaultTexture ()).Data;
@@ -221,7 +242,7 @@ namespace DD {
 
         /// <inheritdoc/>
         public override string ToString () {
-            return string.Format("Value : {0}/{1}", currentValue, maxValue);
+            return string.Format ("Value : {0}/{1}", currentValue, maxValue);
         }
         #endregion
 

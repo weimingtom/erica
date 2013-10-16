@@ -53,6 +53,7 @@ namespace DD.UnitTest {
             Assert.IsNotNull (wld.PhysicsSimulator);
             Assert.IsNotNull (wld.NodeDestroyer);
             Assert.IsNotNull (wld.ClockTower);
+            Assert.IsNotNull (wld.Logger);
         }
 
         [TestMethod]
