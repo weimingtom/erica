@@ -6,70 +6,82 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.Entity;
 
 namespace DD.DebugTools {
+    /// <summary>
+    /// データベース ビュー
+    /// </summary>
+    /// <remarks>
+    /// データベースを見るためのコントロール。
+    /// <see cref="Resource"/> を使って開かれたデータベースだけが表示の対象です。
+    /// </remarks>
     public partial class DatabaseView : UserControl {
-        World wld;
+        #region Field
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
         public DatabaseView () {
             InitializeComponent ();
         }
+        #endregion
 
-        public World World {
-            get { return wld; }
-            set {
-                if (value == null) {
-                    throw new ArgumentNullException ("World is null");
-                }
-                this.wld = value;
+        #region Property
+        #endregion
 
-                CreateDropDown ();
-                CreateTabPages ();
-            }
-        }
-
-        void CreateDropDown () {
-            var dbms = wld.DataBaseManager;
-            foreach (var db in dbms.DataBases) {
-                toolStripButton1.DropDown.Items.Add (db.Key);
+        /// <summary>
+        /// データベース選択ドロップダウンリストの表示
+        /// </summary>
+        void CreateDropDownList () {
+            foreach (var db in Resource.Databases) {
+                var item = new ToolStripMenuItem (db.Key);
+                item.Click += delegate (object sender, EventArgs e) {
+                    CreateTabPages (db.Key);
+                };
+                toolStripDropDownButton1.DropDownItems.Add (item);
             }
         }
 
         /// <summary>
-        /// テーブル1つに対してタブを1つ作成
+        /// テーブル表示タブの作成
         /// </summary>
         /// <remarks>
-        /// <note>（*1）この空ループはDBからオンメモリキャッシュへデータをロードするため。
+        /// 選択されたデータベースの全ての表を、表1つに付き1タブで表示します。
+        /// <note>
+        /// (*1)この空ループはDBからオンメモリキャッシュへデータをロードするために必要。
         /// Localプロパティは自動ではデータを更新しないので絶対に消さないこと！
         /// </note>
         /// </remarks>
-        void CreateTabPages () {
+        void CreateTabPages (string dbName) {
             tabControl1.Controls.Clear ();
-            
-            var dbms = wld.DataBaseManager;
 
-            foreach (var db in dbms.DataBases) {
-                foreach (var tbl in db.Value.GetTables ()) {
-                    var page = new TabPage (tbl.GetTableName());
-                   
-                    var gridView = new DataGridView ();
-                    gridView.Dock = DockStyle.Fill;
+            if (dbName == null && Resource.Databases.Count() > 0) {
+                dbName = Resource.Databases.First().Key;
+            }
 
-                    // (*1) DBからデータをロード
-                    foreach (var entry in tbl) {}
+            var db = Resource.GetDatabase (dbName);
+            if (db != null) {
+                foreach (var table in db.GetDbSets ()) {
+                    var grid = new DataGridView ();
+                    grid.Dock = DockStyle.Fill;
+                    foreach (var entry in table) {
+                        // (*1)
+                    }
+                    grid.DataSource = table.Local;
 
-                    gridView.DataSource = tbl.Local;   // キャッシュの更新必要
+                    var page = new TabPage (table.GetDbSetName ());
+                    page.Controls.Add (grid);
 
-                    page.Controls.Add (gridView);
                     tabControl1.Controls.Add (page);
                 }
             }
 
         }
 
-        private void toolStripButton2_Click (object sender, EventArgs e) {
-            wld.DataBaseManager.SaveAllChanges();
-        }
+
 
     }
 }

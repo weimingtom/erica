@@ -129,6 +129,9 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// 標準のログ記録機能
+        /// </summary>
         protected internal Logger Logger {
             get {
                 return GetComponent<Logger> () ?? World.Logger;
@@ -198,10 +201,6 @@ namespace DD {
         /// </remarks>
         protected internal PhysicsSimulator PhysicsSimulator {
             get { return GetComponent<PhysicsSimulator> () ?? World.PhysicsSimulator; }
-        }
-
-        protected internal DatabaseManager DB {
-            get { return GetComponent<DatabaseManager> () ?? World.DataBaseManager; }
         }
 
         /// <summary>
@@ -287,11 +286,6 @@ namespace DD {
             return World.Find (pred);
         }
 
-
-        protected T GetDatabase<T> () where T : DbContext {
-            return World.DataBaseManager.GetDataBase<T> ();
-        }
-
         /// <summary>
         /// ノードの削除
         /// </summary>
@@ -320,6 +314,17 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// ログの記録
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Logger"/> コンポーネントを使ってログを記録します。
+        /// ログは <see cref="DebugTools.LogView"/> を使って閲覧可能です。
+        /// </remarks>
+        /// <seealso cref="Logger"/>
+        /// <seealso cref="DebugTools.LogView"/>
+        /// <param name="priority">優先度</param>
+        /// <param name="message">メッセージ</param>
         protected void Log (int priority, string message) {
             Logger.Write (Node, priority, message);
         }

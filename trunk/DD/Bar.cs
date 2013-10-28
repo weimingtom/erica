@@ -53,6 +53,13 @@ namespace DD {
             this.offset = new Vector2 (0, 0);
         }
 
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="length"></param>
+        /// <param name="ori"></param>
+        /// <param name="maxValue"></param>
         public Bar (int width, int length, BarOrientation ori, float maxValue) {
             if (width < 0 || length < 0) {
                 throw new ArgumentException ("Bar size is invalie");

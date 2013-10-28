@@ -38,9 +38,9 @@
     <Reference Include="BulletSharp, Version=2.81.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\DD\libs\BulletSharp.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.4.2.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="FarseerPhysics, Version=3.3.4910.21339, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -101,7 +101,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="TestDataBase.cs" />
-    <Compile Include="TestDatabaseManager.cs" />
     <Compile Include="TestDeliveryRecord.cs" />
     <Compile Include="TestLog.cs" />
     <Compile Include="TestLogger.cs" />

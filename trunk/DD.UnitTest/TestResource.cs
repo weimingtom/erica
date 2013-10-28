@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DD;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
+using System.Data.Entity;
 
 namespace DD.UnitTest {
     public class Foo {
@@ -63,5 +65,24 @@ namespace DD.UnitTest {
 
             Assert.AreSame (track2, track1);
         }
+
+        [TestMethod]
+        public void Test_GetDatabase_1 () {
+            var db1 = Resource.GetDatabase<DB.AkatokiEntities> ();
+            var db2 = Resource.GetDatabase<DB.AkatokiEntities> ();
+
+            Assert.AreSame (db2, db1);
+        }
+
+        [TestMethod]
+        public void Test_GetDatabase_2 () {
+            var db1 = Resource.GetDatabase<DB.AkatokiEntities> ();
+            var db2 = Resource.GetDatabase ("AkatokiEntities");  // 同じ物
+            var db3 = Resource.GetDatabase ("NotFound");
+
+            Assert.AreSame (db2, db1);
+            Assert.AreEqual (null, db3);
+        }
+
     }
 }

@@ -8,27 +8,17 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace DD.Sample.DatabaseSample {
+    /// <summary>
+    /// メイン フォーム
+    /// </summary>
     public partial class Program : Form {
-        World wld;
-        DebugTools.DatabaseView view;
+
         int frame;
+        World wld;
 
 
         public Program () {
             InitializeComponent ();
-        }
-
-        public World World {
-            get { return wld; }
-            set {
-                if (value == null) {
-                    throw new ArgumentNullException ("World is nulL");
-                }
-                this.wld = value;
-                if (view != null) {
-                    this.view.World = wld;
-                }
-            }
         }
 
         public static void Main (string[] args) {
@@ -53,8 +43,6 @@ namespace DD.Sample.DatabaseSample {
             wld.AddChild (node2);
             wld.AddChild (node3);
 
-            wld.DataBaseManager.AddDataBase ("あかときっ！", new DB.AkatokiEntities1 ());
-
             return wld;
         }
 
@@ -73,7 +61,7 @@ namespace DD.Sample.DatabaseSample {
 
             var view = new DebugTools.DatabaseView ();
             view.Dock = DockStyle.Fill;
-            view.World = wld;
+            
             var form = new Form ();
             form.Controls.Add (view);
             form.Show ();

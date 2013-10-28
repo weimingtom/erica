@@ -235,14 +235,16 @@ namespace DD {
             }
         }
 
+        /// <summary>
+        /// テクスチャーの変更
+        /// </summary>
+        /// <param name="index">テクスチャー番号</param>
+        /// <param name="tex">テクスチャー</param>
         public void SetTexture (int index, Texture tex) {
             if (index < 0 || index > TextureCount - 1) {
                 throw new IndexOutOfRangeException ("Index is out of range");
             }
             this.texs[index] = tex;
-            if (active == null) {
-                this.active = tex;
-            }
             this.active = tex;
         }
 

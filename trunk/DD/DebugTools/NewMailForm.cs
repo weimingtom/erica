@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using System.Yaml;
 using System.Yaml.Serialization;
 
+// デバッグツールからメールを投げられるようにしたはずだが詳細を忘れた
+// 使わない方が良いと思う
+
 namespace DD.DebugTools {
     public partial class NewMailForm : Form {
         YamlSerializer yaml;
