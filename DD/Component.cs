@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DD.Physics;
+using System.Data.Entity;
 
 namespace DD {
     /// <summary>
@@ -199,6 +200,10 @@ namespace DD {
             get { return GetComponent<PhysicsSimulator> () ?? World.PhysicsSimulator; }
         }
 
+        protected internal DatabaseManager DB {
+            get { return GetComponent<DatabaseManager> () ?? World.DataBaseManager; }
+        }
+
         /// <summary>
         /// このコンポーネントがアタッチ済みかどうかを確認するプロパティ
         /// </summary>
@@ -280,6 +285,11 @@ namespace DD {
         /// <returns>ノード</returns>
         protected Node GetNode (Func<Node, bool> pred) {
             return World.Find (pred);
+        }
+
+
+        protected T GetDatabase<T> () where T : DbContext {
+            return World.DataBaseManager.GetDataBase<T> ();
         }
 
         /// <summary>
