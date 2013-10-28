@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AkatokiModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="AkatokiModelStoreContainer">
+          <EntitySet Name="Characters" EntityType="AkatokiModel.Store.Characters" store:Type="Tables" />
+          <EntitySet Name="MagicItems" EntityType="AkatokiModel.Store.MagicItems" store:Type="Tables" />
+          <EntitySet Name="Textures" EntityType="AkatokiModel.Store.Textures" store:Type="Tables" />
+          <AssociationSet Name="FK_Characters_0_0" Association="AkatokiModel.Store.FK_Characters_0_0">
+            <End Role="MagicItems" EntitySet="MagicItems" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Textures_0_0" Association="AkatokiModel.Store.FK_Textures_0_0">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Textures" EntitySet="Textures" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Characters">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" Nullable="false" />
+          <Property Name="FullNameYomi" Type="nvarchar" Nullable="false" />
+          <Property Name="MagicItemName" Type="nvarchar" Nullable="false" />
+          <Property Name="Attribute" Type="nvarchar" Nullable="false" />
+          <Property Name="CV" Type="nvarchar" />
+          <Property Name="備考" Type="nvarchar" />
+        </EntityType>
+        <EntityType Name="MagicItems">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Textures">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Section" Type="nvarchar" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" Nullable="false" />
+          <Property Name="CharacterName" Type="nvarchar" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar" Nullable="false" />
+          <Property Name="備考" Type="nvarchar" />
+        </EntityType>
+        <Association Name="FK_Characters_0_0">
+          <End Role="MagicItems" Type="AkatokiModel.Store.MagicItems" Multiplicity="1" />
+          <End Role="Characters" Type="AkatokiModel.Store.Characters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MagicItems">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="MagicItemName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Textures_0_0">
+          <End Role="Characters" Type="AkatokiModel.Store.Characters" Multiplicity="1" />
+          <End Role="Textures" Type="AkatokiModel.Store.Textures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Textures">
+              <PropertyRef Name="CharacterName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AkatokiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="AkatokiEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Characters" EntityType="AkatokiModel.Character" />
+          <EntitySet Name="MagicItems" EntityType="AkatokiModel.MagicItem" />
+          <AssociationSet Name="FK_Characters_0_0" Association="AkatokiModel.FK_Characters_0_0">
+            <End Role="MagicItems" EntitySet="MagicItems" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <EntitySet Name="Textures" EntityType="AkatokiModel.Texture" />
+          <AssociationSet Name="FK_Textures_0_0" Association="AkatokiModel.FK_Textures_0_0">
+            <End Role="Character" EntitySet="Characters" />
+            <End Role="Texture" EntitySet="Textures" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Character">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="FullNameYomi" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="MagicItemName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Attribute" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="CV" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="MagicItem" Relationship="AkatokiModel.FK_Characters_0_0" FromRole="Characters" ToRole="MagicItems" />
+          <NavigationProperty Name="Textures" Relationship="AkatokiModel.FK_Textures_0_0" FromRole="Character" ToRole="Texture" />
+        </EntityType>
+        <EntityType Name="MagicItem">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Characters" Relationship="AkatokiModel.FK_Characters_0_0" FromRole="MagicItems" ToRole="Characters" />
+        </EntityType>
+        <Association Name="FK_Characters_0_0">
+          <End Role="MagicItems" Type="AkatokiModel.MagicItem" Multiplicity="1" />
+          <End Role="Characters" Type="AkatokiModel.Character" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MagicItems">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="MagicItemName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Texture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int64" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FilePath" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="備考" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Section" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Category" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CharacterName" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Character" Relationship="AkatokiModel.FK_Textures_0_0" FromRole="Texture" ToRole="Character" />
+        </EntityType>
+        <Association Name="FK_Textures_0_0">
+          <End Type="AkatokiModel.Character" Role="Character" Multiplicity="1" />
+          <End Type="AkatokiModel.Texture" Role="Texture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Character">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Texture">
+              <PropertyRef Name="CharacterName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AkatokiModelStoreContainer" CdmEntityContainer="AkatokiEntities1">
+          <EntitySetMapping Name="Characters">
+            <EntityTypeMapping TypeName="AkatokiModel.Character">
+              <MappingFragment StoreEntitySet="Characters">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="FullNameYomi" ColumnName="FullNameYomi" />
+                <ScalarProperty Name="MagicItemName" ColumnName="MagicItemName" />
+                <ScalarProperty Name="Attribute" ColumnName="Attribute" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="備考" ColumnName="備考" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MagicItems">
+            <EntityTypeMapping TypeName="AkatokiModel.MagicItem">
+              <MappingFragment StoreEntitySet="MagicItems">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Textures">
+            <EntityTypeMapping TypeName="AkatokiModel.Texture">
+              <MappingFragment StoreEntitySet="Textures">
+                <ScalarProperty Name="CharacterName" ColumnName="CharacterName" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="備考" ColumnName="備考" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="なし" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="AkatokiModel.Character" Width="1.5" PointX="3" PointY="1" Height="3.0043749999999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="AkatokiModel.MagicItem" Width="1.5" PointX="0.75" PointY="1.5" Height="1.9366666666666674" IsExpanded="true" />
+        <AssociationConnector Association="AkatokiModel.FK_Characters_0_0" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.4683333333333337" />
+          <ConnectorPoint PointX="3" PointY="2.4683333333333337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="AkatokiModel.Texture" Width="1.5" PointX="5.375" PointY="0.75" Height="1.9366666666666665" />
+        <AssociationConnector Association="AkatokiModel.FK_Textures_0_0" >
+          <ConnectorPoint PointX="4.5" PointY="2.2704166666666667" />
+          <ConnectorPoint PointX="5.375" PointY="2.2704166666666667" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

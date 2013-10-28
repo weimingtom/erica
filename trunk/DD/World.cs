@@ -61,6 +61,7 @@ namespace DD {
             this.Attach (new NodeDestroyer ());
             this.Attach (new ClockTower ());
             this.Attach (new Logger ());
+            this.Attach (new DatabaseManager ());
 
             // キャッシュ
             this.allNodes = null;
@@ -161,6 +162,10 @@ namespace DD {
         /// </summary>
         public Physics.PhysicsSimulator PhysicsSimulator {
             get { return GetComponent<Physics.PhysicsSimulator> (); }
+        }
+
+        public DatabaseManager DataBaseManager {
+            get { return GetComponent<DatabaseManager> (); }
         }
 
         /// <summary>

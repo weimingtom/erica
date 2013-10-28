@@ -62,6 +62,9 @@
     <Reference Include="BulletSharp, Version=2.81.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\DD\libs\BulletSharp.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="FarseerPhysics">
       <HintPath>..\DD\libs\FarseerPhysics.dll</HintPath>
     </Reference>
@@ -78,7 +81,11 @@
       <HintPath>..\packages\Stateless.2.4.0\lib\Stateless.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -95,6 +102,42 @@
     <Compile Include="CollisionDetectSample\MyCharacter.cs" />
     <Compile Include="CollisionDetectSample\MyHUD.cs" />
     <Compile Include="CollisionDetectSample\Program.cs" />
+    <Compile Include="DatabaseSample\MyCharacterButton.cs" />
+    <Compile Include="DatabaseSample\MyCharacter.cs" />
+    <Compile Include="DatabaseSample\MyCharacterHolder.cs" />
+    <Compile Include="DatabaseSample\MyCharacterSelector.cs" />
+    <Compile Include="DatabaseSample\MyCharacterViewer.cs" />
+    <Compile Include="DatabaseSample\DB\Character.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\DB\MagicItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\DB\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\DB\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\DB\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\DB\Texture.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\Program.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabaseSample\Program.Designer.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseSample\Program2.cs" />
     <Compile Include="DebugToolsSample\MyBackground.cs" />
     <Compile Include="DebugToolsSample\MyBodySprite.cs" />
     <Compile Include="DebugToolsSample\MyButtons.cs" />
@@ -178,6 +221,9 @@
     <Compile Include="TiledMapSample\MyRaderDot.cs" />
     <Compile Include="TiledMapSample\MyTiledMap.cs" />
     <Compile Include="TiledMapSample\Program.cs" />
+    <EmbeddedResource Include="DatabaseSample\Program.resx">
+      <DependentUpon>Program.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DebugToolsSample\Program.resx">
       <DependentUpon>Program.cs</DependentUpon>
     </EmbeddedResource>
@@ -191,6 +237,20 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="App.config" />
+    <None Include="DatabaseSample\DB\Akatoki.db3" />
+    <EntityDeploy Include="DatabaseSample\DB\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DatabaseSample\DB\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DatabaseSample\DB\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </None>
     <None Include="media\arial.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -206,6 +266,7 @@
     <None Include="media\Konatu.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -217,6 +278,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DatabaseSample\Textures\リリィ.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatabaseSample\Textures\七夕.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatabaseSample\Textures\凛子.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatabaseSample\Textures\爽夏.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DatabaseSample\Textures\真姫.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\0000_さとうささら_一機、撃破.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -512,6 +588,9 @@
       <ProductName>Windows インストーラー 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

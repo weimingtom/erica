@@ -229,8 +229,9 @@ namespace DD {
         /// ウィンドウの作成
         /// </summary>
         /// <remarks>
-        /// 指定するウインドウ サイズは描画に使用される内部領域のピクセル数です。
-        /// 通常はこれに飾り枠が追加されて（OSに依存）少し大きいウィンドウが作成されます。
+        /// 新規にウィンドウを作成します。メニューもステータスバーも持たないゲームウィンドウのみの場合はこちらを使用して下さい。
+        /// 引数で指定するウインドウ サイズは描画領域のピクセル数です。
+        /// 通常はこれにOSに依存する飾り枠が追加されて少し大きいウィンドウが作成されます。
         /// </remarks>
         /// <param name="width">ウィンドウ幅（ピクセル数）</param>
         /// <param name="height">ウィンドウ高さ（ピクセル数）</param>
@@ -263,6 +264,15 @@ namespace DD {
             win.Closed += new EventHandler (OnClosedEventHandler);
         }
 
+        /// <summary>
+        /// 指定のウィンドウハンドラー利用してウィンドウを作成
+        /// </summary>
+        /// <remarks>
+        /// Windowsフォームのハンドラーを利用してウィンドウを作成します。
+        /// フォームアプリの1コントロールに対してゲームを描画する場合はこちらを使用して下さい。
+        /// サイズは親のコントールに依存します。
+        /// </remarks>
+        /// <param name="handler">Windowsフォームのウィンドウハンドラー</param>
         public void CreateWindow (IntPtr handler) {
             var dir = System.IO.Directory.GetCurrentDirectory ();
 
