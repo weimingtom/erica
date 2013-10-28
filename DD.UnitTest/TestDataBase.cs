@@ -11,8 +11,8 @@ namespace DD.UnitTest {
         public void Test_Database () {
             var db = new DB.AkatokiEntities ();
 
-            Assert.AreEqual(2, db.GetTableCount());
-            Assert.AreEqual (2, db.GetTables().Count ());
+            Assert.AreEqual(2, db.GetDbSetCount());
+            Assert.AreEqual (2, db.GetDbSets().Count ());
         }
 
     }

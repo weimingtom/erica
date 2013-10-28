@@ -54,7 +54,6 @@ namespace DD.UnitTest {
             Assert.IsNotNull (wld.NodeDestroyer);
             Assert.IsNotNull (wld.ClockTower);
             Assert.IsNotNull (wld.Logger);
-            Assert.IsNotNull (wld.DataBaseManager);
         }
 
         [TestMethod]

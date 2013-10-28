@@ -51,9 +51,9 @@
     <Reference Include="BulletSharp">
       <HintPath>libs\BulletSharp.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.4.2.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="FarseerPhysics">
       <HintPath>libs\FarseerPhysics.dll</HintPath>
@@ -102,7 +102,6 @@
     <Compile Include="CollisionShape.cs" />
     <Compile Include="CollisionAnalyzer.cs" />
     <Compile Include="ClockTower.cs" />
-    <Compile Include="DatabaseManager.cs" />
     <Compile Include="DbContextExtensions.cs" />
     <Compile Include="DebugLogger.cs" />
     <Compile Include="DebugTools\ComponentTabPage.cs">
@@ -206,7 +205,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ResourceManager.cs" />
+    <Compile Include="Resource.cs" />
     <Compile Include="Graphics2D.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

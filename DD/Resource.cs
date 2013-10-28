@@ -7,6 +7,7 @@ using SFML.Graphics;
 using SFML.Window;
 using SFML.Audio;
 using System.Drawing;
+using System.Data.Entity;
 
 namespace DD {
     /// <summary>
@@ -19,33 +20,22 @@ namespace DD {
     /// （実行ファイルに埋め込まれています）。
     /// 使用後は <see cref="Dispose"/> メソッドを読んでリソースを解放してください。
     /// </remarks>
-    public partial class Resource : IDisposable {
+    public static class Resource {
 
         #region Field
-        static string fontDirectory;
-        static string textureDirectory;
-        static string lineDirectory;
-        static string audioDirectory;
-        static Dictionary<string, SFML.Graphics.Font> fonts;
-        static Dictionary<string, Texture> textures;
-        static Dictionary<string, Line[]> lines;
-        static Dictionary<string, SoundTrack> audios;
+        static string fontDirectory = "./";
+        static string textureDirectory = "./";
+        static string lineDirectory = "./";
+        static string audioDirectory = "./";
+        static string databaseDirectory = "./";
+        static Dictionary<string, SFML.Graphics.Font> fonts = new Dictionary<string, SFML.Graphics.Font> ();
+        static Dictionary<string, Texture> textures = new Dictionary<string, Texture> ();
+        static Dictionary<string, Line[]> lines = new Dictionary<string, Line[]> ();
+        static Dictionary<string, SoundTrack> audios = new Dictionary<string, SoundTrack> ();
+        static Dictionary<string, DbContext> databases = new Dictionary<string, DbContext> ();
         #endregion
 
         #region Constructor
-        /// <summary>
-        /// コンストラクター
-        /// </summary>
-        static Resource () {
-            fontDirectory = "./";
-            textureDirectory = "./";
-            lineDirectory = "./";
-            fonts = new Dictionary<string, SFML.Graphics.Font> ();
-            textures = new Dictionary<string, Texture> ();
-            lines = new Dictionary<string, Line[]> ();
-            audios = new Dictionary<string, SoundTrack> ();
-        }
-
         #endregion
 
         #region Property
@@ -78,6 +68,13 @@ namespace DD {
         }
 
         /// <summary>
+        /// データベース ディレクトリ
+        /// </summary>
+        public static string DatabaseDirectory {
+            get { return databaseDirectory; }
+        }
+
+        /// <summary>
         /// キャッシュ済みの全フォントを列挙する列挙子
         /// </summary>
         public static IEnumerable<KeyValuePair<string, SFML.Graphics.Font>> Fonts {
@@ -103,6 +100,13 @@ namespace DD {
         /// </summary>
         public static IEnumerable<KeyValuePair<string, SoundTrack>> SoundClips {
             get { return audios; }
+        }
+
+        /// <summary>
+        /// キャッシュ済みのすべてのデータベースを列挙する列挙子
+        /// </summary>
+        public static IEnumerable<KeyValuePair<string, DbContext>> Databases {
+            get { return databases; }
         }
         #endregion
 
@@ -153,9 +157,18 @@ namespace DD {
         /// サウンド ディレクトリーの変更
         /// </summary>
         /// <param name="name">ディレクトリ名</param>
-        public static void AudioDirectory (string name) {
+        public static void SetAudioDirectory (string name) {
             audioDirectory = name;
         }
+
+        /// <summary>
+        /// データベース ディレクトリーの変更
+        /// </summary>
+        /// <param name="name">ディレクトリ名</param>
+        public static void SetDatabaseDirectory (string name) {
+            databaseDirectory = name;
+        }
+
 
         /// <summary>
         /// フォントの取得
@@ -282,7 +295,7 @@ namespace DD {
         /// <returns>サウンド クリップ</returns>
         public static MusicTrack GetMusicTrack (string name) {
             if (!audios.ContainsKey (name)) {
-                audios.Add (name, new MusicTrack(name));
+                audios.Add (name, new MusicTrack (name));
             }
             return audios[name] as MusicTrack;
         }
@@ -294,14 +307,64 @@ namespace DD {
         /// <returns></returns>
         public static SoundEffectTrack GetSoundTrack (string name) {
             if (!audios.ContainsKey (name)) {
-                audios.Add (name, new SoundEffectTrack(name));
+                audios.Add (name, new SoundEffectTrack (name));
             }
             return audios[name] as SoundEffectTrack;
         }
 
+        /// <summary>
+        /// データベースの取得
+        /// </summary>
+        /// <remarks>
+        /// 型パラメーター <typeref name="T"/> は、Entity Frameworkによって自動生成される DbContext の派生型です。
+        /// データベースへの接続文字列は App.Config に記載されているものをそのまま使用します。
+        /// このメソッドによるデータベースの取得は名前ベースではなく型ベースです。
+        /// このメソッドによって開かれたデータベースの識別名はTの型名が使用されます。
+        /// 従って他の同様のメソッドと比べて若干動作が異なります。
+        /// </remarks>
+        /// <typeparam name="T">データベース（DbContexの派生型）</typeparam>
+        /// <returns></returns>
+        public static T GetDatabase<T> () where T : DbContext, new () {
+            foreach (var pair in databases) {
+                if (pair.Value is T) {
+                    return pair.Value as T;
+                }
+            }
+
+            var query = (from db in databases.Values
+                         where db is T
+                         select db as T).FirstOrDefault ();
+            if (query != null) {
+                return query;
+            }
+
+
+            var name = typeof (T).Name;
+            var newdb = new T ();
+            databases.Add (name, newdb);
+
+            return newdb;
+        }
+
+        /// <summary>
+        /// データベースの取得
+        /// </summary>
+        /// <remarks>
+        /// 名前ベースでデータベースを取得します。
+        /// このメソッドは指定のデーターベースが見つからない場合 <c>null</c> を返します。
+        /// （型がわからないのでインスタンス化できない）
+        /// </remarks>
+        /// <param name="name">データベース識別名</param>
+        /// <returns></returns>
+        public static DbContext GetDatabase (string name) {
+            if (!databases.ContainsKey (name)) {
+                return null;
+            }
+            return databases[name];
+        }
 
         /// <inheritdoc/>
-        public void Dispose () {
+        public static void Dispose () {
             foreach (var font in fonts) {
                 font.Value.Dispose ();
             }

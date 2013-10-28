@@ -122,13 +122,16 @@ namespace DD {
                 foreach (var cmp in delivery.node.Components) {
                     cmp.OnMailBox (from, addr, letter);
                 }
-
-                //mails.Remove (delivery.mail);
             }
 
         }
 
-
+        /// <summary>
+        /// 配達記録の全削除
+        /// </summary>
+        /// <remarks>
+        /// 配達記録を全て削除します
+        /// </remarks>
         public void ClearRecords () {
             this.records.Clear ();
         }

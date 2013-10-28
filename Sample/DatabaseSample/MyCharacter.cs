@@ -7,13 +7,14 @@ namespace DD.Sample.DatabaseSample {
     public class MyCharacter : Component {
 
         string name;
-        DB.AkatokiEntities1 db;
-        DB.Character status;
+        DB.Character data;
 
         public MyCharacter (string name) {
             this.name = name;
-            this.db = new DB.AkatokiEntities1 ();
-            this.status = db.Characters.Find (name);
+            this.data = Resource.GetDatabase<DB.AkatokiEntities1> ().Characters.Find (name);
+            if (data == null) {
+                throw new ArgumentException ("Name doesn't exist in Database");
+            }
         }
 
         public string Name {
@@ -21,18 +22,19 @@ namespace DD.Sample.DatabaseSample {
         }
 
         public string FullName {
-            get { return status.FullName; }
+            get { return data.FullName; }
         }
 
         public string FullNameYomi {
-            get { return status.FullNameYomi; }
+            get { return data.FullNameYomi; }
         }
 
         public string MagicItemName {
-            get { return status.MagicItemName; }
+            get { return data.MagicItemName; }
         }
 
         public Texture GetTexture (string section, string category) {
+            var db = Resource.GetDatabase<DB.AkatokiEntities1> ();
             var path = (from tex in db.Textures
                         where tex.Section == section
                         where tex.Category == category

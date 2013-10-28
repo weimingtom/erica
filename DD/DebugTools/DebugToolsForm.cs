@@ -8,14 +8,31 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace DD.DebugTools {
+    /// <summary>
+    /// デバッグツール フォーム
+    /// </summary>
+    /// <remarks>
+    /// デバッグツールの基礎となるフォームです。
+    /// </remarks>
     public partial class DebugToolsForm : Form {
+        #region Field
         World wld;
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
         public DebugToolsForm () {
             InitializeComponent ();
 
         }
+        #endregion
 
+        #region Property
+        /// <summary>
+        /// DDワールド
+        /// </summary>
         public World World {
             get { return wld; }
             set {
@@ -25,7 +42,9 @@ namespace DD.DebugTools {
                 this.wld = value;
             }
         }
+        #endregion
 
+        #region Method
         private void DebugToolsForm_Load (object sender, EventArgs e) {
             // デフォルトでシーンビューを開く
         }
@@ -75,6 +94,7 @@ namespace DD.DebugTools {
             Dispose ();
             Close ();
         }
+        #endregion
 
     }
 }

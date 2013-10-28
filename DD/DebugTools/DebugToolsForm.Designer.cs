@@ -1,4 +1,5 @@
 ﻿namespace DD.DebugTools {
+
     partial class DebugToolsForm {
         /// <summary>
         /// Required designer variable.

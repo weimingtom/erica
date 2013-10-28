@@ -61,7 +61,6 @@ namespace DD {
             this.Attach (new NodeDestroyer ());
             this.Attach (new ClockTower ());
             this.Attach (new Logger ());
-            this.Attach (new DatabaseManager ());
 
             // キャッシュ
             this.allNodes = null;
@@ -125,6 +124,9 @@ namespace DD {
             get { return GetComponent<NodeDestroyer> (); }
         }
 
+        /// <summary>
+        /// ログ記録コンポーネント
+        /// </summary>
         public Logger Logger {
             get { return GetComponent<Logger> (); }
         }
@@ -164,9 +166,6 @@ namespace DD {
             get { return GetComponent<Physics.PhysicsSimulator> (); }
         }
 
-        public DatabaseManager DataBaseManager {
-            get { return GetComponent<DatabaseManager> (); }
-        }
 
         /// <summary>
         /// 全ノードを列挙する列挙子（高速）

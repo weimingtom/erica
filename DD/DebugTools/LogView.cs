@@ -8,14 +8,30 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace DD.DebugTools {
+    /// <summary>
+    /// ログ ビュー
+    /// </summary>
+    /// <remarks>
+    /// ログを閲覧するコントロール。
+    /// </remarks>
     public partial class LogView : UserControl {
-        int i = 0;
+        #region Field
         World wld;
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
         public LogView () {
             InitializeComponent ();
         }
+        #endregion
 
+        #region Property
+        /// <summary>
+        /// DDワールド
+        /// </summary>
         public World World {
             get { return wld; }
             set {
@@ -25,7 +41,16 @@ namespace DD.DebugTools {
                 this.wld = value; 
             }
         }
+        #endregion
 
+        /// <summary>
+        /// タイマーによるログ表示の更新
+        /// </summary>
+        /// <remarks>
+        /// 優先度によっては赤色で表示するとかすべきだが、めんどくさいのでやってない。
+        /// </remarks>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick (object sender, EventArgs e) {
             if (wld != null) {
                 textBox1.SuspendLayout ();

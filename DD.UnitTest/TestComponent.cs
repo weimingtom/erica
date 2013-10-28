@@ -268,25 +268,7 @@ namespace DD.UnitTest {
             Assert.AreEqual (phys, cmp.PhysicsSimulator);
         }
 
-        [TestMethod]
-        public void Test_DB () {
-            var dbms = new DatabaseManager ();
-            var cmp = new Component ();
-
-            var node = new Node ();
-            node.Attach (dbms);
-            node.Attach (cmp);
-
-            var wld = new World ();
-
-            wld.AddChild (node);
-            Assert.AreNotEqual (wld.DataBaseManager, cmp.DB);
-
-            wld.RemoveChild (node);
-            Assert.AreEqual (dbms, cmp.DB);
-
-        }
-
+ 
         [TestMethod]
         public void Test_GetComponent () {
             var comp1 = new MyComponent ();
