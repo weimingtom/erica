@@ -279,7 +279,8 @@ namespace DD {
                         var tileNode = new Node (name);
                         tileNode.Translation = new Vector3 (x * TileWidth, y * TileHeight, 0);
 
-                        var spr = new Sprite (tex, tileset.TileWidth, tileset.TileHeight);
+                        var spr = new Sprite (tileset.TileWidth, tileset.TileHeight);
+                        spr.AddTexture (tex);
                         spr.SetTextureOffset (tx, ty);
                         if (orientaion == "Isometric") {
                             // ノード位置 : Port
@@ -348,7 +349,8 @@ namespace DD {
 
                 var src = layer.Image.Source;
                 if (src != null) {
-                    var layerComp = new Sprite (Resource.GetTexture (src));
+                    var layerComp = new Sprite ();
+                    layerComp.AddTexture (Resource.GetTexture (src));
                     layerNode.Attach (layerComp);
                 }
                 var data = layer.Image.Data;

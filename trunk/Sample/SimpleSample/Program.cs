@@ -35,7 +35,7 @@ namespace DD.Sample.SimpleSample {
                 var msec = watch.ElapsedMilliseconds;
 
                 g2d.Dispatch (wld);
-                wld.Animate (msec, 33);
+                wld.Animate (msec, 16);
                 wld.CollisionUpdate ();
                 wld.Update (msec);
                 g2d.Draw (wld);

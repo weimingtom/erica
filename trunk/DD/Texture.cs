@@ -39,6 +39,7 @@ namespace DD {
             this.width = (int)this.data.Size.X;
             this.height = (int)this.data.Size.Y;
 
+            this.data.Smooth = true;
             this.data.Repeated = true;
         }
 
@@ -64,6 +65,7 @@ namespace DD {
             this.width = (int)this.data.Size.X;
             this.height = (int)this.data.Size.Y;
 
+            this.data.Smooth = true;
             this.data.Repeated = true;
         }
 
@@ -88,8 +90,8 @@ namespace DD {
             this.width = (int)this.data.Size.X;
             this.height = (int)this.data.Size.Y;
 
+            this.data.Smooth = true;
             this.data.Repeated = true;
-
         }
 
         #endregion
@@ -111,7 +113,7 @@ namespace DD {
         /// テクスチャー名
         /// </summary>
         /// <remarks>
-        /// 現在選択されているテクスチャー画像の名前
+        /// テクスチャーの名前。コンストラクターで付けたファイル名や識別用の名前です。
         /// </remarks>
         public string Name {
             get { return name; }
@@ -147,6 +149,11 @@ namespace DD {
                 data.Dispose ();
                 data = null;
             }
+        }
+
+        /// <inheritdoc/>
+        public override string ToString () {
+            return string.Format("{0} ({1}x{2})", name, width, height);
         }
         #endregion
     }

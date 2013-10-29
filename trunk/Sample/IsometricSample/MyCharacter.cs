@@ -20,7 +20,7 @@ namespace DD.Sample.IsometricSample {
             spr.AddTexture (new Texture ("media/isometric-man-nw.png"));
             spr.AddTexture (new Texture ("media/isometric-man-se.png"));
             spr.AddTexture (new Texture ("media/isometric-man-sw.png"));
-            spr.ActiveTextureIndex = 1;
+            spr.ActiveTexture = 1;
 
             var col = new CollisionObject ();
             col.Shape = new BoxShape (32, 16, 1);
@@ -69,10 +69,10 @@ namespace DD.Sample.IsometricSample {
 
             foreach (var key in Input.Keys) {
                 switch (key) {
-                    case KeyCode.RightArrow: dy -= 1; spr.ActiveTextureIndex = 1; break;
-                    case KeyCode.LeftArrow: dy += 1; spr.ActiveTextureIndex = 4; break;
-                    case KeyCode.DownArrow: dx += 1; spr.ActiveTextureIndex = 3; break;
-                    case KeyCode.UpArrow: dx -= 1; spr.ActiveTextureIndex = 2; break;
+                    case KeyCode.RightArrow: dy -= 1; spr.ActiveTexture = 1; break;
+                    case KeyCode.LeftArrow: dy += 1; spr.ActiveTexture = 4; break;
+                    case KeyCode.DownArrow: dx += 1; spr.ActiveTexture = 3; break;
+                    case KeyCode.UpArrow: dx -= 1; spr.ActiveTexture = 2; break;
                 }
             }
             if (dx != 0) {

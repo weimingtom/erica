@@ -12,8 +12,9 @@ namespace DD.Sample.DatabaseSample {
        public static Node Create (Vector3 pos) {
            var cmp = new MyCharacterViewer ();
 
-           var spr = new Sprite (1600, 1200);
+           var spr = new Sprite (800, 600);
            spr.AddTexture (Resource.GetDefaultTexture ());
+           spr.AutoScale = true;
 
            var mbox = new MailBox ("ChangeCharacter");
 

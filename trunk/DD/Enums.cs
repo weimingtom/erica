@@ -1006,5 +1006,20 @@ namespace DD {
         Vertical
     }
 
+    /// <summary>
+    /// テクスチャーの塗りつぶしモード
+    /// </summary>
+    public enum FillMode {
+        /// <summary>
+        /// 繰り返し
+        /// </summary>
+        Repeat,
+
+        /// <summary>
+        /// 拡大又は縮小
+        /// </summary>
+        Scale,
+    }
+
 
 }
