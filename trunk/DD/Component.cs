@@ -42,16 +42,6 @@ namespace DD {
         }
 
         /// <summary>
-        /// このノード
-        /// </summary>
-        /// <remarks>
-        /// <see cref="Node"/> の別名です。
-        /// </remarks>
-        public Node This {
-            get { return node; }
-        }
-
-        /// <summary>
         /// UpdateInit()が呼ばれた事があるかどうかのフラグ
         /// </summary>
         internal bool IsUpdateInitCalled {
@@ -75,16 +65,6 @@ namespace DD {
             set { this.collisionUpdateInitIsCalled = value; }
         }
 
-
-        /// <summary>
-        /// ノード名
-        /// </summary>
-        /// <remarks>
-        /// アタッチ前は文字列の "null" が返ります。
-        /// </remarks>
-        public string NodeName {
-            get { return (node == null) ? "null" : node.Name; }
-        }
 
         /// <summary>
         /// ワールド ノード
@@ -256,6 +236,23 @@ namespace DD {
             }
 
             return node.GetComponent<T> (index);
+        }
+
+        /// <summary>
+        /// ノードのユーザーデータの取得
+        /// </summary>
+        /// <remarks>
+        /// 指定の名前のユーザーデータが存在しない場合、例外を発生します。
+        /// </remarks>
+        /// <typeparam name="T">データの型</typeparam>
+        /// <param name="name">一意な名前</param>
+        /// <returns></returns>
+        protected T GetUserData<T> (string name) where T:class {
+            if (node == null) {
+                return null;
+            }
+
+            return node.UserData[name] as T;
         }
 
         /// <summary>

@@ -93,25 +93,10 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
-        public void Test_NodeName () {
-            var comp = new Component ();
-            var node = new Node ("Node");
-
-            Assert.AreEqual ("null", comp.NodeName);
-
-            node.Attach (comp);
-            Assert.AreEqual ("Node", comp.NodeName);
-
-            node.Detach (comp);
-            Assert.AreEqual ("null", comp.NodeName);
-        }
-
-        [TestMethod]
         public void Test_World () {
             var comp = new Component ();
             var node = new Node ();
             var wld = new World ();
-
 
             Assert.AreEqual (null, comp.World);
 
@@ -280,6 +265,16 @@ namespace DD.UnitTest {
             Assert.AreEqual (comp1, comp1.GetComponent<MyComponent> ());
             Assert.AreEqual (comp1, comp1.GetComponent<MyComponent> (0));
             Assert.AreEqual (comp2, comp1.GetComponent<MyComponent> (1));
+        }
+
+        [TestMethod]
+        public void Test_GetUserData () {
+            var node = new Node ();
+            node.AddUserData ("Key1", "Value1");
+            node.AddUserData ("Key2", "Value2");
+
+            Assert.AreEqual ("Value1", node.GetUserData<string> ("Key1"));
+            Assert.AreEqual ("Value2", node.GetUserData<string> ("Key2"));
         }
 
         [TestMethod]
