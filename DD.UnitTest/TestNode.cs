@@ -50,6 +50,25 @@ namespace DD.UnitTest {
         }
 
         [TestMethod]
+        public void Test_Name () {
+            var node1 = new Node ();
+            var node2 = new Node ("SomeName");
+
+            Assert.AreEqual ("Node", node1.Name);
+            Assert.AreEqual ("SomeName", node2.Name);
+        }
+
+        [TestMethod]
+        public void Test_AddUserData () {
+            var node = new Node ();
+            node.AddUserData ("Key1", "Value1");
+            node.AddUserData ("Key2", "Value2");
+
+            Assert.AreEqual ("Value1", node.GetUserData<string> ("Key1"));
+            Assert.AreEqual ("Value2", node.GetUserData<string> ("Key2"));
+        }
+
+        [TestMethod]
         public void Test_UniqueID () {
             var node1 = new Node ("Node1");
             var node2 = new Node ("Node2");

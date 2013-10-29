@@ -41,23 +41,18 @@ namespace DD {
 
 
         #region Constructor
+ 
         /// <summary>
-        /// コンストラクター
-        /// </summary>
-        public Node ()
-            : this ("") {
-        }
-
-        /// <summary>
-        /// コンストラクター
+        /// 名前を指定してノードを作成するコンストラクター
         /// </summary>
         /// <remarks>
-        /// 名前を指定してノードを作成します。名前は後から変更できません。
+        /// 名前を指定してノードを作成します。省略すると型名が使用されます。
+        /// 名前は後から変更できません。
         /// </remarks>
         /// <param name="name">ノード名</param>
-        public Node (string name)
+        public Node (string name = null)
             : base () {
-            this.name = name ?? "";
+            this.name = name ?? this.GetType().Name;
             this.groupID = -1;
             this.drawable = true;
             this.updatable = true;
@@ -83,11 +78,11 @@ namespace DD {
         /// ノード名
         /// </summary>
         /// <remarks>
-        /// ユーザーがノードの識別に使用する名前です。重複する名前のノードがあってもかまいません。
+        /// ユーザーがノードの識別に使用する名前です。
+        /// 重複する名前のノードがあってもかまいません。
         /// </remarks>
         public string Name {
             get { return name; }
-            //set { this.name = value ?? ""; }
         }
 
 
@@ -502,6 +497,30 @@ namespace DD {
                 node.matrix = null;
             }
             base.InvalidateTransformCache ();
+        }
+
+        /// <summary>
+        /// ユーザーデータの追加
+        /// </summary>
+        /// <remarks>
+        /// ノードにはディクショナリー形式（キー、ヴァリュー）で任意のデータを登録可能です。
+        /// ユーザーデータはエンジン側で使用せず、使い方は全てユーザーの自由です。
+        /// </remarks>
+        /// <typeparam name="T">任意の型</typeparam>
+        /// <param name="key">キー</param>
+        /// <param name="value">バリュー</param>
+        public void AddUserData<T> (string key, T value) where T : class {
+            this.userData.Add (key, value);
+        }
+
+        /// <summary>
+        /// ユーザーデータの取得
+        /// </summary>
+        /// <typeparam name="T">任意の型</typeparam>
+        /// <param name="key">キー</param>
+        /// <returns></returns>
+        public T GetUserData<T> (string key) where T : class {
+            return userData[key] as T;
         }
 
         /// <summary>
