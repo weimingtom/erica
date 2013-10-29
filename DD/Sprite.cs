@@ -24,68 +24,45 @@ namespace DD {
         int height;
         Vector2 offset;
         List<Texture> texs;
-        Texture active;
+        int active;
         Color color;
         Vector2 texOffset;
+        bool autoScale;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// デフォルトの <see cref="Sprite"/> コンポーネントを作成
+        /// サイズを指定して <see cref="Sprite"/> コンポーネントを作成
         /// </summary>
         /// <remarks>
-        /// テクスチャーは未定義です。
-        /// アクティブなテクスチャーは null にセットされます。
+        /// サイズ (<paramref name="width"/>, <paramref name="height"/>)の
+        /// スプライト オブジェクトを作成します。
+        /// テクスチャーは未設定です。このまま描画すると指定サイズの単色ブロックが表示されます。
         /// </remarks>
         public Sprite (int width, int height) {
             this.width = width;
             this.height = height;
             this.texs = new List<Texture> ();
-            this.active = null;
+            this.active = 0;
             this.offset = new Vector2 (0, 0);
             this.color = Color.White;
             this.texOffset = new Vector2 (0, 0);
+            this.autoScale = false;
         }
 
         /// <summary>
-        /// テクスチャーを指定して <see cref="Sprite"/> コンポーネントを作成
+        /// サイズ未指定で <see cref="Sprite"/> コンポーネントを作成
         /// </summary>
         /// <remarks>
-        /// テクスチャーを指定して <see cref="Sprite"/> コンポーネントを作成します。
-        /// スプライトのサイズはテクスチャー画像のサイズと同一に設定されます。
+        /// サイズ未指定でスプライト オブジェクトを作成します。
+        /// サイズはテクスチャーがセットされると自動的にそのサイズになります。
+        /// テクスチャーサイズと同一のスプライトを作りたい時に便利です。
+        /// テクスチャーは未設定です。
+        /// このまま描画すると何も表示されません。。
         /// </remarks>
-        public Sprite (Texture texture) {
-            if (texture == null) {
-                throw new ArgumentNullException ("Texture is null");
-            }
-            this.width = texture.Width;
-            this.height = texture.Height;
-            this.texs = new List<Texture> () { texture };
-            this.active = texture;
-            this.offset = new Vector2 (0, 0);
-            this.color = Color.White;
-            this.texOffset = new Vector2 (0, 0);
+        public Sprite ()
+            : this (0, 0) {
         }
-
-        /// <summary>
-        /// テクスチャーとサイズを指定して <see cref="Sprite"/> コンポーネントを作成
-        /// </summary>
-        /// <remarks>
-        /// テクスチャーとサイズを指定して <see cref="Sprite"/> コンポーネントを作成します。
-        /// スプライトのサイズはテクスチャー画像サイズとは無関係に引数で指定した値が使用されます。
-        /// </remarks>
-        /// <param name="texture">テクスチャー</param>
-        /// <param name="width">幅（ピクセル数）</param>
-        /// <param name="height">高さ（ピクセル数）</param>
-        public Sprite (Texture texture, int width, int height)
-            : this (texture) {
-            if (width < 0 || height < 0) {
-                throw new ArgumentException ("Size is invalid");
-            }
-            this.width = width;
-            this.height = height;
-        }
-
         #endregion
 
         #region Property
@@ -95,31 +72,13 @@ namespace DD {
         /// </summary>
         /// <remarks>
         /// 現在アクティブなテクスチャーの番号を取得または変更します。
-        /// このプロパティはアニメーション システムが値を書き換えてアクティブ テクスチャーを変更する為に存在しています。
-        /// 配列型のプロパティのアニメーションに対応したら消すかもしれません。
+        /// スプライトは複数のテクスチャーの中から1つを選んで描画します。
         /// </remarks>
-        public int ActiveTextureIndex {
-            get { return texs.FindIndex (x => x == active); }
+        public int ActiveTexture {
+            get { return active; }
             set {
                 if (value < 0 || value > TextureCount - 1) {
                     throw new IndexOutOfRangeException ("Index is out of range");
-                }
-                this.active = texs[value];
-            }
-        }
-
-        /// <summary>
-        /// 現在アクティブなテクスチャー
-        /// </summary>
-        /// <remarks>
-        /// 現在アクティブなテクスチャーを取得または変更します。
-        /// ここで指定できるテクスチャーはこのスプライト オブジェクトに登録済みの物に限ります。
-        /// </remarks>
-        public Texture ActiveTexture {
-            get { return active; }
-            set {
-                if (!texs.Contains (value)) {
-                    throw new ArgumentException ("Texture is not in this Sprite");
                 }
                 this.active = value;
             }
@@ -140,8 +99,7 @@ namespace DD {
         /// スプライトの幅（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// このスプライトが描画されるときの幅（ピクセル数）です。
-        /// 後から変更はできません。
+        /// このスプライトの幅（ピクセル数）です。
         /// </remarks>
         public int Width {
             get { return width; }
@@ -151,15 +109,26 @@ namespace DD {
         /// スプライトの高さ（ピクセル数）
         /// </summary>
         /// <remarks>
-        /// このスプライトが描画されるときの高さ（ピクセル数）です。
-        /// 後から変更はできません。
+        /// このスプライトの高さ（ピクセル数）です。
         /// </remarks>
         public int Height {
             get { return height; }
         }
 
         /// <summary>
-        /// テクスチャーオフセット（ピクセル数）
+        /// テクスチャーの自動スケーリング
+        /// </summary>
+        /// <remarks>
+        /// <c>true</c> の場合は1枚のテクスチャー画像をスプライトサイズに拡大･縮小して表示します。
+        /// <c>false</c> の場合はテクスチャー画像サイズはそのままに繰り返しコピーでスプライト領域を埋めます。
+        /// </remarks>
+        public bool AutoScale {
+            get { return autoScale; }
+            set { this.autoScale = value; }
+        }
+
+        /// <summary>
+        /// テクスチャー オフセット（ピクセル数）
         /// </summary>
         /// <remarks>
         /// テクスチャーを取得する際に画像ピクセルを (0,0) からではなく、このピクセル数分ずらした位置から取得します。
@@ -193,8 +162,8 @@ namespace DD {
         ///          spr.OffsetY = -spr.ActiveTexture.Height / 2;
         /// </code>
         /// </remarks>
-        /// <param name="x">X（ピクセル数）</param>
-        /// <param name="y">Y（ピクセル数）</param>
+        /// <param name="x">X方向のオフセット量（ピクセル数）</param>
+        /// <param name="y">Y方向のオフセット量（ピクセル数）</param>
         public void SetOffset (float x, float y) {
             this.offset = new Vector2 (x, y);
         }
@@ -230,8 +199,9 @@ namespace DD {
                 throw new ArgumentNullException ("Texture is null");
             }
             this.texs.Add (tex);
-            if (active == null) {
-                this.active = tex;
+            if (width == 0 && height == 0) {
+                this.width = tex.Width;
+                this.height = tex.Height;
             }
         }
 
@@ -245,22 +215,24 @@ namespace DD {
                 throw new IndexOutOfRangeException ("Index is out of range");
             }
             this.texs[index] = tex;
-            this.active = tex;
+            if (width == 0 && height == 0) {
+                this.width = tex.Width;
+                this.height = tex.Height;
+            }
         }
 
         /// <summary>
         /// テクスチャーの削除
         /// </summary>
         /// <remarks>
-        /// テクスチャーを削除します。もし削除されたテクスチャーがアクティブだった場合、
-        /// 既存のテクスチャーの中から1つがアクティブ テクスチャーとして再選択されます。
-        /// どれが選ばれるかは未定義です。
+        /// テクスチャーを削除します。
+        /// アクティブ テクスチャーは変更されません。
         /// </remarks>
         /// <param name="tex">削除したいテクスチャー</param>
         /// <returns>削除したら true, そうでなければ false.</returns>
         public bool RemoveTexture (Texture tex) {
-            if (active == tex) {
-                this.active = texs.FirstOrDefault (x => x != tex);
+            if (tex == null) {
+                return false;
             }
             return this.texs.Remove (tex);
         }
@@ -268,13 +240,13 @@ namespace DD {
         /// <summary>
         /// テクスチャーの取得
         /// </summary>
-        /// <param name="i">テクスチャー番号</param>
+        /// <param name="index">テクスチャー番号</param>
         /// <returns></returns>
-        public Texture GetTexture (int i) {
-            if (i < 0 || i > TextureCount - 1) {
+        public Texture GetTexture (int index) {
+            if (index < 0 || index > TextureCount - 1) {
                 throw new IndexOutOfRangeException ("Index is out of range");
             }
-            return texs[i];
+            return texs[index];
         }
 
         /// <summary>
@@ -296,14 +268,18 @@ namespace DD {
         /// サイズの変更
         /// </summary>
         /// <remarks>
-        /// <paramref name="width"/> と <paramref name="height"/> は0以上です。
+        /// <paramref name="width"/> と <paramref name="height"/> に負の値を設定すると画像が反転します。
+        /// 0を指定した場合、アクティブなテクスチャーのサイズと同じ値に設定されます。
+        /// 現在アクティブなテクスチャーが存在しない場合、後でセットされます。
         /// </remarks>
         /// <param name="width">スプライトの幅（ピクセル数）</param>
         /// <param name="height">スプライトの高さ（ピクセル数）</param>
         public void Resize (int width, int height) {
-            if (width < 0 || height < 0) {
-                throw new ArgumentException ("Size is invalid");
+            if (width == 0 && height == 0 && texs[active] != null) {
+                width = texs[active].Width;
+                height = texs[active].Height;
             }
+
             this.width = width;
             this.height = height;
         }
@@ -321,6 +297,9 @@ namespace DD {
 
         /// <inheritdoc/>
         public override void OnDraw (object window) {
+            if (width == 0 || height == 0) {
+                return;
+            }
 
             Vector3 T;
             Quaternion R;
@@ -339,19 +318,48 @@ namespace DD {
 
             var opacity = Node.Upwards.Aggregate (1.0f, (x, node) => x * node.Opacity);
 
+            var tex = texs[active] ?? Resource.GetDefaultTexture ();
             var spr = new SFML.Graphics.Sprite ();
-            spr.Texture = (active ?? Resource.GetDefaultTexture ()).Data;
-            spr.TextureRect = new IntRect ((int)texOffset.X, (int)texOffset.Y, width, height);
+            spr.Texture = tex.Data;
 
-            spr.Position = new Vector2f (T.X, T.Y);
-            spr.Scale = new Vector2f (S.X, S.Y);
+            var posX = (width > 0) ? T.X : T.X;// -width;
+            var posY = (height > 0) ? T.Y : T.Y;// -height;
+            spr.Position = new Vector2f (posX, posY);
             spr.Rotation = angle;
             spr.Origin = new Vector2f (-offset.X, -offset.Y);
+            spr.Color = new Color (color.R, color.G, color.B, (byte)(color.A * opacity)).ToSFML ();
 
-            spr.Color = new Color(color.R, color.G, color.B, (byte)(color.A*opacity)).ToSFML ();
+
+            if (autoScale) {
+                var texX = (int)texOffset.X;
+                var texY = (int)texOffset.Y;
+                var texWidth = (width > 0) ? tex.Width : -tex.Width;
+                var texHeight = (height > 0) ? tex.Height : -tex.Height;
+                spr.TextureRect = new IntRect (texX, texY, texWidth, texHeight);
+                spr.Scale = new Vector2f (S.X * Math.Abs (width / (float)tex.Width),
+                                          S.Y * Math.Abs (height / (float)tex.Height));
+            }
+            else {
+                var texX = (int)texOffset.X;
+                var texY = (int)texOffset.Y;
+                var texWidth = width;
+                var texHeight = height;
+                spr.TextureRect = new IntRect (texX, texY, texWidth, texHeight);
+                spr.Scale = new Vector2f (S.X, S.Y);
+            }
 
             var win = window as RenderWindow;
             win.Draw (spr);
+        }
+
+
+        /// <inheritdoc/>
+        public override string ToString () {
+            var str = "";
+            for (var i = 0; i < texs.Count (); i++) {
+                str += string.Format ("{0}{2}: {1}, ", i, texs[i], (i == active) ? "(active)" : "");
+            }
+            return str;
         }
 
         #endregion

@@ -9,7 +9,8 @@ namespace DD.Sample.MouseSample {
         public static World Create (float width, float height) {
             var cmp = new MyWorld ();
 
-            var spr = new Sprite (new Texture ("media/Vanity.jpg"));
+            var spr = new Sprite ();
+            spr.AddTexture(new Texture ("media/Vanity.jpg"));
 
             var col = new CollisionObject ();
             col.Shape = new BoxShape (width / 2, height / 2, 1);

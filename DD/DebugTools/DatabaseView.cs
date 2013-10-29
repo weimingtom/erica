@@ -18,6 +18,7 @@ namespace DD.DebugTools {
     /// </remarks>
     public partial class DatabaseView : UserControl {
         #region Field
+        World wld;
         #endregion
 
         #region Constructor
@@ -30,8 +31,27 @@ namespace DD.DebugTools {
         #endregion
 
         #region Property
+        /// <summary>
+        /// DDワールド
+        /// </summary>
+        /// <remarks>
+        /// ただし未使用。代入したタイミングでデータベースが表示される。
+        /// </remarks>
+        public World World{
+            get { return wld; }
+            set {
+                if (value == null) {
+                    throw new ArgumentNullException ("World is null");
+                }
+                this.wld = value;
+
+                CreateDropDownList ();
+                CreateTabPages (null);
+            }
+        }
         #endregion
 
+        #region Method
         /// <summary>
         /// データベース選択ドロップダウンリストの表示
         /// </summary>
@@ -80,6 +100,7 @@ namespace DD.DebugTools {
             }
 
         }
+        #endregion
 
 
 

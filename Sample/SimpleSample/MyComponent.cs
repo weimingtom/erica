@@ -14,36 +14,39 @@ namespace DD.Sample.SimpleSample {
 
             var cmp = new MyComponent ();
 
-            var clip = new SoundClip ("Sound");
-            clip.AddTrack (new MusicTrack ("media/BGM(Field04).ogg"));
-            clip.AddTrack (new SoundEffectTrack ("media/PinPon.wav"));
+            var spr = new Sprite (480, 300);
+            spr.AddTexture (new Texture ("media/Vanity.jpg"));
+            spr.AddTexture (new Texture ("media/Tanks.png"));
+            spr.AddTexture (new Texture ("media/TatamiRoom.png"));
+            spr.AutoScale = true;
 
-            var spr = new Sprite (64, 64);
-            spr.Color = Color.Red;
-
-            var label = new Label ();
-            label.Text = "ここにはA子のキャラクター紹介文が入ります。";
+            Console.WriteLine ("tex = " + spr.GetTexture (0));
+            Console.WriteLine ("spr = " + spr);
 
             var col = new CollisionObject();
-            col.Shape  = new BoxShape(32, 32, 32);
-            col.SetOffset (32, 32, 0);
+            col.Shape  = new BoxShape(spr.Width/2, spr.Height/2, 100);
+            col.SetOffset (spr.Width/2, spr.Height/2, 0);
+
+            var ctr = new AnimationController ();
 
             var node = new Node ();
             node.Attach (cmp);
             node.Attach (spr);
             node.Attach (col);
-            node.Attach (label);
+            node.Attach (ctr);
             
+            node.Translation = pos;
+
+            var clip = new SoundClip ("Sound");
+            clip.AddTrack (new SoundEffectTrack ("media/PinPon.wav"));
+
             node.UserData.Add (clip.Name, clip);
 
-            node.Translation = pos;
 
             return node;
         }
 
         public override void OnUpdateInit (long msec) {
-            var clip = Node.UserData["Sound"] as SoundClip;
-            clip.Play ();
         }
 
 

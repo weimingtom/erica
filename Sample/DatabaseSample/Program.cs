@@ -61,7 +61,8 @@ namespace DD.Sample.DatabaseSample {
 
             var view = new DebugTools.DatabaseView ();
             view.Dock = DockStyle.Fill;
-            
+            view.World = wld;
+
             var form = new Form ();
             form.Controls.Add (view);
             form.Show ();

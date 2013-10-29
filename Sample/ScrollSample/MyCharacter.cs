@@ -13,7 +13,7 @@ namespace DD.Sample.ScrollSample {
             var spr = new Sprite (24, 32);
             spr.AddTexture(new Texture("media/Character-Gelato.png"));
             spr.AddTexture(new Texture("media/image128x128(Red).png"));
-            spr.ActiveTextureIndex = 0;
+            spr.ActiveTexture = 0;
 
             var cmp = new MyCharacter ();
             cmp.Speed = 10;
@@ -64,10 +64,10 @@ namespace DD.Sample.ScrollSample {
             var pass = World.GetProperty("Pass", 1);
 
             if (pass == 0) {
-                Sprite.ActiveTextureIndex = 0;
+                Sprite.ActiveTexture = 0;
             }
             if (pass == 1) {
-                Sprite.ActiveTextureIndex = 1;
+                Sprite.ActiveTexture = 1;
             }
         }
 

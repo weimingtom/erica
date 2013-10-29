@@ -24,9 +24,9 @@ namespace DD.Sample.DebugToolsSample {
             spr.AddTexture (new Texture ("media/ButtonGreen-Active-64x64.png"));
             spr.AddTexture (new Texture ("media/ButtonBlue-Active-64x64.png"));
             switch (target) {
-                case "A子": spr.ActiveTextureIndex = 0; break;
-                case "B子": spr.ActiveTextureIndex = 1; break;
-                case "C子": spr.ActiveTextureIndex = 2; break;
+                case "A子": spr.ActiveTexture = 0; break;
+                case "B子": spr.ActiveTexture = 1; break;
+                case "C子": spr.ActiveTexture = 2; break;
             }
 
             var col = new CollisionObject ();

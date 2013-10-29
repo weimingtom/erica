@@ -13,7 +13,8 @@ namespace DD.Sample.GUISample {
         public static World Create () {
             var cmp = new MyWorld ();
             
-            var spr = new Sprite (new Texture ("media/Vanity.jpg"));
+            var spr = new Sprite ();
+            spr.AddTexture(new Texture ("media/Vanity.jpg"));
 
             var col = new CollisionObject ();
             col.Shape = new BoxShape (spr.Width / 2, spr.Height / 2, 1);

@@ -18,24 +18,29 @@ namespace DD.UnitTest {
             Assert.AreEqual (64, spr.Width);
             Assert.AreEqual (64, spr.Height);
             Assert.AreEqual (0, spr.TextureCount);
+            Assert.AreEqual (1, spr.Textures.Count ());
             Assert.AreEqual (null, spr.ActiveTexture);
             Assert.AreEqual (0, spr.Offset.X);
             Assert.AreEqual (0, spr.Offset.Y);
             Assert.AreEqual (Color.White, spr.Color);
+            Assert.AreEqual (false, spr.AutoScale);
         }
 
         [TestMethod]
         public void Test_New_2 () {
             var tex = new Texture ("image2x2.png");
-            var spr = new Sprite (tex);
+            var spr = new Sprite ();
+            spr.AddTexture (tex);
 
             Assert.AreEqual (2, spr.Width);
             Assert.AreEqual (2, spr.Height);
             Assert.AreEqual (1, spr.TextureCount);
+            Assert.AreEqual (1, spr.Textures.Count());
             Assert.AreEqual (tex, spr.ActiveTexture);
             Assert.AreEqual (0, spr.Offset.X);
             Assert.AreEqual (0, spr.Offset.Y);
             Assert.AreEqual (Color.White, spr.Color);
+            Assert.AreEqual (false, spr.AutoScale);
         }
 
         [TestMethod]
@@ -54,11 +59,22 @@ namespace DD.UnitTest {
 
             spr.SetColor (5, 6, 7, 8);
             Assert.AreEqual (new Color (5, 6, 7, 8), spr.Color);
-
         }
 
         [TestMethod]
-        public void Test_AddTexture () {
+        public void Test_SetAutoScale () {
+            var spr = new Sprite (64, 64);
+
+            spr.AutoScale = true;
+            Assert.AreEqual (true, spr.AutoScale);
+
+            spr.AutoScale = false;
+            Assert.AreEqual (false, spr.AutoScale);
+
+            }
+
+        [TestMethod]
+        public void Test_AddTexture_1 () {
             var spr = new Sprite (64, 64);
             spr.AddTexture (new Texture ("abstract7.png"));
             spr.AddTexture (new Texture ("image2x2.png"));
@@ -70,21 +86,21 @@ namespace DD.UnitTest {
             Assert.AreEqual ("image2x2.png", spr.GetTexture(1).Name);
         }
 
-
         [TestMethod]
-        public void Test_SetActiveTexture () {
-            var spr = new Sprite (64, 64);
+        public void Test_AddTexture_2 () {
+            var spr = new Sprite ();
             spr.AddTexture (new Texture ("abstract7.png"));
             spr.AddTexture (new Texture ("image2x2.png"));
 
-            spr.ActiveTextureIndex = 1;
-            Assert.AreEqual (1, spr.ActiveTextureIndex);
+            // サイズ未指定のスプライトは
+            // 最初のテクスチャーにあわせられる
 
-            var tex1 = spr.ActiveTexture;
-            Assert.AreEqual ("image2x2.png", tex1.Name);
-            Assert.AreEqual (2, tex1.Width);
-            Assert.AreEqual (2, tex1.Height);
+            Assert.AreEqual (614, spr.Width);
+            Assert.AreEqual (1024, spr.Height);
+            Assert.AreEqual (0, spr.ActiveTexture);
+            Assert.AreEqual (2, spr.TextureCount);
         }
+
 
         [TestMethod]
         public void Test_RemoveTexture () {
@@ -97,6 +113,19 @@ namespace DD.UnitTest {
             spr.RemoveTexture (tex1);
 
             Assert.AreEqual (tex2, spr.ActiveTexture);
+        }
+
+        [TestMethod]
+        public void Test_SetActiveTexture () {
+            var spr = new Sprite (64, 64);
+            spr.AddTexture (new Texture ("abstract7.png"));
+            spr.AddTexture (new Texture ("image2x2.png"));
+
+            spr.ActiveTexture = 0;
+            Assert.AreEqual (0, spr.ActiveTexture);
+
+            spr.ActiveTexture = 1;
+            Assert.AreEqual (1, spr.ActiveTexture);
         }
 
         [TestMethod]
@@ -126,6 +155,18 @@ namespace DD.UnitTest {
             Assert.AreEqual (4, spr.TextureOffset.Y);
         }
 
+        [TestMethod]
+        public void Test_Resize () {
+            var spr = new Sprite (0, 0);
 
+            spr.Resize (1, 2);
+            Assert.AreEqual (1, spr.Width);
+            Assert.AreEqual (2, spr.Height);
+
+            spr.Resize (-1, -2);
+            Assert.AreEqual (-1, spr.Width);
+            Assert.AreEqual (-2, spr.Height);
+
+        }
     }
 }
