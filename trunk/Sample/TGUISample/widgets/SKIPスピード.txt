@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "SKIPスピード.png" (0, 0, 200, 38)

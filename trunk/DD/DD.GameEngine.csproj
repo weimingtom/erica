@@ -82,6 +82,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="tguinet">
+      <HintPath>libs\tguinet.dll</HintPath>
+    </Reference>
     <Reference Include="TiledSharp">
       <HintPath>libs\TiledSharp.dll</HintPath>
     </Reference>
@@ -160,6 +163,7 @@
     </Compile>
     <Compile Include="DeliveryRecord.cs" />
     <Compile Include="DestroyOrder.cs" />
+    <Compile Include="GUI.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OverlappingPair.cs" />
     <Compile Include="CapsuleShape.cs" />

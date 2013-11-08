@@ -1,0 +1,5 @@
+﻿Button:
+    NormalImage    = "デフォルトに戻す.png" (0, 0, 150, 32)
+    HoverImage  = "デフォルトに戻すf.png" (0, 0, 150, 32)
+    DownImage      = "デフォルトに戻すs.png" (0, 0, 150, 32)
+		SeparateHoverImage = true

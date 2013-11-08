@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "AMBIENT SOUND.png" (0, 0, 200, 38)

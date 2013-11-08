@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "SKIP選択肢後.png" (0, 0, 200, 38)

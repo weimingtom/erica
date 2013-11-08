@@ -1,0 +1,5 @@
+﻿Button:
+	NormalImage = "MIN.png"
+	HoverImage  = "MINf.png"
+	DownImage   = "MINs.png"
+	separatehoverimage = true

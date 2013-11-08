@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "右クリック設定.png" (0, 0, 160, 38)

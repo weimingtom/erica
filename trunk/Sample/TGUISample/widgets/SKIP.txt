@@ -1,0 +1,5 @@
+﻿RadioButton:
+    UncheckedImage = "SKIP.png"
+    HoverImage     = "SKIPf.png"
+    CheckedImage   = "SKIPs.png"
+

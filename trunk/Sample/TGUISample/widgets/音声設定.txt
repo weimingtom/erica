@@ -1,0 +1,6 @@
+﻿Button:
+	NormalImage = "音声設定.png" (0, 0, 186, 60)
+	HoverImage  = "音声設定f.png" (0, 0, 186, 60)
+	DownImage   = "音声設定s.png" (0, 0, 186, 60)
+	SeparateHoverImage = true
+

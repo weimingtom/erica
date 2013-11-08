@@ -1,0 +1,5 @@
+﻿RadioButton:
+    UncheckedImage = "メッセージウィンドウ消去.png"
+    HoverImage     = "メッセージウィンドウ消去f.png"
+    CheckedImage   = "メッセージウィンドウ消去s.png"
+

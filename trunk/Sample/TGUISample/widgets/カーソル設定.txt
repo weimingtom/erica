@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "カーソル設定.png" (0, 0, 140, 38)

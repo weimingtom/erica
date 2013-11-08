@@ -1,0 +1,5 @@
+﻿Button:
+	NormalImage  = "SLOW.png" (0, 0, 50, 38)
+	HoverImage   = "SLOWf.png" (0, 0, 50, 38)
+	DownImage    = "SLOWs.png" (0, 0, 50, 38)
+	separatehoverimage = true

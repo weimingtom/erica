@@ -1,0 +1,5 @@
+﻿RadioButton:
+    UncheckedImage = "OFF(小).png"
+    HoverImage     = "OFF(小)f.png"
+    CheckedImage   = "OFF(小)s.png"
+
