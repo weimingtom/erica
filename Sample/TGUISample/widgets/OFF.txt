@@ -1,0 +1,4 @@
+﻿RadioButton:
+	UncheckedImage  = "OFF.png" (0, 0, 72, 38)
+	HoverImage    = "OFFf.png" (0, 0, 72, 38)
+	CheckedImage    = "OFFs.png" (0, 0, 72, 38)

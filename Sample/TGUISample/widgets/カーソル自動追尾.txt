@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "カーソル自動追尾.png" (0, 0, 200, 38)

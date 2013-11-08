@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "バトル画面エフェクト.png" (0, 0, 200, 38)

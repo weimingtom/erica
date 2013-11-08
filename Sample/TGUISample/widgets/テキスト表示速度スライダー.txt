@@ -1,0 +1,5 @@
+﻿Slider:
+    TrackNormalImage     = "スクロールトラック.png"
+    ThumbNormalImage     = "丸.png"    (0,0,20,20)
+    ThumbHoverImage      = "丸f.png"   (0,0,20,20)
+    VerticalScroll       = false

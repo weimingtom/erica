@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "SKIPテキスト.png" (0, 0, 200, 38)

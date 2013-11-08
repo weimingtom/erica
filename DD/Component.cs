@@ -183,6 +183,10 @@ namespace DD {
             get { return GetComponent<PhysicsSimulator> () ?? World.PhysicsSimulator; }
         }
 
+        protected internal GUI GUI{
+            get{return GetComponent<GUI>() ?? World.GUI;}
+    }
+
         /// <summary>
         /// このコンポーネントがアタッチ済みかどうかを確認するプロパティ
         /// </summary>

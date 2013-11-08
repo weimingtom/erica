@@ -61,6 +61,7 @@ namespace DD {
             this.Attach (new NodeDestroyer ());
             this.Attach (new ClockTower ());
             this.Attach (new Logger ());
+            this.Attach (new GUI ());
 
             // キャッシュ
             this.allNodes = null;
@@ -166,6 +167,9 @@ namespace DD {
             get { return GetComponent<Physics.PhysicsSimulator> (); }
         }
 
+        public GUI GUI {
+            get { return GetComponent<GUI> (); }
+        }
 
         /// <summary>
         /// 全ノードを列挙する列挙子（高速）

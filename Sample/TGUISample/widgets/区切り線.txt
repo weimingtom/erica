@@ -1,0 +1,2 @@
+﻿Button:
+	NormalImage    = "区切り線.png" (0, 0, 270, 10)

@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "SOUND EFFECT.png" (0, 0, 190, 38)

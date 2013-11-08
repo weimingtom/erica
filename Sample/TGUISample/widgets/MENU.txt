@@ -1,0 +1,5 @@
+﻿RadioButton:
+    UncheckedImage = "MENU.png"
+    HoverImage     = "MENUf.png"
+    CheckedImage   = "MENUs.png"
+

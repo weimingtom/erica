@@ -1,0 +1,5 @@
+﻿Slider:
+    TrackNormalImage     = "SOUND EFFECTスライダー.png"
+    ThumbNormalImage     = "丸.png"
+    ThumbHoverImage     = "丸f.png"
+    VerticalScroll       = false

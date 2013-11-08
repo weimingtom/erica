@@ -1,0 +1,6 @@
+﻿Button:
+	NormalImage    = "戻る.png" (0, 0, 90, 64)
+	HoverImage  = "戻るf.png" (0, 0, 90, 64)
+	DownImage      = "戻るs.png" (0, 0, 90, 64)
+	SeparateHoverImage = true
+

@@ -202,5 +202,14 @@ namespace DD {
         public static DD.Vector2 ToDD (this SFML.Window.Vector2f v) {
             return new Vector2 (v.X, v.Y);
         }
+
+
+        /// <summary>
+        /// DDの <see cref="DD.Vector2"/> 型をSFMLの<see cref="SFML.Window.Vector2f"/> 型に変換
+        /// </summary>
+        /// <param name="v">ベクトル</param>
+        public static SFML.Window.Vector2f ToSFML (this  DD.Vector2 v) {
+            return new SFML.Window.Vector2f (v.X, v.Y);
+        }
     }
 }

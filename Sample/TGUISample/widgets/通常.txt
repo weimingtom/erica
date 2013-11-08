@@ -1,0 +1,7 @@
+﻿RadioButton:
+	UncheckedImage  = "通常.png" (0, 0, 72, 38)
+	CheckedImage    = "通常s.png" (0, 0, 72, 38)
+	HoverImage      = "通常f.png" (0, 0, 72, 38)
+
+
+

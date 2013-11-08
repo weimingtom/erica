@@ -1,0 +1,4 @@
+﻿RadioButton:
+	UncheckedImage  = "継続.png" (0, 0, 72, 38)
+	CheckedImage    = "継続s.png" (0, 0, 72, 38)
+	HoverImage      = "継続f.png" (0, 0, 72, 38)

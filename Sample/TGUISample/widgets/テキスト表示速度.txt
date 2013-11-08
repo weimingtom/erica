@@ -1,0 +1,2 @@
+﻿Button:
+    NormalImage  = "テキスト表示速度.png" (0, 0, 200, 38)

@@ -1,0 +1,5 @@
+﻿Button:
+    NormalImage = "MAX.png"
+    HoverImage  = "MAXf.png"
+    DownImage   = "MAXs.png"
+		separatehoverimage = true
