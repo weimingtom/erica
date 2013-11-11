@@ -17,7 +17,7 @@ namespace DD.Sample.DonkeyKongSample {
             spr.AddTexture (Resource.GetDefaultTexture ());
             spr.Color = Color.Blue;
 
-            var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
+            var col = new BoxCollision (spr.Width / 2, spr.Height / 2, 0);
             col.SetOffset (spr.Width / 2, spr.Height / 2, 0);
 
             var node = new Node ("Goal");
@@ -33,7 +33,7 @@ namespace DD.Sample.DonkeyKongSample {
         public override void OnUpdate (long msec) {
             var col = GetComponent<CollisionShape> ();
             var tra = Node.GlobalTransform;
-            var playerCol = World.Find ("MyCharacter").GetComponent<CollisionShape> ();
+            var playerCol = World.Find ("MyCharacter").GetComponent<Collision> ();
             var playerTra = playerCol.Node.GlobalTransform;
 
             var hit = Physics2D.Collide (col, tra, playerCol, playerTra);

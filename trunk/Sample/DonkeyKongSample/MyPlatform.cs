@@ -13,7 +13,7 @@ namespace DD.Sample.DonkeyKongSample {
             var spr = new Sprite (width, height);
             spr.AddTexture (Resource.GetTexture ("media/Rectangle-160x40.png"));
 
-            var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
+            var col = new BoxCollision (spr.Width / 2, spr.Height / 2, 0);
             col.SetOffset (spr.Width / 2, spr.Height / 2, 0);
 
             var body = new PhysicsBody ();

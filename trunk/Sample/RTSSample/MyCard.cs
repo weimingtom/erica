@@ -45,7 +45,7 @@ namespace DD.Sample.RTSSample {
             hp.SetOffset (128 + 6, 64 + 6);
 
             // クリック
-            var col = new BoxCollisionShape (128, 64, 0);
+            var col = new BoxCollision (128, 64, 0);
             col.SetOffset (128, 64, 0);
 
             var node = new Node ("Card");

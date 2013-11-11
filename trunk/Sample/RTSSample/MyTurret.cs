@@ -25,7 +25,7 @@ namespace DD.Sample.RTSSample {
             var spr = new Sprite (40, 72);
             spr.SetOffset (-20, -52);
 
-            var col = new SphereCollisionShape (cmp.effectiveRange);
+            var col = new SphereCollision (cmp.effectiveRange);
             //col.DrawEnabled = true;
 
             var node = new Node ("Tullet");
@@ -91,7 +91,7 @@ namespace DD.Sample.RTSSample {
             var target = (from node in World.Downwards
                           where node != null
                           where node.Name == "EnemyTank"
-                          let col = node.GetComponent<CollisionShape> ()
+                          let col = node.GetComponent<Collision> ()
                           let tra = node.GlobalTransform
                           let dist = Physics2D.Distance (col, tra, mycol, mytra)
                           where dist == 0

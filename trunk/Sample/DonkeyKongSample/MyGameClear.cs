@@ -11,8 +11,9 @@ namespace DD.Sample.DonkeyKongSample {
         }
 
         public static Node Create (Vector3 pos) {
+            var name = "GameClear";
             var cmp = new MyGameClear ();
-
+            
             var spr = new Sprite (200, 160);
             spr.AddTexture (new Texture ("media/GameClear.png"));
 
@@ -20,10 +21,12 @@ namespace DD.Sample.DonkeyKongSample {
             clip.AddTrack (new SoundEffectTrack ("media/Announce.ogg"));
             clip.Volume = 0.3f;
 
-            var node = new Node ("GameClear");
+            var mbox = new MailBox (name);
+
+            var node = new Node (name);
             node.Attach (cmp);
             node.Attach (spr);
-            node.AddMailBox (node.Name);
+            node.Attach(mbox);
             node.UserData.Add (clip.Name, clip);
 
             node.Drawable = false;
@@ -34,7 +37,7 @@ namespace DD.Sample.DonkeyKongSample {
 
         public override void OnMailBox (Node from, string address, object letter) {
             Node.Drawable = true;
-            Node.RemoveMailBox ("GameClear");
+            Node.Deliverable = false;
             (Node.UserData["SoundClip"] as SoundClip).Play ();
         }
 
