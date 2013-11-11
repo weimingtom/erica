@@ -35,7 +35,7 @@ namespace DD.Sample.DonkeyKongSample {
             
             var spr = new Sprite (Resource.GetTexture ("media/Earth-32x32.png"), 32, 32);
         
-            var col = new SphereCollisionShape (16);
+            var col = new SphereCollision (16);
             col.SetOffset (col.Radius, col.Radius, 0);
 
             var body = new PhysicsBody ();

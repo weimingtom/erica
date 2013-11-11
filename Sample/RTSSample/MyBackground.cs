@@ -12,7 +12,7 @@ namespace DD.Sample.RTSSample {
             var spr = new Sprite (1200, 1800);
             spr.AddTexture (Resource.GetTexture ("media/Background-Glass.png"));
 
-            var col = new BoxCollisionShape (spr.Width/2, spr.Height/2, 0);
+            var col = new BoxCollision (spr.Width/2, spr.Height/2, 0);
             col.SetOffset (spr.Width/2, spr.Height/2, 0);
 
             var node = new Node ("Ground");

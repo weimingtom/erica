@@ -19,7 +19,7 @@ namespace DD.Sample.RTSSample {
             spr.AddTexture (new Texture ("media/image128x128(Purple).png"));
             spr.SetColor (255, 255, 255, 64);
 
-            var col = new BoxCollisionShape (600, 900, 0);
+            var col = new BoxCollision (600, 900, 0);
             col.SetOffset (600, 900, 0);
 
             var node = new Node ("MouseSelector");
@@ -67,14 +67,14 @@ namespace DD.Sample.RTSSample {
                 var width = (int)MyMath.Clamp (Math.Abs (pos.X - start.X), 2, 1200);
                 var height = (int)MyMath.Clamp (Math.Abs (pos.Y - start.Y), 2, 1800);
 
-                var mycol = new BoxCollisionShape (width / 2, height / 2, 0);
+                var mycol = new BoxCollision (width / 2, height / 2, 0);
                 mycol.SetOffset (x + width / 2, y + height / 2, 0);
                 var mytra = Node.GlobalTransform;
 
                 var tanks = from node in World.Downwards
                             where node.Name == "MyTank"
                             let tank = node.GetComponent<MyTank> ()
-                            let col = node.GetComponent<CollisionShape> ()
+                            let col = node.GetComponent<Collision> ()
                             let tra = node.GlobalTransform
                             where col != null
                             where Physics2D.Distance (col, tra, mycol, mytra) == 0

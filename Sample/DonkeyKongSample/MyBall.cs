@@ -7,13 +7,13 @@ using DD.Physics;
 namespace DD.Sample.DonkeyKongSample {
     public class MyBall : Component {
 
-
+        /*
         public override void OnUpdate (long msec) {
 
             var col = GetComponent<CollisionShape> ();
             var tra = Node.GlobalTransform;
 
-            var mycol = World.Find (x => x.Name == "MyCharacter").GetComponent<CollisionShape> ();
+            var mycol = World.Find (x => x.Name == "MyCharacter").GetComponent<Collision> ();
             var mytra = mycol.Node.GlobalTransform;
 
             var hit = Physics2D.Collide (col, tra, mycol, mytra);
@@ -22,5 +22,6 @@ namespace DD.Sample.DonkeyKongSample {
                 mycomp.Hit ();
             }
         }
+         * */
     }
 }

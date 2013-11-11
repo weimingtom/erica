@@ -60,8 +60,8 @@ namespace DD.Sample.DonkeyKongSample {
             var spr2 = new Sprite (new Texture ("media/Image128x128(Red).png"), 24, 4);
             spr2.SetOffset (0, spr1.Height);
 
-            var body = new BoxCollisionShape (spr1.Width / 2, spr1.Height / 2, 0);
-            var foot = new SphereCollisionShape (2);
+            var body = new BoxCollision (spr1.Width / 2, spr1.Height / 2, 0);
+            var foot = new SphereCollision (2);
             body.SetOffset (spr1.Width / 2, spr1.Height / 2, 0);
             foot.SetOffset (spr1.Width / 2, spr1.Height + 2, 0);
 
@@ -187,7 +187,7 @@ namespace DD.Sample.DonkeyKongSample {
             // 床面の検出
             {
                 var hit = (from n in map.Downwards
-                           let col = n.GetComponent<CollisionShape> ()
+                           let col = n.GetComponent<Collision> ()
                            let colTra = n.GlobalTransform
                            where col != null && Physics2D.Collide (foot, footTra, col, colTra)
                            let colRight = colTra.ApplyDirection (1, 0, 0)
@@ -237,7 +237,7 @@ namespace DD.Sample.DonkeyKongSample {
                 var nextTra = deltTra * currTra;
 
                 var hit = (from n in map.Downwards
-                           let comp = n.GetComponent<CollisionShape> ()
+                           let comp = n.GetComponent<Collision> ()
                            let tra = n.GlobalTransform
                            where comp != null && Physics2D.Collide (body, nextTra, comp, tra)
                            let dist = Physics2D.Distance (body, currTra, comp, tra)
@@ -261,7 +261,7 @@ namespace DD.Sample.DonkeyKongSample {
                 var nextTra = deltTra * currTra;
 
                 var hit = (from n in map.Downwards
-                           let comp = n.GetComponent<CollisionShape> ()
+                           let comp = n.GetComponent<Collision> ()
                            let tra = n.GlobalTransform
                            where comp != null && Physics2D.Collide (body, nextTra, comp, tra)
                            let dist = Physics2D.Distance (body, currTra, comp, tra)

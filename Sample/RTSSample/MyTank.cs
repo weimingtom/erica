@@ -116,7 +116,7 @@ namespace DD.Sample.RTSSample {
             spr.AddTexture (Resource.GetDefaultTexture ());
 
             // コリジョン他
-            var col = new BoxCollisionShape (20, 32, 0);
+            var col = new BoxCollision (20, 32, 0);
 
             var node = new Node (nodeName);
             node.Attach (cmp);

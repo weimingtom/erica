@@ -15,7 +15,7 @@ namespace DD.Sample.DonkeyKongSample {
             spr.AddTexture (new Texture ("media/Image128x128(Red).png"));
             spr.Color = Color.Gray;
 
-            var col = new BoxCollisionShape (spr.Width / 2, spr.Height / 2, 0);
+            var col = new BoxCollision (spr.Width / 2, spr.Height / 2, 0);
             col.SetOffset (spr.Width / 2, spr.Height / 2, 0);
 
             var body = new PhysicsBody ();
@@ -33,7 +33,7 @@ namespace DD.Sample.DonkeyKongSample {
             return node;
         }
 
-        public override void OnCollisionEnter (Collision cp) {
+        public override void OnCollisionEnter (ContactPoint cp) {
             var label = World.Find ("Label").GetComponent<Label> (2);
 
             // 爆発

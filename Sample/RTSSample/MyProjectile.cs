@@ -32,7 +32,7 @@ namespace DD.Sample.RTSSample {
             spr.AddTexture (Resource.GetTexture("media/Projectile.png"));
             spr.SetOffset (-8, 16);
 
-            var col = new SphereCollisionShape (10);
+            var col = new SphereCollision (10);
             //col.DrawEnabled = true;
 
             var node = new Node ("Projectile");
@@ -69,7 +69,7 @@ namespace DD.Sample.RTSSample {
 
             var hit = (from node in World.Downwards
                        where node.Name == "EnemyTank"
-                       let col = node.GetComponent<CollisionShape> ()
+                       let col = node.GetComponent<Collision> ()
                        let tra = node.GlobalTransform
                        where Physics2D.Distance (col, tra, mycol, mytra) == 0
                        select node).FirstOrDefault ();
