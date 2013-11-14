@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AkatokiModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="AkatokiModelStoreContainer">
+          <EntitySet Name="Characters" EntityType="AkatokiModel.Store.Characters" store:Type="Tables" />
+          <EntitySet Name="CharacterStatuses" EntityType="AkatokiModel.Store.CharacterStatuses" store:Type="Tables" />
+          <EntitySet Name="Textures" EntityType="AkatokiModel.Store.Textures" store:Type="Tables" />
+        </EntityContainer>
+        <EntityType Name="Characters">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UniqueName" Type="nvarchar" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" Nullable="false" />
+          <Property Name="FullNameYomi" Type="nvarchar" Nullable="false" />
+          <Property Name="備考" Type="nvarchar" />
+        </EntityType>
+        <EntityType Name="CharacterStatuses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="Character" Type="nvarchar" Nullable="false" />
+          <Property Name="HP" Type="real" Nullable="false" />
+          <Property Name="Attack" Type="real" Nullable="false" />
+          <Property Name="Shield" Type="real" Nullable="false" />
+          <Property Name="Speed" Type="real" Nullable="false" />
+          <Property Name="Tech" Type="real" Nullable="false" />
+          <Property Name="Dress" Type="nvarchar" Nullable="false" />
+          <Property Name="PantsLevel" Type="int" Nullable="false" />
+          <Property Name="BraLevel" Type="int" Nullable="false" />
+          <Property Name="InnerLevel" Type="int" Nullable="false" />
+          <Property Name="CoatLevel" Type="int" Nullable="false" />
+          <Property Name="SkirtLevel" Type="int" Nullable="false" />
+          <Property Name="備考" Type="nvarchar" />
+        </EntityType>
+        <EntityType Name="Textures">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="UniqueName" Type="nvarchar" Nullable="false" />
+          <Property Name="Section" Type="nvarchar" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" Nullable="false" />
+          <Property Name="Pose" Type="nvarchar" Nullable="false" />
+          <Property Name="Parts" Type="nvarchar" />
+          <Property Name="Level" Type="integer" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" />
+          <Property Name="備考" Type="nvarchar" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AkatokiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="AkatokiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Characters" EntityType="AkatokiModel.Character" />
+          <EntitySet Name="CharacterStatuses" EntityType="AkatokiModel.CharacterStatus" />
+          <EntitySet Name="Textures" EntityType="AkatokiModel.Texture" />
+        </EntityContainer>
+        <EntityType Name="Character">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniqueName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="FullNameYomi" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="CharacterStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="Character" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="HP" Type="Single" Nullable="false" />
+          <Property Name="Attack" Type="Single" Nullable="false" />
+          <Property Name="Shield" Type="Single" Nullable="false" />
+          <Property Name="Speed" Type="Single" Nullable="false" />
+          <Property Name="Tech" Type="Single" Nullable="false" />
+          <Property Name="Dress" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="PantsLevel" Type="Int32" Nullable="false" />
+          <Property Name="BraLevel" Type="Int32" Nullable="false" />
+          <Property Name="InnerLevel" Type="Int32" Nullable="false" />
+          <Property Name="CoatLevel" Type="Int32" Nullable="false" />
+          <Property Name="SkirtLevel" Type="Int32" Nullable="false" />
+          <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Texture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="UniqueName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Section" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Category" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Pose" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Parts" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Level" Type="Int64" Nullable="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AkatokiModelStoreContainer" CdmEntityContainer="AkatokiEntities">
+          <EntitySetMapping Name="Characters">
+            <EntityTypeMapping TypeName="AkatokiModel.Character">
+              <MappingFragment StoreEntitySet="Characters">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UniqueName" ColumnName="UniqueName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="FullNameYomi" ColumnName="FullNameYomi" />
+                <ScalarProperty Name="備考" ColumnName="備考" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharacterStatuses">
+            <EntityTypeMapping TypeName="AkatokiModel.CharacterStatus">
+              <MappingFragment StoreEntitySet="CharacterStatuses">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Character" ColumnName="Character" />
+                <ScalarProperty Name="HP" ColumnName="HP" />
+                <ScalarProperty Name="Attack" ColumnName="Attack" />
+                <ScalarProperty Name="Shield" ColumnName="Shield" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Tech" ColumnName="Tech" />
+                <ScalarProperty Name="Dress" ColumnName="Dress" />
+                <ScalarProperty Name="PantsLevel" ColumnName="PantsLevel" />
+                <ScalarProperty Name="BraLevel" ColumnName="BraLevel" />
+                <ScalarProperty Name="InnerLevel" ColumnName="InnerLevel" />
+                <ScalarProperty Name="CoatLevel" ColumnName="CoatLevel" />
+                <ScalarProperty Name="SkirtLevel" ColumnName="SkirtLevel" />
+                <ScalarProperty Name="備考" ColumnName="備考" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Textures">
+            <EntityTypeMapping TypeName="AkatokiModel.Texture">
+              <MappingFragment StoreEntitySet="Textures">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UniqueName" ColumnName="UniqueName" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Pose" ColumnName="Pose" />
+                <ScalarProperty Name="Parts" ColumnName="Parts" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="備考" ColumnName="備考" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="なし" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="AkatokiModel.Character" Width="1.5" PointX="0.75" PointY="0.75" Height="2.36375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AkatokiModel.CharacterStatus" Width="1.5" PointX="2.75" PointY="0.75" Height="4.0720833333333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="AkatokiModel.Texture" Width="1.5" PointX="4.75" PointY="0.75" Height="3.0043749999999996" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
