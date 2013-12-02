@@ -13,10 +13,13 @@ namespace あかときっ_偽_ {
         World wld;
         long frame;
 
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
         public Form1 () {
             InitializeComponent ();
 
-            this.wld = CreateWorld();
+            this.wld = CreateWorld ();
             this.frame = 0;
         }
 
@@ -32,9 +35,10 @@ namespace あかときっ_偽_ {
             Resource.SetAudioDirectory ("Data/");
 
             var wld = new World ();
-            
+
+            /*
             var node1 = MyCharacter.Create ("Maki");
-            var node2 = MainBattleWindow.Create ();
+            var node2 = MyMainBattleWindow.Create ();
             var node3 = MyButton.Create (new Vector3 (10, 10, 0), MyButton.Pose.標準待機);
             var node4 = MyButton.Create (new Vector3 (100, 10, 0), MyButton.Pose.被弾);
             var node5 = MyStatusController.Create (new Vector3 (10, 180, 0));
@@ -46,7 +50,34 @@ namespace あかときっ_偽_ {
             wld.AddChild (node4);
             wld.AddChild (node5);
             wld.AddChild (node7);
+            */
+
             
+            var node1 = MyMember.Create ();
+            var node2 = MyMemberStatusPanel.Create (new Vector3(0,0,0), node1.GetComponent<MyMember>());
+            
+
+            /*
+            var btn1 = MyButton.Create (new Vector3 (100, 100, 0), 64, 64, "吠え端").GetComponent<MyButton> ();
+            btn1.NormalTexture = new Texture ("Data/共通/ButtonBlue.png");
+            btn1.FocusedTexture = new Texture ("Data/共通/ButtonBlue(Focused).png");
+            btn1.ClickedTexture = new Texture ("Data/共通/ButtonBlack.png");
+            btn1.Text = "テスト";
+            btn1.Clicked += delegate (object sender, EventArgs e) {
+                Console.WriteLine ("Clicked");
+                clip.Play ();
+            };
+            */
+
+            /*
+            var node1 = MyAttackSequence.Create (new Vector3 (200, 100, 0));
+            */
+
+
+            wld.AddChild (node1);
+            wld.AddChild (node2);
+      
+
             return wld;
         }
 
@@ -58,7 +89,7 @@ namespace あかときっ_偽_ {
             }
             var view = new DataGridView ();
             view.DataSource = db.Characters.Local;
-            view.Show();
+            view.Show ();
             view.Dock = DockStyle.Fill;
 
             var form = new Form ();
@@ -67,7 +98,7 @@ namespace あかときっ_偽_ {
         }
 
         private void toolStripButton1_Click (object sender, EventArgs e) {
-      
+
         }
 
         /// <summary>
@@ -76,7 +107,9 @@ namespace あかときっ_偽_ {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void timer1_Tick (object sender, EventArgs e) {
-            Console.WriteLine ("Frame = {0}", frame++);
+            if (frame++ % 100 == 0) {
+                //Console.WriteLine ("Frame = {0}", frame);
+            }
 
             if (wld != null) {
                 var g2d = Graphics2D.GetInstance ();

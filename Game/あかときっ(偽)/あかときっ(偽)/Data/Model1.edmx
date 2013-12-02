@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AkatokiModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="AkatokiModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="AkatokiModelStoreContainer">
           <EntitySet Name="Characters" EntityType="AkatokiModel.Store.Characters" store:Type="Tables" />
           <EntitySet Name="CharacterStatuses" EntityType="AkatokiModel.Store.CharacterStatuses" store:Type="Tables" />
@@ -28,6 +28,9 @@
           <Property Name="ID" Type="integer" Nullable="false" />
           <Property Name="Character" Type="nvarchar" Nullable="false" />
           <Property Name="HP" Type="real" Nullable="false" />
+          <Property Name="MaxHP" Type="real" Nullable="false" />
+          <Property Name="MP" Type="real" Nullable="false" />
+          <Property Name="MaxMP" Type="real" Nullable="false" />
           <Property Name="Attack" Type="real" Nullable="false" />
           <Property Name="Shield" Type="real" Nullable="false" />
           <Property Name="Speed" Type="real" Nullable="false" />
@@ -46,16 +49,16 @@
           </Key>
           <Property Name="ID" Type="integer" Nullable="false" />
           <Property Name="UniqueName" Type="nvarchar" Nullable="false" />
+          <Property Name="Character" Type="nvarchar" Nullable="false" />
           <Property Name="Section" Type="nvarchar" Nullable="false" />
           <Property Name="Category" Type="nvarchar" Nullable="false" />
+          <Property Name="Parts" Type="nvarchar" Nullable="false" />
           <Property Name="Pose" Type="nvarchar" Nullable="false" />
-          <Property Name="Parts" Type="nvarchar" />
           <Property Name="Level" Type="integer" Nullable="false" />
           <Property Name="FileName" Type="nvarchar" Nullable="false" />
           <Property Name="備考" Type="nvarchar" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AkatokiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -93,6 +96,9 @@
           <Property Name="CoatLevel" Type="Int32" Nullable="false" />
           <Property Name="SkirtLevel" Type="Int32" Nullable="false" />
           <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Type="Single" Name="MaxHP" Nullable="false" />
+          <Property Type="Single" Name="MP" Nullable="false" />
+          <Property Type="Single" Name="MaxMP" Nullable="false" />
         </EntityType>
         <EntityType Name="Texture">
           <Key>
@@ -103,10 +109,11 @@
           <Property Name="Section" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
           <Property Name="Category" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
           <Property Name="Pose" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-          <Property Name="Parts" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Parts" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" Nullable="false" />
           <Property Name="Level" Type="Int64" Nullable="false" />
           <Property Name="FileName" Type="String" Nullable="false" MaxLength="2147483647" Unicode="true" FixedLength="false" />
           <Property Name="備考" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="Character" Nullable="false" MaxLength="2147483647" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -129,6 +136,9 @@
           <EntitySetMapping Name="CharacterStatuses">
             <EntityTypeMapping TypeName="AkatokiModel.CharacterStatus">
               <MappingFragment StoreEntitySet="CharacterStatuses">
+                <ScalarProperty Name="MaxMP" ColumnName="MaxMP" />
+                <ScalarProperty Name="MP" ColumnName="MP" />
+                <ScalarProperty Name="MaxHP" ColumnName="MaxHP" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Character" ColumnName="Character" />
                 <ScalarProperty Name="HP" ColumnName="HP" />
@@ -149,6 +159,7 @@
           <EntitySetMapping Name="Textures">
             <EntityTypeMapping TypeName="AkatokiModel.Texture">
               <MappingFragment StoreEntitySet="Textures">
+                <ScalarProperty Name="Character" ColumnName="Character" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UniqueName" ColumnName="UniqueName" />
                 <ScalarProperty Name="Section" ColumnName="Section" />

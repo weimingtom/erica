@@ -28,6 +28,9 @@ namespace あかときっ_偽_.Data
         public int CoatLevel { get; set; }
         public int SkirtLevel { get; set; }
         public string 備考 { get; set; }
+        public float MaxHP { get; set; }
+        public float MP { get; set; }
+        public float MaxMP { get; set; }
     }
     
 }

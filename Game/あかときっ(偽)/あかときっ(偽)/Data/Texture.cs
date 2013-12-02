@@ -23,6 +23,7 @@ namespace あかときっ_偽_.Data
         public long Level { get; set; }
         public string FileName { get; set; }
         public string 備考 { get; set; }
+        public string Character { get; set; }
     }
     
 }
